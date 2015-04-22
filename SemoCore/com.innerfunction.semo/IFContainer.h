@@ -11,8 +11,8 @@
 #import "IFService.h"
 
 @interface IFContainer : NSObject <IFService> {
-    NSDictionary *named;
-    NSArray *services;
+    NSMutableDictionary *named;
+    NSMutableArray *services;
     IFConfiguration *types;
     BOOL running;
 }
@@ -21,8 +21,8 @@
 - (void)setTypes:(IFConfiguration *)types;
 - (id)makeObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
-- (id)newInstanceForClass:(Class *)classObj;
-- (void)configureObject:(id)object withConfiguration:(IFConfiguration *)definition identifier:(NSString *)identifier;
+- (id)newInstanceForClass:(NSString *)className;
+- (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 - (void)configureWith:(IFConfiguration *)configuration;
 
 @end

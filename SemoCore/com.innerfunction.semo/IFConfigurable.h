@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IFConfiguration.h"
 
 @protocol IFConfigurable <NSObject>
+
+- (void)configure:(IFConfiguration *)configuration;
 
 @end

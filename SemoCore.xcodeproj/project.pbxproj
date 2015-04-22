@@ -91,6 +91,8 @@
 		079A176F1AE7F3F800F22F4E /* IFConfiguredLocals.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */; };
 		079A17721AE7F80B00F22F4E /* IFContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A17701AE7F80B00F22F4E /* IFContainer.h */; };
 		079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17711AE7F80B00F22F4E /* IFContainer.m */; };
+		079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */; };
+		079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +183,8 @@
 		079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFConfiguredLocals.m; sourceTree = "<group>"; };
 		079A17701AE7F80B00F22F4E /* IFContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContainer.h; sourceTree = "<group>"; };
 		079A17711AE7F80B00F22F4E /* IFContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContainer.m; sourceTree = "<group>"; };
+		079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTypeInfo.h; sourceTree = "<group>"; };
+		079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFTypeInfo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +291,8 @@
 				079A16AB1AE7DDE800F22F4E /* IFTypeConversions.m */,
 				079A17681AE7EE7600F22F4E /* IFLocals.h */,
 				079A17691AE7EE7600F22F4E /* IFLocals.m */,
+				079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */,
+				079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */,
 				079A16AE1AE7DDE800F22F4E /* NSArray+IF.h */,
 				079A16AF1AE7DDE800F22F4E /* NSArray+IF.m */,
 				079A16B01AE7DDE800F22F4E /* NSDictionary+IF.h */,
@@ -423,6 +429,7 @@
 				079A174C1AE7E3A600F22F4E /* DDLog.h in Headers */,
 				079A17721AE7F80B00F22F4E /* IFContainer.h in Headers */,
 				079A16CE1AE7DDE800F22F4E /* IFJSONData.h in Headers */,
+				079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */,
 				079A172A1AE7DF2D00F22F4E /* unzip.h in Headers */,
 				079A16B81AE7DDE800F22F4E /* IFCompoundURI.h in Headers */,
 				079A174A1AE7E3A600F22F4E /* DDFileLogger.h in Headers */,
@@ -575,6 +582,7 @@
 				079A16DB1AE7DDE800F22F4E /* NSArray+IF.m in Sources */,
 				079A16CF1AE7DDE800F22F4E /* IFJSONData.m in Sources */,
 				079A17471AE7E3A600F22F4E /* DDAbstractDatabaseLogger.m in Sources */,
+				079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */,
 				074D9F4E1AE7DD04006D1510 /* SemoCore.m in Sources */,
 				079A16DD1AE7DDE800F22F4E /* NSDictionary+IF.m in Sources */,
 				079A170E1AE7DF2D00F22F4E /* JSONKit.m in Sources */,
