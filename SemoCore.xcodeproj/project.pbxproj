@@ -105,6 +105,7 @@
 		074D9F491AE7DD04006D1510 /* SemoCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SemoCore-Info.plist"; sourceTree = "<group>"; };
 		074D9F4B1AE7DD04006D1510 /* SemoCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SemoCore.h; sourceTree = "<group>"; };
 		074D9F4D1AE7DD04006D1510 /* SemoCore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemoCore.m; sourceTree = "<group>"; };
+		075A31351AE9817300FC8615 /* IFIOCTypeInspectable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFIOCTypeInspectable.h; sourceTree = "<group>"; };
 		075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFAppContainer.h; sourceTree = "<group>"; };
 		075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFAppContainer.m; sourceTree = "<group>"; };
 		079A168B1AE7DDE800F22F4E /* IFCompoundURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCompoundURI.h; sourceTree = "<group>"; };
@@ -402,6 +403,7 @@
 				079A175F1AE7EB1B00F22F4E /* IFConfiguration.m */,
 				079A17581AE7EA8800F22F4E /* IFService.h */,
 				079A175A1AE7EABD00F22F4E /* IFIOCConfigurable.h */,
+				075A31351AE9817300FC8615 /* IFIOCTypeInspectable.h */,
 				079A175C1AE7EAE400F22F4E /* IFConfigurable.h */,
 				079A176C1AE7F3F800F22F4E /* IFConfiguredLocals.h */,
 				079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */,

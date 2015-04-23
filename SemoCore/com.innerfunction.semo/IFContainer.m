@@ -9,6 +9,7 @@
 #import "IFContainer.h"
 #import "IFConfigurable.h"
 #import "IFIOCConfigurable.h"
+#import "IFIOCTypeInspectable.h"
 #import "IFTypeInfo.h"
 #import "IFLogging.h"
 
@@ -81,6 +82,10 @@
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             [(id<IFIOCConfigurable>)object beforeConfigure:self];
         }
+        id<IFIOCTypeInspectable> typeInspectable = nil;
+        if ([object conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
+            typeInspectable = (id<IFIOCTypeInspectable>)object;
+        }
         for (NSString *name in [configuration getValueNames]) {
             NSString *propName = name;
             if ([name hasPrefix:@"and:"] || [name hasPrefix:@"semo:"]) {
@@ -133,10 +138,12 @@
                     NSArray *list = (NSArray *)[configuration getValue:propName];
                     NSInteger length = [list count];
                     NSMutableArray *propValues = [[NSMutableArray alloc] initWithCapacity:length];
-                    // TODO: Note that can't replicate Java's type inference here, due to lack of generics
-                    __unsafe_unretained Class propType = [NSObject class];
+                    __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];
+                    if (!propertyClass) {
+                        propertyClass = [NSObject class];
+                    }
                     for (NSInteger idx = 0; idx < length; idx++) {
-                        id propValue = [self resolveObjectPropertyOfType:propType
+                        id propValue = [self resolveObjectPropertyOfType:propertyClass
                                                        fromConfiguration:configuration
                                                                 withName:[NSString stringWithFormat:@"%@.%d", propName, idx]];
                         [propValues addObject:propValue];
@@ -148,10 +155,12 @@
                 IFConfiguration *propConfigs = [configuration getValueAsConfiguration:propName];
                 if (propConfigs) {
                     NSMutableDictionary *propValues = [[NSMutableDictionary alloc] init];
-                    // TODO: Note that can't replicate Java's type inference here, due to lack of generics
-                    __unsafe_unretained Class propType = [NSObject class];
+                    __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];
+                    if (!propertyClass) {
+                        propertyClass = [NSObject class];
+                    }
                     for (NSString *valueName in [propConfigs getValueNames]) {
-                        id propValue = [self resolveObjectPropertyOfType:propType fromConfiguration:propConfigs withName:valueName];
+                        id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs withName:valueName];
                         if (propValue) {
                             [propValue setObject:propValue forKey:valueName];
                         }
