@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class IFContainer;
+
 @protocol IFIOCConfigurable <NSObject>
 
-- (void)beforeConfigure;
+- (void)beforeConfigure:(IFContainer *)container;
 
-- (void)afterConfigure;
+- (void)afterConfigure:(IFContainer *)container;
 
 @end

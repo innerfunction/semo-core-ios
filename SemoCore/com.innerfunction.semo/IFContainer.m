@@ -10,6 +10,7 @@
 #import "IFConfigurable.h"
 #import "IFIOCConfigurable.h"
 #import "IFTypeInfo.h"
+#import "IFLogging.h"
 
 @interface IFContainer ()
 
@@ -40,7 +41,7 @@
     types = _types ? _types : [IFConfiguration emptyConfiguration];
 }
 
-- (id)makeObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
+- (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     configuration = [configuration normalize];
     id object = [self instantiateObjectWithConfiguration:configuration identifier:identifier];
     if (object) {
@@ -58,11 +59,11 @@
             object = [self newInstanceForClass:className];
         }
         else {
-            // Log "Make %s: No class name found for type %s", identifier, type
+            DDLogCError(@"Make %@: No class name found for type %@", identifier, type);
         }
     }
     else {
-        // Log "Make %s: Component configuration missing 'semo:type' property", identifiers
+        DDLogCError(@"Make %@: Component configuration missing 'semo:type' property", identifier);
     }
     return object;
 }
@@ -78,7 +79,7 @@
     else {
         IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:object];
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
-            [(id<IFIOCConfigurable>)object beforeConfigure];
+            [(id<IFIOCConfigurable>)object beforeConfigure:self];
         }
         for (NSString *name in [configuration getValueNames]) {
             NSString *propName = name;
@@ -133,8 +134,9 @@
                     NSInteger length = [list count];
                     NSMutableArray *propValues = [[NSMutableArray alloc] initWithCapacity:length];
                     // TODO: Note that can't replicate Java's type inference here, due to lack of generics
+                    __unsafe_unretained Class propType = [NSObject class];
                     for (NSInteger idx = 0; idx < length; idx++) {
-                        id propValue = [self resolveObjectPropertyOfType:NULL
+                        id propValue = [self resolveObjectPropertyOfType:propType
                                                        fromConfiguration:configuration
                                                                 withName:[NSString stringWithFormat:@"%@.%d", propName, idx]];
                         [propValues addObject:propValue];
@@ -146,8 +148,10 @@
                 IFConfiguration *propConfigs = [configuration getValueAsConfiguration:propName];
                 if (propConfigs) {
                     NSMutableDictionary *propValues = [[NSMutableDictionary alloc] init];
+                    // TODO: Note that can't replicate Java's type inference here, due to lack of generics
+                    __unsafe_unretained Class propType = [NSObject class];
                     for (NSString *valueName in [propConfigs getValueNames]) {
-                        id propValue = [self resolveObjectPropertyOfType:NULL fromConfiguration:propConfigs withName:valueName];
+                        id propValue = [self resolveObjectPropertyOfType:propType fromConfiguration:propConfigs withName:valueName];
                         if (propValue) {
                             [propValue setObject:propValue forKey:valueName];
                         }
@@ -162,7 +166,7 @@
             [object setValue:value forKey:propName];
         }
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
-            [(id<IFIOCConfigurable>)object afterConfigure];
+            [(id<IFIOCConfigurable>)object afterConfigure:self];
         }
         // If the object instance is a service then add to the list of services, and start the
         // service if the container services are running.
@@ -209,12 +213,12 @@
                 fromConfiguration:(IFConfiguration *)configuration
                          withName:(NSString *)name {
     id object = [configuration getValue:name];
-    if (!type || [type isSubclassOfClass:[object class]]) {
+    if ([type isSubclassOfClass:[object class]]) {
         return object;
     }
     if ([configuration hasValue:[NSString stringWithFormat:@"%@.semo:type", name ]]) {
         IFConfiguration *propConfig = [configuration getValueAsConfiguration:name];
-        return [self makeObjectWithConfiguration:propConfig identifier:name];
+        return [self buildObjectWithConfiguration:propConfig identifier:name];
     }
     // TODO: In this case, can attempt to instantiate an object of the required property type
     // (i.e. infer the type) and the configure it.
@@ -228,7 +232,7 @@
             [service startService];
         }
         @catch (NSException *exception) {
-            // TODO Log
+            DDLogCError(@"Error starting service %@: %@", [service class], exception);
         }
     }
 }
@@ -239,7 +243,7 @@
             [service stopService];
         }
         @catch (NSException *exception) {
-            // TODO: Log
+            DDLogCError(@"Error stopping service %@: %@", [service class], exception);
         }
     }
     running = NO;

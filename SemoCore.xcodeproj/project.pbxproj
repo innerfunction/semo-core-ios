@@ -12,6 +12,8 @@
 		074D9F4A1AE7DD04006D1510 /* SemoCore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074D9F491AE7DD04006D1510 /* SemoCore-Info.plist */; };
 		074D9F4C1AE7DD04006D1510 /* SemoCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 074D9F4B1AE7DD04006D1510 /* SemoCore.h */; };
 		074D9F4E1AE7DD04006D1510 /* SemoCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 074D9F4D1AE7DD04006D1510 /* SemoCore.m */; };
+		075C6C401AE9093F0021DB91 /* IFAppContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */; };
+		075C6C411AE9093F0021DB91 /* IFAppContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */; };
 		079A16B81AE7DDE800F22F4E /* IFCompoundURI.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A168B1AE7DDE800F22F4E /* IFCompoundURI.h */; };
 		079A16B91AE7DDE800F22F4E /* IFCompoundURI.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A168C1AE7DDE800F22F4E /* IFCompoundURI.m */; };
 		079A16BA1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A168D1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h */; };
@@ -103,6 +105,8 @@
 		074D9F491AE7DD04006D1510 /* SemoCore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SemoCore-Info.plist"; sourceTree = "<group>"; };
 		074D9F4B1AE7DD04006D1510 /* SemoCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SemoCore.h; sourceTree = "<group>"; };
 		074D9F4D1AE7DD04006D1510 /* SemoCore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemoCore.m; sourceTree = "<group>"; };
+		075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFAppContainer.h; sourceTree = "<group>"; };
+		075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFAppContainer.m; sourceTree = "<group>"; };
 		079A168B1AE7DDE800F22F4E /* IFCompoundURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCompoundURI.h; sourceTree = "<group>"; };
 		079A168C1AE7DDE800F22F4E /* IFCompoundURI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCompoundURI.m; sourceTree = "<group>"; };
 		079A168D1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFileBasedSchemeHandler.h; sourceTree = "<group>"; };
@@ -403,6 +407,8 @@
 				079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */,
 				079A17701AE7F80B00F22F4E /* IFContainer.h */,
 				079A17711AE7F80B00F22F4E /* IFContainer.m */,
+				075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */,
+				075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */,
 			);
 			path = com.innerfunction.semo;
 			sourceTree = "<group>";
@@ -459,6 +465,7 @@
 				074D9F4C1AE7DD04006D1510 /* SemoCore.h in Headers */,
 				079A176E1AE7F3F800F22F4E /* IFConfiguredLocals.h in Headers */,
 				079A17631AE7EBAD00F22F4E /* IFValues.h in Headers */,
+				075C6C401AE9093F0021DB91 /* IFAppContainer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +556,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				075C6C411AE9093F0021DB91 /* IFAppContainer.m in Sources */,
 				079A17671AE7EC8000F22F4E /* UIColor+IF.m in Sources */,
 				079A16CB1AE7DDE800F22F4E /* IFFileIO.m in Sources */,
 				079A17531AE7E3A600F22F4E /* DispatchQueueLogFormatter.m in Sources */,

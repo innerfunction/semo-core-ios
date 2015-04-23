@@ -19,7 +19,7 @@
 
 - (id)getNamed:(NSString *)name;
 - (void)setTypes:(IFConfiguration *)types;
-- (id)makeObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
+- (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 - (id)newInstanceForClass:(NSString *)className;
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;

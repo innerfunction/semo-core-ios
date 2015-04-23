@@ -104,6 +104,10 @@
     return self;
 }
 
+- (id)initWithData:(id)data {
+    return [self initWithData:data parent:[IFConfiguration emptyConfiguration]];
+}
+
 - (id)initWithData:(id)_data parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {

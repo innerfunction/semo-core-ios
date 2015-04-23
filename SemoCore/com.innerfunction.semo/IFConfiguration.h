@@ -32,6 +32,8 @@
 @property (nonatomic, strong) IFResource *resource;
 @property (nonatomic, strong) NSDictionary *context;
 
+// Initialize the configuration with the specified data.
+- (id)initWithData:(id)data;
 // Initialize the configuration with the specified data and parent configuraiton.
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
 // Initialize the configuration with the specified data and resource.
