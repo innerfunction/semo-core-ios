@@ -10,6 +10,10 @@
 #import "IFURIResolver.h"
 #import "IFLocals.h"
 
+#define ForceResetDefaultSettings   (NO)
+#define Platform                    (@"ios")
+#define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
+
 @interface IFAppContainer : IFContainer {
     IFStandardURIResolver *resolver;
     NSMutableDictionary *globals;

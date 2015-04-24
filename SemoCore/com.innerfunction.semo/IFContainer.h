@@ -21,7 +21,7 @@
 - (void)setTypes:(IFConfiguration *)types;
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
-- (id)newInstanceForClass:(NSString *)className;
+- (id)newInstanceForClassName:(NSString *)className;
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 - (void)configureWith:(IFConfiguration *)configuration;
 

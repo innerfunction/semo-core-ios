@@ -95,6 +95,8 @@
 		079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17711AE7F80B00F22F4E /* IFContainer.m */; };
 		079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */; };
 		079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */; };
+		07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D025201AEAC1D200C2A619 /* IFI18nMap.h */; };
+		07D025231AEAC1D200C2A619 /* IFI18nMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D025211AEAC1D200C2A619 /* IFI18nMap.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -190,6 +192,8 @@
 		079A17711AE7F80B00F22F4E /* IFContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContainer.m; sourceTree = "<group>"; };
 		079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTypeInfo.h; sourceTree = "<group>"; };
 		079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFTypeInfo.m; sourceTree = "<group>"; };
+		07D025201AEAC1D200C2A619 /* IFI18nMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFI18nMap.h; sourceTree = "<group>"; };
+		07D025211AEAC1D200C2A619 /* IFI18nMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFI18nMap.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +285,8 @@
 		079A169B1AE7DDE800F22F4E /* com.innerfunction.util */ = {
 			isa = PBXGroup;
 			children = (
+				07D025201AEAC1D200C2A619 /* IFI18nMap.h */,
+				07D025211AEAC1D200C2A619 /* IFI18nMap.m */,
 				079A17341AE7E34100F22F4E /* IFLogging.h */,
 				079A169E1AE7DDE800F22F4E /* IFFileIO.h */,
 				079A169F1AE7DDE800F22F4E /* IFFileIO.m */,
@@ -434,6 +440,7 @@
 				079A17661AE7EC8000F22F4E /* UIColor+IF.h in Headers */,
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
+				07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */,
 				079A174C1AE7E3A600F22F4E /* DDLog.h in Headers */,
 				079A17721AE7F80B00F22F4E /* IFContainer.h in Headers */,
 				079A16CE1AE7DDE800F22F4E /* IFJSONData.h in Headers */,
@@ -560,6 +567,7 @@
 			files = (
 				075C6C411AE9093F0021DB91 /* IFAppContainer.m in Sources */,
 				079A17671AE7EC8000F22F4E /* UIColor+IF.m in Sources */,
+				07D025231AEAC1D200C2A619 /* IFI18nMap.m in Sources */,
 				079A16CB1AE7DDE800F22F4E /* IFFileIO.m in Sources */,
 				079A17531AE7E3A600F22F4E /* DispatchQueueLogFormatter.m in Sources */,
 				079A16DF1AE7DDE800F22F4E /* NSString+IF.m in Sources */,

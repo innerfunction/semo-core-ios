@@ -57,7 +57,7 @@
     if (type) {
         NSString *className = [types getValueAsString:type];
         if (className) {
-            object = [self newInstanceForClass:className];
+            object = [self newInstanceForClassName:className];
         }
         else {
             DDLogCError(@"Make %@: No class name found for type %@", identifier, type);
@@ -69,7 +69,7 @@
     return object;
 }
 
-- (id)newInstanceForClass:(NSString *)className {
+- (id)newInstanceForClassName:(NSString *)className {
     return [[NSClassFromString(className) alloc] init];
 }
 
@@ -218,20 +218,27 @@
     }
 }
 
-- (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)type
+- (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)propClass
                 fromConfiguration:(IFConfiguration *)configuration
                          withName:(NSString *)name {
     id object = [configuration getValue:name];
-    if ([type isSubclassOfClass:[object class]]) {
+    if ([propClass isSubclassOfClass:[object class]]) {
         return object;
     }
     if ([configuration hasValue:[NSString stringWithFormat:@"%@.semo:type", name ]]) {
         IFConfiguration *propConfig = [configuration getValueAsConfiguration:name];
         return [self buildObjectWithConfiguration:propConfig identifier:name];
     }
-    // TODO: In this case, can attempt to instantiate an object of the required property type
-    // (i.e. infer the type) and the configure it.
-    return nil;
+    // No semo:type specified in configuration, so try instantiating an inferred type using the class information provided.
+    NSString *className = NSStringFromClass(propClass);
+    @try {
+        object = [self newInstanceForClassName:className];
+        [self configureObject:object withConfiguration:configuration identifier:name];
+    }
+    @catch (NSException *exception) {
+        DDLogCInfo(@"Failed to instantiate instance of inferred type %@: %@", className, exception);
+    }
+    return object;
 }
 
 - (void)startService {
