@@ -97,7 +97,30 @@
 		079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */; };
 		07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D025201AEAC1D200C2A619 /* IFI18nMap.h */; };
 		07D025231AEAC1D200C2A619 /* IFI18nMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D025211AEAC1D200C2A619 /* IFI18nMap.m */; };
+		07E287F21AEBA7750078B95B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E287F11AEBA7750078B95B /* XCTest.framework */; };
+		07E287F31AEBA7750078B95B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
+		07E287F41AEBA7750078B95B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079A17551AE7E5BB00F22F4E /* UIKit.framework */; };
+		07E287FA1AEBA7750078B95B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07E287F81AEBA7750078B95B /* InfoPlist.strings */; };
+		07E287FC1AEBA7750078B95B /* SemoCore_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */; };
+		07E288041AEBA9080078B95B /* AppContainerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288031AEBA9080078B95B /* AppContainerTest.m */; };
+		07E288071AEBA96A0078B95B /* Thing.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288061AEBA96A0078B95B /* Thing.m */; };
+		07E2880A1AEBA98F0078B95B /* Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288091AEBA98F0078B95B /* Color.m */; };
+		07E2880D1AEBA9CE0078B95B /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2880C1AEBA9CE0078B95B /* Fruit.m */; };
+		07E288101AEBA9F60078B95B /* Animal.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E2880F1AEBA9F60078B95B /* Animal.m */; };
+		07E288131AEBAC7F0078B95B /* Plant.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288121AEBAC7F0078B95B /* Plant.m */; };
+		07E288161AEBAD3C0078B95B /* Forest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288151AEBAD3C0078B95B /* Forest.m */; };
+		07E288191AEBADA80078B95B /* Configurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288181AEBADA80078B95B /* Configurable.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		07E287FE1AEBA7750078B95B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 074D9F351AE7DD04006D1510 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 074D9F3E1AE7DD04006D1510;
+			remoteInfo = SemoCore;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		074D9F3F1AE7DD04006D1510 /* SemoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = SemoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +217,27 @@
 		079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFTypeInfo.m; sourceTree = "<group>"; };
 		07D025201AEAC1D200C2A619 /* IFI18nMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFI18nMap.h; sourceTree = "<group>"; };
 		07D025211AEAC1D200C2A619 /* IFI18nMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFI18nMap.m; sourceTree = "<group>"; };
+		07E287F01AEBA7750078B95B /* SemoCore Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SemoCore Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		07E287F11AEBA7750078B95B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		07E287F71AEBA7750078B95B /* SemoCore Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SemoCore Tests-Info.plist"; sourceTree = "<group>"; };
+		07E287F91AEBA7750078B95B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemoCore_Tests.m; sourceTree = "<group>"; };
+		07E287FD1AEBA7750078B95B /* SemoCore Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SemoCore Tests-Prefix.pch"; sourceTree = "<group>"; };
+		07E288031AEBA9080078B95B /* AppContainerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppContainerTest.m; sourceTree = "<group>"; };
+		07E288051AEBA96A0078B95B /* Thing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thing.h; sourceTree = "<group>"; };
+		07E288061AEBA96A0078B95B /* Thing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Thing.m; sourceTree = "<group>"; };
+		07E288081AEBA98F0078B95B /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		07E288091AEBA98F0078B95B /* Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Color.m; sourceTree = "<group>"; };
+		07E2880B1AEBA9CE0078B95B /* Fruit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fruit.h; sourceTree = "<group>"; };
+		07E2880C1AEBA9CE0078B95B /* Fruit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fruit.m; sourceTree = "<group>"; };
+		07E2880E1AEBA9F60078B95B /* Animal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animal.h; sourceTree = "<group>"; };
+		07E2880F1AEBA9F60078B95B /* Animal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animal.m; sourceTree = "<group>"; };
+		07E288111AEBAC7F0078B95B /* Plant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plant.h; sourceTree = "<group>"; };
+		07E288121AEBAC7F0078B95B /* Plant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Plant.m; sourceTree = "<group>"; };
+		07E288141AEBAD3C0078B95B /* Forest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forest.h; sourceTree = "<group>"; };
+		07E288151AEBAD3C0078B95B /* Forest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forest.m; sourceTree = "<group>"; };
+		07E288171AEBADA80078B95B /* Configurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurable.h; sourceTree = "<group>"; };
+		07E288181AEBADA80078B95B /* Configurable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configurable.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +250,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		07E287ED1AEBA7750078B95B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E287F21AEBA7750078B95B /* XCTest.framework in Frameworks */,
+				07E287F41AEBA7750078B95B /* UIKit.framework in Frameworks */,
+				07E287F31AEBA7750078B95B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -213,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				074D9F441AE7DD04006D1510 /* SemoCore */,
+				07E287F51AEBA7750078B95B /* SemoCore Tests */,
 				074D9F411AE7DD04006D1510 /* Frameworks */,
 				074D9F401AE7DD04006D1510 /* Products */,
 			);
@@ -222,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				074D9F3F1AE7DD04006D1510 /* SemoCore.framework */,
+				07E287F01AEBA7750078B95B /* SemoCore Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -231,6 +287,7 @@
 			children = (
 				079A17551AE7E5BB00F22F4E /* UIKit.framework */,
 				074D9F421AE7DD04006D1510 /* Foundation.framework */,
+				07E287F11AEBA7750078B95B /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -421,6 +478,40 @@
 			path = com.innerfunction.semo;
 			sourceTree = "<group>";
 		};
+		07E287F51AEBA7750078B95B /* SemoCore Tests */ = {
+			isa = PBXGroup;
+			children = (
+				07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */,
+				07E287F61AEBA7750078B95B /* Supporting Files */,
+				07E288031AEBA9080078B95B /* AppContainerTest.m */,
+				07E288051AEBA96A0078B95B /* Thing.h */,
+				07E288061AEBA96A0078B95B /* Thing.m */,
+				07E288081AEBA98F0078B95B /* Color.h */,
+				07E288091AEBA98F0078B95B /* Color.m */,
+				07E2880B1AEBA9CE0078B95B /* Fruit.h */,
+				07E2880C1AEBA9CE0078B95B /* Fruit.m */,
+				07E2880E1AEBA9F60078B95B /* Animal.h */,
+				07E2880F1AEBA9F60078B95B /* Animal.m */,
+				07E288111AEBAC7F0078B95B /* Plant.h */,
+				07E288121AEBAC7F0078B95B /* Plant.m */,
+				07E288141AEBAD3C0078B95B /* Forest.h */,
+				07E288151AEBAD3C0078B95B /* Forest.m */,
+				07E288171AEBADA80078B95B /* Configurable.h */,
+				07E288181AEBADA80078B95B /* Configurable.m */,
+			);
+			path = "SemoCore Tests";
+			sourceTree = "<group>";
+		};
+		07E287F61AEBA7750078B95B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				07E287F71AEBA7750078B95B /* SemoCore Tests-Info.plist */,
+				07E287F81AEBA7750078B95B /* InfoPlist.strings */,
+				07E287FD1AEBA7750078B95B /* SemoCore Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -500,6 +591,24 @@
 			productReference = 074D9F3F1AE7DD04006D1510 /* SemoCore.framework */;
 			productType = "com.apple.product-type.framework.static";
 		};
+		07E287EF1AEBA7750078B95B /* SemoCore Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07E288021AEBA7750078B95B /* Build configuration list for PBXNativeTarget "SemoCore Tests" */;
+			buildPhases = (
+				07E287EC1AEBA7750078B95B /* Sources */,
+				07E287ED1AEBA7750078B95B /* Frameworks */,
+				07E287EE1AEBA7750078B95B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				07E287FF1AEBA7750078B95B /* PBXTargetDependency */,
+			);
+			name = "SemoCore Tests";
+			productName = "SemoCore Tests";
+			productReference = 07E287F01AEBA7750078B95B /* SemoCore Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -511,6 +620,9 @@
 				TargetAttributes = {
 					074D9F3E1AE7DD04006D1510 = {
 						CreatedOnToolsVersion = 6.3;
+					};
+					07E287EF1AEBA7750078B95B = {
+						TestTargetID = 074D9F3E1AE7DD04006D1510;
 					};
 				};
 			};
@@ -527,6 +639,7 @@
 			projectRoot = "";
 			targets = (
 				074D9F3E1AE7DD04006D1510 /* SemoCore */,
+				07E287EF1AEBA7750078B95B /* SemoCore Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -538,6 +651,14 @@
 			files = (
 				079A17541AE7E3A600F22F4E /* README.txt in Resources */,
 				074D9F4A1AE7DD04006D1510 /* SemoCore-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07E287EE1AEBA7750078B95B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E287FA1AEBA7750078B95B /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,7 +728,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		07E287EC1AEBA7750078B95B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07E2880D1AEBA9CE0078B95B /* Fruit.m in Sources */,
+				07E288071AEBA96A0078B95B /* Thing.m in Sources */,
+				07E288131AEBAC7F0078B95B /* Plant.m in Sources */,
+				07E2880A1AEBA98F0078B95B /* Color.m in Sources */,
+				07E288191AEBADA80078B95B /* Configurable.m in Sources */,
+				07E288101AEBA9F60078B95B /* Animal.m in Sources */,
+				07E287FC1AEBA7750078B95B /* SemoCore_Tests.m in Sources */,
+				07E288161AEBAD3C0078B95B /* Forest.m in Sources */,
+				07E288041AEBA9080078B95B /* AppContainerTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		07E287FF1AEBA7750078B95B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 074D9F3E1AE7DD04006D1510 /* SemoCore */;
+			targetProxy = 07E287FE1AEBA7750078B95B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		07E287F81AEBA7750078B95B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				07E287F91AEBA7750078B95B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		074D9F4F1AE7DD04006D1510 /* Debug */ = {
@@ -719,6 +875,54 @@
 			};
 			name = Release;
 		};
+		07E288001AEBA7750078B95B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SemoCore.app/SemoCore";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SemoCore Tests/SemoCore Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SemoCore Tests/SemoCore Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		07E288011AEBA7750078B95B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SemoCore.app/SemoCore";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(DEVELOPER_DIR)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SemoCore Tests/SemoCore Tests-Prefix.pch";
+				INFOPLIST_FILE = "SemoCore Tests/SemoCore Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -739,6 +943,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		07E288021AEBA7750078B95B /* Build configuration list for PBXNativeTarget "SemoCore Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07E288001AEBA7750078B95B /* Debug */,
+				07E288011AEBA7750078B95B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
