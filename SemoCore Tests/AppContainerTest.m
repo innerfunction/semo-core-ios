@@ -14,6 +14,8 @@
 #import "Fruit.h"
 #import "Plant.h"
 #import "Thing.h"
+#import "IOCConfigurable.h"
+#import "Configurable.h"
 
 @interface AppContainerTest : XCTestCase {
     IFAppContainer *container;
@@ -60,4 +62,28 @@
     XCTAssertEqualObjects(parrot.name, @"Parrot", @"Parrot isn't named Parrot");
 }
 
+- (void)testJungle {
+    Forest *jungle = (Forest *)[container getNamed:@"jungle"];
+    NSDictionary *things = jungle.thingsInTheForest;
+    
+    XCTAssertTrue([things count] > 0, @"Nothing in the jungle");
+    XCTAssertTrue([things count] == 2, @"Expected two things in the jungle");
+    XCTAssertTrue([container getNamed:@"tree"] == [things objectForKey:@"tree"], @"Tree not found in jungle");
+    Thing *jaguar = (Thing *)[things objectForKey:@"jaguar"];
+    XCTAssertEqualObjects(jaguar.name, @"Jaguar", @"Jaguar isn't named Jaguar");
+}
+
+- (void)testIOCConfigurableProtocol {
+    IOCConfigurable *ioconfig = (IOCConfigurable *)[container getNamed:@"iocconfigurable"];
+    
+    XCTAssertTrue(ioconfig.beforeConfigureCalled, @"beforeConfigure not called");
+    XCTAssertTrue(ioconfig.afterConfigureCalled, @"afterConfigure not called");
+}
+
+- (void)testConfigurableProtocol {
+    Configurable *configurable = (Configurable *)[container getNamed:@"ConfigurableImplementation"];
+    
+    XCTAssertEqualObjects(configurable.value, @"two", @"Configurable value not 'two'");
+    XCTAssertTrue(configurable.configured, @"Configurable not configured");
+}
 @end

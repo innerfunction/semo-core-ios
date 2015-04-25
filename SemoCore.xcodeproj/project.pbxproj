@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		072D65391AEBFAF9009BC9A4 /* IOCConfigurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */; };
 		074D9F431AE7DD04006D1510 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
 		074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 074D9F471AE7DD04006D1510 /* SemoCore-Prefix.pch */; };
 		074D9F4A1AE7DD04006D1510 /* SemoCore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074D9F491AE7DD04006D1510 /* SemoCore-Info.plist */; };
@@ -123,6 +124,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		072D65371AEBFAF9009BC9A4 /* IOCConfigurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOCConfigurable.h; sourceTree = "<group>"; };
+		072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOCConfigurable.m; sourceTree = "<group>"; };
 		074D9F3F1AE7DD04006D1510 /* SemoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = SemoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		074D9F421AE7DD04006D1510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		074D9F461AE7DD04006D1510 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -498,6 +501,8 @@
 				07E288151AEBAD3C0078B95B /* Forest.m */,
 				07E288171AEBADA80078B95B /* Configurable.h */,
 				07E288181AEBADA80078B95B /* Configurable.m */,
+				072D65371AEBFAF9009BC9A4 /* IOCConfigurable.h */,
+				072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */,
 			);
 			path = "SemoCore Tests";
 			sourceTree = "<group>";
@@ -734,6 +739,7 @@
 			files = (
 				07E2880D1AEBA9CE0078B95B /* Fruit.m in Sources */,
 				07E288071AEBA96A0078B95B /* Thing.m in Sources */,
+				072D65391AEBFAF9009BC9A4 /* IOCConfigurable.m in Sources */,
 				07E288131AEBAC7F0078B95B /* Plant.m in Sources */,
 				07E2880A1AEBA98F0078B95B /* Color.m in Sources */,
 				07E288191AEBADA80078B95B /* Configurable.m in Sources */,
@@ -951,6 +957,7 @@
 				07E288011AEBA7750078B95B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
