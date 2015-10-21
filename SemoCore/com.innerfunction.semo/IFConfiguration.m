@@ -67,7 +67,7 @@
         // the URI and return its value instead.
         if ([stringValue hasPrefix:@"@"]) {
             NSString* uri = [stringValue substringFromIndex:1];
-            value = [parent.resource resolveURIFromString:uri];
+            value = [parent.resource dereferenceString:uri];
         }
         // Any string values starting with a '#' are potential path references to other
         // properties in the same configuration. Attempt to resolve them against the configuration

@@ -12,10 +12,10 @@
 
 @protocol IFURIResolver <NSObject>
 
-- (IFResource *)resolveURIFromString:(NSString *)uri;
-- (IFResource *)resolveURI:(IFCompoundURI *)uri;
-- (IFResource *)resolveURIFromString:(NSString *)uri context:(IFResource *)context;
-- (IFResource *)resolveURI:(IFCompoundURI *)uri context:(IFResource *)context;
+- (IFResource *)dereferenceString:(NSString *)uri;
+- (IFResource *)dereference:(IFCompoundURI *)uri;
+- (IFResource *)dereferenceString:(NSString *)uri context:(IFResource *)context;
+- (IFResource *)dereference:(IFCompoundURI *)uri context:(IFResource *)context;
 
 @end
 

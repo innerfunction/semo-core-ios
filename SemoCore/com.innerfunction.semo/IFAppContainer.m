@@ -36,11 +36,11 @@
     return self;
 }
 
-- (IFCompoundURI *)resolveToAbsoluteURI:(IFCompoundURI *)uri against:(IFCompoundURI *)reference {
+- (IFCompoundURI *)resolve:(IFCompoundURI *)uri against:(IFCompoundURI *)reference {
     return uri;
 }
 
-- (IFResource *)handle:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
+- (IFResource *)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
     id namedObj = [named objectForKey:uri.name];
     return namedObj ? [[IFResource alloc] initWithData:namedObj uri:uri parent:parent] : nil;
 }
@@ -78,7 +78,7 @@
         
         if (uri) {
             DDLogInfo(@"Loading app container configuration from %@", uri);
-            IFResource *resource = [resolver resolveURI:uri];
+            IFResource *resource = [resolver dereference:uri];
             configuration = [[IFConfiguration alloc] initWithResource:resource];
         }
         else {

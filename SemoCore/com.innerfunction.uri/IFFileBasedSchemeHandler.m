@@ -28,7 +28,7 @@
 
 #define IsRelative(uri) (![uri.name hasPrefix:@"/"])
 
-- (IFCompoundURI *)resolveToAbsoluteURI:(IFCompoundURI *)uri against:(IFCompoundURI *)reference {
+- (IFCompoundURI *)resolve:(IFCompoundURI *)uri against:(IFCompoundURI *)reference {
     if (IsRelative(uri)) {
         uri = [uri copyOf];
         uri.name = [NSString stringWithFormat:@"%@/%@", [reference.name stringByDeletingLastPathComponent], uri.name];
@@ -36,7 +36,7 @@
     return uri;
 }
 
-- (IFResource *)handle:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
+- (IFResource *)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
     IFResource* resource = nil;
     for (NSString* path in paths) {
         resource = [self resolveURI:uri againstPath:path parent:parent];

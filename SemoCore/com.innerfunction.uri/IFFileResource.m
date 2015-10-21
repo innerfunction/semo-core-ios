@@ -29,7 +29,6 @@
     self = [super initWithData:data uri:uri parent:parent];
     if (self) {
         self.fileDescription = data;
-        self.updateable = YES;
     }
     return self;
 }

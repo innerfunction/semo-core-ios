@@ -68,11 +68,11 @@
 
 // Resolve a resource from a URI string. Returns nil if the resource can't be resolved,
 // of if the URI isn't valid.
-- (IFResource *)resolveURIFromString:(NSString *)suri {
-    return [self resolveURIFromString:suri context:self.parentResource];
+- (IFResource *)dereferenceString:(NSString *)suri {
+    return [self dereferenceString:suri context:self.parentResource];
 }
 
-- (IFResource *)resolveURIFromString:(NSString *)suri context:(IFResource *)context {
+- (IFResource *)dereferenceString:(NSString *)suri context:(IFResource *)context {
     IFResource *resource = nil;
     NSError *error;
     IFCompoundURI *uri = [IFCompoundURI parse:suri error:&error];
@@ -80,18 +80,18 @@
         NSLog(@"IFURIResolver: Error parsing URI %@ code: %ld message: %@", suri, (long)error.code, [error.userInfo valueForKey:@"message"]);
     }
     else {
-        resource = [self resolveURI:uri context:context];
+        resource = [self dereference:uri context:context];
     }
     return resource;
 }
 
 // Resolve a resource from a URI string. Returns nil if the resource can't be resolved,
 // or if a handler can't be found for the URI scheme.
-- (IFResource *)resolveURI:(IFCompoundURI *)uri {
-    return [self resolveURI:uri context:self.parentResource];
+- (IFResource *)dereference:(IFCompoundURI *)uri {
+    return [self dereference:uri context:self.parentResource];
 }
 
-- (IFResource *)resolveURI:(IFCompoundURI *)uri context:(IFResource *)context {
+- (IFResource *)dereference:(IFCompoundURI *)uri context:(IFResource *)context {
     IFResource *resource = nil;
 
     // Resolve a handler for the URI scheme.
@@ -102,7 +102,7 @@
         // Iterate over the URIs parameter values (which are also URIs) and resolve each
         // of them.
         for (NSString *name in [uri.parameters allKeys]) {
-            IFResource *value = [self resolveURI:[uri.parameters valueForKey:name] context:context];
+            IFResource *value = [self dereference:[uri.parameters valueForKey:name] context:context];
             if (value != nil) {
                 [params setValue:value forKey:name];
             }
@@ -111,11 +111,11 @@
         if ([schemeHandler respondsToSelector:@selector(resolveToAbsoluteURI:against:)] && context && context.schemeContext ) {
             IFCompoundURI* reference = [context.schemeContext valueForKey:uri.scheme];
             if (reference) {
-                uri = [schemeHandler resolveToAbsoluteURI:uri against:reference];
+                uri = [schemeHandler resolve:uri against:reference];
             }
         }
         // Handle the current URI.
-        resource = [schemeHandler handle:uri parameters:params parent:context];
+        resource = [schemeHandler dereference:uri parameters:params parent:context];
     }
     else {
         NSLog(@"IFURIResolver: Handler not found for scheme %@:", uri.scheme);

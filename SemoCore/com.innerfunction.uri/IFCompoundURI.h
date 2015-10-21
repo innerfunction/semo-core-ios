@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#define IFCompoundURIParseError         1
-#define IFCompoundURIUnbalancedBracket  2
-#define IFCompoundURIInvalidNameRef     3
+#define IFCompoundURIParseError                     1
+#define IFCompoundURIUnbalancedBracket              2
+#define IFCompoundURIInvalidNameRef                 3
+#define IFCompoundURITrailingAfterParamAssignment   4
 
 @interface IFCompoundURI : NSObject
 

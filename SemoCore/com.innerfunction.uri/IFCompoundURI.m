@@ -30,11 +30,11 @@
         // Following regex pattern matches the following groups:
         // 1. An optional opening '['. Indicates that the URI is bracketed, and should have a matching ] after its close.
         // 2. An optional URI scheme of one or more word characters. Must be followed by ':'.
-        // 3. A URI name of zero or more word characters. Following non-word characters also allowed: . / % - _ ~
+        // 3. A URI name of zero or more word characters. Following non-word characters also allowed: . / % - _ ~ { }
         // 4. An optional URI fragment. The # prefix indicates the presence of a fragment. Fragment can contain the same
         //    set of characters as a name.
         // 5. An optional parameter list, composed of all trailing characters.
-        IFRegExp *schemeRegex = [[IFRegExp alloc] initWithPattern:@"^(\\[)?(?:(\\w+):)?([\\w.,/%_~-]*)(#[\\w./%_~-]*)?(.*)$"];
+        IFRegExp *schemeRegex = [[IFRegExp alloc] initWithPattern:@"^(\\[)?(?:(\\w+):)?([\\w.,/%_~{}-]*)(#[\\w./%_~-]*)?(.*)$"];
         NSArray *groups = [schemeRegex match:uri];
         if (groups) {
             BOOL bracketed = [[groups objectAtIndex:1] isEqualToString:@"["];
@@ -53,13 +53,38 @@
                 *trailing = paramString;
             }
             if (parseParams) {
-                IFRegExp *paramRegex = [[IFRegExp alloc] initWithPattern:@"^\\+(\\w+)@(.*)$"];
+                IFRegExp *paramRegex = [[IFRegExp alloc] initWithPattern:@"^\\+(\\w+)([@=])(.*)$"];
                 while ([paramString length] && !*error) {
                     groups = [paramRegex match:paramString];
                     if (groups) {
                         NSString *pname = [groups objectAtIndex:1];
-                        NSString *value = [groups objectAtIndex:2];
-                        IFCompoundURI *uri = [[IFCompoundURI alloc] initWithURI:value trailing:&paramString error:error];
+                        NSString *op = [groups objectAtIndex:2];
+                        NSString *pvalue = [groups objectAtIndex:3];
+                        IFCompoundURI *uri;
+                        if ([@"=" isEqualToString:op]) {
+                            // Promote parameter values assigned using = to full string URIs.
+                            NSInteger idx = [pvalue rangeOfString:@"+"].location;
+                            if (idx > 0) {
+                                paramString = [pvalue substringFromIndex:idx];
+                                pvalue = [pvalue substringToIndex:idx];
+                            }
+                            else {
+                                paramString = @"";
+                            }
+                            pvalue = [@"s:" stringByAppendingString:pvalue];
+                            NSString *trailing;
+                            uri = [[IFCompoundURI alloc] initWithURI:pvalue trailing:&trailing error:error];
+                            if(!*error && trailing && [trailing length] > 0) {
+                                NSString *message = [NSString stringWithFormat:@"Trailing characters after param assignment: %@", trailing];
+                                *error = [NSError errorWithDomain:@"IFCompoundURI"
+                                                             code:IFCompoundURITrailingAfterParamAssignment
+                                                         userInfo:[NSDictionary dictionaryWithObject:message forKey:@"message"]];
+
+                            }
+                        }
+                        else {
+                            uri = [[IFCompoundURI alloc] initWithURI:pvalue trailing:&paramString error:error];
+                        }
                         [params setValue:uri forKey:pname];
                     }
                     else if ([paramString hasPrefix:@"]"]) {

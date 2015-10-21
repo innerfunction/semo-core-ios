@@ -17,11 +17,11 @@
 
 // Handle a URI with the specified parameters.
 // Parameters values (which are also URIs) will have been resolved before being passed to this method.
-- (IFResource *)handle:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent;
+- (IFResource *)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent;
 
 @optional
 
 // Resolve a URI against a reference URI. Used by schemes which support relative URIs, to resolve then to absolute URIs.
-- (IFCompoundURI *)resolveToAbsoluteURI:(IFCompoundURI *)uri against:(IFCompoundURI *)reference;
+- (IFCompoundURI *)resolve:(IFCompoundURI *)uri against:(IFCompoundURI *)reference;
 
 @end

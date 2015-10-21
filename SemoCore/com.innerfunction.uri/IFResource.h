@@ -27,8 +27,6 @@
 // The URI scheme context to be used to resolve any relative URIs with reference to this resource.
 // A dictionary of URIs keyed by scheme.
 @property (nonatomic, strong) NSDictionary *schemeContext;
-// Whether the data represented by this resource is updateable.
-@property (nonatomic) BOOL updateable;
 
 - (id)initWithData:(id)data;
 - (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(IFResource *)parent;

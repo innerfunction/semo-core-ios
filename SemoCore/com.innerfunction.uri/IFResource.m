@@ -16,13 +16,12 @@
 // and resolves different representations appropriately.
 @implementation IFResource
 
-@synthesize data, resolver, uri, schemeContext, updateable;
+//@synthesize data, resolver, uri, schemeContext;
 
 - (id)init {
     self = [super init];
     if (self) {
         self.schemeContext = [NSDictionary dictionary];
-        self.updateable = NO;
     }
     return self;
 }
@@ -32,7 +31,6 @@
     if (self) {
         self.data = _data;
         self.schemeContext = [NSDictionary dictionary];
-        self.updateable = NO;
     }
     return self;
 }
@@ -50,7 +48,6 @@
         }
         [self.schemeContext setValue:uri forKey:uri.scheme];
         self.resolver = parent.resolver;
-        self.updateable = NO;
     }
     return self;
 }
@@ -99,14 +96,14 @@
 }
 
 - (IFResource *)refresh {
-    return [self resolveURI:self.uri];
+    return [self dereference:self.uri];
 }
 
-- (IFResource *)resolveURIFromString:(NSString *)suri {
-    return [self resolveURIFromString:suri context:self];
+- (IFResource *)dereferenceString:(NSString *)suri {
+    return [self dereferenceString:suri context:self];
 }
 
-- (IFResource *)resolveURIFromString:(NSString *)suri context:(IFResource *)context {
+- (IFResource *)dereferenceString:(NSString *)suri context:(IFResource *)context {
     IFResource *result = nil;
     NSError *error = nil;
     IFCompoundURI *curi = [IFCompoundURI parse:suri error:&error];
@@ -114,17 +111,17 @@
         DDLogCError(@"IFResource: Parsing URI %@ (%@)", suri, [error description]);
     }
     else {
-        result = [self resolveURI:curi context:context];
+        result = [self dereference:curi context:context];
     }
     return result;
 }
 
-- (IFResource *)resolveURI:(IFCompoundURI *)curi {
-    return [self resolveURI:curi context:self];
+- (IFResource *)dereference:(IFCompoundURI *)curi {
+    return [self dereference:curi context:self];
 }
 
-- (IFResource *)resolveURI:(IFCompoundURI *)curi context:(IFResource *)context {
-    return [self.resolver resolveURI:curi context:context];
+- (IFResource *)dereference:(IFCompoundURI *)curi context:(IFResource *)context {
+    return [self.resolver dereference:curi context:context];
 }
 
 - (NSString *)description {
