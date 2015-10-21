@@ -1,0 +1,10 @@
+PODS:
+  - Q-ios (0.0.1)
+
+DEPENDENCIES:
+  - Q-ios (>= 0.0.1)
+
+SPEC CHECKSUMS:
+  Q-ios: eb8a69c9eac56f82279b6db6ea728668f6a31993
+
+COCOAPODS: 0.39.0
