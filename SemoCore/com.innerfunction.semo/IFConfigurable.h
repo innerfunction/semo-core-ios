@@ -9,8 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "IFConfiguration.h"
 
+/**
+ * Protocol for objects which wish to control their own configuration.
+ */
 @protocol IFConfigurable <NSObject>
 
+/** Configure the object using the specified configuration. */
 - (void)configure:(IFConfiguration *)configuration;
 
 @end

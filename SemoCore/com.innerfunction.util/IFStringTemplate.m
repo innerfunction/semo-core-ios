@@ -62,9 +62,12 @@
 }
 
 - (EPStringTemplateBlock)refBlock:(NSString *)ref {
+    /*
     NSArray* path = [ref componentsSeparatedByString:@"."];
     NSInteger len = [path count];
+    */
     return ^(id ctx) {
+        /*
         SEL valueForKey = @selector(valueForKey:);
         for (NSInteger i = 0; i < len && ctx; i++ ) {
             if ([ctx respondsToSelector:valueForKey]) {
@@ -80,6 +83,17 @@
             }
         }
         return ctx ? [ctx description] : @"";
+        */
+        id val = nil;
+        if ([ctx respondsToSelector:@selector(valueForKeyPath:)]) {
+            @try {
+                val = [ctx valueForKeyPath:ref];
+            }
+            @catch (NSException *e) {
+                val = e;
+            }
+        }
+        return val ? [val description] : @"";
     };
 }
 

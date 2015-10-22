@@ -145,7 +145,7 @@
                     for (NSInteger idx = 0; idx < length; idx++) {
                         id propValue = [self resolveObjectPropertyOfType:propertyClass
                                                        fromConfiguration:configuration
-                                                                withName:[NSString stringWithFormat:@"%@.%d", propName, idx]];
+                                                                withName:[NSString stringWithFormat:@"%@.%ld", propName, (long)idx]];
                         [propValues addObject:propValue];
                     }
                     value = propValues;

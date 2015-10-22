@@ -1,0 +1,8 @@
+1. Add web view (as UIViewController subclass?)
+2. Add list view (and supporting classes, migrate from EPCore)
+3. Layout code (to IFContainerViewController)
+4. Need to review view heirarchy maintenance code - current implementation probably quite flaky in places
+
+Then:
+5. New form views go into a new module
+6. Semo content also in new module, to include simplified MVC implementation using key/value observing.

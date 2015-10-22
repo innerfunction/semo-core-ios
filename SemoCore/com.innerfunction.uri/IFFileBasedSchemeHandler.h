@@ -20,6 +20,6 @@
 
 - (id)initWithDirectory:(NSSearchPathDirectory)directory;
 - (id)initWithPath:(NSString*)path;
-- (IFResource *)resolveURI:(IFCompoundURI *)uri againstPath:(NSString *)path parent:(IFResource *)parent;
+- (IFResource *)dereference:(IFCompoundURI *)uri againstPath:(NSString *)path parent:(IFResource *)parent;
 
 @end

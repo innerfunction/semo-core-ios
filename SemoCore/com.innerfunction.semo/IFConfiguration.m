@@ -67,7 +67,7 @@
         // the URI and return its value instead.
         if ([stringValue hasPrefix:@"@"]) {
             NSString* uri = [stringValue substringFromIndex:1];
-            value = [parent.resource dereferenceString:uri];
+            value = [parent.resource derefStringToResource:uri];
         }
         // Any string values starting with a '#' are potential path references to other
         // properties in the same configuration. Attempt to resolve them against the configuration
@@ -104,8 +104,8 @@
     return self;
 }
 
-- (id)initWithData:(id)data {
-    return [self initWithData:data parent:[IFConfiguration emptyConfiguration]];
+- (id)initWithData:(id)_data {
+    return [self initWithData:_data parent:[IFConfiguration emptyConfiguration]];
 }
 
 - (id)initWithData:(id)_data parent:(IFConfiguration *)parent {

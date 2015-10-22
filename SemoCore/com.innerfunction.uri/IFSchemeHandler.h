@@ -17,7 +17,7 @@
 
 // Handle a URI with the specified parameters.
 // Parameters values (which are also URIs) will have been resolved before being passed to this method.
-- (IFResource *)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent;
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent;
 
 @optional
 

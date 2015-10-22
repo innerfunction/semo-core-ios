@@ -16,8 +16,6 @@
 // and resolves different representations appropriately.
 @implementation IFResource
 
-//@synthesize data, resolver, uri, schemeContext;
-
 - (id)init {
     self = [super init];
     if (self) {
@@ -26,19 +24,19 @@
     return self;
 }
 
-- (id)initWithData:(id)_data {
+- (id)initWithData:(id)data {
     self = [super init];
     if (self) {
-        self.data = _data;
+        self.data = data;
         self.schemeContext = [NSDictionary dictionary];
     }
     return self;
 }
 
-- (id)initWithData:(id)_data uri:(IFCompoundURI *)_uri parent:(IFResource *)parent {
-    self = [self initWithData:_data];
+- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(IFResource *)parent {
+    self = [self initWithData:data];
     if (self) {
-        self.uri = _uri;
+        self.uri = uri;
         self.schemeContext = [[NSMutableDictionary alloc] initWithDictionary:parent.schemeContext];
         // Set the scheme context for this resource. Copies each uri by scheme into the context, before
         // adding the resource's uri by scheme.
@@ -57,7 +55,7 @@
 }
 
 - (id)asDefault {
-    return data;
+    return _data;
 }
 
 - (UIImage *)asImage {

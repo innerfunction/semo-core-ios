@@ -9,6 +9,25 @@
 /* Begin PBXBuildFile section */
 		070F6DE21AEC0A4700533CC1 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE11AEC0A4700533CC1 /* configuration.json */; };
 		070F6DE41AEC0A6500533CC1 /* types.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE31AEC0A6500533CC1 /* types.json */; };
+		07287EC91BD8F77400047B0C /* IFActionTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EC81BD8F77400047B0C /* IFActionTargetContainer.h */; settings = {ASSET_TAGS = (); }; };
+		07287ECC1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECA1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h */; settings = {ASSET_TAGS = (); }; };
+		07287ECD1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECB1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m */; settings = {ASSET_TAGS = (); }; };
+		07287ED01BD8FF7F00047B0C /* IFStringRewriteRules.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */; settings = {ASSET_TAGS = (); }; };
+		07287ED11BD8FF7F00047B0C /* IFStringRewriteRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */; settings = {ASSET_TAGS = (); }; };
+		07287ED71BD92D2400047B0C /* IFActionTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED61BD92D2400047B0C /* IFActionTarget.h */; settings = {ASSET_TAGS = (); }; };
+		07287EDB1BD9424800047B0C /* IFContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED91BD9424800047B0C /* IFContainerViewController.h */; settings = {ASSET_TAGS = (); }; };
+		07287EDC1BD9424800047B0C /* IFContainerVIewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EDA1BD9424800047B0C /* IFContainerVIewController.m */; settings = {ASSET_TAGS = (); }; };
+		07287EDE1BD948E700047B0C /* IFActionDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EDD1BD948E700047B0C /* IFActionDispatcher.h */; settings = {ASSET_TAGS = (); }; };
+		07287EE31BD95EBE00047B0C /* IFDoScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE11BD95EBE00047B0C /* IFDoScheme.h */; settings = {ASSET_TAGS = (); }; };
+		07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE21BD95EBE00047B0C /* IFDoScheme.m */; settings = {ASSET_TAGS = (); }; };
+		07287EE71BD9768500047B0C /* IFNamedScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE51BD9768500047B0C /* IFNamedScheme.h */; settings = {ASSET_TAGS = (); }; };
+		07287EE81BD9768500047B0C /* IFNamedScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE61BD9768500047B0C /* IFNamedScheme.m */; settings = {ASSET_TAGS = (); }; };
+		07287EEB1BD9774B00047B0C /* IFNewScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE91BD9774B00047B0C /* IFNewScheme.h */; settings = {ASSET_TAGS = (); }; };
+		07287EEC1BD9774B00047B0C /* IFNewScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EEA1BD9774B00047B0C /* IFNewScheme.m */; settings = {ASSET_TAGS = (); }; };
+		07287EEF1BD978AC00047B0C /* IFMakeScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EED1BD978AC00047B0C /* IFMakeScheme.h */; settings = {ASSET_TAGS = (); }; };
+		07287EF01BD978AC00047B0C /* IFMakeScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EEE1BD978AC00047B0C /* IFMakeScheme.m */; settings = {ASSET_TAGS = (); }; };
+		07287EF41BD9828400047B0C /* IFNavigationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EF21BD9828400047B0C /* IFNavigationViewController.h */; settings = {ASSET_TAGS = (); }; };
+		07287EF51BD9828400047B0C /* IFNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EF31BD9828400047B0C /* IFNavigationViewController.m */; settings = {ASSET_TAGS = (); }; };
 		072D65391AEBFAF9009BC9A4 /* IOCConfigurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */; };
 		074D9F431AE7DD04006D1510 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
 		074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 074D9F471AE7DD04006D1510 /* SemoCore-Prefix.pch */; };
@@ -112,6 +131,10 @@
 		07E288131AEBAC7F0078B95B /* Plant.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288121AEBAC7F0078B95B /* Plant.m */; };
 		07E288161AEBAD3C0078B95B /* Forest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288151AEBAD3C0078B95B /* Forest.m */; };
 		07E288191AEBADA80078B95B /* Configurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288181AEBADA80078B95B /* Configurable.m */; };
+		07E3CFA21BD98D290036722B /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA01BD98D290036722B /* SWRevealViewController.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA11BD98D290036722B /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFA61BD98D930036722B /* IFSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA41BD98D930036722B /* IFSlideViewController.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA51BD98D930036722B /* IFSlideViewController.m */; settings = {ASSET_TAGS = (); }; };
 		DEC9697D045094EC7020060D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B3ADE948579F28497A3712 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -128,6 +151,25 @@
 /* Begin PBXFileReference section */
 		070F6DE11AEC0A4700533CC1 /* configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
 		070F6DE31AEC0A6500533CC1 /* types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
+		07287EC81BD8F77400047B0C /* IFActionTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionTargetContainer.h; sourceTree = "<group>"; };
+		07287ECA1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionTargetContainerBehaviour.h; sourceTree = "<group>"; };
+		07287ECB1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFActionTargetContainerBehaviour.m; sourceTree = "<group>"; };
+		07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFStringRewriteRules.h; sourceTree = "<group>"; };
+		07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFStringRewriteRules.m; sourceTree = "<group>"; };
+		07287ED61BD92D2400047B0C /* IFActionTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionTarget.h; sourceTree = "<group>"; };
+		07287ED91BD9424800047B0C /* IFContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContainerViewController.h; sourceTree = "<group>"; };
+		07287EDA1BD9424800047B0C /* IFContainerVIewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContainerVIewController.m; sourceTree = "<group>"; };
+		07287EDD1BD948E700047B0C /* IFActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionDispatcher.h; sourceTree = "<group>"; };
+		07287EE11BD95EBE00047B0C /* IFDoScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDoScheme.h; sourceTree = "<group>"; };
+		07287EE21BD95EBE00047B0C /* IFDoScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDoScheme.m; sourceTree = "<group>"; };
+		07287EE51BD9768500047B0C /* IFNamedScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFNamedScheme.h; sourceTree = "<group>"; };
+		07287EE61BD9768500047B0C /* IFNamedScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFNamedScheme.m; sourceTree = "<group>"; };
+		07287EE91BD9774B00047B0C /* IFNewScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFNewScheme.h; sourceTree = "<group>"; };
+		07287EEA1BD9774B00047B0C /* IFNewScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFNewScheme.m; sourceTree = "<group>"; };
+		07287EED1BD978AC00047B0C /* IFMakeScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFMakeScheme.h; sourceTree = "<group>"; };
+		07287EEE1BD978AC00047B0C /* IFMakeScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFMakeScheme.m; sourceTree = "<group>"; };
+		07287EF21BD9828400047B0C /* IFNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFNavigationViewController.h; path = com.innerfunction.semo/IFNavigationViewController.h; sourceTree = "<group>"; };
+		07287EF31BD9828400047B0C /* IFNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFNavigationViewController.m; path = com.innerfunction.semo/IFNavigationViewController.m; sourceTree = "<group>"; };
 		072D65371AEBFAF9009BC9A4 /* IOCConfigurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOCConfigurable.h; sourceTree = "<group>"; };
 		072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOCConfigurable.m; sourceTree = "<group>"; };
 		074D9F3F1AE7DD04006D1510 /* libSemoCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSemoCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -244,6 +286,11 @@
 		07E288151AEBAD3C0078B95B /* Forest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forest.m; sourceTree = "<group>"; };
 		07E288171AEBADA80078B95B /* Configurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Configurable.h; sourceTree = "<group>"; };
 		07E288181AEBADA80078B95B /* Configurable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Configurable.m; sourceTree = "<group>"; };
+		07E3CFA01BD98D290036722B /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		07E3CFA11BD98D290036722B /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		07E3CFA41BD98D930036722B /* IFSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFSlideViewController.h; path = com.innerfunction.semo/IFSlideViewController.h; sourceTree = "<group>"; };
+		07E3CFA51BD98D930036722B /* IFSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFSlideViewController.m; path = com.innerfunction.semo/IFSlideViewController.m; sourceTree = "<group>"; };
+		07E3CFA81BD997760036722B /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		40F4305D2BB1A1E6388AC531 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		43B3ADE948579F28497A3712 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A09DB48BD2885B33FCC5B03 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -282,6 +329,42 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		07287ED81BD941E200047B0C /* com.innerfunction.semo.app */ = {
+			isa = PBXGroup;
+			children = (
+				07287EE11BD95EBE00047B0C /* IFDoScheme.h */,
+				07287EE21BD95EBE00047B0C /* IFDoScheme.m */,
+				07287EE91BD9774B00047B0C /* IFNewScheme.h */,
+				07287EEA1BD9774B00047B0C /* IFNewScheme.m */,
+				07287EED1BD978AC00047B0C /* IFMakeScheme.h */,
+				07287EEE1BD978AC00047B0C /* IFMakeScheme.m */,
+				07287EE51BD9768500047B0C /* IFNamedScheme.h */,
+				07287EE61BD9768500047B0C /* IFNamedScheme.m */,
+				07287EDD1BD948E700047B0C /* IFActionDispatcher.h */,
+				07287ED61BD92D2400047B0C /* IFActionTarget.h */,
+				07287EC81BD8F77400047B0C /* IFActionTargetContainer.h */,
+				07287ECA1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h */,
+				07287ECB1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m */,
+				075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */,
+				075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */,
+				07287ED91BD9424800047B0C /* IFContainerViewController.h */,
+				07287EDA1BD9424800047B0C /* IFContainerVIewController.m */,
+			);
+			name = com.innerfunction.semo.app;
+			path = com.innerfunction.semo;
+			sourceTree = "<group>";
+		};
+		07287EF11BD9822C00047B0C /* com.innerfunction.semo.ui */ = {
+			isa = PBXGroup;
+			children = (
+				07287EF21BD9828400047B0C /* IFNavigationViewController.h */,
+				07287EF31BD9828400047B0C /* IFNavigationViewController.m */,
+				07E3CFA41BD98D930036722B /* IFSlideViewController.h */,
+				07E3CFA51BD98D930036722B /* IFSlideViewController.m */,
+			);
+			name = com.innerfunction.semo.ui;
+			sourceTree = "<group>";
+		};
 		074D9F341AE7DD04006D1510 = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +399,9 @@
 		074D9F441AE7DD04006D1510 /* SemoCore */ = {
 			isa = PBXGroup;
 			children = (
+				07E3CFA81BD997760036722B /* TODO */,
+				07287EF11BD9822C00047B0C /* com.innerfunction.semo.ui */,
+				07287ED81BD941E200047B0C /* com.innerfunction.semo.app */,
 				079A17571AE7EA5C00F22F4E /* com.innerfunction.semo */,
 				079A168A1AE7DDE800F22F4E /* com.innerfunction.uri */,
 				079A169B1AE7DDE800F22F4E /* com.innerfunction.util */,
@@ -396,6 +482,7 @@
 		079A16E61AE7DF2D00F22F4E /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				07E3CF9F1BD98D290036722B /* SWRevealViewController */,
 				079A17351AE7E3A600F22F4E /* CocoaLumberjack */,
 				079A172F1AE7E15D00F22F4E /* ISO8601DateFormatter */,
 				079A16E71AE7DF2D00F22F4E /* JSONKit */,
@@ -492,8 +579,8 @@
 				079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */,
 				079A17701AE7F80B00F22F4E /* IFContainer.h */,
 				079A17711AE7F80B00F22F4E /* IFContainer.m */,
-				075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */,
-				075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */,
+				07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */,
+				07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */,
 			);
 			path = com.innerfunction.semo;
 			sourceTree = "<group>";
@@ -536,6 +623,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		07E3CF9F1BD98D290036722B /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				07E3CFA01BD98D290036722B /* SWRevealViewController.h */,
+				07E3CFA11BD98D290036722B /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -545,13 +641,17 @@
 			files = (
 				079A16CA1AE7DDE800F22F4E /* IFFileIO.h in Headers */,
 				079A16C41AE7DDE800F22F4E /* IFStringSchemeHandler.h in Headers */,
+				07287ED71BD92D2400047B0C /* IFActionTarget.h in Headers */,
 				079A16BC1AE7DDE800F22F4E /* IFFileResource.h in Headers */,
 				079A16D61AE7DDE800F22F4E /* IFTypeConversions.h in Headers */,
 				079A17521AE7E3A600F22F4E /* DispatchQueueLogFormatter.h in Headers */,
 				079A17591AE7EA8800F22F4E /* IFService.h in Headers */,
+				07287EDE1BD948E700047B0C /* IFActionDispatcher.h in Headers */,
 				079A16DA1AE7DDE800F22F4E /* NSArray+IF.h in Headers */,
 				079A16D21AE7DDE800F22F4E /* IFStringTemplate.h in Headers */,
+				07287EEB1BD9774B00047B0C /* IFNewScheme.h in Headers */,
 				079A17661AE7EC8000F22F4E /* UIColor+IF.h in Headers */,
+				07287EC91BD8F77400047B0C /* IFActionTargetContainer.h in Headers */,
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
 				07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */,
@@ -561,6 +661,7 @@
 				079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */,
 				079A172A1AE7DF2D00F22F4E /* unzip.h in Headers */,
 				079A16B81AE7DDE800F22F4E /* IFCompoundURI.h in Headers */,
+				07287EEF1BD978AC00047B0C /* IFMakeScheme.h in Headers */,
 				079A174A1AE7E3A600F22F4E /* DDFileLogger.h in Headers */,
 				079A17261AE7DF2D00F22F4E /* ioapi.h in Headers */,
 				079A172D1AE7DF2D00F22F4E /* ZipArchive.h in Headers */,
@@ -568,21 +669,29 @@
 				079A17321AE7E15D00F22F4E /* ISO8601DateFormatter.h in Headers */,
 				079A16BA1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h in Headers */,
 				079A170D1AE7DF2D00F22F4E /* JSONKit.h in Headers */,
+				07287EF41BD9828400047B0C /* IFNavigationViewController.h in Headers */,
 				079A16D01AE7DDE800F22F4E /* IFRegExp.h in Headers */,
 				079A17461AE7E3A600F22F4E /* DDAbstractDatabaseLogger.h in Headers */,
 				079A16CC1AE7DDE800F22F4E /* IFHTTPUtils.h in Headers */,
+				07E3CFA21BD98D290036722B /* SWRevealViewController.h in Headers */,
 				079A175B1AE7EABD00F22F4E /* IFIOCConfigurable.h in Headers */,
 				079A175D1AE7EAE400F22F4E /* IFConfigurable.h in Headers */,
 				079A172C1AE7DF2D00F22F4E /* zip.h in Headers */,
 				074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */,
 				079A17601AE7EB1B00F22F4E /* IFConfiguration.h in Headers */,
+				07287ECC1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h in Headers */,
 				079A174E1AE7E3A600F22F4E /* DDTTYLogger.h in Headers */,
 				079A16DE1AE7DDE800F22F4E /* NSString+IF.h in Headers */,
 				079A16DC1AE7DDE800F22F4E /* NSDictionary+IF.h in Headers */,
 				079A17481AE7E3A600F22F4E /* DDASLLogger.h in Headers */,
 				079A176A1AE7EE7600F22F4E /* IFLocals.h in Headers */,
+				07287ED01BD8FF7F00047B0C /* IFStringRewriteRules.h in Headers */,
+				07287EE31BD95EBE00047B0C /* IFDoScheme.h in Headers */,
+				07E3CFA61BD98D930036722B /* IFSlideViewController.h in Headers */,
+				07287EE71BD9768500047B0C /* IFNamedScheme.h in Headers */,
 				079A16C31AE7DDE800F22F4E /* IFSchemeHandler.h in Headers */,
 				079A16C61AE7DDE800F22F4E /* IFURIResolver.h in Headers */,
+				07287EDB1BD9424800047B0C /* IFContainerViewController.h in Headers */,
 				079A17281AE7DF2D00F22F4E /* mztools.h in Headers */,
 				079A17501AE7E3A600F22F4E /* ContextFilterLogFormatter.h in Headers */,
 				074D9F4C1AE7DD04006D1510 /* SemoCore.h in Headers */,
@@ -640,7 +749,7 @@
 		074D9F351AE7DD04006D1510 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = InnerFunction;
 				TargetAttributes = {
 					074D9F3E1AE7DD04006D1510 = {
@@ -749,21 +858,28 @@
 				079A16CB1AE7DDE800F22F4E /* IFFileIO.m in Sources */,
 				079A17531AE7E3A600F22F4E /* DispatchQueueLogFormatter.m in Sources */,
 				079A16DF1AE7DDE800F22F4E /* NSString+IF.m in Sources */,
+				07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */,
 				079A16D11AE7DDE800F22F4E /* IFRegExp.m in Sources */,
+				07287ECD1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m in Sources */,
 				079A16BF1AE7DDE800F22F4E /* IFLocalSchemeHandler.m in Sources */,
 				079A176B1AE7EE7600F22F4E /* IFLocals.m in Sources */,
+				07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */,
 				079A172E1AE7DF2D00F22F4E /* ZipArchive.mm in Sources */,
 				079A16CD1AE7DDE800F22F4E /* IFHTTPUtils.m in Sources */,
 				079A17331AE7E15D00F22F4E /* ISO8601DateFormatter.m in Sources */,
 				079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */,
 				079A17291AE7DF2D00F22F4E /* unzip.c in Sources */,
+				07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */,
+				07287EDC1BD9424800047B0C /* IFContainerVIewController.m in Sources */,
 				079A17511AE7E3A600F22F4E /* ContextFilterLogFormatter.m in Sources */,
 				079A16D31AE7DDE800F22F4E /* IFStringTemplate.m in Sources */,
 				079A16B91AE7DDE800F22F4E /* IFCompoundURI.m in Sources */,
 				079A16D71AE7DDE800F22F4E /* IFTypeConversions.m in Sources */,
 				079A16C11AE7DDE800F22F4E /* IFResource.m in Sources */,
 				079A17251AE7DF2D00F22F4E /* ioapi.c in Sources */,
+				07287EE81BD9768500047B0C /* IFNamedScheme.m in Sources */,
 				079A17491AE7E3A600F22F4E /* DDASLLogger.m in Sources */,
+				07287EF01BD978AC00047B0C /* IFMakeScheme.m in Sources */,
 				079A17271AE7DF2D00F22F4E /* mztools.c in Sources */,
 				079A176F1AE7F3F800F22F4E /* IFConfiguredLocals.m in Sources */,
 				079A16C71AE7DDE800F22F4E /* IFURIResolver.m in Sources */,
@@ -774,10 +890,13 @@
 				079A16BB1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.m in Sources */,
 				079A174F1AE7E3A600F22F4E /* DDTTYLogger.m in Sources */,
 				079A16C51AE7DDE800F22F4E /* IFStringSchemeHandler.m in Sources */,
+				07287EF51BD9828400047B0C /* IFNavigationViewController.m in Sources */,
 				079A16BD1AE7DDE800F22F4E /* IFFileResource.m in Sources */,
 				079A16DB1AE7DDE800F22F4E /* NSArray+IF.m in Sources */,
 				079A16CF1AE7DDE800F22F4E /* IFJSONData.m in Sources */,
+				07287ED11BD8FF7F00047B0C /* IFStringRewriteRules.m in Sources */,
 				079A17471AE7E3A600F22F4E /* DDAbstractDatabaseLogger.m in Sources */,
+				07287EEC1BD9774B00047B0C /* IFNewScheme.m in Sources */,
 				079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */,
 				074D9F4E1AE7DD04006D1510 /* SemoCore.m in Sources */,
 				079A16DD1AE7DDE800F22F4E /* NSDictionary+IF.m in Sources */,
@@ -843,6 +962,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -899,15 +1019,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 40F4305D2BB1A1E6388AC531 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = (
-					armv6,
-					"$(ARCHS_STANDARD_32_BIT)",
-				);
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = SemoCore/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.innerfunction.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -919,15 +1037,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A09DB48BD2885B33FCC5B03 /* Pods.release.xcconfig */;
 			buildSettings = {
-				ARCHS = (
-					armv6,
-					"$(ARCHS_STANDARD_32_BIT)",
-				);
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = SemoCore/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.innerfunction.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -953,6 +1069,7 @@
 				);
 				INFOPLIST_FILE = "SemoCore Tests/SemoCore Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "IF.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -975,6 +1092,7 @@
 				GCC_PREFIX_HEADER = "SemoCore Tests/SemoCore Tests-Prefix.pch";
 				INFOPLIST_FILE = "SemoCore Tests/SemoCore Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "IF.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUNDLE_LOADER)";

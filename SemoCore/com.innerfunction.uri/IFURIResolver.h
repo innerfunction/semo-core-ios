@@ -12,10 +12,18 @@
 
 @protocol IFURIResolver <NSObject>
 
-- (IFResource *)dereferenceString:(NSString *)uri;
-- (IFResource *)dereference:(IFCompoundURI *)uri;
-- (IFResource *)dereferenceString:(NSString *)uri context:(IFResource *)context;
-- (IFResource *)dereference:(IFCompoundURI *)uri context:(IFResource *)context;
+/** Dereference a URI string to a resource object. */
+- (IFResource *)derefStringToResource:(NSString *)uri;
+/** Dereference a URI to a resource object. */
+- (IFResource *)derefToResource:(IFCompoundURI *)uri;
+/** Dereference a URI string to a resource object. */
+- (IFResource *)derefStringToResource:(NSString *)uri context:(IFResource *)context;
+/** Dereference a URI to a resource object. */
+- (IFResource *)derefToResource:(IFCompoundURI *)uri context:(IFResource *)context;
+/** Dereference a URI to its bare value. May or may not return a resource. */
+- (id)dereference:(IFCompoundURI *)uri;
+/** Dereference a URI to its bare value. May or may not return a resource. */
+- (id)dereference:(IFCompoundURI *)uri context:(IFResource *)context;
 
 @end
 

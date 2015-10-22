@@ -8,6 +8,11 @@
 
 #import "IFAppContainer.h"
 #import "IFConfiguration.h"
+#import "IFContainerViewController.h"
+#import "IFDoScheme.h"
+#import "IFNewScheme.h"
+#import "IFMakeScheme.h"
+#import "IFNamedScheme.h"
 #import "IFI18nMap.h"
 #import "IFLogging.h"
 #import "NSString+IF.h"
@@ -18,41 +23,15 @@
 
 @end
 
-@interface IFNamedSchemeHandler : NSObject <IFSchemeHandler> {
-    NSDictionary *named;
-}
-
-- (id)initWithNamed:(NSDictionary *)named;
-
-@end
-
-@implementation IFNamedSchemeHandler
-
-- (id)initWithNamed:(NSDictionary *)_named {
-    self = [super init];
-    if (self) {
-        named = _named;
-    }
-    return self;
-}
-
-- (IFCompoundURI *)resolve:(IFCompoundURI *)uri against:(IFCompoundURI *)reference {
-    return uri;
-}
-
-- (IFResource *)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
-    id namedObj = [named objectForKey:uri.name];
-    return namedObj ? [[IFResource alloc] initWithData:namedObj uri:uri parent:parent] : nil;
-}
-
-@end
-
 @implementation IFAppContainer
 
 - (id)init {
     self = [super init];
     if (self) {
         resolver = [[IFStandardURIResolver alloc] init];
+        rootActionTargetContainer = [[IFActionTargetContainerBehaviour alloc] init];
+        rootActionTargetContainer.owner = self;
+        rootActionTargetContainer.uriResolver = resolver;
     }
     return self;
 }
@@ -71,18 +50,18 @@
             NSError *error = nil;
             uri = [[IFCompoundURI alloc] initWithURI:(NSString *)configSource error:&error];
             if (error) {
-                DDLogCError(@"Error parsing app container configuration URI: %@", error);
+                DDLogCError(@"%@: Error parsing app container configuration URI: %@", LogTag, error);
                 return;
             }
         }
         
         if (uri) {
-            DDLogInfo(@"Loading app container configuration from %@", uri);
+            DDLogInfo(@"%@: Loading app container configuration from %@", LogTag, uri);
             IFResource *resource = [resolver dereference:uri];
             configuration = [[IFConfiguration alloc] initWithResource:resource];
         }
         else {
-            DDLogInfo(@"Attempting to configure app container with data...");
+            DDLogInfo(@"%@: Attempting to configure app container with data...", LogTag);
             configuration = [[IFConfiguration alloc] initWithData:configSource];
         }
     }
@@ -99,8 +78,11 @@
     types = [configuration getValueAsConfiguration:@"types"];
     
     // Add additional schemes to the resolver/dispatcher.
+    [resolver addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
+    [resolver addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
+    [resolver addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
     [resolver addHandler:[[IFNamedSchemeHandler alloc] initWithNamed:named] forScheme:@"named"];
-    
+    // Additional configured schemes.
     IFConfiguration *dispatcherConfig = [configuration getValueAsConfiguration:@"schemes"];
     if (dispatcherConfig) {
         for (NSString *schemeName in [dispatcherConfig getValueNames]) {
@@ -126,6 +108,9 @@
     
     // Perform default container configuration.
     [super configureWith:configuration];
+    
+    // Any named object can be a potential action target.
+    rootActionTargetContainer.namedTargets = named;
 }
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration {
@@ -134,20 +119,20 @@
     float scale = [UIScreen mainScreen].scale;
     NSString *display = scale > 1.0 ? [NSString stringWithFormat:@"%f.0x", scale] : @"";
     NSDictionary *platformValues = @{
-                                     @"name": Platform,
-                                     @"dispay": display,
-                                     @"defaultDisplay": @"2x",
-                                     @"full": [NSString stringWithFormat:@"ios%@", display]
-                                     };
+        @"name":            Platform,
+        @"dispay":          display,
+        @"defaultDisplay":  @"2x",
+        @"full":            [NSString stringWithFormat:@"ios%@", display]
+    };
     [values setObject:platformValues forKey:@"platform"];
     
     NSString *mode = [configuration getValueAsString:@"mode" defaultValue:@"LIVE"];
-    DDLogInfo(@"Configuration mode: %@", mode);
+    DDLogInfo(@"%@: Configuration mode: %@", LogTag, mode);
     [values setObject:mode forKey:@"mode"];
     
     NSLocale *locale = [NSLocale currentLocale];
     NSString *lang = nil;
-    DDLogInfo(@"Current locale is %@", locale.localeIdentifier);
+    DDLogInfo(@"%@: Current locale is %@", LogTag, locale.localeIdentifier);
     
     // The 'assetLocales' setting can be used to declare a list of the locales that app assets are
     // available in. If the platform's default locale (above) isn't on this list then the code below
@@ -190,18 +175,46 @@
         // If the user's preferred language hasn't been selected, then use the current locale's.
         lang = [locale objectForKey:NSLocaleLanguageCode];
     }
-    DDLogInfo(@"Using language %@", lang);
+    DDLogInfo(@"%@: Using language %@", LogTag, lang);
     
     NSDictionary *localeValues = @{
-                                   @"id": [locale objectForKey:NSLocaleIdentifier],
-                                   @"lang": lang,
-                                   @"variant": [locale objectForKey:NSLocaleCountryCode]
-                                   
-                                   };
+        @"id":       [locale objectForKey:NSLocaleIdentifier],
+        @"lang":     lang,
+        @"variant":  [locale objectForKey:NSLocaleCountryCode]
+    };
     [values setObject:localeValues forKey:@"locale"];
     [values setObject:[IFI18nMap instance] forKey:@"i18n"];
     
     return values;
+}
+
+- (UIViewController *)getRootView {
+    id rootView = [named objectForKey:@"rootView"];
+    if (!rootView) {
+        DDLogError(@"%@: No component named 'rootView' found", LogTag);
+    }
+    else if ([rootView isKindOfClass:[UIView class]]) {
+        // Promote UIView to a view controller.
+        IFContainerViewController *viewController = [[IFContainerViewController alloc] initWithView:(UIView *)rootView];
+        rootView = viewController;
+    }
+    else if (![rootView isKindOfClass:[UIViewController class]]) {
+        DDLogError(@"%@: The component named 'rootView' is not an instance of UIView or UIViewController", LogTag);
+        rootView = nil;
+    }
+    if ([rootView conformsToProtocol:@protocol(IFActionTargetContainer)]) {
+        ((id<IFActionTargetContainer>)rootView).parentActionTargetContainer = rootActionTargetContainer;
+    }
+    return rootView;
+}
+
+#pragma mark - IFActionTarget protocol
+
+- (void)doAction:(IFDoAction *)action {
+    if ([@"system-open" isEqualToString:action.name]) {
+        NSURL *url = [[action parameterValue:@"url"] asURL];
+        [[UIApplication sharedApplication] openURL:url];
+    }
 }
 
 static IFAppContainer *instance;
@@ -213,5 +226,6 @@ static IFAppContainer *instance;
 + (IFAppContainer *)getAppContainer {
     return instance;
 }
+
 
 @end

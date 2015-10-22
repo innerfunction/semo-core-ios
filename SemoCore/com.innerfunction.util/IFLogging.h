@@ -17,4 +17,6 @@
 
 static const int ddLogLevel = IFCoreLogLevel;
 
+#define LogTag ([self.class description])
+
 #endif

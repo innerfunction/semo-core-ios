@@ -11,4 +11,5 @@
 
 // String URI handler. A URI which resolves to the string encoded in the URI.
 @interface IFStringSchemeHandler : NSObject <IFSchemeHandler>
+
 @end

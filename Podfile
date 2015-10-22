@@ -3,5 +3,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 workspace 'SemoCore/project.xcworkspace'
 
-pod 'Q-ios', '>= 0.0.1'
+#pod 'Q-ios', '>= 0.0.1'
+#pod 'SWRevealViewController', '~> 2.4'
 
