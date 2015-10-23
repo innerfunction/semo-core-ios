@@ -8,7 +8,6 @@
 
 #import "IFSlideViewController.h"
 #import "IFTargetContainerViewController.h"
-#import "IFProxyTargetContainer.h"
 
 @implementation IFSlideViewController
 
@@ -17,8 +16,8 @@
 - (id)init {
     self = [super init];
     if (self) {
-        IFProxyTargetContainer *slideProxy = [[IFProxyTargetContainer alloc] initWithParentContainer:self];
-        IFProxyTargetContainer *mainProxy = [[IFProxyTargetContainer alloc] initWithParentContainer:self];
+        slideProxy = [[IFProxyTargetContainer alloc] initWithParentContainer:self];
+        mainProxy = [[IFProxyTargetContainer alloc] initWithParentContainer:self];
         self.namedTargets = @{ @"slide": slideProxy, @"main": mainProxy };
         
         containerBehaviour = [[IFDefaultTargetContainerBehaviour alloc] init];
@@ -37,6 +36,7 @@
     if ([slideView isKindOfClass:[UIViewController class]]) {
         _slideView = slideView;
         self.rearViewController = slideView;
+        slideProxy.target = slideView;
     }
 }
 
@@ -47,6 +47,7 @@
     if ([mainView isKindOfClass:[UIViewController class]]) {
         _mainView = mainView;
         self.frontViewController = mainView;
+        mainProxy.target = mainView;
     }
 }
 

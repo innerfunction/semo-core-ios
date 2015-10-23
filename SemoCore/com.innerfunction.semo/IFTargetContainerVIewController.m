@@ -7,8 +7,8 @@
 //
 
 #import "IFTargetContainerViewController.h"
+#import "IFLogging.h"
 
-// TODO: Need to incorporate layout code from EPCore
 @implementation IFTargetContainerViewController
 
 @synthesize parentTargetContainer;
@@ -18,6 +18,7 @@
     if (self) {
         containerBehaviour = [[IFDefaultTargetContainerBehaviour alloc] init];
         containerBehaviour.owner = self;
+        _namedViews = [NSDictionary dictionary];
     }
     return self;
 }
@@ -28,6 +29,25 @@
         self.view = view;
     }
     return self;
+}
+
+- (void)loadView {
+    // If no view already specified and a layout name has been specified then load the nib file of
+    // that name.
+    if (!self.view && _layoutName) {
+        // A map of named views can be configured on this object. Use named proxy objects in the nib
+        // file to specify where to insert these views into the layout.
+        NSDictionary *options = @{ UINibExternalObjects: _namedViews };
+        NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:options];
+        if ([result count] == 0) {
+            DDLogWarn(@"%@: Unable to load nib file %@.xib", LogTag, _layoutName);
+        }
+    }
+}
+
+- (void)setNamedViews:(NSDictionary *)namedViews {
+    _namedViews = namedViews;
+    self.namedTargets = namedViews;
 }
 
 - (void)setUriRewriteRules:(IFStringRewriteRules *)uriRewriteRules {

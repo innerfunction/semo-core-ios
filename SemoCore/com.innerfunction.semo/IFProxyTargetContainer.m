@@ -20,19 +20,22 @@
     return self;
 }
 
-- (void)setParentTargetContainer:(id<IFTargetContainer>)_parentTargetContainer {
-    parentTargetContainer = _parentTargetContainer;
-    if ([parentTargetContainer conformsToProtocol:@protocol(IFTarget)]) {
-        self.target = (id<IFTarget>)parentTargetContainer;
+- (void)setTarget:(id<IFTarget>)target {
+    _target = target;
+    if ([target conformsToProtocol:@protocol(IFTargetContainer)]) {
+        targetContainer = (id<IFTargetContainer>)target;
+    }
+    else {
+        targetContainer = nil;
     }
 }
 
 - (void)setNamedTargets:(NSDictionary *)namedTargets {
-    parentTargetContainer.namedTargets = namedTargets;
+    targetContainer.namedTargets = namedTargets;
 }
 
 - (NSDictionary *)namedTargets {
-    return parentTargetContainer.namedTargets;
+    return targetContainer.namedTargets;
 }
 
 - (BOOL)dispatchURI:(NSString *)uri {

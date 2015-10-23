@@ -17,6 +17,10 @@
 
 - (id)initWithView:(UIView *)view;
 
+/** The layout name. Corresponds to the name of a nib file. */
+@property (nonatomic, strong) NSString *layoutName;
+/** Map of named view components. */
+@property (nonatomic, strong) NSDictionary *namedViews;
 /** Action URI rewrite rules. */
 @property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 /** The named targets contained by this container. */

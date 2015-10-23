@@ -15,7 +15,9 @@
  * This can be useful when a container wants to take responsibility for some of its
  * child container behaviours.
  */
-@interface IFProxyTargetContainer : NSObject <IFTargetContainer, IFTarget>
+@interface IFProxyTargetContainer : NSObject <IFTargetContainer, IFTarget> {
+    id<IFTargetContainer> targetContainer;
+}
 
 @property (nonatomic, strong) id<IFTarget> target;
 

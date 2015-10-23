@@ -17,6 +17,17 @@
 
 @synthesize parentTargetContainer, namedTargets;
 
+- (void)setNamedTargets:(NSDictionary *)_namedTargets {
+    namedTargets = _namedTargets;
+    for (id name in [namedTargets keyEnumerator]) {
+        id target = [namedTargets valueForKey:name];
+        if ([target conformsToProtocol:@protocol(IFTargetContainer)]) {
+            // TODO: Child target parent is this, or the behaviour owner?
+            ((id<IFTargetContainer>)target).parentTargetContainer = self;
+        }
+    }
+}
+
 - (BOOL)dispatchURI:(NSString *)uri {
     IFCompoundURI *curi = nil;
     NSError *error;
