@@ -7,8 +7,8 @@
 //
 
 #import "IFContainer.h"
-#import "IFActionTarget.h"
-#import "IFActionTargetContainerBehaviour.h"
+#import "IFTarget.h"
+#import "IFDefaultTargetContainerBehaviour.h"
 #import "IFURIResolver.h"
 #import "IFLocals.h"
 
@@ -16,11 +16,11 @@
 #define Platform                    (@"ios")
 #define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
 
-@interface IFAppContainer : IFContainer <IFActionTarget> {
+@interface IFAppContainer : IFContainer <IFTarget> {
     IFStandardURIResolver *resolver;
     NSMutableDictionary *globals;
     IFLocals *locals;
-    IFActionTargetContainerBehaviour *rootActionTargetContainer;
+    IFDefaultTargetContainerBehaviour *rootTargetContainer;
 }
 
 /** Load the app configuration. */

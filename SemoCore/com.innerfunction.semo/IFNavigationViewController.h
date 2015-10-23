@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFActionTargetContainer.h"
-#import "IFActionTarget.h"
-#import "IFActionTargetContainerBehaviour.h"
+#import "IFTargetContainer.h"
+#import "IFTarget.h"
+#import "IFDefaultTargetContainerBehaviour.h"
 
-@interface IFNavigationViewController : UINavigationController <IFActionTargetContainer, IFActionTarget> {
-    IFActionTargetContainerBehaviour *containerBehaviour;
+@interface IFNavigationViewController : UINavigationController <IFTargetContainer, IFTarget> {
+    IFDefaultTargetContainerBehaviour *containerBehaviour;
 }
 
 /** Action URI rewrite rules. */

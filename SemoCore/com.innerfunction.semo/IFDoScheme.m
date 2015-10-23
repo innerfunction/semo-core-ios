@@ -7,6 +7,7 @@
 //
 
 #import "IFDoScheme.h"
+#import "NSString+IF.h"
 
 @implementation IFDoAction
 
@@ -25,7 +26,10 @@
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
     IFDoAction *action = [[IFDoAction alloc] init];
     action.name = uri.name;
-    action.target = uri.fragment;
+    // When setting a target of the form aaa.bbb.ccc, we are only interested in
+    // the last component of the address, i.e. ccc.
+    NSArray *targetComponents = [uri.fragment split:@"\\."];
+    action.target = [targetComponents lastObject];
     action.parameters = params;
     return action;
 }

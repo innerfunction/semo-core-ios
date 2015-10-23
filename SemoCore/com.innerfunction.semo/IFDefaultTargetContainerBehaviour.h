@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFActionTargetContainer.h"
+#import "IFTargetContainer.h"
 #import "IFStringRewriteRules.h"
 #import "IFURIResolver.h"
 
-@interface IFActionTargetContainerBehaviour : NSObject <IFActionTargetContainer>
+@interface IFDefaultTargetContainerBehaviour : NSObject <IFTargetContainer>
 
 /** Get/set the behaviour's owner. */
 @property (nonatomic, strong) id owner;
@@ -19,7 +19,11 @@
 @property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 /** A URI resolver. */
 @property (nonatomic, strong) id<IFURIResolver> uriResolver;
-/** The named targets contained by this container. */
-@property (nonatomic, strong) NSDictionary *namedTargets;
+
+/**
+ * Resolve a child or descendant target from a target path.
+ * Returns the behaviour's owner for empty paths; returns nill if a path can't be resolved.
+ */
+- (id)targetForPath:(NSString *)targetPath;
 
 @end

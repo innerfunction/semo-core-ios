@@ -9,14 +9,14 @@
 /* Begin PBXBuildFile section */
 		070F6DE21AEC0A4700533CC1 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE11AEC0A4700533CC1 /* configuration.json */; };
 		070F6DE41AEC0A6500533CC1 /* types.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE31AEC0A6500533CC1 /* types.json */; };
-		07287EC91BD8F77400047B0C /* IFActionTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EC81BD8F77400047B0C /* IFActionTargetContainer.h */; settings = {ASSET_TAGS = (); }; };
-		07287ECC1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECA1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h */; settings = {ASSET_TAGS = (); }; };
-		07287ECD1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECB1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m */; settings = {ASSET_TAGS = (); }; };
+		07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EC81BD8F77400047B0C /* IFTargetContainer.h */; settings = {ASSET_TAGS = (); }; };
+		07287ECC1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECA1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h */; settings = {ASSET_TAGS = (); }; };
+		07287ECD1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECB1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m */; settings = {ASSET_TAGS = (); }; };
 		07287ED01BD8FF7F00047B0C /* IFStringRewriteRules.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */; settings = {ASSET_TAGS = (); }; };
 		07287ED11BD8FF7F00047B0C /* IFStringRewriteRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */; settings = {ASSET_TAGS = (); }; };
-		07287ED71BD92D2400047B0C /* IFActionTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED61BD92D2400047B0C /* IFActionTarget.h */; settings = {ASSET_TAGS = (); }; };
-		07287EDB1BD9424800047B0C /* IFContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED91BD9424800047B0C /* IFContainerViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07287EDC1BD9424800047B0C /* IFContainerVIewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EDA1BD9424800047B0C /* IFContainerVIewController.m */; settings = {ASSET_TAGS = (); }; };
+		07287ED71BD92D2400047B0C /* IFTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED61BD92D2400047B0C /* IFTarget.h */; settings = {ASSET_TAGS = (); }; };
+		07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */; settings = {ASSET_TAGS = (); }; };
+		07287EDC1BD9424800047B0C /* IFTargetContainerVIewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */; settings = {ASSET_TAGS = (); }; };
 		07287EDE1BD948E700047B0C /* IFActionDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EDD1BD948E700047B0C /* IFActionDispatcher.h */; settings = {ASSET_TAGS = (); }; };
 		07287EE31BD95EBE00047B0C /* IFDoScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE11BD95EBE00047B0C /* IFDoScheme.h */; settings = {ASSET_TAGS = (); }; };
 		07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE21BD95EBE00047B0C /* IFDoScheme.m */; settings = {ASSET_TAGS = (); }; };
@@ -135,6 +135,8 @@
 		07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA11BD98D290036722B /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
 		07E3CFA61BD98D930036722B /* IFSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA41BD98D930036722B /* IFSlideViewController.h */; settings = {ASSET_TAGS = (); }; };
 		07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA51BD98D930036722B /* IFSlideViewController.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFAB1BDA73C50036722B /* IFProxyTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA91BDA73C50036722B /* IFProxyTargetContainer.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFAC1BDA73C50036722B /* IFProxyTargetContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */; settings = {ASSET_TAGS = (); }; };
 		DEC9697D045094EC7020060D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B3ADE948579F28497A3712 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -151,14 +153,14 @@
 /* Begin PBXFileReference section */
 		070F6DE11AEC0A4700533CC1 /* configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
 		070F6DE31AEC0A6500533CC1 /* types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
-		07287EC81BD8F77400047B0C /* IFActionTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionTargetContainer.h; sourceTree = "<group>"; };
-		07287ECA1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionTargetContainerBehaviour.h; sourceTree = "<group>"; };
-		07287ECB1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFActionTargetContainerBehaviour.m; sourceTree = "<group>"; };
+		07287EC81BD8F77400047B0C /* IFTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTargetContainer.h; sourceTree = "<group>"; };
+		07287ECA1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDefaultTargetContainerBehaviour.h; sourceTree = "<group>"; };
+		07287ECB1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDefaultTargetContainerBehaviour.m; sourceTree = "<group>"; };
 		07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFStringRewriteRules.h; sourceTree = "<group>"; };
 		07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFStringRewriteRules.m; sourceTree = "<group>"; };
-		07287ED61BD92D2400047B0C /* IFActionTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionTarget.h; sourceTree = "<group>"; };
-		07287ED91BD9424800047B0C /* IFContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFContainerViewController.h; sourceTree = "<group>"; };
-		07287EDA1BD9424800047B0C /* IFContainerVIewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContainerVIewController.m; sourceTree = "<group>"; };
+		07287ED61BD92D2400047B0C /* IFTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTarget.h; sourceTree = "<group>"; };
+		07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTargetContainerViewController.h; sourceTree = "<group>"; };
+		07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFTargetContainerVIewController.m; sourceTree = "<group>"; };
 		07287EDD1BD948E700047B0C /* IFActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFActionDispatcher.h; sourceTree = "<group>"; };
 		07287EE11BD95EBE00047B0C /* IFDoScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFDoScheme.h; sourceTree = "<group>"; };
 		07287EE21BD95EBE00047B0C /* IFDoScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFDoScheme.m; sourceTree = "<group>"; };
@@ -291,6 +293,8 @@
 		07E3CFA41BD98D930036722B /* IFSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFSlideViewController.h; path = com.innerfunction.semo/IFSlideViewController.h; sourceTree = "<group>"; };
 		07E3CFA51BD98D930036722B /* IFSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFSlideViewController.m; path = com.innerfunction.semo/IFSlideViewController.m; sourceTree = "<group>"; };
 		07E3CFA81BD997760036722B /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		07E3CFA91BDA73C50036722B /* IFProxyTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFProxyTargetContainer.h; sourceTree = "<group>"; };
+		07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFProxyTargetContainer.m; sourceTree = "<group>"; };
 		40F4305D2BB1A1E6388AC531 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		43B3ADE948579F28497A3712 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A09DB48BD2885B33FCC5B03 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -341,14 +345,16 @@
 				07287EE51BD9768500047B0C /* IFNamedScheme.h */,
 				07287EE61BD9768500047B0C /* IFNamedScheme.m */,
 				07287EDD1BD948E700047B0C /* IFActionDispatcher.h */,
-				07287ED61BD92D2400047B0C /* IFActionTarget.h */,
-				07287EC81BD8F77400047B0C /* IFActionTargetContainer.h */,
-				07287ECA1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h */,
-				07287ECB1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m */,
+				07287ED61BD92D2400047B0C /* IFTarget.h */,
+				07287EC81BD8F77400047B0C /* IFTargetContainer.h */,
+				07E3CFA91BDA73C50036722B /* IFProxyTargetContainer.h */,
+				07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */,
+				07287ECA1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h */,
+				07287ECB1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m */,
 				075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */,
 				075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */,
-				07287ED91BD9424800047B0C /* IFContainerViewController.h */,
-				07287EDA1BD9424800047B0C /* IFContainerVIewController.m */,
+				07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */,
+				07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */,
 			);
 			name = com.innerfunction.semo.app;
 			path = com.innerfunction.semo;
@@ -641,7 +647,7 @@
 			files = (
 				079A16CA1AE7DDE800F22F4E /* IFFileIO.h in Headers */,
 				079A16C41AE7DDE800F22F4E /* IFStringSchemeHandler.h in Headers */,
-				07287ED71BD92D2400047B0C /* IFActionTarget.h in Headers */,
+				07287ED71BD92D2400047B0C /* IFTarget.h in Headers */,
 				079A16BC1AE7DDE800F22F4E /* IFFileResource.h in Headers */,
 				079A16D61AE7DDE800F22F4E /* IFTypeConversions.h in Headers */,
 				079A17521AE7E3A600F22F4E /* DispatchQueueLogFormatter.h in Headers */,
@@ -651,7 +657,7 @@
 				079A16D21AE7DDE800F22F4E /* IFStringTemplate.h in Headers */,
 				07287EEB1BD9774B00047B0C /* IFNewScheme.h in Headers */,
 				079A17661AE7EC8000F22F4E /* UIColor+IF.h in Headers */,
-				07287EC91BD8F77400047B0C /* IFActionTargetContainer.h in Headers */,
+				07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */,
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
 				07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */,
@@ -668,6 +674,7 @@
 				079A16C01AE7DDE800F22F4E /* IFResource.h in Headers */,
 				079A17321AE7E15D00F22F4E /* ISO8601DateFormatter.h in Headers */,
 				079A16BA1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h in Headers */,
+				07E3CFAB1BDA73C50036722B /* IFProxyTargetContainer.h in Headers */,
 				079A170D1AE7DF2D00F22F4E /* JSONKit.h in Headers */,
 				07287EF41BD9828400047B0C /* IFNavigationViewController.h in Headers */,
 				079A16D01AE7DDE800F22F4E /* IFRegExp.h in Headers */,
@@ -679,7 +686,7 @@
 				079A172C1AE7DF2D00F22F4E /* zip.h in Headers */,
 				074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */,
 				079A17601AE7EB1B00F22F4E /* IFConfiguration.h in Headers */,
-				07287ECC1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.h in Headers */,
+				07287ECC1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h in Headers */,
 				079A174E1AE7E3A600F22F4E /* DDTTYLogger.h in Headers */,
 				079A16DE1AE7DDE800F22F4E /* NSString+IF.h in Headers */,
 				079A16DC1AE7DDE800F22F4E /* NSDictionary+IF.h in Headers */,
@@ -691,7 +698,7 @@
 				07287EE71BD9768500047B0C /* IFNamedScheme.h in Headers */,
 				079A16C31AE7DDE800F22F4E /* IFSchemeHandler.h in Headers */,
 				079A16C61AE7DDE800F22F4E /* IFURIResolver.h in Headers */,
-				07287EDB1BD9424800047B0C /* IFContainerViewController.h in Headers */,
+				07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */,
 				079A17281AE7DF2D00F22F4E /* mztools.h in Headers */,
 				079A17501AE7E3A600F22F4E /* ContextFilterLogFormatter.h in Headers */,
 				074D9F4C1AE7DD04006D1510 /* SemoCore.h in Headers */,
@@ -860,7 +867,7 @@
 				079A16DF1AE7DDE800F22F4E /* NSString+IF.m in Sources */,
 				07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */,
 				079A16D11AE7DDE800F22F4E /* IFRegExp.m in Sources */,
-				07287ECD1BD8F90C00047B0C /* IFActionTargetContainerBehaviour.m in Sources */,
+				07287ECD1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m in Sources */,
 				079A16BF1AE7DDE800F22F4E /* IFLocalSchemeHandler.m in Sources */,
 				079A176B1AE7EE7600F22F4E /* IFLocals.m in Sources */,
 				07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */,
@@ -870,12 +877,13 @@
 				079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */,
 				079A17291AE7DF2D00F22F4E /* unzip.c in Sources */,
 				07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */,
-				07287EDC1BD9424800047B0C /* IFContainerVIewController.m in Sources */,
+				07287EDC1BD9424800047B0C /* IFTargetContainerVIewController.m in Sources */,
 				079A17511AE7E3A600F22F4E /* ContextFilterLogFormatter.m in Sources */,
 				079A16D31AE7DDE800F22F4E /* IFStringTemplate.m in Sources */,
 				079A16B91AE7DDE800F22F4E /* IFCompoundURI.m in Sources */,
 				079A16D71AE7DDE800F22F4E /* IFTypeConversions.m in Sources */,
 				079A16C11AE7DDE800F22F4E /* IFResource.m in Sources */,
+				07E3CFAC1BDA73C50036722B /* IFProxyTargetContainer.m in Sources */,
 				079A17251AE7DF2D00F22F4E /* ioapi.c in Sources */,
 				07287EE81BD9768500047B0C /* IFNamedScheme.m in Sources */,
 				079A17491AE7E3A600F22F4E /* DDASLLogger.m in Sources */,

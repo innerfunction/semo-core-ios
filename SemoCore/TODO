@@ -2,7 +2,22 @@
 2. Add list view (and supporting classes, migrate from EPCore)
 3. Layout code (to IFContainerViewController)
 4. Need to review view heirarchy maintenance code - current implementation probably quite flaky in places
+   > IFSlideViewController
+      - slide & main views need to be co-opted to a view controller
+      - and these views should be put in a wrapper to handle action events? what is the desired behaviour -
+        'open' sometimes replaces the view, sometimes is handled by the view...
 
 Then:
 5. New form views go into a new module
 6. Semo content also in new module, to include simplified MVC implementation using key/value observing.
+   > basic MVC may need to go in core, so that views can be refreshed
+
+Also:
+* Consider ways to allow modules to define their own type/classname mappings, to minimize maintenance overhead
+  on the app developer.
+
+Renames?
+* IFActionDispatcher -> IFDispatcher
+* IFActionTarget -> IFTarget
+* IFActionTargetContainer -> IFTargetContainer
+* IFActionTargetContainerBehaviour -> IF(Default)TargetContainerBehaviour

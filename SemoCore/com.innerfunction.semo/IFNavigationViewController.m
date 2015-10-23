@@ -7,17 +7,17 @@
 //
 
 #import "IFNavigationViewController.h"
-#import "IFContainerViewController.h"
+#import "IFTargetContainerViewController.h"
 #import "IFLogging.h"
 
 @implementation IFNavigationViewController
 
-@synthesize parentActionTargetContainer;
+@synthesize parentTargetContainer;
 
 - (id)init {
     self = [super init];
     if (self) {
-        containerBehaviour = [[IFActionTargetContainerBehaviour alloc] init];
+        containerBehaviour = [[IFDefaultTargetContainerBehaviour alloc] init];
         containerBehaviour.owner = self;
     }
     return self;
@@ -41,7 +41,7 @@
             view = (UIViewController *)_view;
         }
         else if ([_view isKindOfClass:[UIView class]]) {
-            view = [[IFContainerViewController alloc] initWithView:(UIView *)_view];
+            view = [[IFTargetContainerViewController alloc] initWithView:(UIView *)_view];
         }
         
         // TODO: The maintenance of the container heirarchies has to be review in this class
@@ -49,9 +49,9 @@
         // controller is a thin wrapper for the topmost view container.
         
         // Plug the new view into the container heirarchy if it is itself a container.
-        if ([view conformsToProtocol:@protocol(IFActionTargetContainer)]) {
-            id<IFActionTargetContainer> container = (id<IFActionTargetContainer>)view;
-            container.parentActionTargetContainer = self;
+        if ([view conformsToProtocol:@protocol(IFTargetContainer)]) {
+            id<IFTargetContainer> container = (id<IFTargetContainer>)view;
+            container.parentTargetContainer = self;
             [containerBehaviour setNamedTargets:[container namedTargets]];
         }
         // Push the new view.

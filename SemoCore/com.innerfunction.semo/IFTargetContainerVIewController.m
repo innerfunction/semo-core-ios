@@ -1,23 +1,22 @@
 //
-//  IFViewContainerController.m
+//  IFTargetContainerViewController.m
 //  SemoCore
 //
 //  Created by Julian Goacher on 22/10/2015.
 //  Copyright © 2015 InnerFunction. All rights reserved.
 //
 
-#import "IFContainerViewController.h"
+#import "IFTargetContainerViewController.h"
 
-// TODO: Does name need to be reconsidered?
 // TODO: Need to incorporate layout code from EPCore
-@implementation IFContainerViewController
+@implementation IFTargetContainerViewController
 
-@synthesize parentActionTargetContainer;
+@synthesize parentTargetContainer;
 
 - (id)init {
     self = [super init];
     if (self) {
-        containerBehaviour = [[IFActionTargetContainerBehaviour alloc] init];
+        containerBehaviour = [[IFDefaultTargetContainerBehaviour alloc] init];
         containerBehaviour.owner = self;
     }
     return self;

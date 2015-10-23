@@ -8,7 +8,7 @@
 
 #import "IFAppContainer.h"
 #import "IFConfiguration.h"
-#import "IFContainerViewController.h"
+#import "IFTargetContainerViewController.h"
 #import "IFDoScheme.h"
 #import "IFNewScheme.h"
 #import "IFMakeScheme.h"
@@ -29,9 +29,9 @@
     self = [super init];
     if (self) {
         resolver = [[IFStandardURIResolver alloc] init];
-        rootActionTargetContainer = [[IFActionTargetContainerBehaviour alloc] init];
-        rootActionTargetContainer.owner = self;
-        rootActionTargetContainer.uriResolver = resolver;
+        rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
+        rootTargetContainer.owner = self;
+        rootTargetContainer.uriResolver = resolver;
     }
     return self;
 }
@@ -110,7 +110,7 @@
     [super configureWith:configuration];
     
     // Any named object can be a potential action target.
-    rootActionTargetContainer.namedTargets = named;
+    rootTargetContainer.namedTargets = named;
 }
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration {
@@ -195,15 +195,15 @@
     }
     else if ([rootView isKindOfClass:[UIView class]]) {
         // Promote UIView to a view controller.
-        IFContainerViewController *viewController = [[IFContainerViewController alloc] initWithView:(UIView *)rootView];
+        IFTargetContainerViewController *viewController = [[IFTargetContainerViewController alloc] initWithView:(UIView *)rootView];
         rootView = viewController;
     }
     else if (![rootView isKindOfClass:[UIViewController class]]) {
         DDLogError(@"%@: The component named 'rootView' is not an instance of UIView or UIViewController", LogTag);
         rootView = nil;
     }
-    if ([rootView conformsToProtocol:@protocol(IFActionTargetContainer)]) {
-        ((id<IFActionTargetContainer>)rootView).parentActionTargetContainer = rootActionTargetContainer;
+    if ([rootView conformsToProtocol:@protocol(IFTargetContainer)]) {
+        ((id<IFTargetContainer>)rootView).parentTargetContainer = rootTargetContainer;
     }
     return rootView;
 }

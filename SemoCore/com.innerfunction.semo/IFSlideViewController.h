@@ -7,13 +7,12 @@
 //
 
 #import "SWRevealViewController.h"
-#import "IFActionTargetContainer.h"
-#import "IFActionTarget.h"
-#import "IFActionTargetContainerBehaviour.h"
+#import "IFTargetContainer.h"
+#import "IFTarget.h"
+#import "IFDefaultTargetContainerBehaviour.h"
 
-@interface IFSlideViewController : SWRevealViewController <IFActionTargetContainer, IFActionTarget> {
-    IFActionTargetContainerBehaviour *containerBehaviour;
-    NSMutableDictionary *namedTargets;
+@interface IFSlideViewController : SWRevealViewController <IFTargetContainer, IFTarget> {
+    IFDefaultTargetContainerBehaviour *containerBehaviour;
     FrontViewPosition slideOpenPosition;
     FrontViewPosition slideClosedPosition;
 }

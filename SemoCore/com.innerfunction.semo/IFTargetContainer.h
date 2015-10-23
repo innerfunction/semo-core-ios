@@ -12,12 +12,12 @@
 /**
  * Protocol for objects which wish to control their own configuration.
  */
-@protocol IFActionTargetContainer <IFActionDispatcher>
+@protocol IFTargetContainer <IFActionDispatcher>
 
 /** Get/set this containers parent. */
-@property (nonatomic, strong) id<IFActionTargetContainer> parentActionTargetContainer;
+@property (nonatomic, strong) id<IFTargetContainer> parentTargetContainer;
 
-/** Get a map of contained targets, keyed by name. */
-- (NSDictionary *)namedTargets;
+/** Get/set this container's named targets. */
+@property (nonatomic, strong) NSDictionary *namedTargets;
 
 @end

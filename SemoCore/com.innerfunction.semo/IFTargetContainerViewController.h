@@ -1,5 +1,5 @@
 //
-//  IFViewContainerController.h
+//  IFTargetContainerViewController.h
 //  SemoCore
 //
 //  Created by Julian Goacher on 22/10/2015.
@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFActionTargetContainer.h"
-#import "IFActionTarget.h"
-#import "IFActionTargetContainerBehaviour.h"
+#import "IFTargetContainer.h"
+#import "IFTarget.h"
+#import "IFDefaultTargetContainerBehaviour.h"
 
-@interface IFContainerViewController : UIViewController <IFActionTargetContainer, IFActionTarget> {
-    IFActionTargetContainerBehaviour *containerBehaviour;
+@interface IFTargetContainerViewController : UIViewController <IFTargetContainer, IFTarget> {
+    IFDefaultTargetContainerBehaviour *containerBehaviour;
 }
 
 - (id)initWithView:(UIView *)view;
