@@ -10,6 +10,12 @@
 #import "IFTargetContainerViewController.h"
 #import "IFLogging.h"
 
+@interface IFNavigationViewController()
+
+- (void)updateContainerBehaviourState;
+
+@end
+
 @implementation IFNavigationViewController
 
 @synthesize parentTargetContainer;
@@ -28,6 +34,14 @@
     containerBehaviour.uriRewriteRules = uriRewriteRules;
 }
 
+- (void)setNamedTargets:(NSDictionary *)namedTargets {
+    containerBehaviour.namedTargets = namedTargets;
+}
+
+- (NSDictionary *)getNamedTargets {
+    return containerBehaviour.namedTargets;
+}
+
 - (BOOL)dispatchURI:(NSString *)uri {
     return [containerBehaviour dispatchURI:uri];
 }
@@ -42,17 +56,6 @@
         }
         else if ([_view isKindOfClass:[UIView class]]) {
             view = [[IFTargetContainerViewController alloc] initWithView:(UIView *)_view];
-        }
-        
-        // TODO: The maintenance of the container heirarchies has to be review in this class
-        // and in IFActionTargetContainerBehaviour. The idea in this case is that the navigation
-        // controller is a thin wrapper for the topmost view container.
-        
-        // Plug the new view into the container heirarchy if it is itself a container.
-        if ([view conformsToProtocol:@protocol(IFTargetContainer)]) {
-            id<IFTargetContainer> container = (id<IFTargetContainer>)view;
-            container.parentTargetContainer = self;
-            [containerBehaviour setNamedTargets:[container namedTargets]];
         }
         // Push the new view.
         if (view) {
@@ -69,6 +72,30 @@
 
 - (NSDictionary *)namedTargets {
     return [NSDictionary dictionary];
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    [super pushViewController:viewController animated:YES];
+    [self updateContainerBehaviourState];
+}
+
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    UIViewController *popped = [super popViewControllerAnimated:animated];
+    [self updateContainerBehaviourState];
+    return popped;
+}
+
+#pragma mark - private
+
+- (void)updateContainerBehaviourState {
+    if ([self.topViewController conformsToProtocol:@protocol(IFTargetContainer)]) {
+        id<IFTargetContainer> container = (id<IFTargetContainer>)self.topViewController;
+        container.parentTargetContainer = self;
+        containerBehaviour.namedTargets = container.namedTargets;
+    }
+    else {
+        containerBehaviour.namedTargets = [NSDictionary dictionary];
+    }
 }
 
 @end

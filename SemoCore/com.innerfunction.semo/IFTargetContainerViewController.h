@@ -21,6 +21,8 @@
 @property (nonatomic, strong) NSString *layoutName;
 /** Map of named view components. */
 @property (nonatomic, strong) NSDictionary *namedViews;
+/** Map of named view names onto nib file view tags. */
+@property (nonatomic, strong) NSDictionary *namedViewTags;
 /** Action URI rewrite rules. */
 @property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 /** The named targets contained by this container. */

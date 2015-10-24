@@ -9,6 +9,13 @@
 #import "IFTargetContainerViewController.h"
 #import "IFLogging.h"
 
+@interface IFTargetContainerViewController()
+
+- (void)insertNamedViews;
+- (void)replaceSubview:(UIView *)view withView:(UIView *)view;
+
+@end
+
 @implementation IFTargetContainerViewController
 
 @synthesize parentTargetContainer;
@@ -35,11 +42,11 @@
     // If no view already specified and a layout name has been specified then load the nib file of
     // that name.
     if (!self.view && _layoutName) {
-        // A map of named views can be configured on this object. Use named proxy objects in the nib
-        // file to specify where to insert these views into the layout.
-        NSDictionary *options = @{ UINibExternalObjects: _namedViews };
-        NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:options];
-        if ([result count] == 0) {
+        NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:nil];
+        if ([result count] > 0) {
+            [self insertNamedViews];
+        }
+        else {
             DDLogWarn(@"%@: Unable to load nib file %@.xib", LogTag, _layoutName);
         }
     }
@@ -68,10 +75,57 @@
     if ([@"open" isEqualToString:action.name]) {
         id view = [action.parameters valueForKey:@"view"];
         if ([view isKindOfClass:[UIView class]]) {
-            // TODO: Animated view transitions.
+            // TODO: Animated view transitions; add a class property allowing the transition type to be specified.
             self.view = view;
         }
     }
+}
+
+#pragma mark - private
+
+- (void)insertNamedViews {
+    for (NSString *name in [_namedViews keyEnumerator]) {
+        id view = [_namedViews objectForKey:name];
+        id tag = [_namedViewTags objectForKey:name];
+        // Find the placeholder view in the layout.
+        UIView *placeholder = nil;
+        if (tag) {
+            NSInteger _tag = ((NSNumber *)tag).integerValue;
+            placeholder = [self.view viewWithTag:_tag];
+        }
+        // Replace the placeholder with the named view.
+        if (placeholder) {
+            if ([view isKindOfClass:[UIView class]]) {
+                [self replaceSubview:placeholder withView:view];
+            }
+            else if ([view isKindOfClass:[UIViewController class]]) {
+                UIViewController *controller = (UIViewController *)view;
+                [self addChildViewController:controller];
+                [self replaceSubview:placeholder withView:controller.view];
+            }
+            else {
+                DDLogWarn(@"%@: Can't insert named view '%@' of class '%@'", LogTag, name, [[view class] description]);
+            }
+        }
+        else {
+            DDLogWarn(@"%@: Can't find placeholder view for tag %@", LogTag, tag);
+        }
+    }
+}
+
+- (void)replaceSubview:(UIView *)subview withView:(UIView *)view {
+    // Copy frame and bounds
+    view.frame = subview.frame;
+    view.bounds = subview.bounds;
+    // Copy layout params to the new view
+    view.autoresizingMask = subview.autoresizingMask;
+    view.autoresizesSubviews = subview.autoresizesSubviews;
+    view.contentMode = subview.contentMode;
+    // Swap the views.
+    UIView *superview = subview.superview;
+    NSUInteger idx = [superview.subviews indexOfObject:subview];
+    [subview removeFromSuperview];
+    [superview insertSubview:view atIndex:idx];
 }
 
 @end
