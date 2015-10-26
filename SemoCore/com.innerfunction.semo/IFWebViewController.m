@@ -51,6 +51,8 @@
     return self;
 }
 
+#pragma mark - view lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -190,6 +192,17 @@
                             options: UIViewAnimationOptionCurveLinear
                          animations: ^{ loadingImageView.alpha = 0.0; }
                          completion: ^(BOOL finished) { loadingImageView.hidden = YES; }];
+    }
+}
+
+#pragma mark - IFTarget
+
+- (void)doAction:(IFDoAction *)action {
+    if ([@"load" isEqualToString:action.name]) {
+        self.content = [action.parameters objectForKey:@"content"];
+    }
+    else {
+        [super doAction:action];
     }
 }
 

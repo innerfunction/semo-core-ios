@@ -12,6 +12,8 @@
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCConfigurable.h"
+#import "IFTarget.h"
+#import "IFTargetContainer.h"
 
 // A basic table view component.
 // Recognized configuration keys are:
@@ -45,7 +47,7 @@
 // * selectedBackgroundImage: URI of the cell background image when selected. (Optional).
 // * height:            The row height.
 // * action:            A dispatch URI which is invoked when a table cell is selected.
-@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable> {
+@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable, IFTarget, IFTargetContainer> {
     
     UISearchBar *searchBar;
     UISearchDisplayController *searchDisplayController;
@@ -61,6 +63,7 @@
 @property (nonatomic, strong) NSString *selectedID;
 @property (nonatomic, assign) BOOL hasSearchBar;
 @property (nonatomic, strong) NSString *clearFilterMessage;
+@property (nonatomic, strong) id content;
 
 // Clear any currently applied table data filter.
 - (void)clearFilter;

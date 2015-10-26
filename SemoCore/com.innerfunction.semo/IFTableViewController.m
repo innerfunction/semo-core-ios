@@ -10,6 +10,7 @@
 #import "IFContainer.h"
 #import "UIViewController+Toast.h"
 #import "NSDictionary+IFValues.h"
+#import "IFLogging.h"
 
 #define SectionHeaderHeight     (22.0f)
 #define SectionHeaderViewHeight (18.0f)
@@ -30,6 +31,12 @@
 
 @implementation IFTableViewController
 
+#pragma mark - IFTargetContainer
+
+@synthesize parentTargetContainer, namedTargets;
+
+#pragma mark - IFIOCConfigurationInitable
+
 - (id)initWithConfiguration:(IFConfiguration *)configuration {
     UITableViewStyle style;
     NSString *value = [configuration getValueAsString:@"tableStyle" defaultValue:@"Plain"];
@@ -41,10 +48,13 @@
     }
     self = [super initWithStyle:style];
     if (self) {
+        self.namedTargets = [NSDictionary dictionary];
         _tableData = [[IFTableData alloc] init];
     }
     return self;
 }
+
+#pragma mark - IFIOCTypeInspectable
 
 - (Class)memberClassForCollection:(NSString *)propertyName {
     if ([@"cellFactoriesByDisplayMode" isEqualToString:propertyName]) {
@@ -52,6 +62,8 @@
     }
     return nil;
 }
+
+#pragma mark - IFIOCConfigurable
 
 - (void)beforeConfiguration:(IFConfiguration *)configuration inContainer:(IFContainer *)container {}
 
@@ -64,6 +76,8 @@
     }
 }
 
+#pragma mark - configuration properties
+
 - (void)setCellFactoriesByDisplayMode:(NSDictionary *)cellFactoriesByDisplayMode {
     _cellFactoriesByDisplayMode = cellFactoriesByDisplayMode;
     for (id name in [cellFactoriesByDisplayMode keyEnumerator]) {
@@ -71,6 +85,28 @@
         cellFactory.tableData = _tableData;
     }
 }
+
+- (void)setContent:(id)content {
+    _content = content;
+    if ([content isKindOfClass:[NSArray class]]) {
+        _tableData.data = (NSArray *)content;
+    }
+    else if ([content isKindOfClass:[IFResource class]]) {
+        id data = [(IFResource *)content asJSONData];
+        if ([data isKindOfClass:[NSArray class]]) {
+            _tableData.data = (NSArray *)data;
+        }
+    }
+    else {
+        DDLogWarn(@"%@: Unable to set content of type %@", LogTag, [[content class] description]);
+    }
+    // Refresh the list view.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+#pragma mark - view lifecycle methods
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -136,7 +172,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *action = [[_tableData cellDataForIndexPath:indexPath] getValueAsString:@"action"];
     if (action) {
-        /* TODO: Need interface to dispatch the action to */
+        [self dispatchURI:action];
     }
     [_tableData clearFilter];
 }
@@ -252,6 +288,20 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self hideSearchBar];
     });
+}
+
+#pragma mark - IFActionDispatcher
+
+- (BOOL)dispatchURI:(NSString *)uri {
+    return [self.parentTargetContainer dispatchURI:uri];
+}
+
+#pragma mark - IFTarget
+
+- (void)doAction:(IFDoAction *)action {
+    if ([@"load" isEqualToString:action.name]) {
+        self.content = [action.parameters objectForKey:@"content"];
+    }
 }
 
 @end
