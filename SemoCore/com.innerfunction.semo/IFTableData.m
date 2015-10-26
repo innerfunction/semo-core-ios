@@ -97,7 +97,7 @@
 }
 
 // Get cell data for the specified path.
-- (NSDictionary *)cellDataForIndexPath:(NSIndexPath *)path {
+- (NSDictionary *)rowDataForIndexPath:(NSIndexPath *)path {
     // Resolve the cell data. First check the type of the first data item.
     // - If data is empty then result will be nil.
     // - If first data item is an NSArray then we're dealing with a grouped list (i.e. with sections).

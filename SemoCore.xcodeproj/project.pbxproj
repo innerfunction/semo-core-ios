@@ -153,6 +153,8 @@
 		07E3CFD31BDE6BF00036722B /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */; settings = {ASSET_TAGS = (); }; };
 		07E3CFD61BDE6E360036722B /* NSDictionary+IFValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */; settings = {ASSET_TAGS = (); }; };
 		07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFDA1BDEC1B20036722B /* UIImage+CropScale.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD81BDEC1B20036722B /* UIImage+CropScale.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFDB1BDEC1B20036722B /* UIImage+CropScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD91BDEC1B20036722B /* UIImage+CropScale.m */; settings = {ASSET_TAGS = (); }; };
 		DEC9697D045094EC7020060D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B3ADE948579F28497A3712 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -327,6 +329,8 @@
 		07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Toast.m"; path = "com.innerfunction.semo/UIViewController+Toast.m"; sourceTree = "<group>"; };
 		07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+IFValues.h"; sourceTree = "<group>"; };
 		07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+IFValues.m"; sourceTree = "<group>"; };
+		07E3CFD81BDEC1B20036722B /* UIImage+CropScale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CropScale.h"; path = "com.innerfunction.semo/UIImage+CropScale.h"; sourceTree = "<group>"; };
+		07E3CFD91BDEC1B20036722B /* UIImage+CropScale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CropScale.m"; path = "com.innerfunction.semo/UIImage+CropScale.m"; sourceTree = "<group>"; };
 		40F4305D2BB1A1E6388AC531 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		43B3ADE948579F28497A3712 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A09DB48BD2885B33FCC5B03 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -403,6 +407,8 @@
 				07E3CFA51BD98D930036722B /* IFSlideViewController.m */,
 				07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */,
 				07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */,
+				07E3CFD81BDEC1B20036722B /* UIImage+CropScale.h */,
+				07E3CFD91BDEC1B20036722B /* UIImage+CropScale.m */,
 			);
 			name = com.innerfunction.semo.ui;
 			sourceTree = "<group>";
@@ -726,6 +732,7 @@
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
 				07E3CFC11BDC11CC0036722B /* IFTableViewCellFactory.h in Headers */,
+				07E3CFDA1BDEC1B20036722B /* UIImage+CropScale.h in Headers */,
 				07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */,
 				079A174C1AE7E3A600F22F4E /* DDLog.h in Headers */,
 				079A17721AE7F80B00F22F4E /* IFContainer.h in Headers */,
@@ -952,6 +959,7 @@
 				079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */,
 				079A17291AE7DF2D00F22F4E /* unzip.c in Sources */,
 				07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */,
+				07E3CFDB1BDEC1B20036722B /* UIImage+CropScale.m in Sources */,
 				07E3CFB71BDADE550036722B /* IFWebViewController.m in Sources */,
 				07287EDC1BD9424800047B0C /* IFTargetContainerVIewController.m in Sources */,
 				079A17511AE7E3A600F22F4E /* ContextFilterLogFormatter.m in Sources */,

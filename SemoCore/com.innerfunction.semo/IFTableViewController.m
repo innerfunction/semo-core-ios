@@ -170,7 +170,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *action = [[_tableData cellDataForIndexPath:indexPath] getValueAsString:@"action"];
+    NSString *action = [[_tableData rowDataForIndexPath:indexPath] getValueAsString:@"action"];
     if (action) {
         [self dispatchURI:action];
     }

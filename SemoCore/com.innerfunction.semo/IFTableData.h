@@ -43,8 +43,8 @@ typedef BOOL (^IFTableDataFilterBlock) (NSDictionary *row);
 
 // Return an IPTableData object initialized with the specified data.
 + (IFTableData *)withData:(NSArray *)data;
-// Get cell data for the specified path.
-- (NSDictionary *)cellDataForIndexPath:(NSIndexPath *)path;
+// Get row data for the specified path.
+- (NSDictionary *)rowDataForIndexPath:(NSIndexPath *)path;
 // Test whether the data is empty - i.e. contains no rows.
 - (BOOL)isEmpty;
 // Return the number of sections in the table data.
