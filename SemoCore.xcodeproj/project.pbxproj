@@ -139,6 +139,20 @@
 		07E3CFAC1BDA73C50036722B /* IFProxyTargetContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */; settings = {ASSET_TAGS = (); }; };
 		07E3CFB61BDADE550036722B /* IFWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFB41BDADE550036722B /* IFWebViewController.h */; settings = {ASSET_TAGS = (); }; };
 		07E3CFB71BDADE550036722B /* IFWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFB51BDADE550036722B /* IFWebViewController.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFBD1BDC0A2F0036722B /* IFTableData.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFBB1BDC0A2E0036722B /* IFTableData.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFBE1BDC0A2F0036722B /* IFTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFBC1BDC0A2E0036722B /* IFTableData.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFC11BDC11CC0036722B /* IFTableViewCellFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFBF1BDC11CC0036722B /* IFTableViewCellFactory.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFC21BDC11CC0036722B /* IFTableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFC01BDC11CC0036722B /* IFTableViewCellFactory.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFC51BDC15390036722B /* IFTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC31BDC15390036722B /* IFTableViewController.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFC61BDC15390036722B /* IFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFC41BDC15390036722B /* IFTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFC81BDE5A2B0036722B /* IFIOCConfigurationInitable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFCA1BDE5E960036722B /* IFIOCContainerAware.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFCE1BDE6B1F0036722B /* UIView+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFCC1BDE6B1F0036722B /* UIView+Toast.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFCF1BDE6B1F0036722B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFCD1BDE6B1F0036722B /* UIView+Toast.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFD31BDE6BF00036722B /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFD61BDE6E360036722B /* NSDictionary+IFValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */; settings = {ASSET_TAGS = (); }; };
+		07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */; settings = {ASSET_TAGS = (); }; };
 		DEC9697D045094EC7020060D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B3ADE948579F28497A3712 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -299,6 +313,20 @@
 		07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFProxyTargetContainer.m; sourceTree = "<group>"; };
 		07E3CFB41BDADE550036722B /* IFWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFWebViewController.h; path = com.innerfunction.semo/IFWebViewController.h; sourceTree = "<group>"; };
 		07E3CFB51BDADE550036722B /* IFWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFWebViewController.m; path = com.innerfunction.semo/IFWebViewController.m; sourceTree = "<group>"; };
+		07E3CFBB1BDC0A2E0036722B /* IFTableData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFTableData.h; path = com.innerfunction.semo/IFTableData.h; sourceTree = "<group>"; };
+		07E3CFBC1BDC0A2E0036722B /* IFTableData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFTableData.m; path = com.innerfunction.semo/IFTableData.m; sourceTree = "<group>"; };
+		07E3CFBF1BDC11CC0036722B /* IFTableViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFTableViewCellFactory.h; path = com.innerfunction.semo/IFTableViewCellFactory.h; sourceTree = "<group>"; };
+		07E3CFC01BDC11CC0036722B /* IFTableViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFTableViewCellFactory.m; path = com.innerfunction.semo/IFTableViewCellFactory.m; sourceTree = "<group>"; };
+		07E3CFC31BDC15390036722B /* IFTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFTableViewController.h; path = com.innerfunction.semo/IFTableViewController.h; sourceTree = "<group>"; };
+		07E3CFC41BDC15390036722B /* IFTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFTableViewController.m; path = com.innerfunction.semo/IFTableViewController.m; sourceTree = "<group>"; };
+		07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFIOCConfigurationInitable.h; sourceTree = "<group>"; };
+		07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFIOCContainerAware.h; sourceTree = "<group>"; };
+		07E3CFCC1BDE6B1F0036722B /* UIView+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Toast.h"; sourceTree = "<group>"; };
+		07E3CFCD1BDE6B1F0036722B /* UIView+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Toast.m"; sourceTree = "<group>"; };
+		07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Toast.h"; path = "com.innerfunction.semo/UIViewController+Toast.h"; sourceTree = "<group>"; };
+		07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Toast.m"; path = "com.innerfunction.semo/UIViewController+Toast.m"; sourceTree = "<group>"; };
+		07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+IFValues.h"; sourceTree = "<group>"; };
+		07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+IFValues.m"; sourceTree = "<group>"; };
 		40F4305D2BB1A1E6388AC531 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		43B3ADE948579F28497A3712 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A09DB48BD2885B33FCC5B03 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -373,6 +401,8 @@
 				07287EF31BD9828400047B0C /* IFNavigationViewController.m */,
 				07E3CFA41BD98D930036722B /* IFSlideViewController.h */,
 				07E3CFA51BD98D930036722B /* IFSlideViewController.m */,
+				07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */,
+				07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */,
 			);
 			name = com.innerfunction.semo.ui;
 			sourceTree = "<group>";
@@ -412,6 +442,7 @@
 			isa = PBXGroup;
 			children = (
 				07E3CFA81BD997760036722B /* TODO */,
+				07E3CFBA1BDC09F00036722B /* com.innerfunction.semo.ui.table */,
 				07287EF11BD9822C00047B0C /* com.innerfunction.semo.ui */,
 				07287ED81BD941E200047B0C /* com.innerfunction.semo.app */,
 				079A17571AE7EA5C00F22F4E /* com.innerfunction.semo */,
@@ -494,6 +525,7 @@
 		079A16E61AE7DF2D00F22F4E /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				07E3CFCB1BDE6B1F0036722B /* Toast */,
 				07E3CF9F1BD98D290036722B /* SWRevealViewController */,
 				079A17351AE7E3A600F22F4E /* CocoaLumberjack */,
 				079A172F1AE7E15D00F22F4E /* ISO8601DateFormatter */,
@@ -586,6 +618,8 @@
 				079A17581AE7EA8800F22F4E /* IFService.h */,
 				079A175A1AE7EABD00F22F4E /* IFIOCConfigurable.h */,
 				075A31351AE9817300FC8615 /* IFIOCTypeInspectable.h */,
+				07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */,
+				07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */,
 				079A175C1AE7EAE400F22F4E /* IFConfigurable.h */,
 				079A176C1AE7F3F800F22F4E /* IFConfiguredLocals.h */,
 				079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */,
@@ -593,6 +627,8 @@
 				079A17711AE7F80B00F22F4E /* IFContainer.m */,
 				07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */,
 				07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */,
+				07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */,
+				07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */,
 			);
 			path = com.innerfunction.semo;
 			sourceTree = "<group>";
@@ -644,6 +680,28 @@
 			path = SWRevealViewController;
 			sourceTree = "<group>";
 		};
+		07E3CFBA1BDC09F00036722B /* com.innerfunction.semo.ui.table */ = {
+			isa = PBXGroup;
+			children = (
+				07E3CFBB1BDC0A2E0036722B /* IFTableData.h */,
+				07E3CFBC1BDC0A2E0036722B /* IFTableData.m */,
+				07E3CFBF1BDC11CC0036722B /* IFTableViewCellFactory.h */,
+				07E3CFC01BDC11CC0036722B /* IFTableViewCellFactory.m */,
+				07E3CFC31BDC15390036722B /* IFTableViewController.h */,
+				07E3CFC41BDC15390036722B /* IFTableViewController.m */,
+			);
+			name = com.innerfunction.semo.ui.table;
+			sourceTree = "<group>";
+		};
+		07E3CFCB1BDE6B1F0036722B /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				07E3CFCC1BDE6B1F0036722B /* UIView+Toast.h */,
+				07E3CFCD1BDE6B1F0036722B /* UIView+Toast.m */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -656,6 +714,7 @@
 				07287ED71BD92D2400047B0C /* IFTarget.h in Headers */,
 				079A16BC1AE7DDE800F22F4E /* IFFileResource.h in Headers */,
 				079A16D61AE7DDE800F22F4E /* IFTypeConversions.h in Headers */,
+				07E3CFCE1BDE6B1F0036722B /* UIView+Toast.h in Headers */,
 				079A17521AE7E3A600F22F4E /* DispatchQueueLogFormatter.h in Headers */,
 				079A17591AE7EA8800F22F4E /* IFService.h in Headers */,
 				07287EDE1BD948E700047B0C /* IFActionDispatcher.h in Headers */,
@@ -666,13 +725,16 @@
 				07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */,
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
+				07E3CFC11BDC11CC0036722B /* IFTableViewCellFactory.h in Headers */,
 				07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */,
 				079A174C1AE7E3A600F22F4E /* DDLog.h in Headers */,
 				079A17721AE7F80B00F22F4E /* IFContainer.h in Headers */,
 				079A16CE1AE7DDE800F22F4E /* IFJSONData.h in Headers */,
 				079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */,
 				079A172A1AE7DF2D00F22F4E /* unzip.h in Headers */,
+				07E3CFCA1BDE5E960036722B /* IFIOCContainerAware.h in Headers */,
 				079A16B81AE7DDE800F22F4E /* IFCompoundURI.h in Headers */,
+				07E3CFD61BDE6E360036722B /* NSDictionary+IFValues.h in Headers */,
 				07287EEF1BD978AC00047B0C /* IFMakeScheme.h in Headers */,
 				079A174A1AE7E3A600F22F4E /* DDFileLogger.h in Headers */,
 				079A17261AE7DF2D00F22F4E /* ioapi.h in Headers */,
@@ -685,9 +747,12 @@
 				07287EF41BD9828400047B0C /* IFNavigationViewController.h in Headers */,
 				079A16D01AE7DDE800F22F4E /* IFRegExp.h in Headers */,
 				079A17461AE7E3A600F22F4E /* DDAbstractDatabaseLogger.h in Headers */,
+				07E3CFC51BDC15390036722B /* IFTableViewController.h in Headers */,
 				079A16CC1AE7DDE800F22F4E /* IFHTTPUtils.h in Headers */,
+				07E3CFBD1BDC0A2F0036722B /* IFTableData.h in Headers */,
 				07E3CFA21BD98D290036722B /* SWRevealViewController.h in Headers */,
 				079A175B1AE7EABD00F22F4E /* IFIOCConfigurable.h in Headers */,
+				07E3CFC81BDE5A2B0036722B /* IFIOCConfigurationInitable.h in Headers */,
 				079A175D1AE7EAE400F22F4E /* IFConfigurable.h in Headers */,
 				079A172C1AE7DF2D00F22F4E /* zip.h in Headers */,
 				074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */,
@@ -706,6 +771,7 @@
 				079A16C31AE7DDE800F22F4E /* IFSchemeHandler.h in Headers */,
 				079A16C61AE7DDE800F22F4E /* IFURIResolver.h in Headers */,
 				07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */,
+				07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */,
 				079A17281AE7DF2D00F22F4E /* mztools.h in Headers */,
 				079A17501AE7E3A600F22F4E /* ContextFilterLogFormatter.h in Headers */,
 				074D9F4C1AE7DD04006D1510 /* SemoCore.h in Headers */,
@@ -872,10 +938,12 @@
 				079A16CB1AE7DDE800F22F4E /* IFFileIO.m in Sources */,
 				079A17531AE7E3A600F22F4E /* DispatchQueueLogFormatter.m in Sources */,
 				079A16DF1AE7DDE800F22F4E /* NSString+IF.m in Sources */,
+				07E3CFD31BDE6BF00036722B /* UIViewController+Toast.m in Sources */,
 				07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */,
 				079A16D11AE7DDE800F22F4E /* IFRegExp.m in Sources */,
 				07287ECD1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m in Sources */,
 				079A16BF1AE7DDE800F22F4E /* IFLocalSchemeHandler.m in Sources */,
+				07E3CFC61BDC15390036722B /* IFTableViewController.m in Sources */,
 				079A176B1AE7EE7600F22F4E /* IFLocals.m in Sources */,
 				07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */,
 				079A172E1AE7DF2D00F22F4E /* ZipArchive.mm in Sources */,
@@ -898,10 +966,14 @@
 				07287EF01BD978AC00047B0C /* IFMakeScheme.m in Sources */,
 				079A17271AE7DF2D00F22F4E /* mztools.c in Sources */,
 				079A176F1AE7F3F800F22F4E /* IFConfiguredLocals.m in Sources */,
+				07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */,
+				07E3CFBE1BDC0A2F0036722B /* IFTableData.m in Sources */,
 				079A16C71AE7DDE800F22F4E /* IFURIResolver.m in Sources */,
 				079A174B1AE7E3A600F22F4E /* DDFileLogger.m in Sources */,
 				079A17611AE7EB1B00F22F4E /* IFConfiguration.m in Sources */,
 				079A172B1AE7DF2D00F22F4E /* zip.c in Sources */,
+				07E3CFCF1BDE6B1F0036722B /* UIView+Toast.m in Sources */,
+				07E3CFC21BDC11CC0036722B /* IFTableViewCellFactory.m in Sources */,
 				079A174D1AE7E3A600F22F4E /* DDLog.m in Sources */,
 				079A16BB1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.m in Sources */,
 				079A174F1AE7E3A600F22F4E /* DDTTYLogger.m in Sources */,

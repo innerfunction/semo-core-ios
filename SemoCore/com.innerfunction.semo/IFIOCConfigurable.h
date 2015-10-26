@@ -16,9 +16,9 @@
 @protocol IFIOCConfigurable <NSObject>
 
 /** Called immediately before the object is configured by calls to its properties. */
-- (void)beforeConfigure:(IFContainer *)container;
+- (void)beforeConfiguration:(IFConfiguration *)configuration inContainer:(IFContainer *)container;
 
 /** Called immediately after the object is configured by calls to its properties. */
-- (void)afterConfigure:(IFContainer *)container;
+- (void)afterConfiguration:(IFConfiguration *)configuration inContainer:(IFContainer *)container;
 
 @end

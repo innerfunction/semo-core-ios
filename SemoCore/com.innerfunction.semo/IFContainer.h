@@ -37,7 +37,7 @@
 /** Instantiate an object from the specified configuration. */
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Instantiate an instance of the named class. */
-- (id)newInstanceForClassName:(NSString *)className;
+- (id)newInstanceForClassName:(NSString *)className withConfiguration:(IFConfiguration *)configuration;
 /** Configure an object using the specified configuration. */
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Configure the container and its contents using the specified configuration. */

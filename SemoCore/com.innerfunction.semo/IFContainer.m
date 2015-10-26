@@ -10,6 +10,8 @@
 #import "IFConfigurable.h"
 #import "IFIOCConfigurable.h"
 #import "IFIOCTypeInspectable.h"
+#import "IFIOCConfigurationInitable.h"
+#import "IFIOCContainerAware.h"
 #import "IFTypeInfo.h"
 #import "IFLogging.h"
 
@@ -57,7 +59,7 @@
     if (type) {
         NSString *className = [types getValueAsString:type];
         if (className) {
-            object = [self newInstanceForClassName:className];
+            object = [self newInstanceForClassName:className withConfiguration:configuration];
         }
         else {
             DDLogCError(@"Make %@: No class name found for type %@", identifier, type);
@@ -69,8 +71,18 @@
     return object;
 }
 
-- (id)newInstanceForClassName:(NSString *)className {
-    return [[NSClassFromString(className) alloc] init];
+- (id)newInstanceForClassName:(NSString *)className withConfiguration:(IFConfiguration *)configuration {
+    id instance = [NSClassFromString(className) alloc];
+    if ([instance conformsToProtocol:@protocol(IFIOCConfigurationInitable)]) {
+        instance = [(id<IFIOCConfigurationInitable>)instance initWithConfiguration:configuration];
+    }
+    else {
+        instance = [instance init];
+    }
+    if ([instance conformsToProtocol:@protocol(IFIOCContainerAware)]) {
+        ((id<IFIOCContainerAware>)instance).iocContainer = self;
+    }
+    return instance;
 }
 
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
@@ -80,7 +92,7 @@
     else {
         IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:object];
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
-            [(id<IFIOCConfigurable>)object beforeConfigure:self];
+            [(id<IFIOCConfigurable>)object beforeConfiguration:configuration inContainer:self];
         }
         id<IFIOCTypeInspectable> typeInspectable = nil;
         if ([object conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
@@ -175,7 +187,7 @@
             [object setValue:value forKey:propName];
         }
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
-            [(id<IFIOCConfigurable>)object afterConfigure:self];
+            [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
         }
         // If the object instance is a service then add to the list of services, and start the
         // service if the container services are running.
@@ -232,7 +244,7 @@
     // No semo:type specified in configuration, so try instantiating an inferred type using the class information provided.
     NSString *className = NSStringFromClass(propClass);
     @try {
-        object = [self newInstanceForClassName:className];
+        object = [self newInstanceForClassName:className withConfiguration:configuration];
         [self configureObject:object withConfiguration:configuration identifier:name];
     }
     @catch (NSException *exception) {
