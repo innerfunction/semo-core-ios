@@ -44,6 +44,11 @@
     types = _types ? _types : [IFConfiguration emptyConfiguration];
 }
 
+- (void)addTypes:(NSDictionary *)_types {
+    IFConfiguration *typeConfig = [[IFConfiguration alloc] initWithData:_types];
+    types = [types mergeConfiguration:typeConfig];
+}
+
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     configuration = [configuration normalize];
     id object = [self instantiateObjectWithConfiguration:configuration identifier:identifier];

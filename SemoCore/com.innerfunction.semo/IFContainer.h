@@ -32,6 +32,8 @@
 - (id)getNamed:(NSString *)name;
 /** Set the type map. */
 - (void)setTypes:(IFConfiguration *)types;
+/** Add additional type name mappings to the type map. */
+- (void)addTypes:(NSDictionary *)types;
 /** Instantiate and configure an object using the specified configuration. */
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Instantiate an object from the specified configuration. */

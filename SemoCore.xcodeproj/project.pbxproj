@@ -9,26 +9,28 @@
 /* Begin PBXBuildFile section */
 		070F6DE21AEC0A4700533CC1 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE11AEC0A4700533CC1 /* configuration.json */; };
 		070F6DE41AEC0A6500533CC1 /* types.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE31AEC0A6500533CC1 /* types.json */; };
-		07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EC81BD8F77400047B0C /* IFTargetContainer.h */; settings = {ASSET_TAGS = (); }; };
-		07287ECC1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECA1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h */; settings = {ASSET_TAGS = (); }; };
-		07287ECD1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECB1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m */; settings = {ASSET_TAGS = (); }; };
-		07287ED01BD8FF7F00047B0C /* IFStringRewriteRules.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */; settings = {ASSET_TAGS = (); }; };
-		07287ED11BD8FF7F00047B0C /* IFStringRewriteRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */; settings = {ASSET_TAGS = (); }; };
-		07287ED71BD92D2400047B0C /* IFTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED61BD92D2400047B0C /* IFTarget.h */; settings = {ASSET_TAGS = (); }; };
-		07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07287EDC1BD9424800047B0C /* IFTargetContainerVIewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */; settings = {ASSET_TAGS = (); }; };
-		07287EDE1BD948E700047B0C /* IFActionDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EDD1BD948E700047B0C /* IFActionDispatcher.h */; settings = {ASSET_TAGS = (); }; };
-		07287EE31BD95EBE00047B0C /* IFDoScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE11BD95EBE00047B0C /* IFDoScheme.h */; settings = {ASSET_TAGS = (); }; };
-		07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE21BD95EBE00047B0C /* IFDoScheme.m */; settings = {ASSET_TAGS = (); }; };
-		07287EE71BD9768500047B0C /* IFNamedScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE51BD9768500047B0C /* IFNamedScheme.h */; settings = {ASSET_TAGS = (); }; };
-		07287EE81BD9768500047B0C /* IFNamedScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE61BD9768500047B0C /* IFNamedScheme.m */; settings = {ASSET_TAGS = (); }; };
-		07287EEB1BD9774B00047B0C /* IFNewScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE91BD9774B00047B0C /* IFNewScheme.h */; settings = {ASSET_TAGS = (); }; };
-		07287EEC1BD9774B00047B0C /* IFNewScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EEA1BD9774B00047B0C /* IFNewScheme.m */; settings = {ASSET_TAGS = (); }; };
-		07287EEF1BD978AC00047B0C /* IFMakeScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EED1BD978AC00047B0C /* IFMakeScheme.h */; settings = {ASSET_TAGS = (); }; };
-		07287EF01BD978AC00047B0C /* IFMakeScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EEE1BD978AC00047B0C /* IFMakeScheme.m */; settings = {ASSET_TAGS = (); }; };
-		07287EF41BD9828400047B0C /* IFNavigationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EF21BD9828400047B0C /* IFNavigationViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07287EF51BD9828400047B0C /* IFNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EF31BD9828400047B0C /* IFNavigationViewController.m */; settings = {ASSET_TAGS = (); }; };
+		07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EC81BD8F77400047B0C /* IFTargetContainer.h */; };
+		07287ECC1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECA1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.h */; };
+		07287ECD1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECB1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m */; };
+		07287ED01BD8FF7F00047B0C /* IFStringRewriteRules.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ECE1BD8FF7F00047B0C /* IFStringRewriteRules.h */; };
+		07287ED11BD8FF7F00047B0C /* IFStringRewriteRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287ECF1BD8FF7F00047B0C /* IFStringRewriteRules.m */; };
+		07287ED71BD92D2400047B0C /* IFTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED61BD92D2400047B0C /* IFTarget.h */; };
+		07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */; };
+		07287EDC1BD9424800047B0C /* IFTargetContainerVIewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */; };
+		07287EDE1BD948E700047B0C /* IFActionDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EDD1BD948E700047B0C /* IFActionDispatcher.h */; };
+		07287EE31BD95EBE00047B0C /* IFDoScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE11BD95EBE00047B0C /* IFDoScheme.h */; };
+		07287EE41BD95EBE00047B0C /* IFDoScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE21BD95EBE00047B0C /* IFDoScheme.m */; };
+		07287EE71BD9768500047B0C /* IFNamedScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE51BD9768500047B0C /* IFNamedScheme.h */; };
+		07287EE81BD9768500047B0C /* IFNamedScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EE61BD9768500047B0C /* IFNamedScheme.m */; };
+		07287EEB1BD9774B00047B0C /* IFNewScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EE91BD9774B00047B0C /* IFNewScheme.h */; };
+		07287EEC1BD9774B00047B0C /* IFNewScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EEA1BD9774B00047B0C /* IFNewScheme.m */; };
+		07287EEF1BD978AC00047B0C /* IFMakeScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EED1BD978AC00047B0C /* IFMakeScheme.h */; };
+		07287EF01BD978AC00047B0C /* IFMakeScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EEE1BD978AC00047B0C /* IFMakeScheme.m */; };
+		07287EF41BD9828400047B0C /* IFNavigationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EF21BD9828400047B0C /* IFNavigationViewController.h */; };
+		07287EF51BD9828400047B0C /* IFNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07287EF31BD9828400047B0C /* IFNavigationViewController.m */; };
 		072D65391AEBFAF9009BC9A4 /* IOCConfigurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */; };
+		0738B4AE1BE11AB800EF66CD /* IFCoreTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 0738B4AC1BE11AB800EF66CD /* IFCoreTypes.h */; };
+		0738B4AF1BE11AB800EF66CD /* IFCoreTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0738B4AD1BE11AB800EF66CD /* IFCoreTypes.m */; };
 		074D9F431AE7DD04006D1510 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
 		074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 074D9F471AE7DD04006D1510 /* SemoCore-Prefix.pch */; };
 		074D9F4A1AE7DD04006D1510 /* SemoCore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074D9F491AE7DD04006D1510 /* SemoCore-Info.plist */; };
@@ -131,30 +133,30 @@
 		07E288131AEBAC7F0078B95B /* Plant.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288121AEBAC7F0078B95B /* Plant.m */; };
 		07E288161AEBAD3C0078B95B /* Forest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288151AEBAD3C0078B95B /* Forest.m */; };
 		07E288191AEBADA80078B95B /* Configurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288181AEBADA80078B95B /* Configurable.m */; };
-		07E3CFA21BD98D290036722B /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA01BD98D290036722B /* SWRevealViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA11BD98D290036722B /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFA61BD98D930036722B /* IFSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA41BD98D930036722B /* IFSlideViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA51BD98D930036722B /* IFSlideViewController.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFAB1BDA73C50036722B /* IFProxyTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA91BDA73C50036722B /* IFProxyTargetContainer.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFAC1BDA73C50036722B /* IFProxyTargetContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFB61BDADE550036722B /* IFWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFB41BDADE550036722B /* IFWebViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFB71BDADE550036722B /* IFWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFB51BDADE550036722B /* IFWebViewController.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFBD1BDC0A2F0036722B /* IFTableData.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFBB1BDC0A2E0036722B /* IFTableData.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFBE1BDC0A2F0036722B /* IFTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFBC1BDC0A2E0036722B /* IFTableData.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFC11BDC11CC0036722B /* IFTableViewCellFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFBF1BDC11CC0036722B /* IFTableViewCellFactory.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFC21BDC11CC0036722B /* IFTableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFC01BDC11CC0036722B /* IFTableViewCellFactory.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFC51BDC15390036722B /* IFTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC31BDC15390036722B /* IFTableViewController.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFC61BDC15390036722B /* IFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFC41BDC15390036722B /* IFTableViewController.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFC81BDE5A2B0036722B /* IFIOCConfigurationInitable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFCA1BDE5E960036722B /* IFIOCContainerAware.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFCE1BDE6B1F0036722B /* UIView+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFCC1BDE6B1F0036722B /* UIView+Toast.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFCF1BDE6B1F0036722B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFCD1BDE6B1F0036722B /* UIView+Toast.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFD31BDE6BF00036722B /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFD61BDE6E360036722B /* NSDictionary+IFValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */; settings = {ASSET_TAGS = (); }; };
-		07E3CFDA1BDEC1B20036722B /* UIImage+CropScale.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD81BDEC1B20036722B /* UIImage+CropScale.h */; settings = {ASSET_TAGS = (); }; };
-		07E3CFDB1BDEC1B20036722B /* UIImage+CropScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD91BDEC1B20036722B /* UIImage+CropScale.m */; settings = {ASSET_TAGS = (); }; };
+		07E3CFA21BD98D290036722B /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA01BD98D290036722B /* SWRevealViewController.h */; };
+		07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA11BD98D290036722B /* SWRevealViewController.m */; };
+		07E3CFA61BD98D930036722B /* IFSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA41BD98D930036722B /* IFSlideViewController.h */; };
+		07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFA51BD98D930036722B /* IFSlideViewController.m */; };
+		07E3CFAB1BDA73C50036722B /* IFProxyTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFA91BDA73C50036722B /* IFProxyTargetContainer.h */; };
+		07E3CFAC1BDA73C50036722B /* IFProxyTargetContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFAA1BDA73C50036722B /* IFProxyTargetContainer.m */; };
+		07E3CFB61BDADE550036722B /* IFWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFB41BDADE550036722B /* IFWebViewController.h */; };
+		07E3CFB71BDADE550036722B /* IFWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFB51BDADE550036722B /* IFWebViewController.m */; };
+		07E3CFBD1BDC0A2F0036722B /* IFTableData.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFBB1BDC0A2E0036722B /* IFTableData.h */; };
+		07E3CFBE1BDC0A2F0036722B /* IFTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFBC1BDC0A2E0036722B /* IFTableData.m */; };
+		07E3CFC11BDC11CC0036722B /* IFTableViewCellFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFBF1BDC11CC0036722B /* IFTableViewCellFactory.h */; };
+		07E3CFC21BDC11CC0036722B /* IFTableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFC01BDC11CC0036722B /* IFTableViewCellFactory.m */; };
+		07E3CFC51BDC15390036722B /* IFTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC31BDC15390036722B /* IFTableViewController.h */; };
+		07E3CFC61BDC15390036722B /* IFTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFC41BDC15390036722B /* IFTableViewController.m */; };
+		07E3CFC81BDE5A2B0036722B /* IFIOCConfigurationInitable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */; };
+		07E3CFCA1BDE5E960036722B /* IFIOCContainerAware.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */; };
+		07E3CFCE1BDE6B1F0036722B /* UIView+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFCC1BDE6B1F0036722B /* UIView+Toast.h */; };
+		07E3CFCF1BDE6B1F0036722B /* UIView+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFCD1BDE6B1F0036722B /* UIView+Toast.m */; };
+		07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */; };
+		07E3CFD31BDE6BF00036722B /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */; };
+		07E3CFD61BDE6E360036722B /* NSDictionary+IFValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD41BDE6E360036722B /* NSDictionary+IFValues.h */; };
+		07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD51BDE6E360036722B /* NSDictionary+IFValues.m */; };
+		07E3CFDA1BDEC1B20036722B /* UIImage+CropScale.h in Headers */ = {isa = PBXBuildFile; fileRef = 07E3CFD81BDEC1B20036722B /* UIImage+CropScale.h */; };
+		07E3CFDB1BDEC1B20036722B /* UIImage+CropScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E3CFD91BDEC1B20036722B /* UIImage+CropScale.m */; };
 		DEC9697D045094EC7020060D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B3ADE948579F28497A3712 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -192,6 +194,8 @@
 		07287EF31BD9828400047B0C /* IFNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFNavigationViewController.m; path = com.innerfunction.semo/IFNavigationViewController.m; sourceTree = "<group>"; };
 		072D65371AEBFAF9009BC9A4 /* IOCConfigurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOCConfigurable.h; sourceTree = "<group>"; };
 		072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOCConfigurable.m; sourceTree = "<group>"; };
+		0738B4AC1BE11AB800EF66CD /* IFCoreTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCoreTypes.h; sourceTree = "<group>"; };
+		0738B4AD1BE11AB800EF66CD /* IFCoreTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCoreTypes.m; sourceTree = "<group>"; };
 		074D9F3F1AE7DD04006D1510 /* libSemoCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSemoCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		074D9F421AE7DD04006D1510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		074D9F461AE7DD04006D1510 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -391,6 +395,8 @@
 				075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */,
 				07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */,
 				07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */,
+				0738B4AC1BE11AB800EF66CD /* IFCoreTypes.h */,
+				0738B4AD1BE11AB800EF66CD /* IFCoreTypes.m */,
 			);
 			name = com.innerfunction.semo.app;
 			path = com.innerfunction.semo;
@@ -399,12 +405,12 @@
 		07287EF11BD9822C00047B0C /* com.innerfunction.semo.ui */ = {
 			isa = PBXGroup;
 			children = (
-				07E3CFB41BDADE550036722B /* IFWebViewController.h */,
-				07E3CFB51BDADE550036722B /* IFWebViewController.m */,
 				07287EF21BD9828400047B0C /* IFNavigationViewController.h */,
 				07287EF31BD9828400047B0C /* IFNavigationViewController.m */,
 				07E3CFA41BD98D930036722B /* IFSlideViewController.h */,
 				07E3CFA51BD98D930036722B /* IFSlideViewController.m */,
+				07E3CFB41BDADE550036722B /* IFWebViewController.h */,
+				07E3CFB51BDADE550036722B /* IFWebViewController.m */,
 				07E3CFD01BDE6BF00036722B /* UIViewController+Toast.h */,
 				07E3CFD11BDE6BF00036722B /* UIViewController+Toast.m */,
 				07E3CFD81BDEC1B20036722B /* UIImage+CropScale.h */,
@@ -746,6 +752,7 @@
 				079A174A1AE7E3A600F22F4E /* DDFileLogger.h in Headers */,
 				079A17261AE7DF2D00F22F4E /* ioapi.h in Headers */,
 				079A172D1AE7DF2D00F22F4E /* ZipArchive.h in Headers */,
+				0738B4AE1BE11AB800EF66CD /* IFCoreTypes.h in Headers */,
 				079A16C01AE7DDE800F22F4E /* IFResource.h in Headers */,
 				079A17321AE7E15D00F22F4E /* ISO8601DateFormatter.h in Headers */,
 				079A16BA1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h in Headers */,
@@ -996,6 +1003,7 @@
 				079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */,
 				074D9F4E1AE7DD04006D1510 /* SemoCore.m in Sources */,
 				079A16DD1AE7DDE800F22F4E /* NSDictionary+IF.m in Sources */,
+				0738B4AF1BE11AB800EF66CD /* IFCoreTypes.m in Sources */,
 				079A170E1AE7DF2D00F22F4E /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

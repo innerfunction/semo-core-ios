@@ -1,11 +1,6 @@
 
-2. Add list view (and supporting classes, migrate from EPCore)
 
 Then:
 5. New form views go into a new module
 6. Semo content also in new module, to include simplified MVC implementation using key/value observing.
    > basic MVC may need to go in core, so that views can be refreshed
-
-Also:
-* Consider ways to allow modules to define their own type/classname mappings, to minimize maintenance overhead
-  on the app developer.

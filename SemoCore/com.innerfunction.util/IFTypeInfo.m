@@ -14,7 +14,7 @@
     self = [super init];
     if (self) {
         const char * attr = property_getAttributes( property );
-        int idx, len = strlen(attr);
+        int idx, len = (int)strlen(attr);
         for (idx = 0; attr[idx] != ',' && idx < len; idx++);
         strncpy(propertyType, attr + 2, idx);
         propertyType[idx] = '\0';

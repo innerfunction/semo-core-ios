@@ -13,6 +13,7 @@
 #import "IFNewScheme.h"
 #import "IFMakeScheme.h"
 #import "IFNamedScheme.h"
+#import "IFCoreTypes.h"
 #import "IFI18nMap.h"
 #import "IFLogging.h"
 #import "NSString+IF.h"
@@ -221,6 +222,7 @@ static IFAppContainer *instance;
 
 + (void)initialize {
     instance = [[IFAppContainer alloc] init];
+    [instance addTypes:[IFCoreTypes types]];
 }
 
 + (IFAppContainer *)getAppContainer {
