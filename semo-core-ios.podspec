@@ -45,7 +45,6 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  # s.license      = "Apache License, Version 2.0"
   s.license      = { :type => "Apache", :file => "LICENSE" }
 
 
@@ -70,8 +69,7 @@ Pod::Spec.new do |s|
   #  the deployment target. You can optionally include the target after the platform.
   #
 
-  s.platform     = :ios
-  # s.platform     = :ios, "5.0"
+  s.platform     = :ios, "7.0"
 
   #  When using multiple platforms
   # s.ios.deployment_target = "5.0"
@@ -88,6 +86,9 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/innerfunction/semo-core-ios.git", :tag => "0.0.1" }
 
+  s.source_files  = "SemoCore/*.{h,m}", "SemoCore/com.innerfunction.*/*.{h,m}", "SemoCore/Externals/**/*.{h,m}"
+  s.exclude_files = "SemoCore/Externals/ISO8601DateFormatter/*.m", "SemoCore/Externals/JSONKit/*.m", "SemoCore/Externals/ZipArchive/**/*.{m,mm,c}"
+  s.requires_arc = true
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -97,8 +98,10 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "SemoCore/*.{h,m}", "SemoCore/com.innerfunction.*/*.{h,m}", "SemoCore/Externals/**/*.{h,m,mm,c}"
-  # s.exclude_files = "Classes/Exclude"
+  s.subspec 'noarc' do |sp|
+    sp.source_files = "SemoCore/Externals/ISO8601DateFormatter/*.{h,m}", "SemoCore/Externals/JSONKit/*.{h,m}", "SemoCore/Externals/ZipArchive/**/*.{h,m,mm,c}"
+    sp.requires_arc = false
+  end
 
   # s.public_header_files = "Classes/**/*.h"
 
@@ -123,11 +126,9 @@ Pod::Spec.new do |s|
   #  the lib prefix of their name.
   #
 
-  # s.framework  = "SomeFramework"
-  # s.frameworks = "SomeFramework", "AnotherFramework"
+  s.frameworks = "UIKit", "Foundation"
 
-  # s.library   = "iconv"
-  # s.libraries = "iconv", "xml2"
+  s.libraries = "z"
 
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -136,9 +137,6 @@ Pod::Spec.new do |s|
   #  where they will only apply to your library. If you depend on other Podspecs
   #  you can include multiple dependencies to ensure it works.
 
-  # s.requires_arc = true
-
-  # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
   # s.dependency "JSONKit", "~> 1.4"
 
