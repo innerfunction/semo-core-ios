@@ -5,7 +5,7 @@
 //  Copyright (c) 2014 Julian Goacher. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 typedef enum {
     IFValueTypeUndefined,

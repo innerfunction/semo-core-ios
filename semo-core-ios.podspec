@@ -97,7 +97,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "SemoCore/*.{h,m}", "SemoCore/com.innerfunction.*/*.{h,m}", "SemoCore/Externals/*/*.{h,m}"
+  s.source_files  = "SemoCore/*.{h,m}", "SemoCore/com.innerfunction.*/*.{h,m}", "SemoCore/Externals/**/*.{h,m,mm,c}"
   # s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -139,6 +139,7 @@ Pod::Spec.new do |s|
   # s.requires_arc = true
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
+  s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SRCROOT)/**" }
   # s.dependency "JSONKit", "~> 1.4"
 
 end
