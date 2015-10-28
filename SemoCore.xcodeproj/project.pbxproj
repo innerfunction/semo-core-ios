@@ -100,7 +100,6 @@
 		079A17511AE7E3A600F22F4E /* ContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17421AE7E3A600F22F4E /* ContextFilterLogFormatter.m */; };
 		079A17521AE7E3A600F22F4E /* DispatchQueueLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A17431AE7E3A600F22F4E /* DispatchQueueLogFormatter.h */; };
 		079A17531AE7E3A600F22F4E /* DispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17441AE7E3A600F22F4E /* DispatchQueueLogFormatter.m */; };
-		079A17541AE7E3A600F22F4E /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 079A17451AE7E3A600F22F4E /* README.txt */; };
 		079A17561AE7E5BB00F22F4E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079A17551AE7E5BB00F22F4E /* UIKit.framework */; };
 		079A17591AE7EA8800F22F4E /* IFService.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A17581AE7EA8800F22F4E /* IFService.h */; };
 		079A175B1AE7EABD00F22F4E /* IFIOCConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A175A1AE7EABD00F22F4E /* IFIOCConfigurable.h */; };
@@ -877,7 +876,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				079A17541AE7E3A600F22F4E /* README.txt in Resources */,
 				074D9F4A1AE7DD04006D1510 /* SemoCore-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
