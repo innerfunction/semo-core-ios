@@ -56,9 +56,17 @@
             }
         }
         
+        IFResource *resource = nil;
         if (uri) {
-            DDLogInfo(@"%@: Loading app container configuration from %@", LogTag, uri);
-            IFResource *resource = [resolver dereference:uri];
+            DDLogInfo(@"%@: Attempting to load app container configuration from %@", LogTag, uri);
+            // TODO: Use derefToResource: instead?
+            id _resource = [resolver dereference:uri];
+            if ([_resource isKindOfClass:[IFResource class]]) {
+                resource = (IFResource *)_resource;
+            }
+        }
+        
+        if (resource) {
             configuration = [[IFConfiguration alloc] initWithResource:resource];
         }
         else {
@@ -218,6 +226,8 @@
     }
 }
 
+#pragma mark - Class statics
+
 static IFAppContainer *instance;
 
 + (void)initialize {
@@ -229,5 +239,11 @@ static IFAppContainer *instance;
     return instance;
 }
 
++ (IFAppContainer *)bindToWindow:(UIWindow *)window {
+    IFAppContainer *container = [IFAppContainer getAppContainer];
+    [container loadConfiguration:@"app:config.json"];
+    window.rootViewController = [container getRootView];
+    return container;
+}
 
 @end

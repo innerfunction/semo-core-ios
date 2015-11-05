@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 InnerFunction. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "IFContainer.h"
 #import "IFTarget.h"
 #import "IFDefaultTargetContainerBehaviour.h"
@@ -30,5 +31,13 @@
 
 /** Return the app container singleton instance. */
 + (IFAppContainer *)getAppContainer;
+
+/**
+ * Utility method to load configuration from a standard location and bind to an app window.
+ * Assumes app configuration is in a file named config.json.
+ * Binds the container's root view to the windows rootViewController.
+ * Returns the app container configured with the files contents.
+ */
++ (IFAppContainer *)bindToWindow:(UIWindow *)window;
 
 @end

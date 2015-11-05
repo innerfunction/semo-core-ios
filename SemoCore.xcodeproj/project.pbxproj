@@ -100,7 +100,6 @@
 		079A17511AE7E3A600F22F4E /* ContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17421AE7E3A600F22F4E /* ContextFilterLogFormatter.m */; };
 		079A17521AE7E3A600F22F4E /* DispatchQueueLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A17431AE7E3A600F22F4E /* DispatchQueueLogFormatter.h */; };
 		079A17531AE7E3A600F22F4E /* DispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17441AE7E3A600F22F4E /* DispatchQueueLogFormatter.m */; };
-		079A17561AE7E5BB00F22F4E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079A17551AE7E5BB00F22F4E /* UIKit.framework */; };
 		079A17591AE7EA8800F22F4E /* IFService.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A17581AE7EA8800F22F4E /* IFService.h */; };
 		079A175B1AE7EABD00F22F4E /* IFIOCConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A175A1AE7EABD00F22F4E /* IFIOCConfigurable.h */; };
 		079A175D1AE7EAE400F22F4E /* IFConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A175C1AE7EAE400F22F4E /* IFConfigurable.h */; };
@@ -117,11 +116,10 @@
 		079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A17711AE7F80B00F22F4E /* IFContainer.m */; };
 		079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */; };
 		079ECCAC1AE8441900A3DD41 /* IFTypeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */; };
+		07CEC8E21BEB8C67005FB208 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07CEC8E11BEB8C67005FB208 /* UIKit.framework */; };
 		07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D025201AEAC1D200C2A619 /* IFI18nMap.h */; };
 		07D025231AEAC1D200C2A619 /* IFI18nMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D025211AEAC1D200C2A619 /* IFI18nMap.m */; };
-		07E287F21AEBA7750078B95B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E287F11AEBA7750078B95B /* XCTest.framework */; };
 		07E287F31AEBA7750078B95B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
-		07E287F41AEBA7750078B95B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 079A17551AE7E5BB00F22F4E /* UIKit.framework */; };
 		07E287FA1AEBA7750078B95B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07E287F81AEBA7750078B95B /* InfoPlist.strings */; };
 		07E287FC1AEBA7750078B95B /* SemoCore_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */; };
 		07E288041AEBA9080078B95B /* AppContainerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E288031AEBA9080078B95B /* AppContainerTest.m */; };
@@ -268,7 +266,6 @@
 		079A17431AE7E3A600F22F4E /* DispatchQueueLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DispatchQueueLogFormatter.h; sourceTree = "<group>"; };
 		079A17441AE7E3A600F22F4E /* DispatchQueueLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DispatchQueueLogFormatter.m; sourceTree = "<group>"; };
 		079A17451AE7E3A600F22F4E /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		079A17551AE7E5BB00F22F4E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		079A17581AE7EA8800F22F4E /* IFService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFService.h; sourceTree = "<group>"; };
 		079A175A1AE7EABD00F22F4E /* IFIOCConfigurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFIOCConfigurable.h; sourceTree = "<group>"; };
 		079A175C1AE7EAE400F22F4E /* IFConfigurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFConfigurable.h; sourceTree = "<group>"; };
@@ -285,10 +282,10 @@
 		079A17711AE7F80B00F22F4E /* IFContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFContainer.m; sourceTree = "<group>"; };
 		079ECCA91AE8441900A3DD41 /* IFTypeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTypeInfo.h; sourceTree = "<group>"; };
 		079ECCAA1AE8441900A3DD41 /* IFTypeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFTypeInfo.m; sourceTree = "<group>"; };
+		07CEC8E11BEB8C67005FB208 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		07D025201AEAC1D200C2A619 /* IFI18nMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFI18nMap.h; sourceTree = "<group>"; };
 		07D025211AEAC1D200C2A619 /* IFI18nMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFI18nMap.m; sourceTree = "<group>"; };
 		07E287F01AEBA7750078B95B /* SemoCore Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SemoCore Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		07E287F11AEBA7750078B95B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		07E287F71AEBA7750078B95B /* SemoCore Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SemoCore Tests-Info.plist"; sourceTree = "<group>"; };
 		07E287F91AEBA7750078B95B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SemoCore_Tests.m; sourceTree = "<group>"; };
@@ -340,7 +337,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				079A17561AE7E5BB00F22F4E /* UIKit.framework in Frameworks */,
+				07CEC8E21BEB8C67005FB208 /* UIKit.framework in Frameworks */,
 				074D9F431AE7DD04006D1510 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,8 +346,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07E287F21AEBA7750078B95B /* XCTest.framework in Frameworks */,
-				07E287F41AEBA7750078B95B /* UIKit.framework in Frameworks */,
 				07E287F31AEBA7750078B95B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,9 +421,8 @@
 		074D9F411AE7DD04006D1510 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				079A17551AE7E5BB00F22F4E /* UIKit.framework */,
+				07CEC8E11BEB8C67005FB208 /* UIKit.framework */,
 				074D9F421AE7DD04006D1510 /* Foundation.framework */,
-				07E287F11AEBA7750078B95B /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1078,6 +1072,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = SemoCore/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.innerfunction.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -1095,6 +1090,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = SemoCore/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.innerfunction.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

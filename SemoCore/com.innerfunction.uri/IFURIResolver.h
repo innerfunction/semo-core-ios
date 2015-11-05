@@ -12,6 +12,9 @@
 
 @protocol IFURIResolver <NSObject>
 
+// TODO: Instead of all these methods, just have deference:(id) and deferenceToResource:(id)?
+// i.e. Do automatic conversion to IFCompoundURI where needed.
+
 /** Dereference a URI string to a resource object. */
 - (IFResource *)derefStringToResource:(NSString *)uri;
 /** Dereference a URI to a resource object. */

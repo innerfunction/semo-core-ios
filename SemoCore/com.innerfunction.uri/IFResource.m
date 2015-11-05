@@ -94,14 +94,14 @@
 }
 
 - (IFResource *)refresh {
-    return [self dereference:self.uri];
+    return [self derefToResource:self.uri];
 }
 
-- (IFResource *)dereferenceString:(NSString *)suri {
-    return [self dereferenceString:suri context:self];
+- (IFResource *)derefStringToResource:(NSString *)suri {
+    return [self derefStringToResource:suri context:self];
 }
 
-- (IFResource *)dereferenceString:(NSString *)suri context:(IFResource *)context {
+- (IFResource *)derefStringToResource:(NSString *)suri context:(IFResource *)context {
     IFResource *result = nil;
     NSError *error = nil;
     IFCompoundURI *curi = [IFCompoundURI parse:suri error:&error];
@@ -109,16 +109,24 @@
         DDLogCError(@"IFResource: Parsing URI %@ (%@)", suri, [error description]);
     }
     else {
-        result = [self dereference:curi context:context];
+        result = [self derefToResource:curi context:context];
     }
     return result;
 }
 
-- (IFResource *)dereference:(IFCompoundURI *)curi {
+- (IFResource *)derefToResource:(IFCompoundURI *)uri {
+    return [self derefToResource:uri context:self];
+}
+
+- (IFResource *)derefToResource:(IFCompoundURI *)uri context:(IFResource *)context {
+    return [self.resolver derefToResource:uri context:context];
+}
+
+- (id)dereference:(IFCompoundURI *)curi {
     return [self dereference:curi context:self];
 }
 
-- (IFResource *)dereference:(IFCompoundURI *)curi context:(IFResource *)context {
+- (id)dereference:(IFCompoundURI *)curi context:(IFResource *)context {
     return [self.resolver dereference:curi context:context];
 }
 
