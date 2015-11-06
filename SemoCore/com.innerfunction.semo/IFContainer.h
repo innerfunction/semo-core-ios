@@ -33,13 +33,15 @@
 /** Set the type map. */
 - (void)setTypes:(IFConfiguration *)types;
 /** Add additional type name mappings to the type map. */
-- (void)addTypes:(NSDictionary *)types;
+- (void)addTypes:(id)types;
 /** Instantiate and configure an object using the specified configuration. */
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Instantiate an object from the specified configuration. */
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Instantiate an instance of the named class. */
 - (id)newInstanceForClassName:(NSString *)className withConfiguration:(IFConfiguration *)configuration;
+/** Instantiate an instance of the named type. */
+- (id)newInstanceForTypeName:(NSString *)typeName withConfiguration:(IFConfiguration *)configuration;
 /** Configure an object using the specified configuration. */
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Configure the container and its contents using the specified configuration. */

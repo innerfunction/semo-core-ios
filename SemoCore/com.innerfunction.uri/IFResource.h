@@ -9,27 +9,21 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "IFCompoundURI.h"
-#import "IFURIResolver.h"
+#import "IFURIHandling.h"
 
 // Interface for accessing different representations of a resource returned by the 
 // internal URI resolver.
 // Different resource types don't need to provide all representations, and can return
 // nil if they don't support any particular representation.
-@interface IFResource : NSObject <IFURIResolver> {
+@interface IFResource : NSObject <IFURIHandler, IFResourceContext> {
 }
 
 // The resource data.
 @property (nonatomic, strong) id data;
-// A URI resolver.
-@property (nonatomic, strong) id<IFURIResolver> resolver;
 // The URI used to reference this resource.
 @property (nonatomic, strong) IFCompoundURI *uri;
-// The URI scheme context to be used to resolve any relative URIs with reference to this resource.
-// A dictionary of URIs keyed by scheme.
-@property (nonatomic, strong) NSDictionary *schemeContext;
 
-- (id)initWithData:(id)data;
-- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(IFResource *)parent;
+- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(id<IFResourceContext>)parent;
 // Access the resource's boolean representation.
 - (BOOL)asBoolean;
 // Access the resource's default representation.

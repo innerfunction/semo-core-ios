@@ -48,11 +48,11 @@
 		079A16BF1AE7DDE800F22F4E /* IFLocalSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A16921AE7DDE800F22F4E /* IFLocalSchemeHandler.m */; };
 		079A16C01AE7DDE800F22F4E /* IFResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16931AE7DDE800F22F4E /* IFResource.h */; };
 		079A16C11AE7DDE800F22F4E /* IFResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A16941AE7DDE800F22F4E /* IFResource.m */; };
-		079A16C31AE7DDE800F22F4E /* IFSchemeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16961AE7DDE800F22F4E /* IFSchemeHandler.h */; };
+		079A16C31AE7DDE800F22F4E /* IFURIHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16961AE7DDE800F22F4E /* IFURIHandling.h */; };
 		079A16C41AE7DDE800F22F4E /* IFStringSchemeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16971AE7DDE800F22F4E /* IFStringSchemeHandler.h */; };
 		079A16C51AE7DDE800F22F4E /* IFStringSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A16981AE7DDE800F22F4E /* IFStringSchemeHandler.m */; };
-		079A16C61AE7DDE800F22F4E /* IFURIResolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16991AE7DDE800F22F4E /* IFURIResolver.h */; };
-		079A16C71AE7DDE800F22F4E /* IFURIResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A169A1AE7DDE800F22F4E /* IFURIResolver.m */; };
+		079A16C61AE7DDE800F22F4E /* IFStandardURIHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16991AE7DDE800F22F4E /* IFStandardURIHandler.h */; };
+		079A16C71AE7DDE800F22F4E /* IFStandardURIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A169A1AE7DDE800F22F4E /* IFStandardURIHandler.m */; };
 		079A16CA1AE7DDE800F22F4E /* IFFileIO.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A169E1AE7DDE800F22F4E /* IFFileIO.h */; };
 		079A16CB1AE7DDE800F22F4E /* IFFileIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A169F1AE7DDE800F22F4E /* IFFileIO.m */; };
 		079A16CC1AE7DDE800F22F4E /* IFHTTPUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A16A01AE7DDE800F22F4E /* IFHTTPUtils.h */; };
@@ -212,11 +212,11 @@
 		079A16921AE7DDE800F22F4E /* IFLocalSchemeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFLocalSchemeHandler.m; sourceTree = "<group>"; };
 		079A16931AE7DDE800F22F4E /* IFResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFResource.h; sourceTree = "<group>"; };
 		079A16941AE7DDE800F22F4E /* IFResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFResource.m; sourceTree = "<group>"; };
-		079A16961AE7DDE800F22F4E /* IFSchemeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFSchemeHandler.h; sourceTree = "<group>"; };
+		079A16961AE7DDE800F22F4E /* IFURIHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFURIHandling.h; sourceTree = "<group>"; };
 		079A16971AE7DDE800F22F4E /* IFStringSchemeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFStringSchemeHandler.h; sourceTree = "<group>"; };
 		079A16981AE7DDE800F22F4E /* IFStringSchemeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFStringSchemeHandler.m; sourceTree = "<group>"; };
-		079A16991AE7DDE800F22F4E /* IFURIResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFURIResolver.h; sourceTree = "<group>"; };
-		079A169A1AE7DDE800F22F4E /* IFURIResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFURIResolver.m; sourceTree = "<group>"; };
+		079A16991AE7DDE800F22F4E /* IFStandardURIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFStandardURIHandler.h; sourceTree = "<group>"; };
+		079A169A1AE7DDE800F22F4E /* IFStandardURIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFStandardURIHandler.m; sourceTree = "<group>"; };
 		079A169E1AE7DDE800F22F4E /* IFFileIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFileIO.h; sourceTree = "<group>"; };
 		079A169F1AE7DDE800F22F4E /* IFFileIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFFileIO.m; sourceTree = "<group>"; };
 		079A16A01AE7DDE800F22F4E /* IFHTTPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFHTTPUtils.h; sourceTree = "<group>"; };
@@ -468,11 +468,11 @@
 				079A16921AE7DDE800F22F4E /* IFLocalSchemeHandler.m */,
 				079A16931AE7DDE800F22F4E /* IFResource.h */,
 				079A16941AE7DDE800F22F4E /* IFResource.m */,
-				079A16961AE7DDE800F22F4E /* IFSchemeHandler.h */,
+				079A16961AE7DDE800F22F4E /* IFURIHandling.h */,
+				079A16991AE7DDE800F22F4E /* IFStandardURIHandler.h */,
+				079A169A1AE7DDE800F22F4E /* IFStandardURIHandler.m */,
 				079A16971AE7DDE800F22F4E /* IFStringSchemeHandler.h */,
 				079A16981AE7DDE800F22F4E /* IFStringSchemeHandler.m */,
-				079A16991AE7DDE800F22F4E /* IFURIResolver.h */,
-				079A169A1AE7DDE800F22F4E /* IFURIResolver.m */,
 			);
 			path = com.innerfunction.uri;
 			sourceTree = "<group>";
@@ -759,8 +759,8 @@
 				07287EE31BD95EBE00047B0C /* IFDoScheme.h in Headers */,
 				07E3CFA61BD98D930036722B /* IFSlideViewController.h in Headers */,
 				07287EE71BD9768500047B0C /* IFNamedScheme.h in Headers */,
-				079A16C31AE7DDE800F22F4E /* IFSchemeHandler.h in Headers */,
-				079A16C61AE7DDE800F22F4E /* IFURIResolver.h in Headers */,
+				079A16C31AE7DDE800F22F4E /* IFURIHandling.h in Headers */,
+				079A16C61AE7DDE800F22F4E /* IFStandardURIHandler.h in Headers */,
 				07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */,
 				07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */,
 				079A17281AE7DF2D00F22F4E /* mztools.h in Headers */,
@@ -927,7 +927,7 @@
 				079A176F1AE7F3F800F22F4E /* IFConfiguredLocals.m in Sources */,
 				07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */,
 				07E3CFBE1BDC0A2F0036722B /* IFTableData.m in Sources */,
-				079A16C71AE7DDE800F22F4E /* IFURIResolver.m in Sources */,
+				079A16C71AE7DDE800F22F4E /* IFStandardURIHandler.m in Sources */,
 				079A174B1AE7E3A600F22F4E /* DDFileLogger.m in Sources */,
 				079A17611AE7EB1B00F22F4E /* IFConfiguration.m in Sources */,
 				079A172B1AE7DF2D00F22F4E /* zip.c in Sources */,

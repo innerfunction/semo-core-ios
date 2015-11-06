@@ -44,9 +44,17 @@
     types = _types ? _types : [IFConfiguration emptyConfiguration];
 }
 
-- (void)addTypes:(NSDictionary *)_types {
-    IFConfiguration *typeConfig = [[IFConfiguration alloc] initWithData:_types];
-    types = [types mergeConfiguration:typeConfig];
+- (void)addTypes:(id)_types {
+    if (_types) {
+        IFConfiguration *typeConfig;
+        if ([_types isKindOfClass:[IFConfiguration class]]) {
+            typeConfig = (IFConfiguration *)_types;
+        }
+        else {
+            typeConfig = [[IFConfiguration alloc] initWithData:_types];
+        }
+        types = [types mergeConfiguration:typeConfig];
+    }
 }
 
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
@@ -67,11 +75,11 @@
             object = [self newInstanceForClassName:className withConfiguration:configuration];
         }
         else {
-            DDLogCError(@"Make %@: No class name found for type %@", identifier, type);
+            DDLogError(@"%@: Making %@, no class name found for type %@", LogTag, identifier, type);
         }
     }
     else {
-        DDLogCError(@"Make %@: Component configuration missing 'semo:type' property", identifier);
+        DDLogError(@"%@: Making %@, Component configuration missing 'semo:type' property", LogTag, identifier);
     }
     return object;
 }
@@ -88,6 +96,15 @@
         ((id<IFIOCContainerAware>)instance).iocContainer = self;
     }
     return instance;
+}
+
+- (id)newInstanceForTypeName:(NSString *)typeName withConfiguration:(IFConfiguration *)configuration {
+    NSString *className = [types getValueAsString:typeName];
+    if (!className) {
+        DDLogError(@"%@: newInstanceForTypeName, no class name found for type %@", LogTag, typeName);
+        return nil;
+    }
+    return [self newInstanceForClassName:className withConfiguration:configuration];
 }
 
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
@@ -128,6 +145,9 @@
             }
             else if ([propertyInfo isDouble]) {
                 value = [configuration getValueAsNumber:propName];
+            }
+            else if ([propertyInfo isId]) {
+                value = [configuration getValue:propName];
             }
             else if ([propertyInfo isAssignableFrom:[NSNumber class]]) {
                 value = [configuration getValueAsNumber:propName];
@@ -208,29 +228,37 @@
 
 - (void)configureWith:(IFConfiguration *)configuration {
     // Add named objects.
-    IFConfiguration *namedConfig = [configuration getValueAsConfiguration:@"named"];
-    if (!namedConfig) {
-        namedConfig = [configuration getValueAsConfiguration:@"names"];
-    }
-    if (namedConfig) {
-        NSArray *names = [namedConfig getValueNames];
-        NSMutableDictionary *objConfigs = [[NSMutableDictionary alloc] init];
-        // Initialize named objects.
-        for (NSString *name in names) {
-            IFConfiguration *objConfig = [namedConfig getValueAsConfiguration:name];
+    NSArray *names = [configuration getValueNames];
+    NSMutableDictionary *objConfigs = [[NSMutableDictionary alloc] init];
+    // Initialize named objects.
+    for (NSString *name in names) {
+        id value;
+        IFValueType valueType = [configuration getValueType:name];
+        if (valueType == IFValueTypeObject) {
+            value = [configuration getValueAsConfiguration:name];
+        }
+        else {
+            value = [configuration getValue:name];
+        }
+        if ([value isKindOfClass:[IFConfiguration class]]) {
+            // Try instantiating a new object from an object configuration.
+            IFConfiguration *objConfig = (IFConfiguration *)value;
             id object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
             if (object) {
-                [named setObject:object forKey:name];
+                value = object;
                 [objConfigs setObject:objConfig forKey:name];
             }
         }
-        // Configure named objects.
-        for (NSString *name in names) {
-            id object = [named objectForKey:name];
-            if (object) {
-                IFConfiguration *objConfig = [objConfigs objectForKey:name];
-                [self configureObject:object withConfiguration:objConfig identifier:name];
-            }
+        if (value) {
+            [named setObject:value forKey:name];
+        }
+    }
+    // Configure named objects.
+    for (NSString *name in names) {
+        id object = [named objectForKey:name];
+        IFConfiguration *objConfig = [objConfigs objectForKey:name];
+        if (object && objConfig) {
+            [self configureObject:object withConfiguration:objConfig identifier:name];
         }
     }
 }

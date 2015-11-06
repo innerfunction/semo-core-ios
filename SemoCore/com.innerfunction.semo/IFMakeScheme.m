@@ -22,7 +22,7 @@
     return uri;
 }
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
     id result = nil;
     id _config = [container getNamed:uri.name];
     if (_config && [_config isKindOfClass:[IFConfiguration class]]) {

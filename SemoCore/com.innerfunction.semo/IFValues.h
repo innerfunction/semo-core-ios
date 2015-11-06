@@ -13,7 +13,8 @@ typedef enum {
     IFValueTypeNumber,
     IFValueTypeString,
     IFValueTypeList,
-    IFValueTypeObject
+    IFValueTypeObject,
+    IFValueTypeOther
 } IFValueType;
 
 @protocol IFValues <NSObject>

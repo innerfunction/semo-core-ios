@@ -13,14 +13,24 @@
 - (id)initWithProperty:(objc_property_t)property {
     self = [super init];
     if (self) {
+        // Read property attributes.
         const char * attr = property_getAttributes( property );
+        
+        // Find index of end of type information in attribute string.
         int idx, len = (int)strlen(attr);
         for (idx = 0; attr[idx] != ',' && idx < len; idx++);
-        strncpy(propertyType, attr + 2, idx);
-        propertyType[idx] = '\0';
-        if (strncmp(propertyType, "T@", 2) == 0) {
-            NSString *typeIdentifier = [NSString stringWithUTF8String:propertyType];
-            propertyClass = NSClassFromString([typeIdentifier substringFromIndex:3]);
+        
+        // Copy type info to its own var.
+        propertyType = malloc(idx - 1);
+        strncpy(propertyType, attr + 1, idx);
+        propertyType[idx - 1] = '\0';
+        
+        // Try extracting class info from the type info.
+        if (strncmp(propertyType, "@", 1) == 0 && idx > 3) {
+            // The type identified includes quotes around the class name, e.g. T@"NSData", so extract the class name from
+            // within the quotes. The length is idx - 4 because (i) the end index is idx - 2; (ii) + 2 for the start offset.
+            NSString *className = [[NSString stringWithUTF8String:propertyType] substringWithRange:NSMakeRange(2, idx - 4)];
+            propertyClass = NSClassFromString(className);
         }
         else {
             propertyClass = nil;
@@ -45,12 +55,20 @@
     return strcmp(propertyType, @encode(double)) == 0;
 }
 
+- (BOOL)isId {
+    return strcmp(propertyType, @encode(id)) == 0;
+}
+
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj {
     return [propertyClass isSubclassOfClass:classObj];
 }
 
 - (__unsafe_unretained Class)getPropertyClass {
     return propertyClass;
+}
+
+- (void)dealloc {
+    free(propertyType);
 }
 
 @end

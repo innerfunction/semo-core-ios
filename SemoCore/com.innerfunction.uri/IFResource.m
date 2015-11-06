@@ -7,7 +7,6 @@
 //
 
 #import "IFResource.h"
-#import "IFURIResolver.h"
 #import "IFCompoundURI.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
@@ -16,39 +15,27 @@
 // and resolves different representations appropriately.
 @implementation IFResource
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.schemeContext = [NSDictionary dictionary];
-    }
-    return self;
-}
+@synthesize uriSchemeContext, uriHandler;
 
-- (id)initWithData:(id)data {
+- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(id<IFResourceContext>)parent {
     self = [super init];
     if (self) {
         self.data = data;
-        self.schemeContext = [NSDictionary dictionary];
-    }
-    return self;
-}
-
-- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(IFResource *)parent {
-    self = [self initWithData:data];
-    if (self) {
         self.uri = uri;
-        self.schemeContext = [[NSMutableDictionary alloc] initWithDictionary:parent.schemeContext];
+        self.uriSchemeContext = [[NSMutableDictionary alloc] initWithDictionary:parent.uriSchemeContext];
         // Set the scheme context for this resource. Copies each uri by scheme into the context, before
         // adding the resource's uri by scheme.
         for (id key in [uri.parameters allKeys]) {
             IFCompoundURI *puri = [uri.parameters valueForKey:key];
-            [self.schemeContext setValue:puri forKey:puri.scheme];
+            [self.uriSchemeContext setValue:puri forKey:puri.scheme];
         }
-        [self.schemeContext setValue:uri forKey:uri.scheme];
-        self.resolver = parent.resolver;
+        [self.uriSchemeContext setValue:uri forKey:uri.scheme];
+        self.uriHandler = parent.uriHandler;
     }
     return self;
 }
+
+#pragma mark - representation methods
 
 - (BOOL)asBoolean {
     return [IFTypeConversions asBoolean:[self asDefault]];
@@ -94,41 +81,10 @@
 }
 
 - (IFResource *)refresh {
-    return [self derefToResource:self.uri];
+    return [self dereference:self.uri];
 }
 
-- (IFResource *)derefStringToResource:(NSString *)suri {
-    return [self derefStringToResource:suri context:self];
-}
-
-- (IFResource *)derefStringToResource:(NSString *)suri context:(IFResource *)context {
-    IFResource *result = nil;
-    NSError *error = nil;
-    IFCompoundURI *curi = [IFCompoundURI parse:suri error:&error];
-    if (error) {
-        DDLogCError(@"IFResource: Parsing URI %@ (%@)", suri, [error description]);
-    }
-    else {
-        result = [self derefToResource:curi context:context];
-    }
-    return result;
-}
-
-- (IFResource *)derefToResource:(IFCompoundURI *)uri {
-    return [self derefToResource:uri context:self];
-}
-
-- (IFResource *)derefToResource:(IFCompoundURI *)uri context:(IFResource *)context {
-    return [self.resolver derefToResource:uri context:context];
-}
-
-- (id)dereference:(IFCompoundURI *)curi {
-    return [self dereference:curi context:self];
-}
-
-- (id)dereference:(IFCompoundURI *)curi context:(IFResource *)context {
-    return [self.resolver dereference:curi context:context];
-}
+#pragma mark - NSObject overrides
 
 - (NSString *)description {
     return [self asString];
@@ -140,6 +96,24 @@
 
 - (BOOL)isEqual:(id)object {
     return [object isKindOfClass:[IFResource class]] && [self.uri isEqual:((IFResource *)object).uri];
+}
+
+#pragma mark - URIResolver protocol
+
+- (IFResource *)dereference:(id)uri {
+    return [self dereference:uri context:self];
+}
+
+- (IFResource *)dereference:(id)uri context:(id<IFResourceContext>)context {
+    return [self.uriHandler dereference:uri context:context];
+}
+
+- (id)dereferenceToValue:(id)uri {
+    return [self dereferenceToValue:uri context:self];
+}
+
+- (id)dereferenceToValue:(id)uri context:(id<IFResourceContext>)context {
+    return [self.uriHandler dereferenceToValue:uri context:context];
 }
 
 @end

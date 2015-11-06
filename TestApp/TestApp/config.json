@@ -1,9 +1,7 @@
 {
-    "named": {
-        "x-rootView": {
-            "type": "WebView",
-            "content": "@app:home.html"
-        },
-        "rootView": "@new:WebView+content@app:home.html"
-    }
+    "x-rootView": {
+        "type": "WebView",
+        "content": "@app:home.html"
+    },
+    "rootView": "@new:WebView+content@app:home.html"
 }

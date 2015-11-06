@@ -36,7 +36,7 @@
     return uri;
 }
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(IFResource *)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
     IFResource* resource = nil;
     for (NSString* path in paths) {
         resource = [self dereference:uri againstPath:path parent:parent];
@@ -47,7 +47,7 @@
     return resource;
 }
 
-- (IFResource *)dereference:(IFCompoundURI *)uri againstPath:(NSString *)path parent:(IFResource *)parent {
+- (IFResource *)dereference:(IFCompoundURI *)uri againstPath:(NSString *)path parent:(id<IFResourceContext>)parent {
     NSString *filePath = [path stringByAppendingPathComponent:uri.name];
     //NSLog(@"%@ -> %@", uri, filePath);
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];

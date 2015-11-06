@@ -26,13 +26,17 @@
 
 @implementation IFAppContainer
 
+@synthesize uriHandler=_uriHandler, uriSchemeContext=_uriSchemeContext;
+
 - (id)init {
     self = [super init];
     if (self) {
-        resolver = [[IFStandardURIResolver alloc] init];
+        self.uriSchemeContext = [NSDictionary dictionary];
+        uriHandler = [[IFStandardURIHandler alloc] initWithResourceContext:self];
+        self.uriHandler = uriHandler;
         rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
         rootTargetContainer.owner = self;
-        rootTargetContainer.uriResolver = resolver;
+        rootTargetContainer.uriHandler = uriHandler;
     }
     return self;
 }
@@ -59,11 +63,7 @@
         IFResource *resource = nil;
         if (uri) {
             DDLogInfo(@"%@: Attempting to load app container configuration from %@", LogTag, uri);
-            // TODO: Use derefToResource: instead?
-            id _resource = [resolver dereference:uri];
-            if ([_resource isKindOfClass:[IFResource class]]) {
-                resource = (IFResource *)_resource;
-            }
+            resource = [uriHandler dereference:uri];
         }
         
         if (resource) {
@@ -84,13 +84,13 @@
     configuration.context = globals;
     
     // Set object type mappings.
-    types = [configuration getValueAsConfiguration:@"types"];
+    [self addTypes:[configuration getValueAsConfiguration:@"types"]];
     
     // Add additional schemes to the resolver/dispatcher.
-    [resolver addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
-    [resolver addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
-    [resolver addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
-    [resolver addHandler:[[IFNamedSchemeHandler alloc] initWithNamed:named] forScheme:@"named"];
+    [uriHandler addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
+    [uriHandler addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
+    [uriHandler addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
+    [uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithNamed:named] forScheme:@"named"];
     // Additional configured schemes.
     IFConfiguration *dispatcherConfig = [configuration getValueAsConfiguration:@"schemes"];
     if (dispatcherConfig) {
@@ -98,7 +98,7 @@
             IFConfiguration *schemeConfig = [dispatcherConfig getValueAsConfiguration:schemeName];
             id handler = [self buildObjectWithConfiguration:schemeConfig identifier:schemeName];
             if ([handler conformsToProtocol:@protocol(IFSchemeHandler)]) {
-                [resolver addHandler:handler forScheme:schemeName];
+                [uriHandler addHandler:handler forScheme:schemeName];
             }
         }
     }
@@ -110,7 +110,7 @@
         [locals setValues:settings forceReset:ForceResetDefaultSettings];
     }
     
-    [named setObject:resolver forKey:@"resolver"];
+    [named setObject:uriHandler forKey:@"uriHandler"];
     [named setObject:globals forKey:@"globals"];
     [named setObject:locals forKey:@"locals"];
     [named setObject:self forKey:@"container"];

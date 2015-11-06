@@ -19,6 +19,7 @@
 - (BOOL)isInteger;
 - (BOOL)isFloat;
 - (BOOL)isDouble;
+- (BOOL)isId;
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj;
 - (__unsafe_unretained Class)getPropertyClass;
 

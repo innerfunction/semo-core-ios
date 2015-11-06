@@ -67,7 +67,7 @@
         // the URI and return its value instead.
         if ([stringValue hasPrefix:@"@"]) {
             NSString* uri = [stringValue substringFromIndex:1];
-            value = [parent.resource derefStringToResource:uri];
+            value = [parent.resource dereference:uri];
         }
         // Any string values starting with a '#' are potential path references to other
         // properties in the same configuration. Attempt to resolve them against the configuration
@@ -111,7 +111,12 @@
 - (id)initWithData:(id)_data parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {
-        self.data = _data;
+        if ([_data isKindOfClass:[NSString class]]) {
+            self.data = [IFTypeConversions asJSONData:_data];
+        }
+        else {
+            self.data = _data;
+        }
         self.resource = parent.resource;
         self.root = parent.root;
         self.context = parent.context;
@@ -231,8 +236,8 @@
             // If value isn't already a configuration, but is a dictionary then construct a new config using the values in that dictionary...
             if ([value isKindOfClass:[NSDictionary class]]) {
                 IFCompoundURI *uri = [resource.uri copyOfWithFragment:name];
-                IFResource *r = [[IFResource alloc] initWithData:value uri:uri parent:resource];
-                value = [[IFConfiguration alloc] initWithResource:r parent:self];
+                IFResource *_resource = [[IFResource alloc] initWithData:value uri:uri parent:resource];
+                value = [[IFConfiguration alloc] initWithResource:_resource parent:self];
             }
             // Else if value is a resource, then construct a new config using the resource...
             else if ([value isKindOfClass:[IFResource class]]) {
@@ -348,7 +353,9 @@
     if ([value isKindOfClass:[NSNumber class]]) return IFValueTypeNumber;
     if ([value isKindOfClass:[NSString class]]) return IFValueTypeString;
     if ([value isKindOfClass:[NSArray class]])  return IFValueTypeList;
-    return IFValueTypeObject;
+    if ([value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[IFConfiguration class]])
+                                                return IFValueTypeObject;
+    return IFValueTypeOther;
 }
 
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)name {

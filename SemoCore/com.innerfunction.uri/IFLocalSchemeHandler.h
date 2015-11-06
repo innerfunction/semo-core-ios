@@ -20,7 +20,6 @@
 // Scheme handler for local storage. The URI scheme specific part specifies a local
 // storage key.
 @interface IFLocalSchemeHandler : NSObject <IFSchemeHandler> {
-@private
     NSUserDefaults* storage;
 }
 

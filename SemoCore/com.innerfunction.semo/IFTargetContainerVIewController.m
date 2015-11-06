@@ -11,6 +11,7 @@
 
 @interface IFTargetContainerViewController()
 
+- (void)doViewInitialization;
 - (void)insertNamedViews;
 - (void)replaceSubview:(UIView *)view withView:(UIView *)view;
 
@@ -26,6 +27,7 @@
         containerBehaviour = [[IFDefaultTargetContainerBehaviour alloc] init];
         containerBehaviour.owner = self;
         _namedViews = [NSDictionary dictionary];
+        [self doViewInitialization];
     }
     return self;
 }
@@ -34,11 +36,12 @@
     self = [self init];
     if (self) {
         self.view = view;
+        [self doViewInitialization];
     }
     return self;
 }
 
-- (void)loadView {
+- (void)doViewInitialization {
     // If no view already specified and a layout name has been specified then load the nib file of
     // that name.
     if (!self.view && _layoutName) {

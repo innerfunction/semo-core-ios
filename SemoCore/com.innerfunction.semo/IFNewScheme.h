@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFSchemeHandler.h"
+#import "IFURIHandling.h"
 #import "IFContainer.h"
 
 /**

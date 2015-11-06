@@ -10,15 +10,15 @@
 #import "IFContainer.h"
 #import "IFTarget.h"
 #import "IFDefaultTargetContainerBehaviour.h"
-#import "IFURIResolver.h"
+#import "IFStandardURIHandler.h"
 #import "IFLocals.h"
 
 #define ForceResetDefaultSettings   (NO)
 #define Platform                    (@"ios")
 #define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
 
-@interface IFAppContainer : IFContainer <IFTarget> {
-    IFStandardURIResolver *resolver;
+@interface IFAppContainer : IFContainer <IFTarget, IFResourceContext> {
+    IFStandardURIHandler *uriHandler;
     NSMutableDictionary *globals;
     IFLocals *locals;
     IFDefaultTargetContainerBehaviour *rootTargetContainer;
