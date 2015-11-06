@@ -67,7 +67,9 @@
         // the URI and return its value instead.
         if ([stringValue hasPrefix:@"@"]) {
             NSString* uri = [stringValue substringFromIndex:1];
-            value = [parent.resource dereference:uri];
+            // 20151106 change
+            //value = [parent.resource dereference:uri];
+            value = [parent.resource dereferenceToValue:uri];
         }
         // Any string values starting with a '#' are potential path references to other
         // properties in the same configuration. Attempt to resolve them against the configuration
@@ -217,6 +219,7 @@
     
     // Perform type conversions according to the requested representation.
     // These are pretty basic:
+    // * Bare values are return unchanged
     // * If the requested representation is 'resource', and the value isn't already a result, then
     //   construct a new resource with the current value. Note that the new resource URI is the same
     //   as this configuration's base resource.
@@ -225,7 +228,10 @@
     // * A String can be converted to a URL and is valid JSON data;
     // * A Number can be converted to a String and is valid JSON data;
     // * Anything else is only valid JSON data.
-    if ([@"resource" isEqualToString:representation]) {
+    if ([@"bare" isEqualToString:representation]) {
+        // do nothing
+    }
+    else if ([@"resource" isEqualToString:representation]) {
         if ( value && ![value isKindOfClass:[IFResource class]]) {
             IFCompoundURI *uri = [resource.uri copyOfWithFragment:name];
             value = [[IFResource alloc] initWithData:value uri:uri parent:resource];
@@ -259,7 +265,9 @@
 }
 
 - (BOOL)hasValue:(NSString *)name {
-    return [self getValue:name asRepresentation:@"default"] != nil;
+    // 20151106 change -
+    //return [self getValue:name asRepresentation:@"default"] != nil;
+    return [self getValue:name asRepresentation:@"bare"] != nil;
 }
 
 - (NSString *)getValueAsString:(NSString *)name {
@@ -336,7 +344,9 @@
 }
 
 - (id)getValue:(NSString *)name {
-    return [self getValue:name asRepresentation:@"default"];
+    // 20151106 change -
+    //return [self getValue:name asRepresentation:@"default"];
+    return [self getValue:name asRepresentation:@"bare"];
 }
 
 - (NSArray *)getValueNames {
@@ -424,8 +434,8 @@
     IFConfiguration *current = result;
     // A set of previously visited parent configurations, to detect dependency loops.
     NSMutableSet *visited = [[NSMutableSet alloc] init];
-    while ([current getValueType:@"extends"] == IFValueTypeObject) {
-        current = [current getValueAsConfiguration:@"extends"];
+    while ([current getValueType:@"semo:extends"] == IFValueTypeObject) {
+        current = [current getValueAsConfiguration:@"semo:extends"];
         if ([visited containsObject:current]) {
             // Dependency loop detected, stop extending the config.
             break;
@@ -438,8 +448,8 @@
 
 - (IFConfiguration *)flatten {
     IFConfiguration *result = self;
-    if ([self getValueType:@"config"] == IFValueTypeObject) {
-        result = [self mergeConfiguration:[self getValueAsConfiguration:@"config"]];
+    if ([self getValueType:@"semo:config"] == IFValueTypeObject) {
+        result = [self mergeConfiguration:[self getValueAsConfiguration:@"semo:config"]];
     }
     return result;
 }

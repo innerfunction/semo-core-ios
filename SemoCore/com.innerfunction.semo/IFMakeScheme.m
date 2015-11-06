@@ -24,11 +24,13 @@
 
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
     id result = nil;
-    id _config = [container getNamed:uri.name];
-    if (_config && [_config isKindOfClass:[IFConfiguration class]]) {
-        IFConfiguration *config = (IFConfiguration *)_config;
-        config = [config extendWithParameters:params];
-        result = [container buildObjectWithConfiguration:config identifier:[uri description]];
+    id configs = [container getNamed:@"makeConfigs"];
+    if (configs && [configs isKindOfClass:[IFConfiguration class]]) {
+        IFConfiguration *config = [configs getValueAsConfiguration:uri.name];
+        if (config) {
+            config = [[config normalize] extendWithParameters:params];
+            result = [container buildObjectWithConfiguration:config identifier:[uri description]];
+        }
     }
     return result;
 }

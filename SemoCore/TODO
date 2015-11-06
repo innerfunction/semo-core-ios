@@ -4,3 +4,12 @@ Then:
 5. New form views go into a new module
 6. Semo content also in new module, to include simplified MVC implementation using key/value observing.
    > basic MVC may need to go in core, so that views can be refreshed
+
+7. Need to review and possibly rethink value discovery and conversion within a configuration object:
+   - Configuration objects are useful for accessing nested values and performing automatic type conversions on those values
+   - But there is a complication when property values reference resources:
+     * Often, the resource should be transparent so that it's value can be accessed directly
+     * But sometimes, the resource is the required value (e.g. when setting a view's content property)
+   - Question is how to support these two different modes on the same configuration class - what identifies the two use cases?
+   - Answer may be to use dereferenceToValue: within the configuration class, as this will probably return a bare value
+     vs. a resource correctly as per the required use case.

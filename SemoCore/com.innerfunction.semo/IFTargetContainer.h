@@ -8,16 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import "IFActionDispatcher.h"
+#import "IFURIHandling.h"
 
 /**
- * Protocol for objects which wish to control their own configuration.
+ * Protocol for objects which wish contain action targets.
  */
 @protocol IFTargetContainer <IFActionDispatcher>
 
-/** Get/set this containers parent. */
+/** This container's parent container. */
 @property (nonatomic, strong) id<IFTargetContainer> parentTargetContainer;
-
-/** Get/set this container's named targets. */
+/** This container's named targets. */
 @property (nonatomic, strong) NSDictionary *namedTargets;
+/** A URI handler. */
+@property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
 @end

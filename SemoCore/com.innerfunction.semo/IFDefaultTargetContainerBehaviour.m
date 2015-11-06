@@ -15,12 +15,12 @@
 
 @implementation IFDefaultTargetContainerBehaviour
 
-@synthesize parentTargetContainer, namedTargets;
+@synthesize parentTargetContainer = _parentTargetContainer, namedTargets = _namedTargets, uriHandler = _uriHandler;
 
-- (void)setNamedTargets:(NSDictionary *)_namedTargets {
-    namedTargets = _namedTargets;
-    for (id name in [namedTargets keyEnumerator]) {
-        id target = [namedTargets valueForKey:name];
+- (void)setNamedTargets:(NSDictionary *)namedTargets {
+    _namedTargets = namedTargets;
+    for (id name in [_namedTargets keyEnumerator]) {
+        id target = [_namedTargets valueForKey:name];
         if ([target conformsToProtocol:@protocol(IFTargetContainer)]) {
             // TODO: Child target parent is this, or the behaviour owner?
             ((id<IFTargetContainer>)target).parentTargetContainer = self;
@@ -57,13 +57,13 @@
         // If target resolved then dereference the URI and apply the resource to the target.
         if (target && [target conformsToProtocol:@protocol(IFTarget)]) {
             IFDoAction *action = (IFDoAction *)[_uriHandler dereferenceToValue:curi];
-            [(id<IFTarget>)action doAction:action];
+            [(id<IFTarget>)target doAction:action];
             dispatched = YES;
         }
     }
     // If unable to dispatch the URI then try sending to the parent container.
-    if (!dispatched && parentTargetContainer) {
-        dispatched = [parentTargetContainer dispatchURI:uri];
+    if (!dispatched && _parentTargetContainer) {
+        dispatched = [_parentTargetContainer dispatchURI:uri];
     }
     return dispatched;
 }
@@ -73,7 +73,7 @@
         return _owner;
     }
     NSArray *components = [targetPath split:@"\\."];
-    NSDictionary *targets = namedTargets;
+    NSDictionary *targets = _namedTargets;
     id target = nil;
     for (NSInteger i = 0; i < [components count]; i++) {
         // If no named targets then don't continue.

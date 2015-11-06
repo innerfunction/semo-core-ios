@@ -64,6 +64,7 @@
     webView.opaque = _opaque;
     webView.scrollView.bounces = _scrollViewBounces;
     webView.autoresizingMask = 1;
+    webView.delegate = self;
     
     [self.view addSubview:webView];
     if (_loadingImage) {
@@ -139,7 +140,7 @@
         return YES;
     }
     else if (webViewLoaded && (navigationType != UIWebViewNavigationTypeOther)) {
-        [self.parentTargetContainer dispatchURI:[url description]];
+        [self dispatchURI:[url description]];
         return NO;
     }
     return YES;

@@ -1,7 +1,23 @@
 {
-    "x-rootView": {
-        "type": "WebView",
-        "content": "@app:home.html"
+    "makeConfigs": {
+        "webView": {
+            "semo:type": "WebView",
+            "backgroundColor": "#ffffff",
+            "content": "$content"
+        }
     },
-    "rootView": "@new:WebView+content@app:home.html"
+    "views": {
+        "webView0": {
+            "semo:extends": "#configs.webView",
+            "content": "@app:home.html"
+        },
+        "webView1": "@new:WebView+content@app:home.html",
+        "webView2": "@make:webView+content@app:home.html"
+    },
+    "rootView": "#views.webView2",
+    "x-rootView": "#configs.webView",
+    "x-rootView": {
+        "semo:type": "WebView",
+        "content": "@app:home.html"
+    }
 }

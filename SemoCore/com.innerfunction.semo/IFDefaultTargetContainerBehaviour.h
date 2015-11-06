@@ -9,16 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "IFTargetContainer.h"
 #import "IFStringRewriteRules.h"
-#import "IFURIHandling.h"
 
 @interface IFDefaultTargetContainerBehaviour : NSObject <IFTargetContainer>
 
-/** Get/set the behaviour's owner. */
+/** The behaviour's owner. */
 @property (nonatomic, strong) id owner;
 /** Action URI rewrite rules. */
 @property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
-/** A URI resolver. */
-@property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
 /**
  * Resolve a child or descendant target from a target path.

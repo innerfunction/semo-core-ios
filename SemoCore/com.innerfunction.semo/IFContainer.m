@@ -242,7 +242,7 @@
         }
         if ([value isKindOfClass:[IFConfiguration class]]) {
             // Try instantiating a new object from an object configuration.
-            IFConfiguration *objConfig = (IFConfiguration *)value;
+            IFConfiguration *objConfig = [(IFConfiguration *)value normalize];
             id object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
             if (object) {
                 value = object;
@@ -270,15 +270,17 @@
     if ([propClass isSubclassOfClass:[object class]]) {
         return object;
     }
-    if ([configuration hasValue:[NSString stringWithFormat:@"%@.semo:type", name ]]) {
-        IFConfiguration *propConfig = [configuration getValueAsConfiguration:name];
+    // Try instantiating an object from the configuration.
+    IFConfiguration *propConfig = [[configuration getValueAsConfiguration:name] normalize];
+    // Check if the property configuration includes a type.
+    if ([propConfig hasValue:@"semo:type"]) {
         return [self buildObjectWithConfiguration:propConfig identifier:name];
     }
     // No semo:type specified in configuration, so try instantiating an inferred type using the class information provided.
     NSString *className = NSStringFromClass(propClass);
     @try {
-        object = [self newInstanceForClassName:className withConfiguration:configuration];
-        [self configureObject:object withConfiguration:configuration identifier:name];
+        object = [self newInstanceForClassName:className withConfiguration:propConfig];
+        [self configureObject:object withConfiguration:propConfig identifier:name];
     }
     @catch (NSException *exception) {
         DDLogCInfo(@"Failed to instantiate instance of inferred type %@: %@", className, exception);

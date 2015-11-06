@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "IFDoScheme.h"
 
+/** Protocol for objects which can act as action targets. */
 @protocol IFTarget <NSObject>
 
 - (void)doAction:(IFDoAction *)action;

@@ -19,7 +19,7 @@
 
 @implementation IFTargetContainerViewController
 
-@synthesize parentTargetContainer;
+@synthesize parentTargetContainer = _parentTargetContainer, uriHandler = _uriHandler;
 
 - (id)init {
     self = [super init];
@@ -53,6 +53,16 @@
             DDLogWarn(@"%@: Unable to load nib file %@.xib", LogTag, _layoutName);
         }
     }
+}
+
+- (void)setParentTargetContainer:(id<IFTargetContainer>)parentTargetContainer {
+    _parentTargetContainer = parentTargetContainer;
+    self.uriHandler = parentTargetContainer.uriHandler;
+}
+
+- (void)setUriHandler:(id<IFURIHandler>)uriHandler {
+    _uriHandler = uriHandler;
+    containerBehaviour.uriHandler = uriHandler;
 }
 
 - (void)setNamedViews:(NSDictionary *)namedViews {
