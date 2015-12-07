@@ -301,9 +301,12 @@
 }
 
 - (void)stopService {
+    SEL stopService = @selector(stopService);
     for (id<IFService> service in services) {
         @try {
-            [service stopService];
+            if ([service respondsToSelector:stopService]) {
+                [service stopService];
+            }
         }
         @catch (NSException *exception) {
             DDLogCError(@"Error stopping service %@: %@", [service class], exception);

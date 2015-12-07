@@ -1,15 +1,27 @@
-
+Event handling within targets etc.: Instead of having if ... else if statements as currently in EPCore,
+have a registerEventHandler method of some kind which maps a name to a handler; event handling is then
+about finding the handler bound to a name, and invoking that handler.
 
 Then:
 5. New form views go into a new module
 6. Semo content also in new module, to include simplified MVC implementation using key/value observing.
    > basic MVC may need to go in core, so that views can be refreshed
 
-7. Need to review and possibly rethink value discovery and conversion within a configuration object:
-   - Configuration objects are useful for accessing nested values and performing automatic type conversions on those values
-   - But there is a complication when property values reference resources:
-     * Often, the resource should be transparent so that it's value can be accessed directly
-     * But sometimes, the resource is the required value (e.g. when setting a view's content property)
-   - Question is how to support these two different modes on the same configuration class - what identifies the two use cases?
-   - Answer may be to use dereferenceToValue: within the configuration class, as this will probably return a bare value
-     vs. a resource correctly as per the required use case.
+Need a rough theory of operation for the IOC container:
+* Theory describes how a JSON configuration is turned into an object graph
+* Process has two phases:
+  1. Normalization of the JSON into a configuration graph, i.e. by resolving # @ $ references etc.
+  2. Building the object graph by initializing & configuring objects and properties according to the configuration graph.
+     This phase includes descriptions of:
+     - Type resolution & inference
+     - Property value injection
+* Most improvements and probably many simplifications can be made to phase (1), due to the evolved nature of that part of the code.
+
+Feature addition: Support type mappers, which map from configurations to non-primitive values, e.g. when setting capitalization on a text input?
+* Main function is to convert from a string to a type constant, e.g. "sentences" -> UITextAutocapitalizationTypeSentences
+* However, any mapper will probably also have to be able to control how the type constant value is applied to the property, e.g.
+  in Android "sentences" -> inputType = inputType | TYPE_TEXT_FLAG_CAP_SENTENCES
+* But additional problem here is how to support standard configuration properties when the underlying objects expose different interfaces
+  on each platform; so standard configurable proxies may be required, which in turn also encapsulate the mapper role. i.e. when the IOC
+  container finds it is configuring a property of a type which has a configuration proxy declared, then it instantiates the proxy with
+  a reference to the object owning the property, and then configures the proxy.

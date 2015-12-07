@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070BCBD01C1612680042ABDC /* IFLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 070BCBCE1C1612680042ABDC /* IFLogger.h */; };
+		070BCBD11C1612680042ABDC /* IFLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 070BCBCF1C1612680042ABDC /* IFLogger.m */; };
 		070F6DE21AEC0A4700533CC1 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE11AEC0A4700533CC1 /* configuration.json */; };
 		070F6DE41AEC0A6500533CC1 /* types.json in Resources */ = {isa = PBXBuildFile; fileRef = 070F6DE31AEC0A6500533CC1 /* types.json */; };
 		07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07287EC81BD8F77400047B0C /* IFTargetContainer.h */; };
@@ -167,6 +169,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		070BCBCE1C1612680042ABDC /* IFLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFLogger.h; sourceTree = "<group>"; };
+		070BCBCF1C1612680042ABDC /* IFLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFLogger.m; sourceTree = "<group>"; };
 		070F6DE11AEC0A4700533CC1 /* configuration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
 		070F6DE31AEC0A6500533CC1 /* types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = types.json; sourceTree = "<group>"; };
 		07287EC81BD8F77400047B0C /* IFTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFTargetContainer.h; sourceTree = "<group>"; };
@@ -483,6 +487,8 @@
 				07D025201AEAC1D200C2A619 /* IFI18nMap.h */,
 				07D025211AEAC1D200C2A619 /* IFI18nMap.m */,
 				079A17341AE7E34100F22F4E /* IFLogging.h */,
+				070BCBCE1C1612680042ABDC /* IFLogger.h */,
+				070BCBCF1C1612680042ABDC /* IFLogger.m */,
 				079A169E1AE7DDE800F22F4E /* IFFileIO.h */,
 				079A169F1AE7DDE800F22F4E /* IFFileIO.m */,
 				079A16A01AE7DDE800F22F4E /* IFHTTPUtils.h */,
@@ -713,6 +719,7 @@
 				079A17661AE7EC8000F22F4E /* UIColor+IF.h in Headers */,
 				07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */,
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
+				070BCBD01C1612680042ABDC /* IFLogger.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
 				07E3CFC11BDC11CC0036722B /* IFTableViewCellFactory.h in Headers */,
 				07E3CFDA1BDEC1B20036722B /* UIImage+CropScale.h in Headers */,
@@ -940,6 +947,7 @@
 				07287EF51BD9828400047B0C /* IFNavigationViewController.m in Sources */,
 				079A16BD1AE7DDE800F22F4E /* IFFileResource.m in Sources */,
 				079A16DB1AE7DDE800F22F4E /* NSArray+IF.m in Sources */,
+				070BCBD11C1612680042ABDC /* IFLogger.m in Sources */,
 				079A16CF1AE7DDE800F22F4E /* IFJSONData.m in Sources */,
 				07287ED11BD8FF7F00047B0C /* IFStringRewriteRules.m in Sources */,
 				079A17471AE7E3A600F22F4E /* DDAbstractDatabaseLogger.m in Sources */,

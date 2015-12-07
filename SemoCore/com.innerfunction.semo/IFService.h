@@ -12,6 +12,8 @@
 
 - (void)startService;
 
+@optional
+
 - (void)stopService;
 
 @end
