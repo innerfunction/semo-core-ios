@@ -46,5 +46,7 @@
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
 /** Configure the container and its contents using the specified configuration. */
 - (void)configureWith:(IFConfiguration *)configuration;
+/** Configure the container with the specified data. */
+- (void)configureWithData:(id)configData;
 
 @end

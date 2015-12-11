@@ -263,6 +263,11 @@
     }
 }
 
+- (void)configureWithData:(id)configData {
+    IFConfiguration *configuration = [[IFConfiguration alloc] initWithData:configData];
+    [self configureWith:configuration];
+}
+
 - (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)propClass
                 fromConfiguration:(IFConfiguration *)configuration
                          withName:(NSString *)name {
