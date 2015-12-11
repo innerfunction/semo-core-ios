@@ -68,18 +68,21 @@
 
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     id object = nil;
-    NSString *type = [configuration getValueAsString:@"semo:type"];
-    if (type) {
-        NSString *className = [types getValueAsString:type];
-        if (className) {
-            object = [self newInstanceForClassName:className withConfiguration:configuration];
+    NSString *className = [configuration getValueAsString:@"ios:class"];
+    if (!className) {
+        NSString *type = [configuration getValueAsString:@"semo:type"];
+        if (type) {
+            className = [types getValueAsString:type];
+            if (!className) {
+                DDLogError(@"%@: Making %@, no class name found for type %@", LogTag, identifier, type);
+            }
         }
         else {
-            DDLogError(@"%@: Making %@, no class name found for type %@", LogTag, identifier, type);
+            DDLogError(@"%@: Making %@, Component configuration missing 'semo:type' or 'ios:class' property", LogTag, identifier);
         }
     }
-    else {
-        DDLogError(@"%@: Making %@, Component configuration missing 'semo:type' property", LogTag, identifier);
+    if (className) {
+        object = [self newInstanceForClassName:className withConfiguration:configuration];
     }
     return object;
 }
@@ -122,6 +125,10 @@
         }
         for (NSString *name in [configuration getValueNames]) {
             NSString *propName = name;
+            if ([@"ios:class" isEqualToString:name]) {
+                // Skip processing of class properties.
+                continue;
+            }
             if ([name hasPrefix:@"and:"] || [name hasPrefix:@"semo:"]) {
                 continue; // Skip names starting with and: or semo:
             }
@@ -278,7 +285,7 @@
     // Try instantiating an object from the configuration.
     IFConfiguration *propConfig = [[configuration getValueAsConfiguration:name] normalize];
     // Check if the property configuration includes a type.
-    if ([propConfig hasValue:@"semo:type"]) {
+    if ([propConfig hasValue:@"ios:class"] || [propConfig hasValue:@"semo:type"]) {
         return [self buildObjectWithConfiguration:propConfig identifier:name];
     }
     // No semo:type specified in configuration, so try instantiating an inferred type using the class information provided.
