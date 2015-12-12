@@ -234,6 +234,8 @@
 }
 
 - (void)configureWith:(IFConfiguration *)configuration {
+    // Type info for the container's properties - allows type inferring of named properties.
+    IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:self];
     // Add named objects.
     NSArray *names = [configuration getValueNames];
     NSMutableDictionary *objConfigs = [[NSMutableDictionary alloc] init];
@@ -250,7 +252,21 @@
         if ([value isKindOfClass:[IFConfiguration class]]) {
             // Try instantiating a new object from an object configuration.
             IFConfiguration *objConfig = [(IFConfiguration *)value normalize];
-            id object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
+            id object = nil;
+            // Try instantating directly from the configuration.
+            if ([objConfig hasValue:@"ios:class"] || [objConfig hasValue:@"semo:type"]) {
+                object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
+            }
+            // If no object then check for a container property with the same name, and try to infer a type.
+            if (!object) {
+                IFPropertyInfo *propertyInfo = [typeInfo infoForProperty:name];
+                if (propertyInfo) {
+                    __unsafe_unretained Class propClass = [propertyInfo getPropertyClass];
+                    NSString *propClassName = NSStringFromClass(propClass);
+                    object = [self newInstanceForClassName:propClassName withConfiguration:objConfig];
+                }
+            }
+            // If object then record its configuration.
             if (object) {
                 value = object;
                 [objConfigs setObject:objConfig forKey:name];
@@ -266,6 +282,11 @@
         IFConfiguration *objConfig = [objConfigs objectForKey:name];
         if (object && objConfig) {
             [self configureObject:object withConfiguration:objConfig identifier:name];
+        }
+        // If the named object corresponds to a property on the container then try setting that property.
+        IFPropertyInfo *propertyInfo = [typeInfo infoForProperty:name];
+        if (propertyInfo && [propertyInfo isAssignableFrom:[object class]]) {
+            [self setValue:object forKey:name];
         }
     }
 }

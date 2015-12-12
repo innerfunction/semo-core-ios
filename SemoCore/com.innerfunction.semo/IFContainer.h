@@ -44,7 +44,14 @@
 - (id)newInstanceForTypeName:(NSString *)typeName withConfiguration:(IFConfiguration *)configuration;
 /** Configure an object using the specified configuration. */
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier;
-/** Configure the container and its contents using the specified configuration. */
+/**
+ * Configure the container and its contents using the specified configuration.
+ * The set of 'named' components is instantiated from the top-level configuration properties. In addition, if
+ * any named property has the same name as one of the container's properties, then the container property is set
+ * to the value of the named property. Type inference will be attempted for named container properties without
+ * explicitly configured types. The mapping of named container properties is primarily useful in container subclasses,
+ * and can be used to define functional modules as configurable containers.
+ */
 - (void)configureWith:(IFConfiguration *)configuration;
 /** Configure the container with the specified data. */
 - (void)configureWithData:(id)configData;
