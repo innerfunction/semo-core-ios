@@ -100,6 +100,8 @@ Pod::Spec.new do |s|
 
   s.subspec 'noarc' do |sp|
     sp.source_files = "SemoCore/Externals/ISO8601DateFormatter/*.{h,m}", "SemoCore/Externals/JSONKit/*.{h,m}", "SemoCore/Externals/ZipArchive/**/*.{h,m,mm,c}"
+    # This next line necessary to ensure that #include "minizip/zip.h" will still work.
+    sp.header_mappings_dir = 'SemoCore/Externals/ZipArchive'
     sp.requires_arc = false
   end
 
