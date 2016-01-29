@@ -18,6 +18,8 @@
 
 @implementation IFNavigationViewController
 
+@synthesize uriHandler;
+
 @synthesize parentTargetContainer;
 
 - (id)init {
@@ -27,6 +29,14 @@
         containerBehaviour.owner = self;
     }
     return self;
+}
+
+- (void)setRootView:(UIViewController *)rootView {
+    self.viewControllers = @[ rootView ];
+}
+
+- (UIViewController *)getRootView {
+    return [self.viewControllers objectAtIndex:0];
 }
 
 - (void)setUriRewriteRules:(IFStringRewriteRules *)uriRewriteRules {

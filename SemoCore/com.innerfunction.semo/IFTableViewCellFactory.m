@@ -134,7 +134,8 @@
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *rowData = [_tableData rowDataForIndexPath:indexPath];
-    return RowDataCGFloatValue(@"height");
+    CGFloat height = RowDataCGFloatValue(@"height");
+    return height;
 }
 
 #pragma mark - private methods

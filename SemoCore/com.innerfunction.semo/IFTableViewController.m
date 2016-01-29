@@ -33,7 +33,7 @@
 
 #pragma mark - IFTargetContainer
 
-@synthesize parentTargetContainer, namedTargets;
+@synthesize parentTargetContainer, namedTargets, uriHandler;
 
 #pragma mark - IFIOCConfigurationInitable
 

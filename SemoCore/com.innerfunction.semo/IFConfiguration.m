@@ -229,7 +229,6 @@
     // * A Number can be converted to a String and is valid JSON data;
     // * Anything else is only valid JSON data.
     if ([@"bare" isEqualToString:representation]) {
-        // do nothing
     }
     else if ([@"resource" isEqualToString:representation]) {
         if ( value && ![value isKindOfClass:[IFResource class]]) {

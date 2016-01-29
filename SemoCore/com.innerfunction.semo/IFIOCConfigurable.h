@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class IFContainer;
+@class IFContainer, IFConfiguration;
 
 /**
  * Protocol allowing IOC configurable objects to detect when configuration is taking place.

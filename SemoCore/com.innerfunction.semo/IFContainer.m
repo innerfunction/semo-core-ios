@@ -241,13 +241,9 @@
     NSMutableDictionary *objConfigs = [[NSMutableDictionary alloc] init];
     // Initialize named objects.
     for (NSString *name in names) {
-        id value;
-        IFValueType valueType = [configuration getValueType:name];
-        if (valueType == IFValueTypeObject) {
+        id value = [configuration getValue:name];
+        if ([value isKindOfClass:[NSDictionary class]]) {
             value = [configuration getValueAsConfiguration:name];
-        }
-        else {
-            value = [configuration getValue:name];
         }
         if ([value isKindOfClass:[IFConfiguration class]]) {
             // Try instantiating a new object from an object configuration.
@@ -300,7 +296,16 @@
                 fromConfiguration:(IFConfiguration *)configuration
                          withName:(NSString *)name {
     id object = [configuration getValue:name];
-    if ([propClass isSubclassOfClass:[object class]]) {
+    // See if object type is compatible with the property.
+    if ([[object class] isSubclassOfClass:propClass]) {
+        return object;
+    }
+    // Unpack the object if packaged into a resource.
+    if ([object isKindOfClass:[IFResource class]]) {
+        object = ((IFResource *)object).data;
+    }
+    // Try setting property again.
+    if ([[object class] isSubclassOfClass:propClass]) {
         return object;
     }
     // Try instantiating an object from the configuration.

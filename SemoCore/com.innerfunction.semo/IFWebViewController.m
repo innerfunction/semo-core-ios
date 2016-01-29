@@ -47,6 +47,7 @@
     self = [super init];
     if (self) {
         _backgroundColor = [UIColor whiteColor];
+        _useHTMLTitle = YES;
     }
     return self;
 }
@@ -60,24 +61,10 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     webView = [[UIWebView alloc] init];
-    webView.backgroundColor = _backgroundColor;
-    webView.opaque = _opaque;
-    webView.scrollView.bounces = _scrollViewBounces;
     webView.autoresizingMask = 1;
     webView.delegate = self;
     
     [self.view addSubview:webView];
-    if (_loadingImage) {
-        loadingImageView = [[UIImageView alloc] initWithImage:_loadingImage];
-        loadingImageView.frame = webView.frame;
-        [self.view addSubview:loadingImageView];
-    }
-    
-    if (_showLoadingIndicator) {
-        loadingIndicatorView = [[UIActivityIndicatorView alloc] initWithFrame:webView.frame];
-        loadingIndicatorView.hidden = YES;
-        [self.view addSubview:loadingIndicatorView];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -89,6 +76,26 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self loadContent];
+}
+
+#pragma mark - IFIOCConfigurable
+
+- (void)beforeConfiguration:(id)configuration inContainer:(IFContainer *)container {}
+
+- (void)afterConfiguration:(id)configuration inContainer:(IFContainer *)container {
+    webView.backgroundColor = _backgroundColor;
+    webView.opaque = _opaque;
+    webView.scrollView.bounces = _scrollViewBounces;
+    if (_loadingImage) {
+        loadingImageView = [[UIImageView alloc] initWithImage:_loadingImage];
+        loadingImageView.frame = webView.frame;
+        [self.view addSubview:loadingImageView];
+    }
+    if (_showLoadingIndicator) {
+        loadingIndicatorView = [[UIActivityIndicatorView alloc] initWithFrame:webView.frame];
+        loadingIndicatorView.hidden = YES;
+        [self.view addSubview:loadingIndicatorView];
+    }
 }
 
 #pragma mark - web view delegate
@@ -112,7 +119,6 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    
     NSURL *url = [request URL];
     if (_allowedExternalURLs) {
         NSString *urlString = [url description];

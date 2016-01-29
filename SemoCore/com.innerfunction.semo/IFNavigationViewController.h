@@ -15,6 +15,8 @@
     IFDefaultTargetContainerBehaviour *containerBehaviour;
 }
 
+/** The first view in the navigation stack. */
+@property (nonatomic, strong) UIViewController *rootView;
 /** Action URI rewrite rules. */
 @property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 

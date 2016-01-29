@@ -31,6 +31,7 @@
 - (id)init {
     self = [super init];
     if (self) {
+        self.appBackgroundColor = [UIColor redColor];
         self.uriSchemeContext = [NSDictionary dictionary];
         uriHandler = [[IFStandardURIHandler alloc] initWithResourceContext:self];
         self.uriHandler = uriHandler;
@@ -250,6 +251,7 @@ static IFAppContainer *instance;
     IFAppContainer *container = [IFAppContainer getAppContainer];
     [container loadConfiguration:@"app:config.json"];
     window.rootViewController = [container getRootView];
+    window.backgroundColor = container.appBackgroundColor;
     return container;
 }
 

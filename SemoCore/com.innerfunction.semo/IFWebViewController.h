@@ -7,8 +7,9 @@
 //
 
 #import "IFTargetContainerViewController.h"
+#import "IFIOCConfigurable.h"
 
-@interface IFWebViewController : IFTargetContainerViewController <UIWebViewDelegate> {
+@interface IFWebViewController : IFTargetContainerViewController <UIWebViewDelegate, IFIOCConfigurable> {
     UIWebView *webView;
     UIImageView *loadingImageView;
     UIActivityIndicatorView *loadingIndicatorView;

@@ -24,6 +24,8 @@
     IFDefaultTargetContainerBehaviour *rootTargetContainer;
 }
 
+@property (nonatomic, strong) UIColor *appBackgroundColor;
+
 /** Load the app configuration. */
 - (void)loadConfiguration:(id)configSource;
 /** Return the app's root view. */

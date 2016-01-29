@@ -11,7 +11,7 @@
 
 @implementation IFSlideViewController
 
-@synthesize parentTargetContainer, namedTargets;
+@synthesize parentTargetContainer, namedTargets, uriHandler;
 
 - (id)init {
     self = [super init];
@@ -48,6 +48,19 @@
         _mainView = mainView;
         self.frontViewController = mainView;
         mainProxy.target = mainView;
+        
+        // Set gesture receive on main view.
+        UIView *gestureReceiver = nil;
+        if ([mainView isKindOfClass:[UINavigationController class]]) {
+            gestureReceiver = [(UINavigationController *)mainView topViewController].view;
+            // TODO: What happens when user navigates to a new view?
+        }
+        else if ([mainView isKindOfClass:[UIViewController class]]) {
+            gestureReceiver = ((UIViewController *)mainView).view;
+        }
+        if (gestureReceiver) {
+            [gestureReceiver addGestureRecognizer:[self panGestureRecognizer]];
+        }
     }
 }
 
@@ -60,6 +73,7 @@
         slideOpenPosition = FrontViewPositionLeft;
         slideClosedPosition = FrontViewPositionLeftSideMostRemoved;
     }
+    self.frontViewPosition = slideOpenPosition;
 }
 
 - (void)setUriRewriteRules:(IFStringRewriteRules *)uriRewriteRules {
