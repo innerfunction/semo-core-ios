@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "semo-core-ios"
-  s.version      = "0.0.6"
+  s.version      = "0.0.7"
   s.summary      = "Semo platform core for iOS"
 
   # This description is used to generate tags and improve search results.
@@ -84,7 +84,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/innerfunction/semo-core-ios.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/innerfunction/semo-core-ios.git" } #, :tag => "0.0.1" }
 
   s.source_files  = "SemoCore/*.{h,m}", "SemoCore/com.innerfunction.*/*.{h,m}", "SemoCore/Externals/**/*.{h,m}"
   s.exclude_files = "SemoCore/Externals/ISO8601DateFormatter/*.m", "SemoCore/Externals/JSONKit/*.m", "SemoCore/Externals/ZipArchive/**/*.{m,mm,c}"
