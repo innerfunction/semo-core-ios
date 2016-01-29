@@ -44,9 +44,11 @@
 - (void)loadConfiguration:(id)configSource {
     IFConfiguration *configuration = nil;
     if ([configSource isKindOfClass:[IFConfiguration class]]) {
+        // Configuration source is already a configuration.
         configuration = (IFConfiguration *)configSource;
     }
     else {
+        // Test if config source specifies a URI.
         IFCompoundURI *uri = nil;
         if ([configSource isKindOfClass:[IFCompoundURI class]]) {
             uri = (IFCompoundURI *)configSource;
@@ -59,22 +61,27 @@
                 return;
             }
         }
-        
         IFResource *resource = nil;
         if (uri) {
+            // If a configuration source URI has been resolved then attempt loading the configuration from the URI.
             DDLogInfo(@"%@: Attempting to load app container configuration from %@", LogTag, uri);
             resource = [uriHandler dereference:uri];
-        }
-        
-        if (resource) {
-            configuration = [[IFConfiguration alloc] initWithResource:resource];
+            if (resource) {
+                configuration = [[IFConfiguration alloc] initWithResource:resource];
+            }
         }
         else {
+            // No configuration URI, so assume the configuration source is the actual config data.
             DDLogInfo(@"%@: Attempting to configure app container with data...", LogTag);
             configuration = [[IFConfiguration alloc] initWithData:configSource];
         }
     }
-    [self configureWith:configuration];
+    if (configuration) {
+        [self configureWith:configuration];
+    }
+    else {
+        DDLogWarn(@"%@: Unable to resolve configuration from %@", LogTag, configSource);
+    }
 }
 
 - (void)configureWith:(IFConfiguration *)configuration {

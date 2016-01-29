@@ -88,22 +88,26 @@
 
 - (void)setContent:(id)content {
     _content = content;
+    NSArray *data = nil;
     if ([content isKindOfClass:[NSArray class]]) {
-        _tableData.data = (NSArray *)content;
+        data = (NSArray *)content;
     }
     else if ([content isKindOfClass:[IFResource class]]) {
-        id data = [(IFResource *)content asJSONData];
-        if ([data isKindOfClass:[NSArray class]]) {
-            _tableData.data = (NSArray *)data;
+        id jsonData = [(IFResource *)content asJSONData];
+        if ([jsonData isKindOfClass:[NSArray class]]) {
+            data = (NSArray *)jsonData;
         }
     }
     else {
         DDLogWarn(@"%@: Unable to set content of type %@", LogTag, [[content class] description]);
     }
-    // Refresh the list view.
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
+    if (data) {
+        _tableData.data = [self formatData:data];
+        // Refresh the list view.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }
 }
 
 #pragma mark - view lifecycle methods
@@ -214,6 +218,10 @@
     if (_clearFilterMessage) {
         [self showToastMessage:_clearFilterMessage];
     }
+}
+
+- (NSArray *)formatData:(NSArray *)data {
+    return data;
 }
 
 #pragma mark - private methods

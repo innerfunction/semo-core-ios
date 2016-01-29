@@ -65,6 +65,9 @@
 @property (nonatomic, strong) NSString *clearFilterMessage;
 @property (nonatomic, strong) id content;
 
+// Format incoming list data.
+// Principally intended as a mechanism for subclasses to interface with specific data sources.
+- (NSArray *)formatData:(NSArray *)data;
 // Clear any currently applied table data filter.
 - (void)clearFilter;
 
