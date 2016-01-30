@@ -50,6 +50,11 @@
     if (self) {
         self.namedTargets = [NSDictionary dictionary];
         _tableData = [[IFTableData alloc] init];
+        UIColor *backgroundColor = [configuration getValueAsColor:@"backgroundColor"];
+        if (backgroundColor) {
+            self.tableView.backgroundView = nil;
+            self.tableView.backgroundColor = backgroundColor;
+        }
     }
     return self;
 }

@@ -18,8 +18,8 @@
 
 @interface IFTableViewCellFactory()
 
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName;
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height;
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName defaultImage:(UIImage *)defaultImage;
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height defaultImage:(UIImage *)defaultImage;
 - (UIImage *)dereferenceImage:(NSString *)imageRef;
 
 @end
@@ -34,13 +34,10 @@
     return self;
 }
 
-#define RowDataStringValue(name)    ([rowData getValueAsString:name defaultValue:[_rowConfiguration getValueAsString:name]])
-#define RowDataCGFloatValue(name)   ((CGFloat)[[rowData getValueAsNumber:name defaultValue:[_rowConfiguration getValueAsNumber:name]] floatValue])
-
 - (UITableViewCell *)resolveCellForTable:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
     NSDictionary *rowData = [_tableData rowDataForIndexPath:indexPath];
     
-    NSString *style = RowDataStringValue(@"style");
+    NSString *style = [rowData getValueAsString:@"style" defaultValue:_style];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:style];
     
     if (!cell) {
@@ -57,39 +54,40 @@
         cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:style];
     }
     
-    NSString *title       = RowDataStringValue(@"title");
-    NSString *description = RowDataStringValue(@"description");
+    NSString *title       = [rowData getValueAsString:@"title" defaultValue:@""];
+    NSString *description = [rowData getValueAsString:@"description" defaultValue:@""];
     
     cell.textLabel.text = title;
     if (description) {
         cell.detailTextLabel.text = description;
     }
     
-    NSString *textColor = RowDataStringValue(@"textColor");
-    NSString *selectedTextColor = RowDataStringValue(@"selectedTextColor");
-    cell.textLabel.textColor = [UIColor colorForHex:textColor];
-    cell.textLabel.highlightedTextColor = [UIColor colorForHex:selectedTextColor];
+    cell.textLabel.textColor = [rowData getValueAsColor:@"textColor" defaultValue:_textColor];
+    cell.textLabel.highlightedTextColor = [rowData getValueAsColor:@"selectedTextColor" defaultValue:_selectedTextColor];
     cell.textLabel.backgroundColor = [UIColor clearColor];
-    cell.detailTextLabel.textColor = [UIColor colorForHex:RowDataStringValue(@"detailTextColor")];
-    cell.detailTextLabel.highlightedTextColor = [UIColor colorForHex:RowDataStringValue(@"detailSelectedTextColor")];
+    cell.detailTextLabel.textColor = [rowData getValueAsColor:@"detailTextColor" defaultValue:_detailTextColor];
+    cell.detailTextLabel.highlightedTextColor = [rowData getValueAsColor:@"selectedDetailTextColor" defaultValue:_selectedDetailTextColor];
     cell.detailTextLabel.backgroundColor = [UIColor clearColor];
-    cell.backgroundColor = [UIColor colorForHex:RowDataStringValue(@"backgroundColor")];
+    cell.backgroundColor = [rowData getValueAsColor:@"backgroundColor" defaultValue:_backgroundColor];
     
-    NSString *selectedBackgroundColor = RowDataStringValue(@"selectedBackgroundColor");
+    UIColor *selectedBackgroundColor = [rowData getValueAsColor:@"selectedBackgroundColor" defaultValue:_selectedBackgroundColor];
     // NOTE: This won't work correctly on grouped lists with rounded corners:
     if (selectedBackgroundColor) {
         UIView *bgColorView = [[UIView alloc] init];
-        bgColorView.backgroundColor = [UIColor colorForHex:selectedBackgroundColor];
+        bgColorView.backgroundColor = selectedBackgroundColor;
         bgColorView.layer.masksToBounds = YES;
         [cell setSelectedBackgroundView:bgColorView];
     }
     
-    CGFloat imageHeight = RowDataCGFloatValue(@"imageHeight");
+    CGFloat imageHeight = [[rowData getValueAsNumber:@"imageHeight" defaultValue:_imageHeight] floatValue];
     if (!imageHeight) {
-        imageHeight = RowDataCGFloatValue(@"height");
+        imageHeight = [[rowData getValueAsNumber:@"height" defaultValue:_height] floatValue];
     }
-    CGFloat imageWidth = RowDataCGFloatValue(@"imageWidth");
-    UIImage *image = [self loadImageWithRowData:rowData dataName:@"image" width:imageWidth height:imageHeight];
+    CGFloat imageWidth = imageHeight;
+    if ([rowData hasValue:@"imageWidth"]) {
+        imageWidth = [[rowData getValueAsNumber:@"imageWidth" defaultValue:_imageWidth] floatValue];
+    }
+    UIImage *image = [self loadImageWithRowData:rowData dataName:@"image" width:imageWidth height:imageHeight defaultImage:_image];
     if (image) {
         cell.imageView.image = image;
         // Add rounded corners to image.
@@ -100,7 +98,7 @@
         cell.imageView.image = nil;
     }
     
-    NSString *accessory = RowDataStringValue(@"accessory");
+    NSString *accessory = [rowData getValueAsString:@"accessory" defaultValue:_accessory];
     if ([accessory isEqualToString:@"None"]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -114,8 +112,8 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     
-    UIImage *backgroundImage  = [self loadImageWithRowData:rowData dataName:@"backgroundImage"];
-    UIImage *selectedImage    = [self loadImageWithRowData:rowData dataName:@"selectedBackgroundImage"];
+    UIImage *backgroundImage  = [self loadImageWithRowData:rowData dataName:@"backgroundImage" defaultImage:_backgroundImage];
+    UIImage *selectedImage    = [self loadImageWithRowData:rowData dataName:@"selectedBackgroundImage" defaultImage:_selectedBackgroundImage];
     
     if (backgroundImage) {
         cell.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
@@ -134,18 +132,15 @@
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *rowData = [_tableData rowDataForIndexPath:indexPath];
-    CGFloat height = RowDataCGFloatValue(@"height");
+    CGFloat height = [[rowData getValueAsNumber:@"height" defaultValue:_height] floatValue];
     return height;
 }
 
 #pragma mark - private methods
 
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName {
-    UIImage *image = nil;
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName defaultImage:(UIImage *)defaultImage {
+    UIImage *image = defaultImage;
     NSString *imageName = [rowData getValueAsString:dataName];
-    if (!imageName) {
-        imageName = [_rowConfiguration getValueAsString:dataName];
-    }
     if (imageName) {
         image = [imageCache objectForKey:imageName];
         if (!image) {
@@ -165,12 +160,9 @@
     return image;
 }
 
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height {
-    UIImage *image = nil;
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height defaultImage:(UIImage *)defaultImage {
+    UIImage *image = defaultImage;
     NSString *imageName = [rowData getValueAsString:dataName];
-    if (!imageName) {
-        imageName = [_rowConfiguration getValueAsString:dataName];
-    }
     if (imageName) {
         NSString *cacheName = [NSString stringWithFormat:@"%@-%fx%f", imageName, width, height];
         image = [imageCache objectForKey:cacheName];

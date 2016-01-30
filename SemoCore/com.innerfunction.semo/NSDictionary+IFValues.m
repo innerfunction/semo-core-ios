@@ -8,6 +8,7 @@
 
 #import "NSDictionary+IFValues.h"
 #import "IFTypeConversions.h"
+#import "UIColor+IF.h"
 
 @implementation NSDictionary (IFValues)
 
@@ -84,7 +85,8 @@
 
 // Return the named property as a colour value.
 - (UIColor *)getValueAsColor:(NSString *)name {
-    return [self getValueAsColor:name defaultValue:0];
+    NSString *hexValue = [self getValueAsString:name];
+    return hexValue != nil ? [UIColor colorForHex:hexValue] : nil;
 }
 
 - (UIColor *)getValueAsColor:(NSString *)name defaultValue:(UIColor *)defaultValue {
