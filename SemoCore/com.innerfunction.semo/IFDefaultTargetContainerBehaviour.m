@@ -39,7 +39,7 @@
         NSString *_uri = [_uriRewriteRules rewriteString:uri];
         if (_uri) {
             if ([_uri hasPrefix:@"do:"]) {
-                curi = [[IFCompoundURI alloc] initWithURI:uri error:&error];
+                curi = [[IFCompoundURI alloc] initWithURI:_uri error:&error];
             }
             else {
                 DDLogWarn(@"%@: Rewritten URI not in 'do' scheme: %@ -> %@", LogTag, uri, _uri );

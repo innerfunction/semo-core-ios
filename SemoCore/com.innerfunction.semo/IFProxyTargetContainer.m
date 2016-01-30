@@ -10,7 +10,7 @@
 
 @implementation IFProxyTargetContainer
 
-@synthesize parentTargetContainer;
+@synthesize parentTargetContainer, uriHandler;
 
 - (id)initWithParentContainer:(id<IFTargetContainer>)parent {
     self = [super init];

@@ -18,8 +18,6 @@
 
 @implementation IFNavigationViewController
 
-@synthesize uriHandler;
-
 @synthesize parentTargetContainer;
 
 - (id)init {
@@ -33,10 +31,19 @@
 
 - (void)setRootView:(UIViewController *)rootView {
     self.viewControllers = @[ rootView ];
+    [self updateContainerBehaviourState];
 }
 
 - (UIViewController *)getRootView {
     return [self.viewControllers objectAtIndex:0];
+}
+
+- (id<IFURIHandler>)uriHandler {
+    return containerBehaviour.uriHandler;
+}
+
+- (void)setUriHandler:(id<IFURIHandler>)uriHandler {
+    containerBehaviour.uriHandler = uriHandler;
 }
 
 - (void)setUriRewriteRules:(IFStringRewriteRules *)uriRewriteRules {
@@ -61,6 +68,9 @@
         UIViewController *view = nil;
         // Resolve the view to a view controller instance.
         id _view = [action.parameters valueForKey:@"view"];
+        if ([_view isKindOfClass:[IFResource class]]) {
+            _view = ((IFResource *)_view).data;
+        }
         if ([_view isKindOfClass:[UIViewController class]]) {
             view = (UIViewController *)_view;
         }

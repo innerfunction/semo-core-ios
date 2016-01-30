@@ -24,7 +24,15 @@
     NSString *result = nil;
     NSArray *matches = [patternRegexp match:str];
     if (matches) {
-        result = [resultTemplate render:matches];
+        // Convert the array of matching groups to a dictionary whose
+        // keys correspond to the group index.
+        NSMutableDictionary *ctx = [[NSMutableDictionary alloc] init];
+        for (NSInteger i = 0; i < [matches count]; i++) {
+            NSString *key = [NSString stringWithFormat:@"%li", (long)i];
+            [ctx setObject:[matches objectAtIndex:i] forKey:key];
+        }
+        // Use this dictionary as the template context.
+        result = [resultTemplate render:ctx];
     }
     return result;
 }

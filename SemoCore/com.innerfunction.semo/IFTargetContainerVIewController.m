@@ -19,8 +19,6 @@
 
 @implementation IFTargetContainerViewController
 
-@synthesize parentTargetContainer = _parentTargetContainer, uriHandler = _uriHandler;
-
 - (id)init {
     self = [super init];
     if (self) {
@@ -55,13 +53,20 @@
     }
 }
 
+- (id<IFTargetContainer>)parentTargetContainer {
+    return containerBehaviour.parentTargetContainer;
+}
+
 - (void)setParentTargetContainer:(id<IFTargetContainer>)parentTargetContainer {
-    _parentTargetContainer = parentTargetContainer;
+    containerBehaviour.parentTargetContainer = parentTargetContainer;
     self.uriHandler = parentTargetContainer.uriHandler;
 }
 
+- (id<IFURIHandler>)uriHandler {
+    return containerBehaviour.uriHandler;
+}
+
 - (void)setUriHandler:(id<IFURIHandler>)uriHandler {
-    _uriHandler = uriHandler;
     containerBehaviour.uriHandler = uriHandler;
 }
 

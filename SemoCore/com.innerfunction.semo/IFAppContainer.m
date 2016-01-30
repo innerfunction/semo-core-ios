@@ -225,6 +225,16 @@
     return rootView;
 }
 
+#pragma mark - Overrides
+
+- (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
+    [super configureObject:object withConfiguration:configuration identifier:identifier];
+    // Set URI handler on any target container objects.
+    if ([object conformsToProtocol:@protocol(IFTargetContainer)]) {
+        ((id<IFTargetContainer>)object).uriHandler = _uriHandler;
+    }
+}
+
 #pragma mark - IFActionTarget protocol
 
 - (void)doAction:(IFDoAction *)action {
