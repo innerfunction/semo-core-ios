@@ -11,18 +11,43 @@
 
 @class IFResource;
 @protocol IFResourceContext;
+@protocol IFSchemeHandler;
 
 /** A protocol for handling URIs by dereferencing them to resources or values. */
 @protocol IFURIHandler <NSObject>
 
-/** Dereference a URI to a resource. */
+/**
+ * Dereference a URI to a resource.
+ */
 - (IFResource *)dereference:(id)uri;
-/** Dereference a URI to a resource. */
+/**
+ * Dereference a URI to a resource.
+ */
 - (IFResource *)dereference:(id)uri context:(id<IFResourceContext>)context;
-/** Dereference a URI to its bare value. May or may not return a resource, depending on the scheme. */
+/**
+ * Dereference a URI to its bare value. May or may not return a resource, depending on the scheme.
+ */
 - (id)dereferenceToValue:(id)uri;
-/** Dereference a URI to its bare value. May or may not return a resource, depending on the scheme. */
+/**
+ * Dereference a URI to its bare value. May or may not return a resource, depending on the scheme.
+ */
 - (id)dereferenceToValue:(id)uri context:(id<IFResourceContext>)context;
+/**
+ * Test if the resolver has a registered handler for the named scheme.
+ */
+- (BOOL)hasHandlerForURIScheme:(NSString *)scheme;
+/**
+ * Add a scheme handler.
+ */
+- (void)addHandler:(id<IFSchemeHandler>)handler forScheme:(NSString *)scheme;
+/**
+ * Return a list of all registered scheme names.
+ */
+- (NSArray *)getURISchemeNames;
+/**
+ * The the handler for a named scheme.
+ */
+- (id<IFSchemeHandler>)getHandlerForURIScheme:(NSString *)scheme;
 
 @end
 
