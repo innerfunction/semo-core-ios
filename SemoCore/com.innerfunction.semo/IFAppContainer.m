@@ -260,6 +260,7 @@ static IFAppContainer *instance;
 + (IFAppContainer *)bindToWindow:(UIWindow *)window {
     IFAppContainer *container = [IFAppContainer getAppContainer];
     [container loadConfiguration:@"app:config.json"];
+    [container startService];
     window.rootViewController = [container getRootView];
     window.backgroundColor = container.appBackgroundColor;
     return container;

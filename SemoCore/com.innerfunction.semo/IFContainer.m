@@ -95,8 +95,16 @@
     else {
         instance = [instance init];
     }
+    // TODO: Is there a better place for the following? They are really part of the configuration step,
+    // and also this method can be overridden; the reason for having them here currently is because of
+    // the two divergent configuration paths below.
+    // If the new instance is container aware then pass reference to this container.
     if ([instance conformsToProtocol:@protocol(IFIOCContainerAware)]) {
         ((id<IFIOCContainerAware>)instance).iocContainer = self;
+    }
+    // If instance is a service then add to list of services.
+    if ([instance conformsToProtocol:@protocol(IFService)]) {
+        [services addObject:(id<IFService>)instance];
     }
     return instance;
 }
@@ -206,7 +214,7 @@
                     for (NSString *valueName in [propConfigs getValueNames]) {
                         id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs withName:valueName];
                         if (propValue) {
-                            [propValue setObject:propValue forKey:valueName];
+                            [propValues setObject:propValue forKey:valueName];
                         }
                     }
                     value = propValues;
@@ -221,14 +229,9 @@
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
         }
-        // If the object instance is a service then add to the list of services, and start the
-        // service if the container services are running.
-        if ([object conformsToProtocol:@protocol(IFService)]) {
-            id<IFService> service = (id<IFService>)object;
-            [services addObject:service];
-            if (running) {
-                [service startService];
-            }
+        // If running and the object is a service instance then start the service now that it is fully configured.
+        if (running && [object conformsToProtocol:@protocol(IFService)]) {
+            [(id<IFService>)object startService];
         }
     }
 }
