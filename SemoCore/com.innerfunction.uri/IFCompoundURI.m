@@ -64,7 +64,7 @@
                         if ([@"=" isEqualToString:op]) {
                             // Promote parameter values assigned using = to full string URIs.
                             NSInteger idx = [pvalue rangeOfString:@"+"].location;
-                            if (idx > 0) {
+                            if (idx != NSNotFound) {
                                 paramString = [pvalue substringFromIndex:idx];
                                 pvalue = [pvalue substringToIndex:idx];
                             }

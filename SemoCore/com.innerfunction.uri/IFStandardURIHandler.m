@@ -119,12 +119,12 @@
     if ([value isKindOfClass:[IFResource class]]) {
         IFResource *resource = (IFResource *)value;
         resource.uri = compUri;
-        resource.uriHandler = [self modifyContext:compUri];
+        resource.uriHandler = [self modifySchemeContext:compUri];
     }
     return value;
 }
 
-- (id<IFURIHandler>)modifyContext:(IFCompoundURI *)uri {
+- (id<IFURIHandler>)modifySchemeContext:(IFCompoundURI *)uri {
     IFStandardURIHandler *handler = [[IFStandardURIHandler alloc] init];
     handler->_schemeHandlers = [_schemeHandlers mutableCopy];
     // Create a copy of this object's scheme handlers dictionary with a new entry for

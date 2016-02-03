@@ -19,9 +19,9 @@
  */
 - (id)dereference:(id)uri;
 /**
- * Return a new URI handler with a modified context (used to dereference relative URIs).
+ * Return a new URI handler with a modified scheme context (used to dereference relative URIs).
  */
-- (id<IFURIHandler>)modifyContext:(IFCompoundURI *)uri;
+- (id<IFURIHandler>)modifySchemeContext:(IFCompoundURI *)uri;
 /**
  * Test if the resolver has a registered handler for the named scheme.
  */

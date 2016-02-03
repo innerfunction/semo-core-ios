@@ -21,7 +21,7 @@
         for (idx = 0; attr[idx] != ',' && idx < len; idx++);
         
         // Copy type info to its own var.
-        propertyType = malloc(idx - 1);
+        propertyType = malloc(idx);
         strncpy(propertyType, attr + 1, idx);
         propertyType[idx - 1] = '\0';
         
@@ -75,17 +75,29 @@
 
 @implementation IFTypeInfo
 
+// TODO: Define a protocol that allows this class to directly interrogate an object for a list of
+// configurable properties. The following can potentially be expensive (e.g. a table view having
+// 150+ properties) and whilst chaching of type info objects by class name would avoid any performance
+// issues, the full set of properties is not needed and having a protocol for declaring configurable
+// properties would also help document the supported properties. Note that the protocol should define
+// static methods on the class.
 - (id)initWithObject:(id)object {
     self = [super init];
     if (self) {
         properties = [[NSMutableDictionary alloc] init];
         unsigned int propCount;
-        objc_property_t * props = class_copyPropertyList([object class], &propCount);
-        for (int i = 0; i < propCount; i++) {
-            objc_property_t prop = props[i];
-            NSString *propName = [NSString stringWithUTF8String:property_getName(prop)];
-            IFPropertyInfo *propInfo = [[IFPropertyInfo alloc] initWithProperty:prop];
-            [properties setObject:propInfo forKey:propName];
+        // Get properties for the current object's class and all its superclasses.
+        Class c = [object class];
+        while (c) {
+            objc_property_t * props = class_copyPropertyList(c, &propCount);
+            for (int i = 0; i < propCount; i++) {
+                objc_property_t prop = props[i];
+                NSString *propName = [NSString stringWithUTF8String:property_getName(prop)];
+                IFPropertyInfo *propInfo = [[IFPropertyInfo alloc] initWithProperty:prop];
+                [properties setObject:propInfo forKey:propName];
+            }
+            // Get the class' superclass
+            c = [c superclass];
         }
     }
     return self;
