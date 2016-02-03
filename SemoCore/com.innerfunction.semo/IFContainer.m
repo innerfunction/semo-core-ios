@@ -365,7 +365,7 @@
 
 - (id)getValue:(NSString *)name asRepresentation:(NSString *)representation {
     id value = [self getNamed:name];
-    if (value) {
+    if (value && ![@"bare" isEqualToString:representation]) {
         value = [IFTypeConversions value:value asRepresentation:representation];
     }
     return value;
