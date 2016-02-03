@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "IFCompoundURI.h"
 
-@class IFResource;
-@protocol IFResourceContext;
 @protocol IFSchemeHandler;
 
 /** A protocol for handling URIs by dereferencing them to resources or values. */
@@ -19,19 +17,11 @@
 /**
  * Dereference a URI to a resource.
  */
-- (IFResource *)dereference:(id)uri;
+- (id)dereference:(id)uri;
 /**
- * Dereference a URI to a resource.
+ * Return a new URI handler with a modified context (used to dereference relative URIs).
  */
-- (IFResource *)dereference:(id)uri context:(id<IFResourceContext>)context;
-/**
- * Dereference a URI to its bare value. May or may not return a resource, depending on the scheme.
- */
-- (id)dereferenceToValue:(id)uri;
-/**
- * Dereference a URI to its bare value. May or may not return a resource, depending on the scheme.
- */
-- (id)dereferenceToValue:(id)uri context:(id<IFResourceContext>)context;
+- (id<IFURIHandler>)modifyContext:(IFCompoundURI *)uri;
 /**
  * Test if the resolver has a registered handler for the named scheme.
  */
@@ -58,26 +48,11 @@
  * Dereference a URI.
  * Is passed a set of URI parameters as already dereferenced values.
  */
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent;
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params;
 
 @optional
 
 /** Resolve a possibly relative URI against a reference URI. */
 - (IFCompoundURI *)resolve:(IFCompoundURI *)uri against:(IFCompoundURI *)reference;
-
-@end
-
-/** A protocol for providing context to URI resources. */
-@protocol IFResourceContext <NSObject>
-
-/**
- * A dictionary of in-scope URIs, keyed by scheme.
- * Used to resolve relative URIs to absolute.
- */
-@property (nonatomic, strong) NSDictionary *uriSchemeContext;
-/**
- * The in-scope URI handler.
- */
-@property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
 @end

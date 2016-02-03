@@ -17,7 +17,7 @@
  * The object's properties may be configured using other built objects, or using references
  * to named objects contained by the container.
  */
-@interface IFContainer : NSObject <IFService> {
+@interface IFContainer : NSObject <IFService, IFConfigurationRoot> {
     // A map of named objects.
     NSMutableDictionary *named;
     // A list of contained services.

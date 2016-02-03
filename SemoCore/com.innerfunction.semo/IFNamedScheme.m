@@ -22,7 +22,7 @@
     return uri;
 }
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     id namedObj = [named objectForKey:uri.name];
     return namedObj;
 }

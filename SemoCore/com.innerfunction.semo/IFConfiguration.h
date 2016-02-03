@@ -10,6 +10,12 @@
 #import "IFJSONData.h"
 #import "IFValues.h"
 
+@protocol IFConfigurationRoot <NSObject>
+
+- (id)getValue:(NSString *)name asRepresentation:(NSString *)representation;
+
+@end
+
 @class IFConfiguration;
 
 @interface IFConfigurationPropertyHandler : IFJSONPropertyHandler {
@@ -23,21 +29,21 @@
 // A class for reading component configurations.
 // Intended use is for accessing configuration values read from a JSON file.
 // The class is a thin wrapper around an IFValues instance.
-@interface IFConfiguration : NSObject <IFValues> {
+@interface IFConfiguration : NSObject <IFValues, IFConfigurationRoot> {
     IFConfigurationPropertyHandler *propertyHandler;
 }
 
 @property (nonatomic, strong) id data;
-@property (nonatomic, strong) IFConfiguration *root;
-@property (nonatomic, strong) IFResource *resource;
+@property (nonatomic, strong) id<IFConfigurationRoot> root;
 @property (nonatomic, strong) NSDictionary *context;
+@property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
 // Initialize the configuration with the specified data.
 - (id)initWithData:(id)data;
 // Initialize the configuration with the specified data and parent configuraiton.
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
 // Initialize the configuration with the specified data and resource.
-- (id)initWithData:(id)data resource:(IFResource *)resource;
+- (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler;
 // Initialize the configuration by reading JSON from the specified resource.
 - (id)initWithResource:(IFResource *)resource;
 // Initialize the configuration using the specified data and the specified base resource.
@@ -47,7 +53,7 @@
 - (id)getValue:(NSString *)key asRepresentation:(NSString*)representation;
 
 // Return the named property as a URI resource.
-- (IFResource *)getValueAsResource:(NSString *)name;
+//- (IFResource *)getValueAsResource:(NSString *)name;
 
 // Return the named property as typed values.
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)name;

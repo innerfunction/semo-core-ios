@@ -25,8 +25,8 @@
 
 @implementation IFFileResource
 
-- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(id<IFResourceContext>)parent {
-    self = [super initWithData:data uri:uri parent:parent];
+- (id)initWithData:(id)data uri:(IFCompoundURI *)uri {
+    self = [super initWithData:data uri:uri];
     if (self) {
         self.fileDescription = data;
     }

@@ -98,10 +98,12 @@
         data = (NSArray *)content;
     }
     else if ([content isKindOfClass:[IFResource class]]) {
-        id jsonData = [(IFResource *)content asJSONData];
+        IFResource *resource = (IFResource *)content;
+        id jsonData = [resource asJSONData];
         if ([jsonData isKindOfClass:[NSArray class]]) {
             data = (NSArray *)jsonData;
         }
+        _tableData.uriHandler = resource.uriHandler;
     }
     else {
         DDLogWarn(@"%@: Unable to set content of type %@", LogTag, [[content class] description]);

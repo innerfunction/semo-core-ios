@@ -11,6 +11,7 @@
 #import "IFFileBasedSchemeHandler.h"
 #import "IFLocalSchemeHandler.h"
 #import "IFResource.h"
+#import "NSDictionary+IF.h"
 
 #define MainBundlePath  ([[NSBundle mainBundle] resourcePath])
 
@@ -25,17 +26,21 @@
 // to URI resources.
 @implementation IFStandardURIHandler
 
-- (id)initWithResourceContext:(id<IFResourceContext>)context {
-    return [self initWithMainBundlePath:MainBundlePath resourceContext:context];
+- (id)init {
+    return [self initWithMainBundlePath:MainBundlePath schemeContexts:[NSDictionary dictionary]];
 }
 
-- (id)initWithMainBundlePath:(NSString *)mainBundlePath resourceContext:(id<IFResourceContext>)context {
+- (id)initWithSchemeContexts:(NSDictionary *)schemeContexts {
+    return [self initWithMainBundlePath:MainBundlePath schemeContexts:schemeContexts];
+}
+
+- (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeContexts:(NSDictionary *)schemeContexts {
     self = [super init];
     if (self) {
-        schemeHandlers = [[NSMutableDictionary alloc] init];
-        resourceContext = context;
+        _schemeHandlers = [[NSMutableDictionary alloc] init];
+        _schemeContexts = schemeContexts;
         // Add standard schemes.
-        [schemeHandlers setValue:[[IFStringSchemeHandler alloc] init]
+        [_schemeHandlers setValue:[[IFStringSchemeHandler alloc] init]
                           forKey:@"s"];
         // See following for info on iOS file system dirs.
         // https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/Reference/reference.html
@@ -43,11 +48,11 @@
         // TODO: app: scheme handler not resolving (in simulator anyway):
         // Resolved path: /Users/juliangoacher/Library/Application\ Support/iPhone\ Simulator/5.0/Applications/F578A85D-A358-4897-A0BE-9BE8714B50D4/Applications/
         // Actual path:   /Users/juliangoacher/Library/Application\ Support/iPhone\ Simulator/5.0/Applications/F578A85D-A358-4897-A0BE-9BE8714B50D4/EventPacComponents.app/
-        [schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithPath:mainBundlePath]
+        [_schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithPath:mainBundlePath]
                           forKey:@"app"];
-        [schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithDirectory:NSCachesDirectory]
+        [_schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithDirectory:NSCachesDirectory]
                           forKey:@"cache"];
-        [schemeHandlers setValue:[[IFLocalSchemeHandler alloc] init]
+        [_schemeHandlers setValue:[[IFLocalSchemeHandler alloc] init]
                           forKey:@"local"];
     }
     return self;
@@ -55,47 +60,25 @@
 
 // Test whether this resolver has a handler for a URI's scheme.
 - (BOOL)hasHandlerForURIScheme:(NSString *)scheme {
-    return [schemeHandlers valueForKey:scheme] != nil;
+    return [_schemeHandlers valueForKey:scheme] != nil;
 }
 
 // Register a new scheme handler.
 - (void)addHandler:(id<IFSchemeHandler>)handler forScheme:(NSString *)scheme {
-    [schemeHandlers setValue:handler forKey:scheme];
+    [_schemeHandlers setValue:handler forKey:scheme];
 }
 
 // Return a list of registered URI scheme names.
 - (NSArray *)getURISchemeNames {
-    return [schemeHandlers allKeys];
+    return [_schemeHandlers allKeys];
 }
 
 // Return the URI handler for the named scheme.
 - (id<IFSchemeHandler>)getHandlerForURIScheme:(NSString *)scheme {
-    return [schemeHandlers valueForKey:scheme];
+    return [_schemeHandlers valueForKey:scheme];
 }
 
-- (IFResource *)dereference:(id)uri {
-    return [self dereference:uri context:resourceContext];
-}
-
-- (IFResource *)dereference:(id)uri context:(id<IFResourceContext>)context {
-    IFResource *resource = nil;
-    id value = [self dereferenceToValue:uri context:context];
-    // Wrap bare values in a resource object.
-    if (value && ![value isKindOfClass:[IFResource class]]) {
-        IFCompoundURI *compUri = [self promoteToCompoundURI:uri];
-        resource = [[IFResource alloc] initWithData:value uri:compUri parent:context];
-    }
-    else {
-        resource = (IFResource *)value;
-    }
-    return resource;
-}
-
-- (id)dereferenceToValue:(id)uri {
-    return [self dereferenceToValue:uri context:resourceContext];
-}
-
-- (id)dereferenceToValue:(id)uri context:(id<IFResourceContext>)context {
+- (id)dereference:(id)uri {
     IFCompoundURI *compUri;
     if ([uri isKindOfClass:[IFCompoundURI class]]) {
         compUri = (IFCompoundURI *)uri;
@@ -105,33 +88,49 @@
     }
     id value = nil;
     // Resolve a handler for the URI scheme.
-    id<IFSchemeHandler> schemeHandler = [schemeHandlers valueForKey:compUri.scheme];
+    id<IFSchemeHandler> schemeHandler = [_schemeHandlers valueForKey:compUri.scheme];
     if (schemeHandler) {
         // Dictionary of resolved URI parameters.
         NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:[compUri.parameters count]];
         // Iterate over the URIs parameter values (which are also URIs) and dereference each
         // of them.
         for (NSString *name in [compUri.parameters allKeys]) {
-            IFResource *value = [self dereference:[compUri.parameters valueForKey:name] context:context];
+            id value = [self dereference:[compUri.parameters valueForKey:name]];
             if (value != nil) {
                 [params setValue:value forKey:name];
             }
         }
         // Resolve the current URI to an absolute form (potentially).
-        if ([schemeHandler respondsToSelector:@selector(resolve:against:)] && context.uriSchemeContext ) {
-            IFCompoundURI* reference = [context.uriSchemeContext valueForKey:compUri.scheme];
+        if ([schemeHandler respondsToSelector:@selector(resolve:against:)]) {
+            IFCompoundURI *reference = [_schemeContexts valueForKey:compUri.scheme];
             if (reference) {
                 compUri = [schemeHandler resolve:compUri against:reference];
             }
         }
         // Dereference the current URI.
-        value = [schemeHandler dereference:compUri parameters:params parent:context];
+        value = [schemeHandler dereference:compUri parameters:params];
     }
     else {
         NSString *reason = [NSString stringWithFormat:@"Handler not found for scheme %@:", compUri.scheme];
         @throw [[NSException alloc] initWithName:@"IFURIResolver" reason:reason userInfo:nil];
     }
+    // If the value is a resource then set its URI, and its URI handler as a copy of this handler,
+    // with the scheme context modified with the resource's URI.
+    if ([value isKindOfClass:[IFResource class]]) {
+        IFResource *resource = (IFResource *)value;
+        resource.uri = uri;
+        resource.uriHandler = [self modifyContext:uri];
+    }
     return value;
+}
+
+- (id<IFURIHandler>)modifyContext:(IFCompoundURI *)uri {
+    IFStandardURIHandler *handler = [[IFStandardURIHandler alloc] init];
+    handler->_schemeHandlers = [_schemeHandlers copy];
+    // Create a copy of this object's scheme handlers dictionary with a new entry for
+    // the URI argument keyed by the URI's scheme name.
+    handler->_schemeContexts = [_schemeContexts dictionaryWithAddedObject:uri forKey:uri.scheme];
+    return handler;
 }
 
 #pragma mark - private

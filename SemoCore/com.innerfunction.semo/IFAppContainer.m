@@ -26,18 +26,14 @@
 
 @implementation IFAppContainer
 
-@synthesize uriHandler=_uriHandler, uriSchemeContext=_uriSchemeContext;
-
 - (id)init {
     self = [super init];
     if (self) {
         self.appBackgroundColor = [UIColor redColor];
-        self.uriSchemeContext = [NSDictionary dictionary];
-        uriHandler = [[IFStandardURIHandler alloc] initWithResourceContext:self];
-        self.uriHandler = uriHandler;
+        self.uriHandler = [[IFStandardURIHandler alloc] init];
         rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
         rootTargetContainer.owner = self;
-        rootTargetContainer.uriHandler = uriHandler;
+        rootTargetContainer.uriHandler = _uriHandler;
     }
     return self;
 }
@@ -62,18 +58,20 @@
                 return;
             }
         }
-        IFResource *resource = nil;
+        id configData = nil;
         if (uri) {
             // If a configuration source URI has been resolved then attempt loading the configuration from the URI.
             DDLogInfo(@"%@: Attempting to load app container configuration from %@", LogTag, uri);
-            resource = [uriHandler dereference:uri];
-            if (resource) {
-                configuration = [[IFConfiguration alloc] initWithResource:resource];
-            }
+            configData = [_uriHandler dereference:uri];
         }
         else {
-            // No configuration URI, so assume the configuration source is the actual config data.
-            DDLogInfo(@"%@: Attempting to configure app container with data...", LogTag);
+            configData = configSource;
+        }
+        // Create configuration from data.
+        if ([configData isKindOfClass:[IFResource class]]) {
+            configuration = [[IFConfiguration alloc] initWithResource:(IFResource *)configData];
+        }
+        else {
             configuration = [[IFConfiguration alloc] initWithData:configSource];
         }
     }
@@ -95,10 +93,10 @@
     [self addTypes:[configuration getValueAsConfiguration:@"types"]];
     
     // Add additional schemes to the resolver/dispatcher.
-    [uriHandler addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
-    [uriHandler addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
-    [uriHandler addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
-    [uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithNamed:named] forScheme:@"named"];
+    [_uriHandler addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
+    [_uriHandler addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
+    [_uriHandler addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
+    [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithNamed:named] forScheme:@"named"];
     // Additional configured schemes.
     IFConfiguration *dispatcherConfig = [configuration getValueAsConfiguration:@"schemes"];
     if (dispatcherConfig) {
@@ -106,7 +104,7 @@
             IFConfiguration *schemeConfig = [dispatcherConfig getValueAsConfiguration:schemeName];
             id handler = [self buildObjectWithConfiguration:schemeConfig identifier:schemeName];
             if ([handler conformsToProtocol:@protocol(IFSchemeHandler)]) {
-                [uriHandler addHandler:handler forScheme:schemeName];
+                [_uriHandler addHandler:handler forScheme:schemeName];
             }
         }
     }
@@ -118,7 +116,7 @@
         [locals setValues:settings forceReset:ForceResetDefaultSettings];
     }
     
-    [named setObject:uriHandler forKey:@"uriHandler"];
+    [named setObject:_uriHandler forKey:@"uriHandler"];
     [named setObject:globals forKey:@"globals"];
     [named setObject:locals forKey:@"locals"];
     [named setObject:self forKey:@"container"];

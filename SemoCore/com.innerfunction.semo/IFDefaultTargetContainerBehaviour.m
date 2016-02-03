@@ -56,7 +56,7 @@
         id target = [self targetForPath:curi.fragment];
         // If target resolved then dereference the URI and apply the resource to the target.
         if (target && [target conformsToProtocol:@protocol(IFTarget)]) {
-            IFDoAction *action = (IFDoAction *)[_uriHandler dereferenceToValue:curi];
+            IFDoAction *action = (IFDoAction *)[_uriHandler dereference:curi];
             [(id<IFTarget>)target doAction:action];
             dispatched = YES;
         }

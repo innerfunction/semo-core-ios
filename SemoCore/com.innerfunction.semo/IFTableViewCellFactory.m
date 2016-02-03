@@ -189,7 +189,7 @@
     UIImage *image = nil;
     if ([imageRef hasPrefix:@"@"]) {
         NSString* uri = [imageRef substringFromIndex:1];
-        IFResource *imageRsc = [self.baseResource dereference:uri];
+        IFResource *imageRsc = [_tableData.uriHandler dereference:uri];
         if (imageRsc) {
             image = [imageRsc asImage];
         }

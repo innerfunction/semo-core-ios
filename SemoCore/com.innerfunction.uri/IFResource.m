@@ -15,22 +15,11 @@
 // and resolves different representations appropriately.
 @implementation IFResource
 
-@synthesize uriSchemeContext, uriHandler;
-
-- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(id<IFResourceContext>)parent {
+- (id)initWithData:(id)data uri:(IFCompoundURI *)uri {
     self = [super init];
     if (self) {
         self.data = data;
         self.uri = uri;
-        self.uriSchemeContext = [[NSMutableDictionary alloc] initWithDictionary:parent.uriSchemeContext];
-        // Set the scheme context for this resource. Copies each uri by scheme into the context, before
-        // adding the resource's uri by scheme.
-        for (id key in [uri.parameters allKeys]) {
-            IFCompoundURI *puri = [uri.parameters valueForKey:key];
-            [self.uriSchemeContext setValue:puri forKey:puri.scheme];
-        }
-        [self.uriSchemeContext setValue:uri forKey:uri.scheme];
-        self.uriHandler = parent.uriHandler;
     }
     return self;
 }
@@ -81,7 +70,7 @@
 }
 
 - (IFResource *)refresh {
-    return [self dereference:self.uri];
+    return (IFResource *)[self.uriHandler dereference:self.uri];
 }
 
 #pragma mark - NSObject overrides
@@ -96,24 +85,6 @@
 
 - (BOOL)isEqual:(id)object {
     return [object isKindOfClass:[IFResource class]] && [self.uri isEqual:((IFResource *)object).uri];
-}
-
-#pragma mark - URIResolver protocol
-
-- (IFResource *)dereference:(id)uri {
-    return [self dereference:uri context:self];
-}
-
-- (IFResource *)dereference:(id)uri context:(id<IFResourceContext>)context {
-    return [self.uriHandler dereference:uri context:context];
-}
-
-- (id)dereferenceToValue:(id)uri {
-    return [self dereferenceToValue:uri context:self];
-}
-
-- (id)dereferenceToValue:(id)uri context:(id<IFResourceContext>)context {
-    return [self.uriHandler dereferenceToValue:uri context:context];
 }
 
 @end

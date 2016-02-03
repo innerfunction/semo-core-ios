@@ -11,11 +11,11 @@
 #import "IFURIHandling.h"
 
 @interface IFStandardURIHandler : NSObject <IFURIHandler> {
-    NSMutableDictionary *schemeHandlers;
-    id<IFResourceContext> resourceContext;
+    NSMutableDictionary *_schemeHandlers;
+    NSDictionary *_schemeContexts;
 }
 
-- (id)initWithResourceContext:(id<IFResourceContext>)context;
-- (id)initWithMainBundlePath:(NSString *)mainBundlePath resourceContext:(id<IFResourceContext>)context;
+- (id)initWithSchemeContexts:(NSDictionary *)schemeContexts;
+- (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeContexts:(NSDictionary *)schemeContexts;
 
 @end

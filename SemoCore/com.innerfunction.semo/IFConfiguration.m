@@ -17,6 +17,7 @@
 @interface IFConfiguration()
 
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
+- (id)initWithData:(id)data resource:(IFResource *)resource;
 - (id)initWithConfiguration:(IFConfiguration *)config parent:(IFConfiguration *)parent;
 - (void)initializeContext;
 
@@ -43,7 +44,6 @@
     if ([value isKindOfClass:[NSString class]]) {
         // Interpret the string value.
         NSString* stringValue = (NSString *)value;
-
         // First, attempt resolving any context references. If these in turn resolve to a
         // $ or # prefixed value, then they will be resolved in the following code.
         if ([stringValue hasPrefix:@"$"]) {
@@ -55,21 +55,17 @@
                 return value;
             }
         }
-        
         // Evaluate all string values as templates, unless prefixed with `
         if (![stringValue hasPrefix:@"`"]) {
             stringValue = [IFStringTemplate render:(NSString*)stringValue context:parent.context];
         }
-        
         // Any string values starting with a '@' are potentially internal URI references.
         // Normalize to URI references with a default representation qualifier.
         // If a dispatcher is also set on this configuration object then attempt to resolve
         // the URI and return its value instead.
         if ([stringValue hasPrefix:@"@"]) {
             NSString* uri = [stringValue substringFromIndex:1];
-            // 20151106 change
-            //value = [parent.resource dereference:uri];
-            value = [parent.resource dereferenceToValue:uri];
+            value = [parent.uriHandler dereference:uri];
         }
         // Any string values starting with a '#' are potential path references to other
         // properties in the same configuration. Attempt to resolve them against the configuration
@@ -94,8 +90,6 @@
 
 @implementation IFConfiguration
 
-@synthesize data, root, resource, context;
-
 - (id)init {
     // Initialize with an empty dictionary.
     self = [super init];
@@ -106,22 +100,30 @@
     return self;
 }
 
-- (id)initWithData:(id)_data {
-    return [self initWithData:_data parent:[IFConfiguration emptyConfiguration]];
+- (id)initWithData:(id)data {
+    return [self initWithData:data parent:[IFConfiguration emptyConfiguration]];
 }
 
-- (id)initWithData:(id)_data parent:(IFConfiguration *)parent {
+- (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler {
+    self = [self initWithData:data];
+    if (self) {
+        self.uriHandler = uriHandler;
+    }
+    return self;
+}
+
+- (id)initWithData:(id)data parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {
-        if ([_data isKindOfClass:[NSString class]]) {
-            self.data = [IFTypeConversions asJSONData:_data];
+        if ([data isKindOfClass:[NSString class]]) {
+            self.data = [IFTypeConversions asJSONData:data];
         }
         else {
-            self.data = _data;
+            self.data = data;
         }
-        self.resource = parent.resource;
         self.root = parent.root;
         self.context = parent.context;
+        self.uriHandler = parent.uriHandler;
         [self initializeContext];
         propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
@@ -131,55 +133,45 @@
 - (id)initWithConfiguration:(IFConfiguration *)config parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {
-        NSDictionary *_data = [[NSMutableDictionary alloc] init];
+        NSDictionary *data = [[NSMutableDictionary alloc] init];
         if ([config.data isKindOfClass:[NSDictionary class]]) {
-            _data = [_data extendWith:(NSDictionary *)config.data];
+            data = [data extendWith:(NSDictionary *)config.data];
         }
         if ([parent.data isKindOfClass:[NSDictionary class]]) {
-            _data = [_data extendWith:(NSDictionary *)parent.data];
+            data = [data extendWith:(NSDictionary *)parent.data];
         }
-        self.data = _data;
-        self.resource = parent.resource;
+        self.data = data;
         self.root = parent.root;
         self.context = [config.context extendWith:parent.context];
+        self.uriHandler = parent.uriHandler;
         [self initializeContext];
         propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
     return self;
 }
 
-- (id)initWithResource:(IFResource *)_resource {
-    return [self initWithData:[_resource asJSONData] resource:_resource];
+- (id)initWithResource:(IFResource *)resource {
+    return [self initWithData:[resource asJSONData] resource:resource];
 }
 
-- (id)initWithData:(id)_data resource:(IFResource *)_resource {
+- (id)initWithData:(id)data resource:(IFResource *)resource {
     if (self = [super init]) {
-        self.data = _data;
-        self.resource = _resource;
+        self.data = data;
         self.root = self;
+        self.uriHandler = resource.uriHandler;
         [self initializeContext];
         propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
     return self;
 }
 
-- (id)initWithResource:(IFResource *)_resource parent:(IFConfiguration *)parent {
+- (id)initWithResource:(IFResource *)resource parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {
-        self.data = [_resource asJSONData];
-        self.resource = _resource;
-        // If the current resource and the parent's resource share the same scheme and name then they
-        // refer to the same container, and this configuration shares the parent's root; otherwise, the
-        // root is this resource.
-        IFCompoundURI *thisURI = _resource.uri;
-        IFCompoundURI *parentURI = parent.resource.uri;
-        if ([thisURI.scheme isEqualToString:parentURI.scheme] && [thisURI.name isEqualToString:parentURI.name]) {
-            self.root = parent.root;
-        }
-        else {
-            self.root = self;
-        }
+        self.data = [resource asJSONData];
+        self.root = self;
         self.context = parent.context;
+        self.uriHandler = parent.uriHandler;
         [self initializeContext];
         propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
@@ -190,12 +182,12 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *values = [[NSMutableDictionary alloc] init];
     // Search the configuration data for any parameter values, filter parameter values out of main data values.
-    for (NSString *name in [data allKeys]) {
+    for (NSString *name in [_data allKeys]) {
         if ([name hasPrefix:@"$"]) {
-            [params setObject:[data objectForKey:name] forKey:name];
+            [params setObject:[_data objectForKey:name] forKey:name];
         }
         else {
-            [values setObject:[data objectForKey:name] forKey:name];
+            [values setObject:[_data objectForKey:name] forKey:name];
         }
     }
     // Initialize/modify the context with parameter values, if any.
@@ -215,7 +207,7 @@
 
 - (id)getValue:(NSString*)name asRepresentation:(NSString *)representation {
     
-    id value = [IFJSONData resolvePath:name onData:data handler:propertyHandler representation:representation];
+    id value = [IFJSONData resolvePath:name onData:_data handler:propertyHandler representation:representation];
     
     // Perform type conversions according to the requested representation.
     // These are pretty basic:
@@ -230,19 +222,19 @@
     // * Anything else is only valid JSON data.
     if ([@"bare" isEqualToString:representation]) {
     }
+    /*
     else if ([@"resource" isEqualToString:representation]) {
         if ( value && ![value isKindOfClass:[IFResource class]]) {
             IFCompoundURI *uri = [resource.uri copyOfWithFragment:name];
             value = [[IFResource alloc] initWithData:value uri:uri parent:resource];
         }
     }
+    */
     else if ([@"configuration" isEqualToString:representation]) {
         if (![value isKindOfClass:[IFConfiguration class]]) {
             // If value isn't already a configuration, but is a dictionary then construct a new config using the values in that dictionary...
             if ([value isKindOfClass:[NSDictionary class]]) {
-                IFCompoundURI *uri = [resource.uri copyOfWithFragment:name];
-                IFResource *_resource = [[IFResource alloc] initWithData:value uri:uri parent:resource];
-                value = [[IFConfiguration alloc] initWithResource:_resource parent:self];
+                value = [[IFConfiguration alloc] initWithData:value parent:self];
             }
             // Else if value is a resource, then construct a new config using the resource...
             else if ([value isKindOfClass:[IFResource class]]) {
@@ -264,8 +256,6 @@
 }
 
 - (BOOL)hasValue:(NSString *)name {
-    // 20151106 change -
-    //return [self getValue:name asRepresentation:@"default"] != nil;
     return [self getValue:name asRepresentation:@"bare"] != nil;
 }
 
@@ -336,21 +326,19 @@
     UIImage *value = [self getValue:name asRepresentation:@"image"];
     return [value isKindOfClass:[UIImage class]] ? value : nil;
 }
-
+/*
 - (IFResource *)getValueAsResource:(NSString *)name {
     IFResource *value = [self getValue:name asRepresentation:@"resource"];
     return [value isKindOfClass:[IFResource class]] ? value : nil;
 }
-
+*/
 - (id)getValue:(NSString *)name {
-    // 20151106 change -
-    //return [self getValue:name asRepresentation:@"default"];
     return [self getValue:name asRepresentation:@"bare"];
 }
 
 - (NSArray *)getValueNames {
-    if ([data respondsToSelector:@selector(allKeys)]) {
-        return [data allKeys];
+    if ([_data respondsToSelector:@selector(allKeys)]) {
+        return [_data allKeys];
     }
     return [NSArray array];
 }
@@ -452,14 +440,15 @@
     }
     return result;
 }
-
+/*
 - (NSUInteger)hash {
     return self.resource ? [self.resource hash] : [super hash];
 }
-
+*/
 - (BOOL)isEqual:(id)object {
     // Two configurations are equal if the have the same source resource.
-    return [object isKindOfClass:[IFConfiguration class]] && [self.resource isEqual:((IFConfiguration *)object).resource];
+    //return [object isKindOfClass:[IFConfiguration class]] && [self.resource isEqual:((IFConfiguration *)object).resource];
+    return [object isKindOfClass:[IFConfiguration class]] && [_data isEqual:((IFConfiguration *)object).data];
 }
 
 static IFConfiguration *emptyConfiguaration;

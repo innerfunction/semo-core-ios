@@ -46,9 +46,9 @@
     return self;
 }
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     // Init resource with nil data - data will be resolved when data property is requested.
-    IFLocalResource *resource = [[IFLocalResource alloc] initWithData:nil uri:uri parent:parent];
+    IFLocalResource *resource = [[IFLocalResource alloc] initWithData:nil uri:uri];
     resource.key = uri.name;
     resource.storage = storage;
     return resource;

@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "IFTableData.h"
-#import "IFResource.h"
 #import "IFConfiguration.h"
 
 @class IFTableViewController;
@@ -26,7 +25,6 @@
 
 @property (nonatomic, strong) id<IFTableViewCellDecorator> decorator;
 @property (nonatomic, strong) IFTableData *tableData;
-@property (nonatomic, strong) IFResource *baseResource;
 
 @property (nonatomic, strong) NSString *style;
 @property (nonatomic, strong) UIColor *textColor;

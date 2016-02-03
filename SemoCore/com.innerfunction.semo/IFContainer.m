@@ -13,6 +13,7 @@
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
 #import "IFTypeInfo.h"
+#import "IFTypeConversions.h"
 #import "IFLogging.h"
 
 @interface IFContainer ()
@@ -179,9 +180,11 @@
             else if ([propertyInfo isAssignableFrom:[UIColor class]]) {
                 value = [configuration getValueAsColor:propName];
             }
+            /*
             else if ([propertyInfo isAssignableFrom:[IFResource class]]) {
                 value = [configuration getValueAsResource:propName];
             }
+            */
             else if ([propertyInfo isAssignableFrom:[IFConfiguration class]]) {
                 value = [configuration getValueAsConfiguration:propName];
             }
@@ -329,6 +332,8 @@
     return object;
 }
 
+#pragma mark - IFService
+
 - (void)startService {
     running = YES;
     for (id<IFService> service in services) {
@@ -354,6 +359,16 @@
         }
     }
     running = NO;
+}
+
+#pragma mark - IFConfigurationRoot
+
+- (id)getValue:(NSString *)name asRepresentation:(NSString *)representation {
+    id value = [self getNamed:name];
+    if (value) {
+        value = [IFTypeConversions value:value asRepresentation:representation];
+    }
+    return value;
 }
 
 @end

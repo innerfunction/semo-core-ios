@@ -22,7 +22,7 @@
     return uri;
 }
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     NSString *typeName = uri.name;
     IFConfiguration *config = [[IFConfiguration alloc] initWithData:params];
     id result = [container newInstanceForTypeName:typeName withConfiguration:config];

@@ -17,13 +17,13 @@
 #define Platform                    (@"ios")
 #define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
 
-@interface IFAppContainer : IFContainer <IFTarget, IFResourceContext> {
-    IFStandardURIHandler *uriHandler;
+@interface IFAppContainer : IFContainer <IFTarget> {
     NSMutableDictionary *globals;
     IFLocals *locals;
     IFDefaultTargetContainerBehaviour *rootTargetContainer;
 }
 
+@property (nonatomic, strong) IFStandardURIHandler *uriHandler;
 @property (nonatomic, strong) UIColor *appBackgroundColor;
 
 /** Load the app configuration. */

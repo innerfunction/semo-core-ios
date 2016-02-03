@@ -15,15 +15,17 @@
 // internal URI resolver.
 // Different resource types don't need to provide all representations, and can return
 // nil if they don't support any particular representation.
-@interface IFResource : NSObject <IFURIHandler, IFResourceContext> {
+@interface IFResource : NSObject {
 }
 
 // The resource data.
 @property (nonatomic, strong) id data;
 // The URI used to reference this resource.
 @property (nonatomic, strong) IFCompoundURI *uri;
+// The URI handler used to resolve this resource.
+@property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
-- (id)initWithData:(id)data uri:(IFCompoundURI *)uri parent:(id<IFResourceContext>)parent;
+- (id)initWithData:(id)data uri:(IFCompoundURI *)uri;
 // Access the resource's boolean representation.
 - (BOOL)asBoolean;
 // Access the resource's default representation.

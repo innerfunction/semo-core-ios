@@ -13,15 +13,11 @@
 // scheme specific part.
 @implementation IFStringSchemeHandler
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary*)params parent:(id<IFResourceContext>)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary*)params {
     NSString *value = uri.name;
     if ([params count] > 0) {
         // The URI name is treated as a string template to be populated with the parameter values.
-        NSMutableDictionary *_params = [[NSMutableDictionary alloc] init];
-        for (NSString *name in [params keyEnumerator]) {
-            [_params setValue:[(IFResource *)[params objectForKey:name] asString] forKey:name];
-        }
-        value = [IFStringTemplate render:value context:_params];
+        value = [IFStringTemplate render:value context:params];
     }
     return value;
 }

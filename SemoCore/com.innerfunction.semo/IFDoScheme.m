@@ -11,8 +11,8 @@
 
 @implementation IFDoAction
 
-- (IFResource *)parameterValue:(NSString *)name {
-    return (IFResource *)[_parameters valueForKey:name];
+- (id)parameterValue:(NSString *)name {
+    return [_parameters valueForKey:name];
 }
 
 @end
@@ -23,7 +23,7 @@
     return uri;
 }
 
-- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params parent:(id<IFResourceContext>)parent {
+- (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     IFDoAction *action = [[IFDoAction alloc] init];
     action.name = uri.name;
     // When setting a target of the form aaa.bbb.ccc, we are only interested in

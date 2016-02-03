@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSString *target;
 @property (nonatomic, strong) NSDictionary *parameters;
 
-- (IFResource *)parameterValue:(NSString *)name;
+- (id)parameterValue:(NSString *)name;
 
 @end
 

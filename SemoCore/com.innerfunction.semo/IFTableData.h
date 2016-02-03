@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "ISO8601DateFormatter.h"
+#import "IFURIHandling.h"
 
 @class IFTableData;
 
@@ -40,6 +40,8 @@ typedef BOOL (^IFTableDataFilterBlock) (NSDictionary *row);
 @property (nonatomic, strong) NSArray *searchFieldNames;
 // A delegate for modifying how data is resolved.
 @property (nonatomic, strong) id<IFTableDataDelegate> delegate;
+// The URI handler to use to resolve table data.
+@property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
 // Return an IPTableData object initialized with the specified data.
 + (IFTableData *)withData:(NSArray *)data;
