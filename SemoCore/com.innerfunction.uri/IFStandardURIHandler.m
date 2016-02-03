@@ -118,15 +118,15 @@
     // with the scheme context modified with the resource's URI.
     if ([value isKindOfClass:[IFResource class]]) {
         IFResource *resource = (IFResource *)value;
-        resource.uri = uri;
-        resource.uriHandler = [self modifyContext:uri];
+        resource.uri = compUri;
+        resource.uriHandler = [self modifyContext:compUri];
     }
     return value;
 }
 
 - (id<IFURIHandler>)modifyContext:(IFCompoundURI *)uri {
     IFStandardURIHandler *handler = [[IFStandardURIHandler alloc] init];
-    handler->_schemeHandlers = [_schemeHandlers copy];
+    handler->_schemeHandlers = [_schemeHandlers mutableCopy];
     // Create a copy of this object's scheme handlers dictionary with a new entry for
     // the URI argument keyed by the URI's scheme name.
     handler->_schemeContexts = [_schemeContexts dictionaryWithAddedObject:uri forKey:uri.scheme];
