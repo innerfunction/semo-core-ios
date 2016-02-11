@@ -42,6 +42,8 @@
 		074D9F4E1AE7DD04006D1510 /* SemoCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 074D9F4D1AE7DD04006D1510 /* SemoCore.m */; };
 		075C6C401AE9093F0021DB91 /* IFAppContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */; };
 		075C6C411AE9093F0021DB91 /* IFAppContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */; };
+		079668E21C6D39EF00AE03A7 /* IFViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 079668E01C6D39EF00AE03A7 /* IFViewController.h */; };
+		079668E31C6D39EF00AE03A7 /* IFViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 079668E11C6D39EF00AE03A7 /* IFViewController.m */; };
 		079A16B81AE7DDE800F22F4E /* IFCompoundURI.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A168B1AE7DDE800F22F4E /* IFCompoundURI.h */; };
 		079A16B91AE7DDE800F22F4E /* IFCompoundURI.m in Sources */ = {isa = PBXBuildFile; fileRef = 079A168C1AE7DDE800F22F4E /* IFCompoundURI.m */; };
 		079A16BA1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 079A168D1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h */; };
@@ -210,6 +212,8 @@
 		075A31351AE9817300FC8615 /* IFIOCTypeInspectable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IFIOCTypeInspectable.h; sourceTree = "<group>"; };
 		075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFAppContainer.h; sourceTree = "<group>"; };
 		075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFAppContainer.m; sourceTree = "<group>"; };
+		079668E01C6D39EF00AE03A7 /* IFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFViewController.h; sourceTree = "<group>"; };
+		079668E11C6D39EF00AE03A7 /* IFViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFViewController.m; sourceTree = "<group>"; };
 		079A168B1AE7DDE800F22F4E /* IFCompoundURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCompoundURI.h; sourceTree = "<group>"; };
 		079A168C1AE7DDE800F22F4E /* IFCompoundURI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCompoundURI.m; sourceTree = "<group>"; };
 		079A168D1AE7DDE800F22F4E /* IFFileBasedSchemeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFFileBasedSchemeHandler.h; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 				07287ECB1BD8F90C00047B0C /* IFDefaultTargetContainerBehaviour.m */,
 				075C6C3E1AE9093F0021DB91 /* IFAppContainer.h */,
 				075C6C3F1AE9093F0021DB91 /* IFAppContainer.m */,
+				079668E01C6D39EF00AE03A7 /* IFViewController.h */,
+				079668E11C6D39EF00AE03A7 /* IFViewController.m */,
 				07287ED91BD9424800047B0C /* IFTargetContainerViewController.h */,
 				07287EDA1BD9424800047B0C /* IFTargetContainerVIewController.m */,
 				0738B4AC1BE11AB800EF66CD /* IFCoreTypes.h */,
@@ -734,6 +740,7 @@
 				079A17721AE7F80B00F22F4E /* IFContainer.h in Headers */,
 				079A16CE1AE7DDE800F22F4E /* IFJSONData.h in Headers */,
 				079ECCAB1AE8441900A3DD41 /* IFTypeInfo.h in Headers */,
+				079668E21C6D39EF00AE03A7 /* IFViewController.h in Headers */,
 				079A172A1AE7DF2D00F22F4E /* unzip.h in Headers */,
 				07E3CFCA1BDE5E960036722B /* IFIOCContainerAware.h in Headers */,
 				079A16B81AE7DDE800F22F4E /* IFCompoundURI.h in Headers */,
@@ -941,6 +948,7 @@
 				079A17271AE7DF2D00F22F4E /* mztools.c in Sources */,
 				079A176F1AE7F3F800F22F4E /* IFConfiguredLocals.m in Sources */,
 				07E3CFD71BDE6E360036722B /* NSDictionary+IFValues.m in Sources */,
+				079668E31C6D39EF00AE03A7 /* IFViewController.m in Sources */,
 				07E3CFBE1BDC0A2F0036722B /* IFTableData.m in Sources */,
 				079A16C71AE7DDE800F22F4E /* IFStandardURIHandler.m in Sources */,
 				079A174B1AE7E3A600F22F4E /* DDFileLogger.m in Sources */,

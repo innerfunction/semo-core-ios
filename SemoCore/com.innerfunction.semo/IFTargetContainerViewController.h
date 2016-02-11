@@ -10,8 +10,9 @@
 #import "IFTargetContainer.h"
 #import "IFTarget.h"
 #import "IFDefaultTargetContainerBehaviour.h"
+#import "IFViewController.h"
 
-@interface IFTargetContainerViewController : UIViewController <IFTargetContainer, IFTarget> {
+@interface IFTargetContainerViewController : IFViewController <IFTargetContainer, IFTarget> {
     IFDefaultTargetContainerBehaviour *containerBehaviour;
 }
 

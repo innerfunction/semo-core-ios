@@ -34,7 +34,7 @@
 /** A list of allowed external URLs. */
 @property (nonatomic, strong) NSArray *allowedExternalURLs;
 /** A URL to load content from. Only called if no content is directly specified. */
-@property (nonatomic, strong) NSURL *contentURL;
+@property (nonatomic, strong) NSString *contentURL;
 /** The web view content. May be specified using a string or a URI resource. */
 @property (nonatomic, strong) id content;
 

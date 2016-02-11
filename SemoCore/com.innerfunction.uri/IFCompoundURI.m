@@ -63,8 +63,8 @@
                         NSString *pvalue = [groups objectAtIndex:3];
                         IFCompoundURI *uri;
                         if ([@"=" isEqualToString:op]) {
-                            // Promote parameter values assigned using = to full string URIs.
-                            NSInteger idx = [pvalue rangeOfString:@"+"].location;
+                            // Find end of parameter value.
+                            NSInteger idx = MIN([pvalue rangeOfString:@"+"].location, [pvalue rangeOfString:@"]"].location);
                             if (idx != NSNotFound) {
                                 paramString = [pvalue substringFromIndex:idx];
                                 pvalue = [pvalue substringToIndex:idx];
@@ -72,16 +72,17 @@
                             else {
                                 paramString = @"";
                             }
+                            // Promote parameter values assigned using = to full string URIs.
                             pvalue = [@"s:" stringByAppendingString:pvalue];
-                            NSString *trailing;
-                            uri = [[IFCompoundURI alloc] initWithURI:pvalue trailing:&trailing error:error];
+                            //NSString *trailing;
+                            uri = [[IFCompoundURI alloc] initWithURI:pvalue error:nil];/* trailing:&trailing error:error];
                             if(!*error && trailing && [trailing length] > 0) {
                                 NSString *message = [NSString stringWithFormat:@"Trailing characters after param assignment: %@", trailing];
                                 *error = [NSError errorWithDomain:@"IFCompoundURI"
                                                              code:IFCompoundURITrailingAfterParamAssignment
                                                          userInfo:[NSDictionary dictionaryWithObject:message forKey:@"message"]];
-
                             }
+                            */
                         }
                         else {
                             uri = [[IFCompoundURI alloc] initWithURI:pvalue trailing:&paramString error:error];

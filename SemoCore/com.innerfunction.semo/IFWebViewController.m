@@ -155,6 +155,7 @@
 #pragma mark - private
 
 - (void)loadContent {
+    NSURL *contentURL = [NSURL URLWithString:_contentURL];
     // Specified content takes precedence over a contentURL property. Note that contentURL
     // can still be used to specify the content base URL in those cases where it can't
     // otherwise be determined.
@@ -168,16 +169,16 @@
         else if ([_content isKindOfClass:[IFResource class]]) {
             IFResource *resource = (IFResource *)_content;
             NSString *html = [resource asString];
-            [webView loadHTMLString:html baseURL:_contentURL];
+            [webView loadHTMLString:html baseURL:contentURL];
         }
         else {
             // Assume content's description will yield valid HTML.
             NSString *html = [_content description];
-            [webView loadHTMLString:html baseURL:_contentURL];
+            [webView loadHTMLString:html baseURL:contentURL];
         }
     }
     else if (_contentURL) {
-        NSURLRequest* req = [NSURLRequest requestWithURL:_contentURL];
+        NSURLRequest* req = [NSURLRequest requestWithURL:contentURL];
         loadingExternalURL = YES;
         [webView loadRequest:req];
     }
