@@ -25,10 +25,11 @@
 
 @implementation IFFileResource
 
-- (id)initWithData:(id)data uri:(IFCompoundURI *)uri {
-    self = [super initWithData:data uri:uri];
+- (id)initWithHandle:(NSFileHandle *)handle url:(NSURL *)url path:(NSString *)filePath uri:(IFCompoundURI *)uri {
+    IFFileDescription *fileDesc = [[IFFileDescription alloc] initWithHandle:handle url:url path:filePath];
+    self = [super initWithData:fileDesc uri:uri];
     if (self) {
-        self.fileDescription = data;
+        self.fileDescription = fileDesc;
     }
     return self;
 }
@@ -69,11 +70,25 @@
     if ([@"json" isEqualToString:representation]) {
         return [self asJSONData];
     }
+    if ([@"filepath" isEqualToString:representation]) {
+        return self.fileDescription.path;
+    }
     return [super asRepresentation:representation];
 }
 
 - (NSURL *)externalURL {
     return self.fileDescription.url;
+}
+
+@end
+
+@implementation IFDirectoryResource
+
+- (id)initWithPath:(NSString *)path uri:(IFCompoundURI *)uri {
+    if (![path hasSuffix:@"/"]) {
+        path = [path stringByAppendingString:@"/"];
+    }
+    return [super initWithData:path uri:uri];
 }
 
 @end

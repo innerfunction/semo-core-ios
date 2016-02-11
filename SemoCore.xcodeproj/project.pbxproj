@@ -33,6 +33,8 @@
 		072D65391AEBFAF9009BC9A4 /* IOCConfigurable.m in Sources */ = {isa = PBXBuildFile; fileRef = 072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */; };
 		0738B4AE1BE11AB800EF66CD /* IFCoreTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 0738B4AC1BE11AB800EF66CD /* IFCoreTypes.h */; };
 		0738B4AF1BE11AB800EF66CD /* IFCoreTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0738B4AD1BE11AB800EF66CD /* IFCoreTypes.m */; };
+		074563E71C6CB042007E3706 /* IFReprSchemeHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 074563E51C6CB042007E3706 /* IFReprSchemeHandler.h */; };
+		074563E81C6CB042007E3706 /* IFReprSchemeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 074563E61C6CB042007E3706 /* IFReprSchemeHandler.m */; };
 		074D9F431AE7DD04006D1510 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
 		074D9F481AE7DD04006D1510 /* SemoCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 074D9F471AE7DD04006D1510 /* SemoCore-Prefix.pch */; };
 		074D9F4A1AE7DD04006D1510 /* SemoCore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074D9F491AE7DD04006D1510 /* SemoCore-Info.plist */; };
@@ -196,6 +198,8 @@
 		072D65381AEBFAF9009BC9A4 /* IOCConfigurable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOCConfigurable.m; sourceTree = "<group>"; };
 		0738B4AC1BE11AB800EF66CD /* IFCoreTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFCoreTypes.h; sourceTree = "<group>"; };
 		0738B4AD1BE11AB800EF66CD /* IFCoreTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFCoreTypes.m; sourceTree = "<group>"; };
+		074563E51C6CB042007E3706 /* IFReprSchemeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFReprSchemeHandler.h; sourceTree = "<group>"; };
+		074563E61C6CB042007E3706 /* IFReprSchemeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFReprSchemeHandler.m; sourceTree = "<group>"; };
 		074D9F3F1AE7DD04006D1510 /* libSemoCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSemoCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		074D9F421AE7DD04006D1510 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		074D9F461AE7DD04006D1510 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -477,6 +481,8 @@
 				079A169A1AE7DDE800F22F4E /* IFStandardURIHandler.m */,
 				079A16971AE7DDE800F22F4E /* IFStringSchemeHandler.h */,
 				079A16981AE7DDE800F22F4E /* IFStringSchemeHandler.m */,
+				074563E51C6CB042007E3706 /* IFReprSchemeHandler.h */,
+				074563E61C6CB042007E3706 /* IFReprSchemeHandler.m */,
 			);
 			path = com.innerfunction.uri;
 			sourceTree = "<group>";
@@ -769,6 +775,7 @@
 				079A16C31AE7DDE800F22F4E /* IFURIHandling.h in Headers */,
 				079A16C61AE7DDE800F22F4E /* IFStandardURIHandler.h in Headers */,
 				07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */,
+				074563E71C6CB042007E3706 /* IFReprSchemeHandler.h in Headers */,
 				07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */,
 				079A17281AE7DF2D00F22F4E /* mztools.h in Headers */,
 				079A17501AE7E3A600F22F4E /* ContextFilterLogFormatter.h in Headers */,
@@ -915,6 +922,7 @@
 				079A16CD1AE7DDE800F22F4E /* IFHTTPUtils.m in Sources */,
 				079A17331AE7E15D00F22F4E /* ISO8601DateFormatter.m in Sources */,
 				079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */,
+				074563E81C6CB042007E3706 /* IFReprSchemeHandler.m in Sources */,
 				079A17291AE7DF2D00F22F4E /* unzip.c in Sources */,
 				07E3CFA71BD98D930036722B /* IFSlideViewController.m in Sources */,
 				07E3CFDB1BDEC1B20036722B /* UIImage+CropScale.m in Sources */,

@@ -421,8 +421,8 @@
     IFConfiguration *current = result;
     // A set of previously visited parent configurations, to detect dependency loops.
     NSMutableSet *visited = [[NSMutableSet alloc] init];
-    while ([current getValueType:@"semo:extends"] == IFValueTypeObject) {
-        current = [current getValueAsConfiguration:@"semo:extends"];
+    while ([current getValueType:@"*extends"] == IFValueTypeObject) {
+        current = [current getValueAsConfiguration:@"*extends"];
         if ([visited containsObject:current]) {
             // Dependency loop detected, stop extending the config.
             break;
@@ -435,8 +435,8 @@
 
 - (IFConfiguration *)flatten {
     IFConfiguration *result = self;
-    if ([self getValueType:@"semo:config"] == IFValueTypeObject) {
-        result = [self mergeConfiguration:[self getValueAsConfiguration:@"semo:config"]];
+    if ([self getValueType:@"*config"] == IFValueTypeObject) {
+        result = [self mergeConfiguration:[self getValueAsConfiguration:@"*config"]];
     }
     return result;
 }

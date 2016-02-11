@@ -14,6 +14,7 @@
     self = [super init];
     if (self) {
         paths = NSSearchPathForDirectoriesInDomains( dirs, NSUserDomainMask, YES);
+        fileManager = [NSFileManager defaultManager];
     }
     return self;
 }
@@ -22,6 +23,7 @@
     self = [super init];
     if (self) {
         paths = [NSArray arrayWithObject:path];
+        fileManager = [NSFileManager defaultManager];
     }
     return self;
 }
@@ -49,12 +51,17 @@
 
 - (IFResource *)dereference:(IFCompoundURI *)uri againstPath:(NSString *)path {
     NSString *filePath = [path stringByAppendingPathComponent:uri.name];
-    //NSLog(@"%@ -> %@", uri, filePath);
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-    NSFileHandle* handle = [NSFileHandle fileHandleForReadingFromURL:fileURL error:nil];
-    if (handle) {
-        IFFileDescription *fileDesc = [[IFFileDescription alloc] initWithHandle:handle url:fileURL path:filePath];
-        return [[IFFileResource alloc] initWithData:fileDesc uri:uri];
+    BOOL isDir;
+    BOOL exists = [fileManager fileExistsAtPath:filePath isDirectory:&isDir];
+    if (exists) {
+        if (isDir) {
+            return [[IFDirectoryResource alloc] initWithPath:filePath uri:uri];
+        }
+        NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+        NSFileHandle* handle = [NSFileHandle fileHandleForReadingFromURL:fileURL error:nil];
+        if (handle) {
+            return [[IFFileResource alloc] initWithHandle:handle url:fileURL path:filePath uri:uri];
+        }
     }
     return nil;
 }

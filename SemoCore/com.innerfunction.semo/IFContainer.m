@@ -69,9 +69,9 @@
 
 - (id)instantiateObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     id object = nil;
-    NSString *className = [configuration getValueAsString:@"ios:class"];
+    NSString *className = [configuration getValueAsString:@"*ios-class"];
     if (!className) {
-        NSString *type = [configuration getValueAsString:@"semo:type"];
+        NSString *type = [configuration getValueAsString:@"*type"];
         if (type) {
             className = [types getValueAsString:type];
             if (!className) {
@@ -134,16 +134,20 @@
         }
         for (NSString *name in [configuration getValueNames]) {
             NSString *propName = name;
-            if ([@"ios:class" isEqualToString:name]) {
-                // Skip processing of class properties.
-                continue;
-            }
-            if ([name hasPrefix:@"and:"] || [name hasPrefix:@"semo:"]) {
-                continue; // Skip names starting with and: or semo:
-            }
-            if ([name hasPrefix:@"ios:"]) {
-                // Strip ios: prefix from names.
-                propName = [name substringFromIndex:4];
+            if ([name hasPrefix:@"*"]) {
+                // Property has a reserved name.
+                if ([@"*ios-class" isEqualToString:name]) {
+                    // Skip processing of class properties.
+                    continue;
+                }
+                if ([name hasPrefix:@"*ios-"]) {
+                    // Strip *ios- prefix from names.
+                    propName = [name substringFromIndex:5];
+                }
+                else if ([name hasPrefix:@"*"]) {
+                    continue; // Skip all other reserved names
+                }
+
             }
             IFPropertyInfo *propertyInfo = [typeInfo infoForProperty:propName];
             if (!propertyInfo) {
@@ -256,7 +260,7 @@
             IFConfiguration *objConfig = [(IFConfiguration *)value normalize];
             id object = nil;
             // Try instantating directly from the configuration.
-            if ([objConfig hasValue:@"ios:class"] || [objConfig hasValue:@"semo:type"]) {
+            if ([objConfig hasValue:@"*ios-class"] || [objConfig hasValue:@"*type"]) {
                 object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
             }
             // If no object then check for a container property with the same name, and try to infer a type.
@@ -302,6 +306,15 @@
                 fromConfiguration:(IFConfiguration *)configuration
                          withName:(NSString *)name {
     id object = [configuration getValue:name];
+    IFConfiguration *propConfig = nil;
+    // If object is a dictionary then try istantiating an object from a configuration.
+    if ([object isKindOfClass:[NSDictionary class]]) {
+        propConfig = [[configuration getValueAsConfiguration:name] normalize];
+        // Check if the property configuration includes a type.
+        if ([propConfig hasValue:@"*ios-class"] || [propConfig hasValue:@"*type"]) {
+            return [self buildObjectWithConfiguration:propConfig identifier:name];
+        }
+    }
     // See if object type is compatible with the property.
     if ([[object class] isSubclassOfClass:propClass]) {
         return object;
@@ -314,22 +327,21 @@
     if ([[object class] isSubclassOfClass:propClass]) {
         return object;
     }
-    // Try instantiating an object from the configuration.
-    IFConfiguration *propConfig = [[configuration getValueAsConfiguration:name] normalize];
-    // Check if the property configuration includes a type.
-    if ([propConfig hasValue:@"ios:class"] || [propConfig hasValue:@"semo:type"]) {
-        return [self buildObjectWithConfiguration:propConfig identifier:name];
+    // If a configuration was found but no type or class info specified then try instantiating an object using the
+    // configuration and inferred type information.
+    if (propConfig) {
+        NSString *className = NSStringFromClass(propClass);
+        @try {
+            object = [self newInstanceForClassName:className withConfiguration:propConfig];
+            [self configureObject:object withConfiguration:propConfig identifier:name];
+            return object;
+        }
+        @catch (NSException *exception) {
+            DDLogCInfo(@"Failed to instantiate instance of inferred type %@: %@", className, exception);
+        }
     }
-    // No semo:type specified in configuration, so try instantiating an inferred type using the class information provided.
-    NSString *className = NSStringFromClass(propClass);
-    @try {
-        object = [self newInstanceForClassName:className withConfiguration:propConfig];
-        [self configureObject:object withConfiguration:propConfig identifier:name];
-    }
-    @catch (NSException *exception) {
-        DDLogCInfo(@"Failed to instantiate instance of inferred type %@: %@", className, exception);
-    }
-    return object;
+    // Unable to instantiate an object of a compatible type, so return nil.
+    return nil;
 }
 
 #pragma mark - IFService

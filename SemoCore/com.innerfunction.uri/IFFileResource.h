@@ -22,6 +22,14 @@
 
 @interface IFFileResource : IFResource
 
+- (id)initWithHandle:(NSFileHandle *)handle url:(NSURL *)url path:(NSString *)filePath uri:(IFCompoundURI *)uri;
+
 @property (nonatomic, strong) IFFileDescription *fileDescription;
+
+@end
+
+@interface IFDirectoryResource : IFResource
+
+- (id)initWithPath:(NSString *)path uri:(IFCompoundURI *)uri;
 
 @end

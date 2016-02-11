@@ -53,7 +53,8 @@
                 *trailing = paramString;
             }
             if (parseParams) {
-                IFRegExp *paramRegex = [[IFRegExp alloc] initWithPattern:@"^\\+(\\w+)([@=])(.*)$"];
+                // NOTE: Parameter names may have an optional '*' at the start to indicate a reserved name.
+                IFRegExp *paramRegex = [[IFRegExp alloc] initWithPattern:@"^\\+(\\*?[\\w-]+)([@=])(.*)$"];
                 while ([paramString length] && !*error) {
                     groups = [paramRegex match:paramString];
                     if (groups) {

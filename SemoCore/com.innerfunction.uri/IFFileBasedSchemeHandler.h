@@ -16,6 +16,7 @@
 // URI scheme specific part is used to specify the file path.
 @interface IFFileBasedSchemeHandler : NSObject <IFSchemeHandler> {
     NSArray* paths;
+    NSFileManager *fileManager;
 }
 
 - (id)initWithDirectory:(NSSearchPathDirectory)directory;

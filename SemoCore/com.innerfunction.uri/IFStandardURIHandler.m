@@ -10,6 +10,7 @@
 #import "IFStringSchemeHandler.h"
 #import "IFFileBasedSchemeHandler.h"
 #import "IFLocalSchemeHandler.h"
+#import "IFReprSchemeHandler.h"
 #import "IFResource.h"
 #import "NSDictionary+IF.h"
 
@@ -49,11 +50,13 @@
         // Resolved path: /Users/juliangoacher/Library/Application\ Support/iPhone\ Simulator/5.0/Applications/F578A85D-A358-4897-A0BE-9BE8714B50D4/Applications/
         // Actual path:   /Users/juliangoacher/Library/Application\ Support/iPhone\ Simulator/5.0/Applications/F578A85D-A358-4897-A0BE-9BE8714B50D4/EventPacComponents.app/
         [_schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithPath:mainBundlePath]
-                          forKey:@"app"];
+                           forKey:@"app"];
         [_schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithDirectory:NSCachesDirectory]
-                          forKey:@"cache"];
+                           forKey:@"cache"];
         [_schemeHandlers setValue:[[IFLocalSchemeHandler alloc] init]
-                          forKey:@"local"];
+                           forKey:@"local"];
+        [_schemeHandlers setValue:[[IFReprSchemeHandler alloc] init]
+                           forKey:@"repr"];
     }
     return self;
 }
@@ -95,9 +98,10 @@
         // Iterate over the URIs parameter values (which are also URIs) and dereference each
         // of them.
         for (NSString *name in [compUri.parameters allKeys]) {
-            id value = [self dereference:[compUri.parameters valueForKey:name]];
-            if (value != nil) {
-                [params setValue:value forKey:name];
+            IFCompoundURI *paramURI = [compUri.parameters valueForKey:name];
+            id paramValue = [self dereference:paramURI];
+            if (paramValue) {
+                [params setValue:paramValue forKey:name];
             }
         }
         // Resolve the current URI to an absolute form (potentially).

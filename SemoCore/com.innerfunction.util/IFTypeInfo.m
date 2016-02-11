@@ -80,7 +80,8 @@
 // 150+ properties) and whilst chaching of type info objects by class name would avoid any performance
 // issues, the full set of properties is not needed and having a protocol for declaring configurable
 // properties would also help document the supported properties. Note that the protocol should define
-// static methods on the class.
+// static methods on the class, and should be optional i.e. this class reverts to its original mode
+// of operation if the object doesn't implement the protocol.
 - (id)initWithObject:(id)object {
     self = [super init];
     if (self) {

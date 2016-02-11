@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFResource.h"
+#import "IFURIHandling.h"
 
 // String URI handler. A URI which resolves to the string encoded in the URI.
 @interface IFStringSchemeHandler : NSObject <IFSchemeHandler>

@@ -24,7 +24,7 @@
 
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     NSString *typeName = uri.name;
-    IFConfiguration *config = [[IFConfiguration alloc] initWithData:params];
+    IFConfiguration *config = [[[IFConfiguration alloc] initWithData:params] normalize];
     id result = [container newInstanceForTypeName:typeName withConfiguration:config];
     if (result) {
         [container configureObject:result withConfiguration:config identifier:[uri description]];
