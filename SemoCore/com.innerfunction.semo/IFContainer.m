@@ -184,11 +184,6 @@
             else if ([propertyInfo isAssignableFrom:[UIColor class]]) {
                 value = [configuration getValueAsColor:propName];
             }
-            /*
-            else if ([propertyInfo isAssignableFrom:[IFResource class]]) {
-                value = [configuration getValueAsResource:propName];
-            }
-            */
             else if ([propertyInfo isAssignableFrom:[IFConfiguration class]]) {
                 value = [configuration getValueAsConfiguration:propName];
             }
