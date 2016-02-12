@@ -12,8 +12,6 @@
 
 #define URIEncode(s) ((NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(\
                         NULL, (__bridge CFStringRef)s, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8)))
-#define URIDecode(s) ((NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(\
-                        NULL, (__bridge CFStringRef)s, NULL, kCFStringEncodingUTF8)))
 
 @implementation IFCompoundURI
 
@@ -74,15 +72,7 @@
                             }
                             // Promote parameter values assigned using = to full string URIs.
                             pvalue = [@"s:" stringByAppendingString:pvalue];
-                            //NSString *trailing;
-                            uri = [[IFCompoundURI alloc] initWithURI:pvalue error:nil];/* trailing:&trailing error:error];
-                            if(!*error && trailing && [trailing length] > 0) {
-                                NSString *message = [NSString stringWithFormat:@"Trailing characters after param assignment: %@", trailing];
-                                *error = [NSError errorWithDomain:@"IFCompoundURI"
-                                                             code:IFCompoundURITrailingAfterParamAssignment
-                                                         userInfo:[NSDictionary dictionaryWithObject:message forKey:@"message"]];
-                            }
-                            */
+                            uri = [[IFCompoundURI alloc] initWithURI:pvalue error:error];
                         }
                         else {
                             uri = [[IFCompoundURI alloc] initWithURI:pvalue trailing:&paramString error:error];
@@ -139,7 +129,7 @@
                                      userInfo:[NSDictionary dictionaryWithObject:message forKey:@"message"]];
         }
         self.parameters = params;
-        self.name = URIDecode(self.name);
+        self.name = [self.name stringByRemovingPercentEncoding];
     }
     return self;
 }

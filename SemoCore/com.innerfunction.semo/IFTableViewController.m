@@ -11,6 +11,8 @@
 #import "UIViewController+Toast.h"
 #import "NSDictionary+IFValues.h"
 #import "IFLogging.h"
+#import "UIImage+CropScale.h"
+#import "IFTypeConversions.h"
 
 #define SectionHeaderHeight     (22.0f)
 #define SectionHeaderViewHeight (18.0f)
@@ -55,6 +57,7 @@
             self.tableView.backgroundView = nil;
             self.tableView.backgroundColor = backgroundColor;
         }
+        _hideTitleBar = NO;
     }
     return self;
 }
@@ -137,8 +140,16 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBarHidden = _hideTitleBar;
     [super viewWillAppear:animated];
-    
+
+    if (_backButtonTitle) {
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_backButtonTitle
+                                                                                 style:UIBarButtonItemStylePlain
+                                                                                target:nil
+                                                                                action:nil];
+    }
+
     if (_selectedID) {
         NSIndexPath *selectedPath = [_tableData pathForRowWithValue:_selectedID forField:@"id"];
         if (selectedPath) {
@@ -317,6 +328,70 @@
     if ([@"load" isEqualToString:action.name]) {
         self.content = [action.parameters objectForKey:@"content"];
     }
+}
+
+#pragma mark - Image handling methods
+
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName defaultImage:(UIImage *)defaultImage {
+    UIImage *image = defaultImage;
+    NSString *imageName = [rowData getValueAsString:dataName];
+    if (imageName) {
+        image = [imageCache objectForKey:imageName];
+        if (!image) {
+            image = [self dereferenceImage:imageName];
+            if (image) {
+                [imageCache setObject:image forKey:imageName];
+            }
+            else {
+                [imageCache setObject:[NSNull null] forKey:imageName];
+            }
+        }
+        else if ([[NSNull null] isEqual:image]) {
+            // NSNull in the image cache indicates image not found, so return nil.
+            image = nil;
+        }
+    }
+    return image;
+}
+
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height defaultImage:(UIImage *)defaultImage {
+    UIImage *image = defaultImage;
+    NSString *imageName = [rowData getValueAsString:dataName];
+    if (imageName) {
+        NSString *cacheName = [NSString stringWithFormat:@"%@-%fx%f", imageName, width, height];
+        image = [imageCache objectForKey:cacheName];
+        if (!image) {
+            image = [self dereferenceImage:imageName];
+            // Scale the image if we have an image and width * height is not zero (implying that neither value is zero).
+            if (image && (width * height)) {
+                image = [[image scaleToWidth:width] cropToHeight:height];
+                [imageCache setObject:image forKey:cacheName];
+            }
+            else {
+                [imageCache setObject:[NSNull null] forKey:imageCache];
+            }
+        }
+        else if ([[NSNull null] isEqual:image]) {
+            // NSNull in the image cache indicates image not found, so return nil.
+            image = nil;
+        }
+    }
+    return image;
+}
+
+- (UIImage *)dereferenceImage:(NSString *)imageRef {
+    UIImage *image = nil;
+    if ([imageRef hasPrefix:@"@"]) {
+        NSString* uri = [imageRef substringFromIndex:1];
+        IFResource *imageRsc = [_tableData.uriHandler dereference:uri];
+        if (imageRsc) {
+            image = [imageRsc asImage];
+        }
+    }
+    else {
+        image = [IFTypeConversions asImage:imageRef];
+    }
+    return image;
 }
 
 @end

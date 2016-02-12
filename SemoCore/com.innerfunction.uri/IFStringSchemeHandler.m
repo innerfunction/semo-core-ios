@@ -19,7 +19,7 @@
         // The URI name is treated as a string template to be populated with the parameter values.
         value = [IFStringTemplate render:value context:params];
     }
-    return value;
+    return [value stringByRemovingPercentEncoding];
 }
 
 @end

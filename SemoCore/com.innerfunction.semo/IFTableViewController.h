@@ -53,8 +53,11 @@
     UISearchDisplayController *searchDisplayController;
     IFTableViewCellFactory *defaultFactory;
     BOOL isFirstShow;
+    NSCache *imageCache;
 }
 
+@property (nonatomic, assign) BOOL hideTitleBar;
+@property (nonatomic, strong) NSString *backButtonTitle;
 @property (nonatomic, strong) NSDictionary *cellFactoriesByDisplayMode;
 @property (nonatomic, strong) UIColor *sectionTitleColor;
 @property (nonatomic, strong) UIColor *sectionTitleBackgroundColor;
@@ -70,5 +73,11 @@
 - (NSArray *)formatData:(NSArray *)data;
 // Clear any currently applied table data filter.
 - (void)clearFilter;
+
+// Image loading methods.
+
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName defaultImage:(UIImage *)defaultImage;
+- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height defaultImage:(UIImage *)defaultImage;
+- (UIImage *)dereferenceImage:(NSString *)imageRef;
 
 @end

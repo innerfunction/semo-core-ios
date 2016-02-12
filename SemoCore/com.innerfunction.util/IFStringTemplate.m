@@ -17,6 +17,9 @@
 
 @end
 
+#define URIEncode(s) ((NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(\
+                        NULL, (__bridge CFStringRef)s, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8)))
+
 @implementation IFStringTemplate
 
 - (id)initWithString:(NSString *)s {
@@ -56,51 +59,37 @@
 }
 
 - (EPStringTemplateBlock)textBlock:(NSString *)text {
-    return ^(id ctx) {
+    return ^(id ctx, BOOL uriEncode) {
         return text;
     };
 }
 
 - (EPStringTemplateBlock)refBlock:(NSString *)ref {
-    /*
-    NSArray* path = [ref componentsSeparatedByString:@"."];
-    NSInteger len = [path count];
-    */
-    return ^(id ctx) {
-        /*
-        SEL valueForKey = @selector(valueForKey:);
-        for (NSInteger i = 0; i < len && ctx; i++ ) {
-            if ([ctx respondsToSelector:valueForKey]) {
-                @try {
-                    ctx = [ctx valueForKey:[path objectAtIndex:i]];
-                }
-                @catch (NSException *e) {
-                    ctx = nil;
-                }
-            }
-            else {
-                ctx = nil;
-            }
-        }
-        return ctx ? [ctx description] : @"";
-        */
+    return ^(id ctx, BOOL uriEncode) {
         id val = nil;
         if ([ctx respondsToSelector:@selector(valueForKeyPath:)]) {
             @try {
-                val = [ctx valueForKeyPath:ref];
+                val = [[ctx valueForKeyPath:ref] description];
             }
             @catch (NSException *e) {
                 val = e;
             }
+            if (val && uriEncode) {
+                val = URIEncode(val);
+            }
         }
-        return val ? [val description] : @"";
+        return val ? val : @"";
     };
 }
 
-- (NSString*)render:(id)context {
+- (NSString *)render:(id)context {
+    return [self render:context uriEncode:NO];
+}
+
+- (NSString*)render:(id)context uriEncode:(BOOL)uriEncode {
     NSMutableString* result = [[NSMutableString alloc] init];
     for (EPStringTemplateBlock block in blocks) {
-        [result appendString:block( context )];
+        [result appendString:block( context, uriEncode )];
     }
     return result;
 }
@@ -111,6 +100,10 @@
 
 + (NSString*)render:(NSString *)t context:(id)context {
     return [[IFStringTemplate templateWithString:t] render:context];
+}
+
++ (NSString*)render:(NSString *)t context:(id)context uriEncode:(BOOL)uriEncode {
+    return [[IFStringTemplate templateWithString:t] render:context uriEncode:uriEncode];
 }
 
 @end

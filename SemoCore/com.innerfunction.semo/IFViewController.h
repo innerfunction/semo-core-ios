@@ -11,5 +11,6 @@
 @interface IFViewController : UIViewController
 
 @property (nonatomic, assign) BOOL hideTitleBar;
+@property (nonatomic, assign) NSString *backButtonTitle;
 
 @end

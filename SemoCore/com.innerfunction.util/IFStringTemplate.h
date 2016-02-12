@@ -7,7 +7,7 @@
 //
 #import <Foundation/Foundation.h>
 
-typedef NSString* (^EPStringTemplateBlock) (id context);
+typedef NSString* (^EPStringTemplateBlock) (id context, BOOL uriEncode);
 
 @interface IFStringTemplate : NSObject {
     NSMutableArray* blocks;
@@ -15,9 +15,11 @@ typedef NSString* (^EPStringTemplateBlock) (id context);
 
 @property (nonatomic, strong) NSArray *refs;
 
-- (id)initWithString:(NSString*)s;
-- (NSString*)render:(id)context;
-+ (IFStringTemplate*)templateWithString:(NSString*)s;
-+ (NSString*)render:(NSString*)t context:(id)context;
+- (id)initWithString:(NSString *)s;
+- (NSString *)render:(id)context;
+- (NSString *)render:(id)context uriEncode:(BOOL)uriEncode;
++ (IFStringTemplate *)templateWithString:(NSString *)s;
++ (NSString *)render:(NSString *)t context:(id)context;
++ (NSString *)render:(NSString *)t context:(id)context uriEncode:(BOOL)uriEncode;
 
 @end

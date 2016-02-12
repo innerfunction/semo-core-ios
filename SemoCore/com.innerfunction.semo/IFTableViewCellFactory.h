@@ -20,7 +20,6 @@
 @end
 
 @interface IFTableViewCellFactory : NSObject {
-    NSCache *imageCache;
 }
 
 @property (nonatomic, strong) id<IFTableViewCellDecorator> decorator;

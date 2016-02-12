@@ -55,8 +55,9 @@
                 return value;
             }
         }
-        // Evaluate all string values as templates, unless prefixed with `
-        if (![stringValue hasPrefix:@"`"]) {
+        // Evaluate any string beginning with ? as a string template.
+        if ([stringValue hasPrefix:@"?"]) {
+            stringValue = [stringValue substringFromIndex:1];
             stringValue = [IFStringTemplate render:(NSString*)stringValue context:parent.context];
         }
         // Any string values starting with a '@' are potentially internal URI references.

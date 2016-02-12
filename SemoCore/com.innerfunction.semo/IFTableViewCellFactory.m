@@ -9,32 +9,27 @@
 #import "IFTableViewCellFactory.h"
 #import "IFTableViewController.h"
 #import "UIColor+IF.h"
-#import "UIImage+CropScale.h"
 #import "NSDictionary+IFValues.h"
 #import "IFTypeConversions.h"
 
 #define DefaultRowHeight        [NSNumber numberWithFloat:44.0]
 #define DefaultRowImageWidth    [NSNumber numberWithFloat:40.0]
 
-@interface IFTableViewCellFactory()
-
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName defaultImage:(UIImage *)defaultImage;
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height defaultImage:(UIImage *)defaultImage;
-- (UIImage *)dereferenceImage:(NSString *)imageRef;
-
-@end
-
 @implementation IFTableViewCellFactory
 
 - (id)init {
     self = [super init];
     if (self) {
-        imageCache = [[NSCache alloc] init];
     }
     return self;
 }
 
 - (UITableViewCell *)resolveCellForTable:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    IFTableViewController *ifTableView = nil;
+    if ([tableView isKindOfClass:[IFTableViewController class]]) {
+        ifTableView = (IFTableViewController *)tableView;
+    }
+    
     NSDictionary *rowData = [_tableData rowDataForIndexPath:indexPath];
     
     NSString *style = [rowData getValueAsString:@"style" defaultValue:_style];
@@ -87,7 +82,7 @@
     if ([rowData hasValue:@"imageWidth"]) {
         imageWidth = [[rowData getValueAsNumber:@"imageWidth" defaultValue:_imageWidth] floatValue];
     }
-    UIImage *image = [self loadImageWithRowData:rowData dataName:@"image" width:imageWidth height:imageHeight defaultImage:_image];
+    UIImage *image = [ifTableView loadImageWithRowData:rowData dataName:@"image" width:imageWidth height:imageHeight defaultImage:_image];
     if (image) {
         cell.imageView.image = image;
         // Add rounded corners to image.
@@ -112,8 +107,8 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     
-    UIImage *backgroundImage  = [self loadImageWithRowData:rowData dataName:@"backgroundImage" defaultImage:_backgroundImage];
-    UIImage *selectedImage    = [self loadImageWithRowData:rowData dataName:@"selectedBackgroundImage" defaultImage:_selectedBackgroundImage];
+    UIImage *backgroundImage  = [ifTableView loadImageWithRowData:rowData dataName:@"backgroundImage" defaultImage:_backgroundImage];
+    UIImage *selectedImage    = [ifTableView loadImageWithRowData:rowData dataName:@"selectedBackgroundImage" defaultImage:_selectedBackgroundImage];
     
     if (backgroundImage) {
         cell.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
@@ -134,70 +129,6 @@
     NSDictionary *rowData = [_tableData rowDataForIndexPath:indexPath];
     CGFloat height = [[rowData getValueAsNumber:@"height" defaultValue:_height] floatValue];
     return height;
-}
-
-#pragma mark - private methods
-
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName defaultImage:(UIImage *)defaultImage {
-    UIImage *image = defaultImage;
-    NSString *imageName = [rowData getValueAsString:dataName];
-    if (imageName) {
-        image = [imageCache objectForKey:imageName];
-        if (!image) {
-            image = [self dereferenceImage:imageName];
-            if (image) {
-                [imageCache setObject:image forKey:imageName];
-            }
-            else {
-                [imageCache setObject:[NSNull null] forKey:imageName];
-            }
-        }
-        else if ([[NSNull null] isEqual:image]) {
-            // NSNull in the image cache indicates image not found, so return nil.
-            image = nil;
-        }
-    }
-    return image;
-}
-
-- (UIImage *)loadImageWithRowData:(NSDictionary *)rowData dataName:(NSString *)dataName width:(CGFloat)width height:(CGFloat)height defaultImage:(UIImage *)defaultImage {
-    UIImage *image = defaultImage;
-    NSString *imageName = [rowData getValueAsString:dataName];
-    if (imageName) {
-        NSString *cacheName = [NSString stringWithFormat:@"%@-%fx%f", imageName, width, height];
-        image = [imageCache objectForKey:cacheName];
-        if (!image) {
-            image = [self dereferenceImage:imageName];
-            // Scale the image if we have an image and width * height is not zero (implying that neither value is zero).
-            if (image && (width * height)) {
-                image = [[image scaleToWidth:width] cropToHeight:height];
-                [imageCache setObject:image forKey:cacheName];
-            }
-            else {
-                [imageCache setObject:[NSNull null] forKey:imageCache];
-            }
-        }
-        else if ([[NSNull null] isEqual:image]) {
-            // NSNull in the image cache indicates image not found, so return nil.
-            image = nil;
-        }
-    }
-    return image;
-}
-
-- (UIImage *)dereferenceImage:(NSString *)imageRef {
-    UIImage *image = nil;
-    if ([imageRef hasPrefix:@"@"]) {
-        NSString* uri = [imageRef substringFromIndex:1];
-        IFResource *imageRsc = [_tableData.uriHandler dereference:uri];
-        if (imageRsc) {
-            image = [imageRsc asImage];
-        }
-    }
-    else {
-        image = [IFTypeConversions asImage:imageRef];
-    }
-    return image;
 }
 
 @end
