@@ -12,15 +12,22 @@
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
+#import "IFIOCObjectFactory.h"
 #import "IFTypeInfo.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
 
 @interface IFContainer ()
 
+/** Test if a configuration contains an instantiation hint, e.g. a type, class or factory specifier. */
+- (BOOL)hasInstantiationHint:(IFConfiguration *)configuration;
+/** Perform standard container-recognized protocol checks on a new object instance. */
+- (void)doStandardProtocolChecks:(id)object;
+/** Resolve an object property value compatible with the specified type from the specified configuration. */
 - (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)type
                 fromConfiguration:(IFConfiguration *)configuration
-                         withName:(NSString *)name;
+                             name:(NSString *)name
+                            value:(id)value;
 
 @end
 
@@ -60,9 +67,26 @@
 
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     configuration = [configuration normalize];
-    id object = [self instantiateObjectWithConfiguration:configuration identifier:identifier];
-    if (object) {
-        [self configureObject:object withConfiguration:configuration identifier:identifier];
+    id object = nil;
+    if ([configuration hasValue:@"*factory"]) {
+        // The configuration specifies an object factory, so resolve the factory object and attempt
+        // using it to instantiate the object.
+        id factory = [configuration getValue:@"*factory"];
+        if ([factory conformsToProtocol:@protocol(IFIOCObjectFactory)]) {
+            object = [(id<IFIOCObjectFactory>)factory buildObjectWithConfiguration:configuration inContainer:self identifier:identifier];
+            [self doStandardProtocolChecks:object];
+        }
+        else {
+            DDLogError(@"%@: Building %@, invalid factory class '%@'", LogTag, identifier, [factory class]);
+        }
+    }
+    else {
+        // Try instantiating object from type or class info.
+        object = [self instantiateObjectWithConfiguration:configuration identifier:identifier];
+        if (object) {
+            // Configure the resolved object.
+            [self configureObject:object withConfiguration:configuration identifier:identifier];
+        }
     }
     return object;
 }
@@ -79,7 +103,7 @@
             }
         }
         else {
-            DDLogError(@"%@: Making %@, Component configuration missing 'semo:type' or 'ios:class' property", LogTag, identifier);
+            DDLogError(@"%@: Making %@, Component configuration missing *type or *ios-class property", LogTag, identifier);
         }
     }
     if (className) {
@@ -96,17 +120,7 @@
     else {
         instance = [instance init];
     }
-    // TODO: Is there a better place for the following? They are really part of the configuration step,
-    // and also this method can be overridden; the reason for having them here currently is because of
-    // the two divergent configuration paths below.
-    // If the new instance is container aware then pass reference to this container.
-    if ([instance conformsToProtocol:@protocol(IFIOCContainerAware)]) {
-        ((id<IFIOCContainerAware>)instance).iocContainer = self;
-    }
-    // If instance is a service then add to list of services.
-    if ([instance conformsToProtocol:@protocol(IFService)]) {
-        [services addObject:(id<IFService>)instance];
-    }
+    [self doStandardProtocolChecks:instance];
     return instance;
 }
 
@@ -135,14 +149,13 @@
         for (NSString *name in [configuration getValueNames]) {
             NSString *propName = name;
             if ([name hasPrefix:@"*"]) {
-                // Property has a reserved name.
-                if ([@"*ios-class" isEqualToString:name]) {
-                    // Skip processing of class properties.
-                    continue;
-                }
                 if ([name hasPrefix:@"*ios-"]) {
                     // Strip *ios- prefix from names.
                     propName = [name substringFromIndex:5];
+                    // Don't process class names.
+                    if ([@"class" isEqualToString:propName]) {
+                        continue;
+                    }
                 }
                 else if ([name hasPrefix:@"*"]) {
                     continue; // Skip all other reserved names
@@ -199,7 +212,8 @@
                     for (NSInteger idx = 0; idx < length; idx++) {
                         id propValue = [self resolveObjectPropertyOfType:propertyClass
                                                        fromConfiguration:configuration
-                                                                withName:[NSString stringWithFormat:@"%@.%ld", propName, (long)idx]];
+                                                                    name:[NSString stringWithFormat:@"%@.%ld", propName, (long)idx]
+                                                                   value:nil];
                         [propValues addObject:propValue];
                     }
                     value = propValues;
@@ -214,7 +228,7 @@
                         propertyClass = [NSObject class];
                     }
                     for (NSString *valueName in [propConfigs getValueNames]) {
-                        id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs withName:valueName];
+                        id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs name:valueName value:nil];
                         if (propValue) {
                             [propValues setObject:propValue forKey:valueName];
                         }
@@ -223,10 +237,13 @@
                 }
             }
             else {
-                __unsafe_unretained Class propertyClass = [propertyInfo getPropertyClass];
-                value = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:configuration withName:propName];
+                __unsafe_unretained Class propClass = [propertyInfo getPropertyClass];
+                id propValue = [object valueForKey:propName];
+                value = [self resolveObjectPropertyOfType:propClass fromConfiguration:configuration name:propName value:propValue];
             }
-            [object setValue:value forKey:propName];
+            if (value != nil) {
+                [object setValue:value forKey:propName];
+            }
         }
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
@@ -255,7 +272,7 @@
             IFConfiguration *objConfig = [(IFConfiguration *)value normalize];
             id object = nil;
             // Try instantating directly from the configuration.
-            if ([objConfig hasValue:@"*ios-class"] || [objConfig hasValue:@"*type"]) {
+            if ([self hasInstantiationHint:objConfig]) {
                 object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
             }
             // If no object then check for a container property with the same name, and try to infer a type.
@@ -297,17 +314,42 @@
     [self configureWith:configuration];
 }
 
+#pragma mark - Private methods
+
+- (BOOL)hasInstantiationHint:(IFConfiguration *)configuration {
+    return [configuration hasValue:@"*type"] || [configuration hasValue:@"*ios-class"] || [configuration hasValue:@"*factory"];
+}
+
+- (void)doStandardProtocolChecks:(id)object {
+    // If the new instance is container aware then pass reference to this container.
+    if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
+        ((id<IFIOCContainerAware>)object).iocContainer = self;
+    }
+    // If instance is a service then add to list of services.
+    if ([object conformsToProtocol:@protocol(IFService)]) {
+        [services addObject:(id<IFService>)object];
+    }
+}
+
 - (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)propClass
                 fromConfiguration:(IFConfiguration *)configuration
-                         withName:(NSString *)name {
+                             name:(NSString *)name
+                            value:(id)value {
     id object = [configuration getValue:name];
     IFConfiguration *propConfig = nil;
-    // If object is a dictionary then try istantiating an object from a configuration.
+    // If object is a dictionary then try resolving an object using the configuration.
     if ([object isKindOfClass:[NSDictionary class]]) {
         propConfig = [[configuration getValueAsConfiguration:name] normalize];
-        // Check if the property configuration includes a type.
-        if ([propConfig hasValue:@"*ios-class"] || [propConfig hasValue:@"*type"]) {
+        // Build and return the object if the configuration contains an instantiation hint.
+        if ([self hasInstantiationHint:propConfig]) {
             return [self buildObjectWithConfiguration:propConfig identifier:name];
+        }
+        else if (value != nil) {
+            // No instantiation hints on the configuration, but the property already has a
+            // value so try configuring that instead.
+            [self configureObject:value withConfiguration:propConfig identifier:name];
+            // The property value doesn't need to be set, so return nil.
+            return nil;
         }
     }
     // See if object type is compatible with the property.
@@ -316,6 +358,7 @@
     }
     // Unpack the object if packaged into a resource.
     if ([object isKindOfClass:[IFResource class]]) {
+        // TODO: Should we instead recurse into this method with the unpacked resource value?
         object = ((IFResource *)object).data;
     }
     // Try setting property again.

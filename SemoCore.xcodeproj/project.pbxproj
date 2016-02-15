@@ -125,6 +125,7 @@
 		07CEC8E21BEB8C67005FB208 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07CEC8E11BEB8C67005FB208 /* UIKit.framework */; };
 		07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D025201AEAC1D200C2A619 /* IFI18nMap.h */; };
 		07D025231AEAC1D200C2A619 /* IFI18nMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D025211AEAC1D200C2A619 /* IFI18nMap.m */; };
+		07DAB77C1C72027F00697D92 /* IFIOCObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DAB77B1C72027F00697D92 /* IFIOCObjectFactory.h */; };
 		07E287F31AEBA7750078B95B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
 		07E287FA1AEBA7750078B95B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07E287F81AEBA7750078B95B /* InfoPlist.strings */; };
 		07E287FC1AEBA7750078B95B /* SemoCore_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */; };
@@ -297,6 +298,7 @@
 		07CEC8E11BEB8C67005FB208 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		07D025201AEAC1D200C2A619 /* IFI18nMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFI18nMap.h; sourceTree = "<group>"; };
 		07D025211AEAC1D200C2A619 /* IFI18nMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFI18nMap.m; sourceTree = "<group>"; };
+		07DAB77B1C72027F00697D92 /* IFIOCObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFIOCObjectFactory.h; sourceTree = "<group>"; };
 		07E287F01AEBA7750078B95B /* SemoCore Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SemoCore Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E287F71AEBA7750078B95B /* SemoCore Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SemoCore Tests-Info.plist"; sourceTree = "<group>"; };
 		07E287F91AEBA7750078B95B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 				075A31351AE9817300FC8615 /* IFIOCTypeInspectable.h */,
 				07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */,
 				07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */,
+				07DAB77B1C72027F00697D92 /* IFIOCObjectFactory.h */,
 				079A175C1AE7EAE400F22F4E /* IFConfigurable.h */,
 				079A176C1AE7F3F800F22F4E /* IFConfiguredLocals.h */,
 				079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */,
@@ -783,6 +786,7 @@
 				079A16C61AE7DDE800F22F4E /* IFStandardURIHandler.h in Headers */,
 				07287EDB1BD9424800047B0C /* IFTargetContainerViewController.h in Headers */,
 				074563E71C6CB042007E3706 /* IFReprSchemeHandler.h in Headers */,
+				07DAB77C1C72027F00697D92 /* IFIOCObjectFactory.h in Headers */,
 				07E3CFD21BDE6BF00036722B /* UIViewController+Toast.h in Headers */,
 				079A17281AE7DF2D00F22F4E /* mztools.h in Headers */,
 				079A17501AE7E3A600F22F4E /* ContextFilterLogFormatter.h in Headers */,
