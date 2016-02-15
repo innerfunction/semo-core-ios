@@ -35,7 +35,10 @@
 }
 
 - (UIViewController *)getRootView {
-    return [self.viewControllers objectAtIndex:0];
+    if ([self.viewControllers count] > 0) {
+        return [self.viewControllers objectAtIndex:0];
+    }
+    return nil;
 }
 
 - (id<IFURIHandler>)uriHandler {

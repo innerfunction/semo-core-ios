@@ -436,8 +436,13 @@
 
 - (IFConfiguration *)flatten {
     IFConfiguration *result = self;
+    // TODO: *config to be deprecated in place of mixin.
     if ([self getValueType:@"*config"] == IFValueTypeObject) {
         result = [self mergeConfiguration:[self getValueAsConfiguration:@"*config"]];
+    }
+    // TODO: Add support for an array of mixin objects.
+    if ([self getValueType:@"*mixin"] == IFValueTypeObject) {
+        result = [self mergeConfiguration:[self getValueAsConfiguration:@"*mixin"]];
     }
     return result;
 }
