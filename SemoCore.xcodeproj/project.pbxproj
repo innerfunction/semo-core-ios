@@ -126,6 +126,8 @@
 		07D025221AEAC1D200C2A619 /* IFI18nMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 07D025201AEAC1D200C2A619 /* IFI18nMap.h */; };
 		07D025231AEAC1D200C2A619 /* IFI18nMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D025211AEAC1D200C2A619 /* IFI18nMap.m */; };
 		07DAB77C1C72027F00697D92 /* IFIOCObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DAB77B1C72027F00697D92 /* IFIOCObjectFactory.h */; };
+		07DAB77F1C7382AC00697D92 /* IFIOCObjectFactoryBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 07DAB77D1C7382AC00697D92 /* IFIOCObjectFactoryBase.h */; };
+		07DAB7801C7382AC00697D92 /* IFIOCObjectFactoryBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 07DAB77E1C7382AC00697D92 /* IFIOCObjectFactoryBase.m */; };
 		07E287F31AEBA7750078B95B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 074D9F421AE7DD04006D1510 /* Foundation.framework */; };
 		07E287FA1AEBA7750078B95B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07E287F81AEBA7750078B95B /* InfoPlist.strings */; };
 		07E287FC1AEBA7750078B95B /* SemoCore_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 07E287FB1AEBA7750078B95B /* SemoCore_Tests.m */; };
@@ -299,6 +301,8 @@
 		07D025201AEAC1D200C2A619 /* IFI18nMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFI18nMap.h; sourceTree = "<group>"; };
 		07D025211AEAC1D200C2A619 /* IFI18nMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFI18nMap.m; sourceTree = "<group>"; };
 		07DAB77B1C72027F00697D92 /* IFIOCObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFIOCObjectFactory.h; sourceTree = "<group>"; };
+		07DAB77D1C7382AC00697D92 /* IFIOCObjectFactoryBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IFIOCObjectFactoryBase.h; sourceTree = "<group>"; };
+		07DAB77E1C7382AC00697D92 /* IFIOCObjectFactoryBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IFIOCObjectFactoryBase.m; sourceTree = "<group>"; };
 		07E287F01AEBA7750078B95B /* SemoCore Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SemoCore Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E287F71AEBA7750078B95B /* SemoCore Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SemoCore Tests-Info.plist"; sourceTree = "<group>"; };
 		07E287F91AEBA7750078B95B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -630,6 +634,8 @@
 				07E3CFC71BDE5A2B0036722B /* IFIOCConfigurationInitable.h */,
 				07E3CFC91BDE5E960036722B /* IFIOCContainerAware.h */,
 				07DAB77B1C72027F00697D92 /* IFIOCObjectFactory.h */,
+				07DAB77D1C7382AC00697D92 /* IFIOCObjectFactoryBase.h */,
+				07DAB77E1C7382AC00697D92 /* IFIOCObjectFactoryBase.m */,
 				079A175C1AE7EAE400F22F4E /* IFConfigurable.h */,
 				079A176C1AE7F3F800F22F4E /* IFConfiguredLocals.h */,
 				079A176D1AE7F3F800F22F4E /* IFConfiguredLocals.m */,
@@ -733,6 +739,7 @@
 				07287EEB1BD9774B00047B0C /* IFNewScheme.h in Headers */,
 				079A17661AE7EC8000F22F4E /* UIColor+IF.h in Headers */,
 				07287EC91BD8F77400047B0C /* IFTargetContainer.h in Headers */,
+				07DAB77F1C7382AC00697D92 /* IFIOCObjectFactoryBase.h in Headers */,
 				079A16BE1AE7DDE800F22F4E /* IFLocalSchemeHandler.h in Headers */,
 				070BCBD01C1612680042ABDC /* IFLogger.h in Headers */,
 				079A17241AE7DF2D00F22F4E /* crypt.h in Headers */,
@@ -930,6 +937,7 @@
 				079A176B1AE7EE7600F22F4E /* IFLocals.m in Sources */,
 				07E3CFA31BD98D290036722B /* SWRevealViewController.m in Sources */,
 				079A172E1AE7DF2D00F22F4E /* ZipArchive.mm in Sources */,
+				07DAB7801C7382AC00697D92 /* IFIOCObjectFactoryBase.m in Sources */,
 				079A16CD1AE7DDE800F22F4E /* IFHTTPUtils.m in Sources */,
 				079A17331AE7E15D00F22F4E /* ISO8601DateFormatter.m in Sources */,
 				079A17731AE7F80B00F22F4E /* IFContainer.m in Sources */,
