@@ -55,5 +55,7 @@
 - (void)configureWith:(IFConfiguration *)configuration;
 /** Configure the container with the specified data. */
 - (void)configureWithData:(id)configData;
+/** Perform standard container-recognized protocol checks on a new object instance. */
+- (void)doStandardProtocolChecks:(id)object;
 
 @end

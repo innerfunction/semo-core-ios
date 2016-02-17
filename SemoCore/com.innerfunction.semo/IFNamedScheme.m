@@ -23,7 +23,7 @@
 }
 
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
-    id namedObj = [named objectForKey:uri.name];
+    id namedObj = [named valueForKeyPath:uri.name];
     return namedObj;
 }
 

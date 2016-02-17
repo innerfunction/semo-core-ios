@@ -8,6 +8,7 @@
 
 #import "IFTargetContainerViewController.h"
 #import "IFLogging.h"
+#import "UIViewController+Toast.h"
 
 @interface IFTargetContainerViewController()
 
@@ -95,6 +96,12 @@
         if ([view isKindOfClass:[UIView class]]) {
             // TODO: Animated view transitions; add a class property allowing the transition type to be specified.
             self.view = view;
+        }
+    }
+    else if ([@"toast" isEqualToString:action.name]) {
+        NSString *message = [[action.parameters valueForKey:@"message"] description];
+        if (message) {
+            [self showToastMessage:message];
         }
     }
 }

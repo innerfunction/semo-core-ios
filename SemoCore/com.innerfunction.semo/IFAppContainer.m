@@ -231,7 +231,11 @@
 
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     [super configureObject:object withConfiguration:configuration identifier:identifier];
-    // Set URI handler on any target container objects.
+}
+
+- (void)doStandardProtocolChecks:(id)object {
+    [super doStandardProtocolChecks:object];
+    // Set URI handler on any target container objects. TODO: Move to protocol checks
     if ([object conformsToProtocol:@protocol(IFTargetContainer)]) {
         ((id<IFTargetContainer>)object).uriHandler = _uriHandler;
     }

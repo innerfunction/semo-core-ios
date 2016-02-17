@@ -80,6 +80,9 @@
 // Flatten the configuration by merging its "config" property (if any) into the top level properties.
 - (IFConfiguration *)flatten;
 
+// Return a copy of the current configuration with the specified top-level keys removed.
+- (IFConfiguration *)configurationWithKeysExcluded:(NSArray *)excludedKeys;
+
 + (IFConfiguration *)emptyConfiguration;
 
 @end

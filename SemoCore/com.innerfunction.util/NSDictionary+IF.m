@@ -35,6 +35,14 @@
     return [self extendWith:[NSDictionary dictionaryWithObject:object forKey:key]];
 }
 
+- (NSDictionary *)dictionaryWithKeysExcluded:(NSArray *)excludedKeys {
+    NSMutableDictionary *result = [self mutableCopy];
+    for (id key in excludedKeys) {
+        [result removeObjectForKey:key];
+    }
+    return result;
+}
+
 @end
 
 // A mutable dictionary class allowing one dictionary to be efficiently extended with a new set of values,

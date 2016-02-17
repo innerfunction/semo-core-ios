@@ -21,8 +21,6 @@
 
 /** Test if a configuration contains an instantiation hint, e.g. a type, class or factory specifier. */
 - (BOOL)hasInstantiationHint:(IFConfiguration *)configuration;
-/** Perform standard container-recognized protocol checks on a new object instance. */
-- (void)doStandardProtocolChecks:(id)object;
 /** Resolve an object property value compatible with the specified type from the specified configuration. */
 - (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)type
                 fromConfiguration:(IFConfiguration *)configuration
@@ -255,6 +253,37 @@
     }
 }
 
+// TODO: The code below implements a two-stage instantiation, configuration process to setup the container's
+// named components. This allows named components to reference other named components from within their
+// respective configurations; however, it does introduce subtle difficulties if one component attempts to
+// use another component before its configuration is complete; and whilst it solves one aspect of the cross-
+// dependency problem, it doesn't solve all aspects as one component may still attempt to use another component
+// after it is instantiated but before it is configured.
+// The problems are specific to dependencies on named components. A possible solution would require closer
+// integration of operation between the container and the named: scheme handler. The solution would be applied
+// during the second stage of the object build process, in the loop used to configure each named object. The
+// container would have to keep track of configured vs. non-configured objects. If a named: object dependency
+// is encountered during an object configuration, the named: scheme handler would need to check with the
+// container to discover whether the dependency has been configured, and if not, then would request the container
+// to interrupt the configuration loop and configure the dependency; the named: scheme would wait for this to
+// complete before returning the named object.
+// An important feature of this solution is the splitting of the set of named objects into configured/non-configured.
+// If objects are moved from non-configured --> configured immediately prior to the object's configuration then
+// circular dependencies are not a problem, although there is an unavoidable degree of non-determinacy in the
+// presence of circular dependencies.
+// Essentially what this solution does is derive an implicit dependency graph that ensures that objects are
+// configured only after their named dependencies. If a circular dependency exists then configuration can
+// still be completed, but with no guarantees about which objects in the dependency circle will be configured
+// first. This happens because e.g. in the case where two named objects are mutually dependent A <=> B:
+// * If configuration starts on 'A' first then 'A' is added to the list of configured objects.
+// * When the 'B' dependency is encountered, configuration on 'A' is suspended whilst 'B' is configured.
+// * When 'B's dependency on 'A' is encountered, the container reports 'A' as already configured (even
+//   though it is only partially configured) so configuration of 'B' continues to completion.
+// * Configuration of 'A' is then completed.
+// * A similar process happens if configuration instead beging with 'B'.
+// So it can be seen that a circular dependency does result in potentially unpredictable behaviour, but as such
+// dependencies are at best edge cases which should be avoided (- and can be avoided; these dependencies only
+// need to go in one direction) then this seems acceptable.
 - (void)configureWith:(IFConfiguration *)configuration {
     // Type info for the container's properties - allows type inferring of named properties.
     IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:self];
@@ -314,12 +343,6 @@
     [self configureWith:configuration];
 }
 
-#pragma mark - Private methods
-
-- (BOOL)hasInstantiationHint:(IFConfiguration *)configuration {
-    return [configuration hasValue:@"*type"] || [configuration hasValue:@"*ios-class"] || [configuration hasValue:@"*factory"];
-}
-
 - (void)doStandardProtocolChecks:(id)object {
     // If the new instance is container aware then pass reference to this container.
     if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
@@ -329,6 +352,12 @@
     if ([object conformsToProtocol:@protocol(IFService)]) {
         [services addObject:(id<IFService>)object];
     }
+}
+
+#pragma mark - Private methods
+
+- (BOOL)hasInstantiationHint:(IFConfiguration *)configuration {
+    return [configuration hasValue:@"*type"] || [configuration hasValue:@"*ios-class"] || [configuration hasValue:@"*factory"];
 }
 
 - (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)propClass

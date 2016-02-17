@@ -22,4 +22,9 @@
  */
 - (NSDictionary *)dictionaryWithAddedObject:(id)object forKey:(id)key;
 
+/**
+ * Return a new dictionary with the specified keys excluded.
+ */
+- (NSDictionary *)dictionaryWithKeysExcluded:(NSArray *)excludedKeys;
+
 @end

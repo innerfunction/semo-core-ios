@@ -10,6 +10,7 @@
 #import "IFConfiguration.h"
 #import "IFContainer.h"
 #import "IFIOCObjectFactory.h"
+#import "IFURIHandling.h"
 
 /**
  * Base class for IOC object factory instances.
@@ -21,6 +22,7 @@
 }
 
 - (id)initWithBaseConfiguration:(NSDictionary *)baseConfiguration;
+
 - (id)buildObjectWithConfiguration:(IFConfiguration *)configuration
                        inContainer:(IFContainer *)container
                     withParameters:(NSDictionary *)params

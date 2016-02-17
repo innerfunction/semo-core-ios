@@ -446,11 +446,22 @@
     }
     return result;
 }
+
+- (IFConfiguration *)configurationWithKeysExcluded:(NSArray *)excludedKeys {
+    NSDictionary *data = [(NSDictionary *)_data dictionaryWithKeysExcluded:excludedKeys];
+    IFConfiguration *result = [[IFConfiguration alloc] initWithData:data];
+    result.root = _root;
+    result.context = _context;
+    result.uriHandler = _uriHandler;
+    return result;
+}
+
 /*
 - (NSUInteger)hash {
     return self.resource ? [self.resource hash] : [super hash];
 }
 */
+
 - (BOOL)isEqual:(id)object {
     // Two configurations are equal if the have the same source resource.
     //return [object isKindOfClass:[IFConfiguration class]] && [self.resource isEqual:((IFConfiguration *)object).resource];
