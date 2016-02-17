@@ -11,6 +11,14 @@
 
 @implementation IFDoAction
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        _cancelled = NO;
+    }
+    return self;
+}
+
 - (id)parameterValue:(NSString *)name {
     return [_parameters valueForKey:name];
 }

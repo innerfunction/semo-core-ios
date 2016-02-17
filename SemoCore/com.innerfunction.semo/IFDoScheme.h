@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *target;
 @property (nonatomic, strong) NSDictionary *parameters;
+@property (nonatomic, assign) BOOL cancelled;
 
 - (id)parameterValue:(NSString *)name;
 

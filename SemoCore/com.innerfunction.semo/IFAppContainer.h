@@ -25,6 +25,7 @@
 
 @property (nonatomic, strong) IFStandardURIHandler *uriHandler;
 @property (nonatomic, strong) UIColor *appBackgroundColor;
+@property (nonatomic, weak) UIWindow *window;
 
 /** Load the app configuration. */
 - (void)loadConfiguration:(id)configSource;

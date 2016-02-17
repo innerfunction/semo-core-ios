@@ -29,13 +29,23 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.appBackgroundColor = [UIColor redColor];
-        self.uriHandler = [[IFStandardURIHandler alloc] init];
         rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
         rootTargetContainer.owner = self;
-        rootTargetContainer.uriHandler = _uriHandler;
+        self.appBackgroundColor = [UIColor redColor];
+        self.uriHandler = [[IFStandardURIHandler alloc] init];
     }
     return self;
+}
+
+- (void)setWindow:(UIWindow *)window {
+    _window = window;
+    _window.rootViewController = [self getRootView];
+    _window.backgroundColor = self.appBackgroundColor;
+}
+
+- (void)setUriHandler:(IFStandardURIHandler *)uriHandler {
+    _uriHandler = uriHandler;
+    rootTargetContainer.uriHandler = uriHandler;
 }
 
 - (void)loadConfiguration:(id)configSource {
@@ -62,7 +72,7 @@
         if (uri) {
             // If a configuration source URI has been resolved then attempt loading the configuration from the URI.
             DDLogInfo(@"%@: Attempting to load app container configuration from %@", LogTag, uri);
-            configData = [_uriHandler dereference:uri];
+            configData = [self.uriHandler dereference:uri];
         }
         else {
             configData = configSource;
@@ -73,7 +83,7 @@
             // Use the configuration's URI handler instead from this point on, to ensure relative URI's
             // resolve properly and also so that additional URI schemes added to this container are
             // available within the configuration.
-            _uriHandler = configuration.uriHandler;
+            self.uriHandler = configuration.uriHandler;
         }
         else {
             configuration = [[IFConfiguration alloc] initWithData:configSource];
@@ -248,6 +258,18 @@
         NSURL *url = [[action parameterValue:@"url"] asURL];
         [[UIApplication sharedApplication] openURL:url];
     }
+    else if ([@"replace-root-view" isEqualToString:action.name]) {
+        id view = [action parameterValue:@"view"];
+        if ([view isKindOfClass:[UIViewController class]]) {
+            [UIView transitionWithView: self.window
+                              duration: 0.5
+                               options: UIViewAnimationOptionTransitionFlipFromLeft
+                            animations: ^{
+                                self.window.rootViewController = view;
+                            }
+                            completion:nil];
+        }
+    }
 }
 
 #pragma mark - Class statics
@@ -267,8 +289,7 @@ static IFAppContainer *instance;
     IFAppContainer *container = [IFAppContainer getAppContainer];
     [container loadConfiguration:@"app:config.json"];
     [container startService];
-    window.rootViewController = [container getRootView];
-    window.backgroundColor = container.appBackgroundColor;
+    container.window = window;
     return container;
 }
 

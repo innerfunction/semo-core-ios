@@ -60,7 +60,8 @@
 
 - (void)setParentTargetContainer:(id<IFTargetContainer>)parentTargetContainer {
     containerBehaviour.parentTargetContainer = parentTargetContainer;
-    self.uriHandler = parentTargetContainer.uriHandler;
+    // TODO: Confirm following isn't needed.
+    // self.uriHandler = parentTargetContainer.uriHandler;
 }
 
 - (id<IFURIHandler>)uriHandler {
