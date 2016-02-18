@@ -18,6 +18,7 @@
 
 @interface IFStandardURIHandler()
 
+- (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeHandlers:(NSMutableDictionary *)schemeHandlers schemeContexts:(NSDictionary *)schemeContexts;
 - (IFCompoundURI *)promoteToCompoundURI:(id)uri;
 
 @end
@@ -36,9 +37,13 @@
 }
 
 - (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeContexts:(NSDictionary *)schemeContexts {
+    return [self initWithMainBundlePath:mainBundlePath schemeHandlers:[[NSMutableDictionary alloc] init] schemeContexts:schemeContexts];
+}
+
+- (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeHandlers:(NSMutableDictionary *)schemeHandlers schemeContexts:(NSDictionary *)schemeContexts {
     self = [super init];
     if (self) {
-        _schemeHandlers = [[NSMutableDictionary alloc] init];
+        _schemeHandlers = schemeHandlers;
         _schemeContexts = schemeContexts;
         // Add standard schemes.
         [_schemeHandlers setValue:[[IFStringSchemeHandler alloc] init]
@@ -133,7 +138,9 @@
     handler->_schemeHandlers = [_schemeHandlers mutableCopy];
     // Create a copy of this object's scheme handlers dictionary with a new entry for
     // the URI argument keyed by the URI's scheme name.
-    handler->_schemeContexts = [_schemeContexts dictionaryWithAddedObject:uri forKey:uri.scheme];
+    NSMutableDictionary *schemeContexts = [_schemeContexts mutableCopy];
+    [schemeContexts setObject:uri forKey:uri.scheme];
+    handler->_schemeContexts = schemeContexts;
     return handler;
 }
 
