@@ -1,9 +1,0 @@
-{
-        "animal":                        "Animal",
-        "color":                         "Color",
-        "fruit":                         "Fruit",
-        "plant":                         "Plant",
-        "forest":                        "Forest",
-        "IOCConfigurableImplementation": "IOCConfigurableImplementation",
-        "ConfigurableImplementation":    "ConfigurableImplementation"
-}

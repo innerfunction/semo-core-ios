@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class IFViewController;
+
+typedef void (^IFViewControllerEvent)(IFViewController *);
+
 @interface IFViewController : UIViewController
 
 @property (nonatomic, assign) BOOL hideTitleBar;
 @property (nonatomic, strong) NSString *backButtonTitle;
+@property (nonatomic, copy) IFViewControllerEvent onShow;
 
 @end

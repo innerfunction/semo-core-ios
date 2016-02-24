@@ -21,33 +21,37 @@
 - (void)debug:(NSString *)message, ... {
     va_list args;
     va_start(args, message);
-    message = [[NSString alloc] initWithFormat:message arguments:args];
-    DDLogCVerbose(@"%@: %@", _tag, message);
+    NSString *msg = [[NSString alloc] initWithFormat:message arguments:args];
     va_end(args);
+    //DDLogCVerbose(@"%@: %@", _tag, msg);
+    NSLog(@"%@: %@", _tag, msg);
 }
 
 - (void)info:(NSString *)message, ... {
     va_list args;
     va_start(args, message);
-    message = [[NSString alloc] initWithFormat:message arguments:args];
-    DDLogInfo(@"%@: %@", _tag, message);
+    NSString *msg = [[NSString alloc] initWithFormat:message arguments:args];
     va_end(args);
+    //DDLogInfo(@"%@: %@", _tag, msg);
+    NSLog(@"%@: %@", _tag, msg);
 }
 
 - (void)warn:(NSString *)message, ... {
     va_list args;
     va_start(args, message);
-    message = [[NSString alloc] initWithFormat:message arguments:args];
-    DDLogWarn(@"%@: %@", _tag, message);
+    NSString *msg = [[NSString alloc] initWithFormat:message arguments:args];
     va_end(args);
+    //DDLogWarn(@"%@: %@", _tag, msg);
+    NSLog(@"%@: %@", _tag, msg);
 }
 
 - (void)error:(NSString *)message, ... {
     va_list args;
     va_start(args, message);
-    message = [[NSString alloc] initWithFormat:message arguments:args];
-    DDLogError(@"%@: %@", _tag, message);
+    NSString *msg = [[NSString alloc] initWithFormat:message arguments:args];
     va_end(args);
+    //DDLogError(@"%@: %@", _tag, msg);
+    NSLog(@"%@: %@", _tag, msg);
 }
 
 @end

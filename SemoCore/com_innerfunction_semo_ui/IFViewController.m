@@ -29,4 +29,11 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (_onShow) {
+        _onShow(self);
+    }
+}
+
 @end
