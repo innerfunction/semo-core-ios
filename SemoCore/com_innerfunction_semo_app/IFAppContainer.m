@@ -12,7 +12,6 @@
 #import "IFDoScheme.h"
 #import "IFNewScheme.h"
 #import "IFMakeScheme.h"
-#import "IFNamedScheme.h"
 #import "IFCoreTypes.h"
 #import "IFI18nMap.h"
 #import "IFLogging.h"
@@ -29,8 +28,8 @@
 - (id)init {
     self = [super init];
     if (self) {
-        rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
-        rootTargetContainer.owner = self;
+        _rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
+        _rootTargetContainer.owner = self;
         self.appBackgroundColor = [UIColor redColor];
         self.uriHandler = [[IFStandardURIHandler alloc] init];
     }
@@ -45,7 +44,7 @@
 
 - (void)setUriHandler:(IFStandardURIHandler *)uriHandler {
     _uriHandler = uriHandler;
-    rootTargetContainer.uriHandler = uriHandler;
+    _rootTargetContainer.uriHandler = uriHandler;
 }
 
 - (void)loadConfiguration:(id)configSource {
@@ -100,8 +99,8 @@
 - (void)configureWith:(IFConfiguration *)configuration {
     
     // Setup template context.
-    globals = [self makeDefaultGlobalModelValues:configuration];
-    configuration.context = globals;
+    _globals = [self makeDefaultGlobalModelValues:configuration];
+    configuration.context = _globals;
     
     // Set object type mappings.
     [self addTypes:[configuration getValueAsConfiguration:@"types"]];
@@ -110,7 +109,7 @@
     [_uriHandler addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
     [_uriHandler addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
     [_uriHandler addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
-    [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithNamed:named] forScheme:@"named"];
+    [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithContainer:self] forScheme:@"named"];
     // Additional configured schemes.
     IFConfiguration *dispatcherConfig = [configuration getValueAsConfiguration:@"schemes"];
     if (dispatcherConfig) {
@@ -124,22 +123,22 @@
     }
     
     // Default local settings.
-    locals = [[IFLocals alloc] initWithPrefix:@"semo"];
+    _locals = [[IFLocals alloc] initWithPrefix:@"semo"];
     NSDictionary *settings = (NSDictionary *)[configuration getValue:@"settings"];
     if (settings) {
-        [locals setValues:settings forceReset:ForceResetDefaultSettings];
+        [_locals setValues:settings forceReset:ForceResetDefaultSettings];
     }
     
-    [named setObject:_uriHandler forKey:@"uriHandler"];
-    [named setObject:globals forKey:@"globals"];
-    [named setObject:locals forKey:@"locals"];
-    [named setObject:self forKey:@"container"];
+    [_named setObject:_uriHandler forKey:@"uriHandler"];
+    [_named setObject:_globals forKey:@"globals"];
+    [_named setObject:_locals forKey:@"locals"];
+    [_named setObject:self forKey:@"container"];
     
     // Perform default container configuration.
     [super configureWith:configuration];
     
     // Any named object can be a potential action target.
-    rootTargetContainer.namedTargets = named;
+    _rootTargetContainer.namedTargets = _named;
 }
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration {
@@ -218,7 +217,7 @@
 }
 
 - (UIViewController *)getRootView {
-    id rootView = [named objectForKey:@"rootView"];
+    id rootView = [_named objectForKey:@"rootView"];
     if (!rootView) {
         DDLogError(@"%@: No component named 'rootView' found", LogTag);
     }
@@ -232,7 +231,7 @@
         rootView = nil;
     }
     if ([rootView conformsToProtocol:@protocol(IFTargetContainer)]) {
-        ((id<IFTargetContainer>)rootView).parentTargetContainer = rootTargetContainer;
+        ((id<IFTargetContainer>)rootView).parentTargetContainer = _rootTargetContainer;
     }
     return rootView;
 }

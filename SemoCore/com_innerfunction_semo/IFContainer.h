@@ -19,13 +19,13 @@
  */
 @interface IFContainer : NSObject <IFService, IFConfigurationRoot> {
     // A map of named objects.
-    NSMutableDictionary *named;
+    NSMutableDictionary *_named;
     // A list of contained services.
-    NSMutableArray *services;
+    NSMutableArray *_services;
     // Map of type names onto class names.
-    IFConfiguration *types;
+    IFConfiguration *_types;
     // Flag indicating whether the container and all its services are running.
-    BOOL running;
+    BOOL _running;
 }
 
 /** Get a named component. */

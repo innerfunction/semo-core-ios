@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "IFURIHandling.h"
 
+@class IFContainer;
+
 @interface IFNamedSchemeHandler : NSObject <IFSchemeHandler> {
-    NSDictionary *named;
+    IFContainer *_container;
 }
 
-- (id)initWithNamed:(NSDictionary *)named;
+- (id)initWithContainer:(IFContainer *)container;
 
 @end

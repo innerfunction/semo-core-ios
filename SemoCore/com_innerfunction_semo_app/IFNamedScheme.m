@@ -7,13 +7,14 @@
 //
 
 #import "IFNamedScheme.h"
+#import "IFContainer.h"
 
 @implementation IFNamedSchemeHandler
 
-- (id)initWithNamed:(NSDictionary *)_named {
+- (id)initWithContainer:(IFContainer *)container {
     self = [super init];
     if (self) {
-        named = _named;
+        _container = container;
     }
     return self;
 }
@@ -23,8 +24,27 @@
 }
 
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
-    id namedObj = [named valueForKeyPath:uri.name];
-    return namedObj;
+    // Break the named reference into the initial name and a trailing path.
+    // e.g. 'object.sub.property' -> name = 'object' path = 'sub.property'
+    NSString *name = nil, *path = nil;
+    NSRange range = [uri.name rangeOfString:@"."];
+    if (range.location == NSNotFound) {
+        name = uri.name;
+    }
+    else {
+        name = [uri.name substringToIndex:range.location];
+        NSInteger idx = range.location + 1;
+        if (idx < [uri.name length]) {
+            path = [uri.name substringFromIndex:idx];
+        }
+    }
+    // Get the named object.
+    id result = [_container getNamed:name];
+    // If a path is specified then evaluate that on the named object.
+    if (path) {
+        result = [result valueForKeyPath:path];
+    }
+    return result;
 }
 
 @end

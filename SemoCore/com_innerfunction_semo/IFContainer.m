@@ -34,32 +34,32 @@
 - (id)init {
     self = [super init];
     if (self) {
-        named = [[NSMutableDictionary alloc] init];
-        services = [[NSMutableArray alloc] init];
-        types = [IFConfiguration emptyConfiguration];
-        running = NO;
+        _named = [[NSMutableDictionary alloc] init];
+        _services = [[NSMutableArray alloc] init];
+        _types = [IFConfiguration emptyConfiguration];
+        _running = NO;
     }
     return self;
 }
 
 - (id)getNamed:(NSString *)name {
-    return [named objectForKey:name];
+    return [_named objectForKey:name];
 }
 
-- (void)setTypes:(IFConfiguration *)_types {
-    types = _types ? _types : [IFConfiguration emptyConfiguration];
+- (void)setTypes:(IFConfiguration *)types {
+    _types = _types ? _types : [IFConfiguration emptyConfiguration];
 }
 
-- (void)addTypes:(id)_types {
-    if (_types) {
+- (void)addTypes:(id)types {
+    if (types) {
         IFConfiguration *typeConfig;
-        if ([_types isKindOfClass:[IFConfiguration class]]) {
-            typeConfig = (IFConfiguration *)_types;
+        if ([types isKindOfClass:[IFConfiguration class]]) {
+            typeConfig = (IFConfiguration *)types;
         }
         else {
-            typeConfig = [[IFConfiguration alloc] initWithData:_types];
+            typeConfig = [[IFConfiguration alloc] initWithData:types];
         }
-        types = [types mergeConfiguration:typeConfig];
+        _types = [_types mergeConfiguration:typeConfig];
     }
 }
 
@@ -95,7 +95,7 @@
     if (!className) {
         NSString *type = [configuration getValueAsString:@"*type"];
         if (type) {
-            className = [types getValueAsString:type];
+            className = [_types getValueAsString:type];
             if (!className) {
                 DDLogError(@"%@: Making %@, no class name found for type %@", LogTag, identifier, type);
             }
@@ -123,7 +123,7 @@
 }
 
 - (id)newInstanceForTypeName:(NSString *)typeName withConfiguration:(IFConfiguration *)configuration {
-    NSString *className = [types getValueAsString:typeName];
+    NSString *className = [_types getValueAsString:typeName];
     if (!className) {
         DDLogError(@"%@: newInstanceForTypeName, no class name found for type %@", LogTag, typeName);
         return nil;
@@ -247,7 +247,7 @@
             [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
         }
         // If running and the object is a service instance then start the service now that it is fully configured.
-        if (running && [object conformsToProtocol:@protocol(IFService)]) {
+        if (_running && [object conformsToProtocol:@protocol(IFService)]) {
             [(id<IFService>)object startService];
         }
     }
@@ -282,8 +282,17 @@
 // * Configuration of 'A' is then completed.
 // * A similar process happens if configuration instead beging with 'B'.
 // So it can be seen that a circular dependency does result in potentially unpredictable behaviour, but as such
-// dependencies are at best edge cases which should be avoided (- and can be avoided; these dependencies only
-// need to go in one direction) then this seems acceptable.
+// dependencies are at best edge cases which should be avoided then this seems acceptable.
+// (Note also that in principal, circular dependencies are never needed - if A and B are mutually dependent, then
+// only one needs the dependency injected; i.e. if A is configured with B, then A can pass a reference to itself
+// to B during that configuration).
+// There is a problem with *factory, new: and make:, as these may be invoked during the initial object instantiation
+// phase, when they should be deferred to the subsequent configuration phase. This means that the new: and make:
+// schemes should have a bootstrap mode where they return objects encapsulating a deferred version of the operation,
+// which is then recognized and invoked during the configuration phase; and the *factory instantiation should do
+// something similar. (But then how can other configurations reference the deferred instantiations?)
+// Should instead remove the two-phase instantiation-configure, instead rely on the implicit dependency graph
+// described above to do it's job.
 - (void)configureWith:(IFConfiguration *)configuration {
     // Type info for the container's properties - allows type inferring of named properties.
     IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:self];
@@ -320,12 +329,12 @@
             }
         }
         if (value) {
-            [named setObject:value forKey:name];
+            [_named setObject:value forKey:name];
         }
     }
     // Configure named objects.
     for (NSString *name in names) {
-        id object = [named objectForKey:name];
+        id object = [_named objectForKey:name];
         IFConfiguration *objConfig = [objConfigs objectForKey:name];
         if (object && objConfig) {
             [self configureObject:object withConfiguration:objConfig identifier:name];
@@ -350,7 +359,7 @@
     }
     // If instance is a service then add to list of services.
     if ([object conformsToProtocol:@protocol(IFService)]) {
-        [services addObject:(id<IFService>)object];
+        [_services addObject:(id<IFService>)object];
     }
 }
 
@@ -414,8 +423,8 @@
 #pragma mark - IFService
 
 - (void)startService {
-    running = YES;
-    for (id<IFService> service in services) {
+    _running = YES;
+    for (id<IFService> service in _services) {
         @try {
             [service startService];
         }
@@ -427,7 +436,7 @@
 
 - (void)stopService {
     SEL stopService = @selector(stopService);
-    for (id<IFService> service in services) {
+    for (id<IFService> service in _services) {
         @try {
             if ([service respondsToSelector:stopService]) {
                 [service stopService];
@@ -437,7 +446,7 @@
             DDLogCError(@"Error stopping service %@: %@", [service class], exception);
         }
     }
-    running = NO;
+    _running = NO;
 }
 
 #pragma mark - IFConfigurationRoot
