@@ -42,7 +42,10 @@
     id result = [_container getNamed:name];
     // If a path is specified then evaluate that on the named object.
     if (path) {
-        result = [result valueForKeyPath:path];
+        @try {
+            result = [result valueForKeyPath:path];
+        }
+        @catch (id exception) {}
     }
     return result;
 }

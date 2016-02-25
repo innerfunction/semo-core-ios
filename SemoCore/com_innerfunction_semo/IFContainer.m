@@ -13,7 +13,6 @@
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCObjectFactory.h"
-#import "IFTypeInfo.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
 
@@ -26,6 +25,8 @@
                 fromConfiguration:(IFConfiguration *)configuration
                              name:(NSString *)name
                             value:(id)value;
+// Instantiate and configure a named object.
+- (id)buildNamedObject:(NSString *)name;
 
 @end
 
@@ -38,12 +39,10 @@
         _services = [[NSMutableArray alloc] init];
         _types = [IFConfiguration emptyConfiguration];
         _running = NO;
+        _propertyTypeInfo = [IFTypeInfo typeInfoForObject:self];
+        _pendingNames = [[NSMutableArray alloc] init];
     }
     return self;
-}
-
-- (id)getNamed:(NSString *)name {
-    return [_named objectForKey:name];
 }
 
 - (void)setTypes:(IFConfiguration *)types {
@@ -253,98 +252,97 @@
     }
 }
 
-// TODO: The code below implements a two-stage instantiation, configuration process to setup the container's
-// named components. This allows named components to reference other named components from within their
-// respective configurations; however, it does introduce subtle difficulties if one component attempts to
-// use another component before its configuration is complete; and whilst it solves one aspect of the cross-
-// dependency problem, it doesn't solve all aspects as one component may still attempt to use another component
-// after it is instantiated but before it is configured.
-// The problems are specific to dependencies on named components. A possible solution would require closer
-// integration of operation between the container and the named: scheme handler. The solution would be applied
-// during the second stage of the object build process, in the loop used to configure each named object. The
-// container would have to keep track of configured vs. non-configured objects. If a named: object dependency
-// is encountered during an object configuration, the named: scheme handler would need to check with the
-// container to discover whether the dependency has been configured, and if not, then would request the container
-// to interrupt the configuration loop and configure the dependency; the named: scheme would wait for this to
-// complete before returning the named object.
-// An important feature of this solution is the splitting of the set of named objects into configured/non-configured.
-// If objects are moved from non-configured --> configured immediately prior to the object's configuration then
-// circular dependencies are not a problem, although there is an unavoidable degree of non-determinacy in the
-// presence of circular dependencies.
-// Essentially what this solution does is derive an implicit dependency graph that ensures that objects are
-// configured only after their named dependencies. If a circular dependency exists then configuration can
-// still be completed, but with no guarantees about which objects in the dependency circle will be configured
-// first. This happens because e.g. in the case where two named objects are mutually dependent A <=> B:
-// * If configuration starts on 'A' first then 'A' is added to the list of configured objects.
-// * When the 'B' dependency is encountered, configuration on 'A' is suspended whilst 'B' is configured.
-// * When 'B's dependency on 'A' is encountered, the container reports 'A' as already configured (even
-//   though it is only partially configured) so configuration of 'B' continues to completion.
-// * Configuration of 'A' is then completed.
-// * A similar process happens if configuration instead beging with 'B'.
-// So it can be seen that a circular dependency does result in potentially unpredictable behaviour, but as such
-// dependencies are at best edge cases which should be avoided then this seems acceptable.
-// (Note also that in principal, circular dependencies are never needed - if A and B are mutually dependent, then
-// only one needs the dependency injected; i.e. if A is configured with B, then A can pass a reference to itself
-// to B during that configuration).
-// There is a problem with *factory, new: and make:, as these may be invoked during the initial object instantiation
-// phase, when they should be deferred to the subsequent configuration phase. This means that the new: and make:
-// schemes should have a bootstrap mode where they return objects encapsulating a deferred version of the operation,
-// which is then recognized and invoked during the configuration phase; and the *factory instantiation should do
-// something similar. (But then how can other configurations reference the deferred instantiations?)
-// Should instead remove the two-phase instantiation-configure, instead rely on the implicit dependency graph
-// described above to do it's job.
+// Configure the container with the specified configuration.
+// The container performs implicit dependency ordering. This means that if an object A has a dependency
+// on another object B, then B will be built (instantiated & configured) before A. This will work for an
+// arbitary length dependency chain (e.g. A -> B -> C -> etc.)
+// Implicit dependency ordering relies on the fact that dependencies like this can only be specified using
+// the named: URI scheme, which uses the container's getNamed: method to resolve named objects.
+// The configuration process works as follows:
+// * This method iterates over each named object configuration and builds each object in turn.
+// * If any named object has a dependency on another named object then this will be resolved via the named:
+//   URI scheme and the container's getNamed: method.
+// * In the getNamed: method, if a name isn't found but a configuration exists then the container will
+//   attempt to build and return the named object. This means that in effect, building of an object is
+//   temporarily suspended whilst building of its dependency is prioritized. This process will recurse
+//   until the full dependency chain is resolved.
+// * The container maintains a stack of names being built. This allows the container to detect dependency
+//   cycles and so avoid infinite regression. Dependency cycles cannot be fully resolved, and the last
+//   dependency in a cycle will resolve to nil.
 - (void)configureWith:(IFConfiguration *)configuration {
-    // Type info for the container's properties - allows type inferring of named properties.
-    IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:self];
-    // Add named objects.
-    NSArray *names = [configuration getValueNames];
-    NSMutableDictionary *objConfigs = [[NSMutableDictionary alloc] init];
-    // Initialize named objects.
+    _containerConfig = configuration;
+    // Iterate over named object configs and build each object.
+    NSArray *names = [_containerConfig getValueNames];
     for (NSString *name in names) {
-        id value = [configuration getValue:name];
-        if ([value isKindOfClass:[NSDictionary class]]) {
-            value = [configuration getValueAsConfiguration:name];
-        }
-        if ([value isKindOfClass:[IFConfiguration class]]) {
-            // Try instantiating a new object from an object configuration.
-            IFConfiguration *objConfig = [(IFConfiguration *)value normalize];
-            id object = nil;
-            // Try instantating directly from the configuration.
-            if ([self hasInstantiationHint:objConfig]) {
-                object = [self instantiateObjectWithConfiguration:objConfig identifier:name];
-            }
-            // If no object then check for a container property with the same name, and try to infer a type.
-            if (!object) {
-                IFPropertyInfo *propertyInfo = [typeInfo infoForProperty:name];
-                if (propertyInfo) {
-                    __unsafe_unretained Class propClass = [propertyInfo getPropertyClass];
-                    NSString *propClassName = NSStringFromClass(propClass);
-                    object = [self newInstanceForClassName:propClassName withConfiguration:objConfig];
-                }
-            }
-            // If object then record its configuration.
-            if (object) {
-                value = object;
-                [objConfigs setObject:objConfig forKey:name];
-            }
-        }
-        if (value) {
-            [_named setObject:value forKey:name];
+        // Build the object only if it has not already been built and added to _named.
+        // (Objects which are dependencies of other objects may be configured via getNamed:
+        // before this loop has iterated around to them).
+        if ([_named objectForKey:name] == nil) {
+            [self buildNamedObject:name];
         }
     }
-    // Configure named objects.
-    for (NSString *name in names) {
-        id object = [_named objectForKey:name];
-        IFConfiguration *objConfig = [objConfigs objectForKey:name];
-        if (object && objConfig) {
-            [self configureObject:object withConfiguration:objConfig identifier:name];
+}
+
+// Build a named object from the available configuration and property type info.
+- (id)buildNamedObject:(NSString *)name {
+    // Track that we're about to build this name.
+    [_pendingNames addObject:name];
+    // Resolve the object's configuration.
+    id object = [_containerConfig getValue:name];
+    IFPropertyInfo *propertyInfo = [_propertyTypeInfo infoForProperty:name];
+    if ([object isKindOfClass:[NSDictionary class]]) {
+        object = [_containerConfig getValueAsConfiguration:name];
+    }
+    if ([object isKindOfClass:[IFConfiguration class]]) {
+        // Try instantiating a new object from an object configuration.
+        IFConfiguration *objConfig = [(IFConfiguration *)object normalize];
+        // Try instantating directly from the configuration.
+        if ([self hasInstantiationHint:objConfig]) {
+            object = [self buildObjectWithConfiguration:objConfig identifier:name];
         }
+        else {
+            // If no instantiation hint then check for a container property with the same name, and try to infer a type.
+            if (propertyInfo) {
+                __unsafe_unretained Class propClass = [propertyInfo getPropertyClass];
+                NSString *propClassName = NSStringFromClass(propClass);
+                object = [self newInstanceForClassName:propClassName withConfiguration:objConfig];
+                [self configureObject:object withConfiguration:objConfig identifier:name];
+            }
+            else {
+                // Can't instantiate object, but add the configuration to named.
+                object = objConfig;
+            }
+        }
+    }
+    if (object != nil) {
+        [_named setObject:object forKey:name];
         // If the named object corresponds to a property on the container then try setting that property.
-        IFPropertyInfo *propertyInfo = [typeInfo infoForProperty:name];
         if (propertyInfo && [propertyInfo isAssignableFrom:[object class]]) {
             [self setValue:object forKey:name];
         }
     }
+    // Finished building the current name, remove from list.
+    [_pendingNames removeLastObject];
+    return object;
+}
+
+// Get a named object. Will attempt building the object if necessary.
+- (id)getNamed:(NSString *)name {
+    id object = [_named objectForKey:name];
+    // If named object not found then consider whether to try building it.
+    if (object == nil) {
+        // Check for a dependency cycle.
+        if ([_pendingNames containsObject:name]) {
+            NSLog(@"WARNING: Named dependency cycle detected %@ -> %@", [_pendingNames componentsJoinedByString:@" -> "], name);
+        }
+        else if ([_containerConfig hasValue:name]) {
+            NSLog(@"IDO: Prioritizing building of named %@ -> %@", [_pendingNames componentsJoinedByString:@"."], name);
+            // The container config contains a configuration for the wanted name, but _named doesn't contain
+            // any reference so therefore it's likely that the object hasn't been built yet; try building it now.
+            object = [self buildNamedObject:name];
+        }
+    }
+    return object;
 }
 
 - (void)configureWithData:(id)configData {

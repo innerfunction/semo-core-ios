@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "IFConfiguration.h"
 #import "IFService.h"
+#import "IFTypeInfo.h"
 
 /**
  * A container for named objects and services.
@@ -24,6 +25,13 @@
     NSMutableArray *_services;
     // Map of type names onto class names.
     IFConfiguration *_types;
+    // The container's configuration.
+    IFConfiguration *_containerConfig;
+    // Type info for the container's properties - allows type inferring of named properties.
+    IFTypeInfo *_propertyTypeInfo;
+    // A list containing the names of objects currently being built (instantiated/configured).
+    // Used to detect dependency cycles when building the named object graph.
+    NSMutableArray *_pendingNames;
     // Flag indicating whether the container and all its services are running.
     BOOL _running;
 }
