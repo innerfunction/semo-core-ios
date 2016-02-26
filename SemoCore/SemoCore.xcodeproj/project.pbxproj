@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07190CB11C8054A400CE8F22 /* IFPostScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07190CAE1C8054A400CE8F22 /* IFPostScheme.h */; };
+		07190CB21C8054A400CE8F22 /* IFPostScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07190CAF1C8054A400CE8F22 /* IFPostScheme.m */; };
+		07190CB31C8054A400CE8F22 /* IFPostActionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 07190CB01C8054A400CE8F22 /* IFPostActionHandler.h */; };
 		07BD8A2C1C76531C0058D7A8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2B1C76531C0058D7A8 /* UIKit.framework */; };
 		07BD8A2E1C7653260058D7A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2D1C7653260058D7A8 /* Foundation.framework */; };
 		07BD8A491C7653400058D7A8 /* IFConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A2F1C7653400058D7A8 /* IFConfigurable.h */; };
@@ -151,6 +154,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		07190CAE1C8054A400CE8F22 /* IFPostScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFPostScheme.h; path = com_innerfunction_semo_app/IFPostScheme.h; sourceTree = SOURCE_ROOT; };
+		07190CAF1C8054A400CE8F22 /* IFPostScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFPostScheme.m; path = com_innerfunction_semo_app/IFPostScheme.m; sourceTree = SOURCE_ROOT; };
+		07190CB01C8054A400CE8F22 /* IFPostActionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFPostActionHandler.h; path = com_innerfunction_semo_app/IFPostActionHandler.h; sourceTree = SOURCE_ROOT; };
 		07BD8A201C7651930058D7A8 /* SemoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SemoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BD8A2B1C76531C0058D7A8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07BD8A2D1C7653260058D7A8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -385,6 +391,9 @@
 		07BD8A8A1C76536D0058D7A8 /* com.innerfunction.semo.app */ = {
 			isa = PBXGroup;
 			children = (
+				07190CAE1C8054A400CE8F22 /* IFPostScheme.h */,
+				07190CAF1C8054A400CE8F22 /* IFPostScheme.m */,
+				07190CB01C8054A400CE8F22 /* IFPostActionHandler.h */,
 				07BD8A641C7653670058D7A8 /* IFActionDispatcher.h */,
 				07BD8A651C7653670058D7A8 /* IFAppContainer.h */,
 				07BD8A661C7653670058D7A8 /* IFAppContainer.m */,
@@ -662,6 +671,7 @@
 				07BD8AF91C7653AD0058D7A8 /* IFTypeConversions.h in Headers */,
 				07BD8A5D1C7653400058D7A8 /* NSDictionary+IFValues.h in Headers */,
 				07BD8AC71C7653930058D7A8 /* IFStringSchemeHandler.h in Headers */,
+				07190CB31C8054A400CE8F22 /* IFPostActionHandler.h in Headers */,
 				07BD8AC11C7653930058D7A8 /* IFReprSchemeHandler.h in Headers */,
 				07BD8AC91C7653930058D7A8 /* IFURIHandling.h in Headers */,
 				07BD8A521C7653400058D7A8 /* IFIOCConfigurable.h in Headers */,
@@ -685,6 +695,7 @@
 				07BD8A531C7653400058D7A8 /* IFIOCConfigurationInitable.h in Headers */,
 				07BD8A4C1C7653400058D7A8 /* IFConfiguredLocals.h in Headers */,
 				07BD8AC31C7653930058D7A8 /* IFResource.h in Headers */,
+				07190CB11C8054A400CE8F22 /* IFPostScheme.h in Headers */,
 				07BD8B461C7653FC0058D7A8 /* UIView+Toast.h in Headers */,
 				07BD8A881C7653670058D7A8 /* IFTargetContainerViewController.h in Headers */,
 				07BD8A861C7653670058D7A8 /* IFTarget.h in Headers */,
@@ -803,6 +814,7 @@
 				07BD8B1D1C7653F00058D7A8 /* DDFileLogger.m in Sources */,
 				07BD8B451C7653FC0058D7A8 /* SWRevealViewController.m in Sources */,
 				07BD8ABE1C7653930058D7A8 /* IFFileResource.m in Sources */,
+				07190CB21C8054A400CE8F22 /* IFPostScheme.m in Sources */,
 				07BD8B231C7653F00058D7A8 /* ContextFilterLogFormatter.m in Sources */,
 				07BD8B1B1C7653F00058D7A8 /* DDASLLogger.m in Sources */,
 				07BD8AA61C76537E0058D7A8 /* IFWebViewController.m in Sources */,

@@ -12,6 +12,7 @@
 #import "IFDoScheme.h"
 #import "IFNewScheme.h"
 #import "IFMakeScheme.h"
+#import "IFPostScheme.h"
 #import "IFCoreTypes.h"
 #import "IFI18nMap.h"
 #import "IFLogging.h"
@@ -236,6 +237,37 @@
     return rootView;
 }
 
+- (void)postAction:(NSString *)actionURI sender:(id)sender {
+    IFCompoundURI *uri = [IFCompoundURI parse:actionURI error:nil];
+    if (uri) {
+        id action = [_uriHandler dereference:uri];
+        if ([action isKindOfClass:[IFPostAction class]]) {
+            IFPostAction *postAction = (IFPostAction *)action;
+            BOOL handled = NO;
+            if (![action hasAbsoluteTarget]) {
+                // Evaluate actions with relative target paths against the sender.
+                while (!handled && sender) {
+                    if ([sender conformsToProtocol:@protocol(IFPostActionHandler)]) {
+                        handled = [(id<IFPostActionHandler>)sender handlePostAction:postAction];
+                    }
+                    else if ([sender isKindOfClass:[UIViewController class]]) {
+                        // If action sender is a view controller then bubble the action up through the
+                        // view controller hierachy until a hander is found.
+                        sender = ((UIViewController *)sender).parentViewController;
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+            // Evaluate non-handled actions against the receiver, i.e. the app container.
+            if (!handled) {
+                [self handlePostAction:postAction];
+            }
+        }
+    }
+}
+
 #pragma mark - Overrides
 
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
@@ -248,6 +280,40 @@
     if ([object conformsToProtocol:@protocol(IFTargetContainer)]) {
         ((id<IFTargetContainer>)object).uriHandler = _uriHandler;
     }
+}
+
+#pragma mark - IFPostActionHandler protocol
+
+- (BOOL)handlePostAction:(IFPostAction *)postAction {
+    // TODO: Target checking code can be removed to the IFContainer superclass
+    // If should then return true/false according to appropriately, and the conditional in this
+    // method follow on from there.
+    NSString *targetHead = [postAction targetHead];
+    if (targetHead) {
+        id target = [_named valueForKey:targetHead];
+        if (target && [target conformsToProtocol:@protocol(IFPostActionHandler)]) {
+            [(id<IFPostActionHandler>)target handlePostAction:[postAction popTargetHead]];
+        }
+    }
+    else {
+        if ([@"open-url" isEqualToString:postAction.message]) {
+            NSURL *url = [[postAction parameterValue:@"url"] asURL];
+            [[UIApplication sharedApplication] openURL:url];
+        }
+        else if ([@"open" isEqualToString:postAction.message]) {
+            id view = [postAction parameterValue:@"view"];
+            if ([view isKindOfClass:[UIViewController class]]) {
+                [UIView transitionWithView: self.window
+                                  duration: 0.5
+                                   options: UIViewAnimationOptionTransitionFlipFromLeft
+                                animations: ^{
+                                    self.window.rootViewController = view;
+                                }
+                                completion:nil];
+            }
+        }
+    }
+    return YES;
 }
 
 #pragma mark - IFActionTarget protocol

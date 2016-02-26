@@ -7,8 +7,11 @@
 //
 
 #import "IFViewController.h"
+#import "IFAppContainer.h"
 
 @implementation IFViewController
+
+@synthesize iocContainer = _iocContainer;
 
 - (id)init {
     self = [super init];
@@ -34,6 +37,11 @@
     if (_onShow) {
         _onShow(self);
     }
+}
+
+- (void)postAction:(NSString *)action {
+    // TODO: Move URI rewrite rules to here. They should be applied only once, by the action sender.
+    [(IFAppContainer *)_iocContainer postAction:action sender:self];
 }
 
 @end

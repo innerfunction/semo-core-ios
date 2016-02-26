@@ -12,6 +12,6 @@
 /** An IOC component aware of its container. */
 @protocol IFIOCContainerAware <NSObject>
 
-@property (nonatomic, strong) IFContainer *iocContainer;
+@property (nonatomic, weak) IFContainer *iocContainer;
 
 @end
