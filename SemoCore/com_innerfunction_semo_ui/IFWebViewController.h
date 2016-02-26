@@ -6,10 +6,11 @@
 //  Copyright © 2015 InnerFunction. All rights reserved.
 //
 
-#import "IFTargetContainerViewController.h"
+#import "IFViewController.h"
 #import "IFIOCConfigurable.h"
+#import "IFPostActionHandler.h"
 
-@interface IFWebViewController : IFTargetContainerViewController <UIWebViewDelegate, IFIOCConfigurable> {
+@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFPostActionHandler> {
     UIWebView *webView;
     UIImageView *loadingImageView;
     UIActivityIndicatorView *loadingIndicatorView;

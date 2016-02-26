@@ -10,6 +10,7 @@
 		07190CB11C8054A400CE8F22 /* IFPostScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07190CAE1C8054A400CE8F22 /* IFPostScheme.h */; };
 		07190CB21C8054A400CE8F22 /* IFPostScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07190CAF1C8054A400CE8F22 /* IFPostScheme.m */; };
 		07190CB31C8054A400CE8F22 /* IFPostActionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 07190CB01C8054A400CE8F22 /* IFPostActionHandler.h */; };
+		07190CB51C80B86C00CE8F22 /* IFPostActionTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07190CB41C80B86C00CE8F22 /* IFPostActionTargetContainer.h */; };
 		07BD8A2C1C76531C0058D7A8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2B1C76531C0058D7A8 /* UIKit.framework */; };
 		07BD8A2E1C7653260058D7A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2D1C7653260058D7A8 /* Foundation.framework */; };
 		07BD8A491C7653400058D7A8 /* IFConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A2F1C7653400058D7A8 /* IFConfigurable.h */; };
@@ -38,25 +39,14 @@
 		07BD8A601C7653400058D7A8 /* UIImage+CropScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A461C7653400058D7A8 /* UIImage+CropScale.m */; };
 		07BD8A611C7653400058D7A8 /* UIViewController+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A471C7653400058D7A8 /* UIViewController+Toast.h */; };
 		07BD8A621C7653400058D7A8 /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A481C7653400058D7A8 /* UIViewController+Toast.m */; };
-		07BD8A771C7653670058D7A8 /* IFActionDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A641C7653670058D7A8 /* IFActionDispatcher.h */; };
 		07BD8A781C7653670058D7A8 /* IFAppContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A651C7653670058D7A8 /* IFAppContainer.h */; };
 		07BD8A791C7653670058D7A8 /* IFAppContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A661C7653670058D7A8 /* IFAppContainer.m */; };
-		07BD8A7A1C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A671C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.h */; };
-		07BD8A7B1C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A681C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.m */; };
-		07BD8A7C1C7653670058D7A8 /* IFDoScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A691C7653670058D7A8 /* IFDoScheme.h */; };
-		07BD8A7D1C7653670058D7A8 /* IFDoScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A6A1C7653670058D7A8 /* IFDoScheme.m */; };
 		07BD8A7E1C7653670058D7A8 /* IFMakeScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A6B1C7653670058D7A8 /* IFMakeScheme.h */; };
 		07BD8A7F1C7653670058D7A8 /* IFMakeScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A6C1C7653670058D7A8 /* IFMakeScheme.m */; };
 		07BD8A801C7653670058D7A8 /* IFNamedScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A6D1C7653670058D7A8 /* IFNamedScheme.h */; };
 		07BD8A811C7653670058D7A8 /* IFNamedScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A6E1C7653670058D7A8 /* IFNamedScheme.m */; };
 		07BD8A821C7653670058D7A8 /* IFNewScheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A6F1C7653670058D7A8 /* IFNewScheme.h */; };
 		07BD8A831C7653670058D7A8 /* IFNewScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A701C7653670058D7A8 /* IFNewScheme.m */; };
-		07BD8A841C7653670058D7A8 /* IFProxyTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A711C7653670058D7A8 /* IFProxyTargetContainer.h */; };
-		07BD8A851C7653670058D7A8 /* IFProxyTargetContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A721C7653670058D7A8 /* IFProxyTargetContainer.m */; };
-		07BD8A861C7653670058D7A8 /* IFTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A731C7653670058D7A8 /* IFTarget.h */; };
-		07BD8A871C7653670058D7A8 /* IFTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A741C7653670058D7A8 /* IFTargetContainer.h */; };
-		07BD8A881C7653670058D7A8 /* IFTargetContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A751C7653670058D7A8 /* IFTargetContainerViewController.h */; };
-		07BD8A891C7653670058D7A8 /* IFTargetContainerVIewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A761C7653670058D7A8 /* IFTargetContainerVIewController.m */; };
 		07BD8A991C76537E0058D7A8 /* IFNavigationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A8B1C76537E0058D7A8 /* IFNavigationViewController.h */; };
 		07BD8A9A1C76537E0058D7A8 /* IFNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A8C1C76537E0058D7A8 /* IFNavigationViewController.m */; };
 		07BD8A9B1C76537E0058D7A8 /* IFSlideViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A8D1C76537E0058D7A8 /* IFSlideViewController.h */; };
@@ -157,6 +147,7 @@
 		07190CAE1C8054A400CE8F22 /* IFPostScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFPostScheme.h; path = com_innerfunction_semo_app/IFPostScheme.h; sourceTree = SOURCE_ROOT; };
 		07190CAF1C8054A400CE8F22 /* IFPostScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFPostScheme.m; path = com_innerfunction_semo_app/IFPostScheme.m; sourceTree = SOURCE_ROOT; };
 		07190CB01C8054A400CE8F22 /* IFPostActionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFPostActionHandler.h; path = com_innerfunction_semo_app/IFPostActionHandler.h; sourceTree = SOURCE_ROOT; };
+		07190CB41C80B86C00CE8F22 /* IFPostActionTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFPostActionTargetContainer.h; path = com_innerfunction_semo_app/IFPostActionTargetContainer.h; sourceTree = SOURCE_ROOT; };
 		07BD8A201C7651930058D7A8 /* SemoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SemoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BD8A2B1C76531C0058D7A8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07BD8A2D1C7653260058D7A8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -186,25 +177,14 @@
 		07BD8A461C7653400058D7A8 /* UIImage+CropScale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CropScale.m"; path = "com_innerfunction_semo/UIImage+CropScale.m"; sourceTree = SOURCE_ROOT; };
 		07BD8A471C7653400058D7A8 /* UIViewController+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Toast.h"; path = "com_innerfunction_semo/UIViewController+Toast.h"; sourceTree = SOURCE_ROOT; };
 		07BD8A481C7653400058D7A8 /* UIViewController+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Toast.m"; path = "com_innerfunction_semo/UIViewController+Toast.m"; sourceTree = SOURCE_ROOT; };
-		07BD8A641C7653670058D7A8 /* IFActionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFActionDispatcher.h; path = com_innerfunction_semo_app/IFActionDispatcher.h; sourceTree = SOURCE_ROOT; };
 		07BD8A651C7653670058D7A8 /* IFAppContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFAppContainer.h; path = com_innerfunction_semo_app/IFAppContainer.h; sourceTree = SOURCE_ROOT; };
 		07BD8A661C7653670058D7A8 /* IFAppContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFAppContainer.m; path = com_innerfunction_semo_app/IFAppContainer.m; sourceTree = SOURCE_ROOT; };
-		07BD8A671C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFDefaultTargetContainerBehaviour.h; path = com_innerfunction_semo_app/IFDefaultTargetContainerBehaviour.h; sourceTree = SOURCE_ROOT; };
-		07BD8A681C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFDefaultTargetContainerBehaviour.m; path = com_innerfunction_semo_app/IFDefaultTargetContainerBehaviour.m; sourceTree = SOURCE_ROOT; };
-		07BD8A691C7653670058D7A8 /* IFDoScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFDoScheme.h; path = com_innerfunction_semo_app/IFDoScheme.h; sourceTree = SOURCE_ROOT; };
-		07BD8A6A1C7653670058D7A8 /* IFDoScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFDoScheme.m; path = com_innerfunction_semo_app/IFDoScheme.m; sourceTree = SOURCE_ROOT; };
 		07BD8A6B1C7653670058D7A8 /* IFMakeScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMakeScheme.h; path = com_innerfunction_semo_app/IFMakeScheme.h; sourceTree = SOURCE_ROOT; };
 		07BD8A6C1C7653670058D7A8 /* IFMakeScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFMakeScheme.m; path = com_innerfunction_semo_app/IFMakeScheme.m; sourceTree = SOURCE_ROOT; };
 		07BD8A6D1C7653670058D7A8 /* IFNamedScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFNamedScheme.h; path = com_innerfunction_semo_app/IFNamedScheme.h; sourceTree = SOURCE_ROOT; };
 		07BD8A6E1C7653670058D7A8 /* IFNamedScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFNamedScheme.m; path = com_innerfunction_semo_app/IFNamedScheme.m; sourceTree = SOURCE_ROOT; };
 		07BD8A6F1C7653670058D7A8 /* IFNewScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFNewScheme.h; path = com_innerfunction_semo_app/IFNewScheme.h; sourceTree = SOURCE_ROOT; };
 		07BD8A701C7653670058D7A8 /* IFNewScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFNewScheme.m; path = com_innerfunction_semo_app/IFNewScheme.m; sourceTree = SOURCE_ROOT; };
-		07BD8A711C7653670058D7A8 /* IFProxyTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFProxyTargetContainer.h; path = com_innerfunction_semo_app/IFProxyTargetContainer.h; sourceTree = SOURCE_ROOT; };
-		07BD8A721C7653670058D7A8 /* IFProxyTargetContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFProxyTargetContainer.m; path = com_innerfunction_semo_app/IFProxyTargetContainer.m; sourceTree = SOURCE_ROOT; };
-		07BD8A731C7653670058D7A8 /* IFTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFTarget.h; path = com_innerfunction_semo_app/IFTarget.h; sourceTree = SOURCE_ROOT; };
-		07BD8A741C7653670058D7A8 /* IFTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFTargetContainer.h; path = com_innerfunction_semo_app/IFTargetContainer.h; sourceTree = SOURCE_ROOT; };
-		07BD8A751C7653670058D7A8 /* IFTargetContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFTargetContainerViewController.h; path = com_innerfunction_semo_app/IFTargetContainerViewController.h; sourceTree = SOURCE_ROOT; };
-		07BD8A761C7653670058D7A8 /* IFTargetContainerVIewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFTargetContainerVIewController.m; path = com_innerfunction_semo_app/IFTargetContainerVIewController.m; sourceTree = SOURCE_ROOT; };
 		07BD8A8B1C76537E0058D7A8 /* IFNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFNavigationViewController.h; path = com_innerfunction_semo_ui/IFNavigationViewController.h; sourceTree = SOURCE_ROOT; };
 		07BD8A8C1C76537E0058D7A8 /* IFNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFNavigationViewController.m; path = com_innerfunction_semo_ui/IFNavigationViewController.m; sourceTree = SOURCE_ROOT; };
 		07BD8A8D1C76537E0058D7A8 /* IFSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFSlideViewController.h; path = com_innerfunction_semo_ui/IFSlideViewController.h; sourceTree = SOURCE_ROOT; };
@@ -394,25 +374,15 @@
 				07190CAE1C8054A400CE8F22 /* IFPostScheme.h */,
 				07190CAF1C8054A400CE8F22 /* IFPostScheme.m */,
 				07190CB01C8054A400CE8F22 /* IFPostActionHandler.h */,
-				07BD8A641C7653670058D7A8 /* IFActionDispatcher.h */,
+				07190CB41C80B86C00CE8F22 /* IFPostActionTargetContainer.h */,
 				07BD8A651C7653670058D7A8 /* IFAppContainer.h */,
 				07BD8A661C7653670058D7A8 /* IFAppContainer.m */,
-				07BD8A671C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.h */,
-				07BD8A681C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.m */,
-				07BD8A691C7653670058D7A8 /* IFDoScheme.h */,
-				07BD8A6A1C7653670058D7A8 /* IFDoScheme.m */,
 				07BD8A6B1C7653670058D7A8 /* IFMakeScheme.h */,
 				07BD8A6C1C7653670058D7A8 /* IFMakeScheme.m */,
 				07BD8A6D1C7653670058D7A8 /* IFNamedScheme.h */,
 				07BD8A6E1C7653670058D7A8 /* IFNamedScheme.m */,
 				07BD8A6F1C7653670058D7A8 /* IFNewScheme.h */,
 				07BD8A701C7653670058D7A8 /* IFNewScheme.m */,
-				07BD8A711C7653670058D7A8 /* IFProxyTargetContainer.h */,
-				07BD8A721C7653670058D7A8 /* IFProxyTargetContainer.m */,
-				07BD8A731C7653670058D7A8 /* IFTarget.h */,
-				07BD8A741C7653670058D7A8 /* IFTargetContainer.h */,
-				07BD8A751C7653670058D7A8 /* IFTargetContainerViewController.h */,
-				07BD8A761C7653670058D7A8 /* IFTargetContainerVIewController.m */,
 			);
 			name = com.innerfunction.semo.app;
 			sourceTree = "<group>";
@@ -626,7 +596,6 @@
 			files = (
 				07BD8AF01C7653AD0058D7A8 /* IFLocals.h in Headers */,
 				07BD8B441C7653FC0058D7A8 /* SWRevealViewController.h in Headers */,
-				07BD8A771C7653670058D7A8 /* IFActionDispatcher.h in Headers */,
 				07BD8AA11C76537E0058D7A8 /* IFTableViewController.h in Headers */,
 				07BD8B221C7653F00058D7A8 /* ContextFilterLogFormatter.h in Headers */,
 				07BD8A821C7653670058D7A8 /* IFNewScheme.h in Headers */,
@@ -640,19 +609,18 @@
 				07BD8AC51C7653930058D7A8 /* IFStandardURIHandler.h in Headers */,
 				07BD8B011C7653AD0058D7A8 /* NSString+IF.h in Headers */,
 				07BD8B201C7653F00058D7A8 /* DDTTYLogger.h in Headers */,
+				07190CB51C80B86C00CE8F22 /* IFPostActionTargetContainer.h in Headers */,
 				07BD8A561C7653400058D7A8 /* IFIOCObjectFactoryBase.h in Headers */,
 				07BD8AFD1C7653AD0058D7A8 /* NSArray+IF.h in Headers */,
 				07BD8AB91C7653930058D7A8 /* IFCompoundURI.h in Headers */,
 				07BD8AA51C76537E0058D7A8 /* IFWebViewController.h in Headers */,
 				07BD8AEC1C7653AD0058D7A8 /* IFI18nMap.h in Headers */,
-				07BD8A871C7653670058D7A8 /* IFTargetContainer.h in Headers */,
 				07BD8A9D1C76537E0058D7A8 /* IFTableData.h in Headers */,
 				07BD8ABF1C7653930058D7A8 /* IFLocalSchemeHandler.h in Headers */,
 				07BD8AF71C7653AD0058D7A8 /* IFStringTemplate.h in Headers */,
 				07BD8A4A1C7653400058D7A8 /* IFConfiguration.h in Headers */,
 				07BD8AF21C7653AD0058D7A8 /* IFLogger.h in Headers */,
 				07BD8A4E1C7653400058D7A8 /* IFContainer.h in Headers */,
-				07BD8A7A1C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.h in Headers */,
 				07BD8A781C7653670058D7A8 /* IFAppContainer.h in Headers */,
 				07BD8B1E1C7653F00058D7A8 /* DDLog.h in Headers */,
 				07BD8B031C7653AD0058D7A8 /* UIColor+IF.h in Headers */,
@@ -676,7 +644,6 @@
 				07BD8AC91C7653930058D7A8 /* IFURIHandling.h in Headers */,
 				07BD8A521C7653400058D7A8 /* IFIOCConfigurable.h in Headers */,
 				07BD8B1A1C7653F00058D7A8 /* DDASLLogger.h in Headers */,
-				07BD8A841C7653670058D7A8 /* IFProxyTargetContainer.h in Headers */,
 				07BD8ABD1C7653930058D7A8 /* IFFileResource.h in Headers */,
 				07BD8A611C7653400058D7A8 /* UIViewController+Toast.h in Headers */,
 				07BD8AFF1C7653AD0058D7A8 /* NSDictionary+IF.h in Headers */,
@@ -686,7 +653,6 @@
 				07BD8A5C1C7653400058D7A8 /* IFValues.h in Headers */,
 				07BD8A491C7653400058D7A8 /* IFConfigurable.h in Headers */,
 				07BD8A9F1C76537E0058D7A8 /* IFTableViewCellFactory.h in Headers */,
-				07BD8A7C1C7653670058D7A8 /* IFDoScheme.h in Headers */,
 				07BD8B181C7653F00058D7A8 /* DDAbstractDatabaseLogger.h in Headers */,
 				07BD8A501C7653400058D7A8 /* IFCoreTypes.h in Headers */,
 				07BD8B421C7653FC0058D7A8 /* JSONKit.h in Headers */,
@@ -697,8 +663,6 @@
 				07BD8AC31C7653930058D7A8 /* IFResource.h in Headers */,
 				07190CB11C8054A400CE8F22 /* IFPostScheme.h in Headers */,
 				07BD8B461C7653FC0058D7A8 /* UIView+Toast.h in Headers */,
-				07BD8A881C7653670058D7A8 /* IFTargetContainerViewController.h in Headers */,
-				07BD8A861C7653670058D7A8 /* IFTarget.h in Headers */,
 				07BD8B401C7653FC0058D7A8 /* ISO8601DateFormatter.h in Headers */,
 				07BD8AFB1C7653AD0058D7A8 /* IFTypeInfo.h in Headers */,
 				07BD8AF51C7653AD0058D7A8 /* IFRegExp.h in Headers */,
@@ -820,7 +784,6 @@
 				07BD8AA61C76537E0058D7A8 /* IFWebViewController.m in Sources */,
 				07BD8B491C7653FC0058D7A8 /* ioapi.c in Sources */,
 				07BD8AFA1C7653AD0058D7A8 /* IFTypeConversions.m in Sources */,
-				07BD8A7D1C7653670058D7A8 /* IFDoScheme.m in Sources */,
 				07BD8A571C7653400058D7A8 /* IFIOCObjectFactoryBase.m in Sources */,
 				07BD8A7F1C7653670058D7A8 /* IFMakeScheme.m in Sources */,
 				07BD8A831C7653670058D7A8 /* IFNewScheme.m in Sources */,
@@ -829,12 +792,9 @@
 				07BD8AFE1C7653AD0058D7A8 /* NSArray+IF.m in Sources */,
 				07BD8A601C7653400058D7A8 /* UIImage+CropScale.m in Sources */,
 				07BD8A4B1C7653400058D7A8 /* IFConfiguration.m in Sources */,
-				07BD8A891C7653670058D7A8 /* IFTargetContainerVIewController.m in Sources */,
 				07BD8B411C7653FC0058D7A8 /* ISO8601DateFormatter.m in Sources */,
 				07BD8A9E1C76537E0058D7A8 /* IFTableData.m in Sources */,
 				07BD8AF11C7653AD0058D7A8 /* IFLocals.m in Sources */,
-				07BD8A851C7653670058D7A8 /* IFProxyTargetContainer.m in Sources */,
-				07BD8A7B1C7653670058D7A8 /* IFDefaultTargetContainerBehaviour.m in Sources */,
 				07BD8B431C7653FC0058D7A8 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

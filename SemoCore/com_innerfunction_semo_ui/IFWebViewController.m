@@ -146,7 +146,7 @@
         return YES;
     }
     else if (webViewLoaded && (navigationType != UIWebViewNavigationTypeOther)) {
-        [self dispatchURI:[url description]];
+        [self postAction:[url description]];
         return NO;
     }
     return YES;
@@ -203,15 +203,14 @@
     }
 }
 
-#pragma mark - IFTarget
+#pragma mark - IFPostActionHandler
 
-- (void)doAction:(IFDoAction *)action {
-    if ([@"load" isEqualToString:action.name]) {
-        self.content = [action.parameters objectForKey:@"content"];
+- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+    if ([@"load" isEqualToString:postAction.message]) {
+        self.content = [postAction.parameters objectForKey:@"content"];
+        return YES;
     }
-    else {
-        [super doAction:action];
-    }
+    return NO;
 }
 
 @end

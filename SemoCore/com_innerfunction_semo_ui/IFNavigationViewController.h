@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFTargetContainer.h"
-#import "IFTarget.h"
-#import "IFDefaultTargetContainerBehaviour.h"
+#import "IFPostActionHandler.h"
+#import "IFStringRewriteRules.h"
 
-@interface IFNavigationViewController : UINavigationController <IFTargetContainer, IFTarget> {
-    IFDefaultTargetContainerBehaviour *containerBehaviour;
-}
+@interface IFNavigationViewController : UINavigationController <IFPostActionHandler>
 
 /** The first view in the navigation stack. */
 @property (nonatomic, strong) UIViewController *rootView;

@@ -13,6 +13,7 @@
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCObjectFactory.h"
+#import "IFPostScheme.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
 
@@ -455,6 +456,42 @@
         value = [IFTypeConversions value:value asRepresentation:representation];
     }
     return value;
+}
+
+#pragma mark - IFPostActionHandler & related
+
+- (void)postAction:(NSString *)actionURI sender:(id)sender {
+    // Do nothing; See IFAppContainer for an implementation of this method.
+}
+
+- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender {
+    // Check whether the action is addressed to a named object.
+    NSString *targetHead = [postAction targetHead];
+    if (targetHead) {
+        // Resolve the named target.
+        id target = [_named valueForKey:targetHead];
+        if (target) {
+            // Target found, so remove top name from head of target path.
+            postAction = [postAction popTargetHead];
+            if ([target conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
+                // Target is a container, so dispatch the action with the remained of the target info to it.
+                [(id<IFPostActionTargetContainer>)target dispatchAction:postAction sender:sender];
+            }
+            else if ([target conformsToProtocol:@protocol(IFPostActionHandler)] && [postAction hasEmptyTarget]) {
+                // Ask target to handle action only if target path is empty, i.e. implying that we have
+                // the correct target for the action.
+                [(id<IFPostActionHandler>)target handlePostAction:postAction sender:sender];
+            }
+        }
+    }
+    else {
+        // Action has no target info so is addressed to this container.
+        [self handlePostAction:postAction sender:sender];
+    }
+}
+
+- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+    return NO;
 }
 
 @end

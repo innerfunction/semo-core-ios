@@ -13,7 +13,7 @@
 - (id)initWithTarget:(NSString *)target message:(NSString *)message parameters:(NSDictionary *)parameters {
     self = [super init];
     if (self) {
-        _absTarget = [target hasPrefix:@"/"];
+        _target = target;
         _targetPath = [target componentsSeparatedByString:@"/"];
         _message = message;
         _parameters = parameters;
@@ -24,7 +24,7 @@
 - (id)initWithTargetPath:(NSArray *)targetPath message:(NSString *)message parameters:(NSDictionary *)parameters {
     self = [super init];
     if (self) {
-        _absTarget = NO;
+        _target = [targetPath componentsJoinedByString:@"/"];
         _targetPath = targetPath;
         _message = message;
         _parameters = parameters;
@@ -32,8 +32,12 @@
     return self;
 }
 
-- (BOOL)hasAbsoluteTarget {
-    return _absTarget;
+- (BOOL)hasEmptyTarget {
+    return [_targetPath count] == 0;
+}
+
+- (BOOL)hasTarget:(NSString *)target {
+    return [_target isEqualToString:target];
 }
 
 - (NSString *)targetHead {

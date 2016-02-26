@@ -33,9 +33,7 @@
 
 @implementation IFTableViewController
 
-#pragma mark - IFTargetContainer
-
-@synthesize parentTargetContainer, namedTargets, uriHandler;
+@synthesize iocContainer = _iocContainer;
 
 #pragma mark - IFIOCConfigurationInitable
 
@@ -50,7 +48,6 @@
     }
     self = [super initWithStyle:style];
     if (self) {
-        self.namedTargets = [NSDictionary dictionary];
         _tableData = [[IFTableData alloc] init];
         UIColor *backgroundColor = [configuration getValueAsColor:@"backgroundColor"];
         if (backgroundColor) {
@@ -194,7 +191,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *action = [[_tableData rowDataForIndexPath:indexPath] getValueAsString:@"action"];
     if (action) {
-        [self dispatchURI:action];
+        [self postAction:action];
     }
     [_tableData clearFilter];
 }
@@ -240,6 +237,13 @@
 
 - (NSArray *)formatData:(NSArray *)data {
     return data;
+}
+
+- (void)postAction:(NSString *)action {
+    if (_uriRewriteRules) {
+        action = [_uriRewriteRules rewriteString:action];
+    }
+    [_iocContainer postAction:action sender:self];
 }
 
 #pragma mark - private methods
@@ -316,18 +320,14 @@
     });
 }
 
-#pragma mark - IFActionDispatcher
+#pragma mark - IFPostActionHandler
 
-- (BOOL)dispatchURI:(NSString *)uri {
-    return [self.parentTargetContainer dispatchURI:uri];
-}
-
-#pragma mark - IFTarget
-
-- (void)doAction:(IFDoAction *)action {
-    if ([@"load" isEqualToString:action.name]) {
-        self.content = [action.parameters objectForKey:@"content"];
+- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+    if ([@"load" isEqualToString:postAction.message]) {
+        self.content = [postAction.parameters objectForKey:@"content"];
+        return YES;
     }
+    return NO;
 }
 
 #pragma mark - Image handling methods

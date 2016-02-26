@@ -7,17 +7,13 @@
 //
 
 #import "SWRevealViewController.h"
-#import "IFTargetContainer.h"
-#import "IFTarget.h"
-#import "IFDefaultTargetContainerBehaviour.h"
-#import "IFProxyTargetContainer.h"
+#import "IFPostActionHandler.h"
+#import "IFPostActionTargetContainer.h"
+#import "IFStringRewriteRules.h"
 
-@interface IFSlideViewController : SWRevealViewController <IFTargetContainer, IFTarget> {
-    IFDefaultTargetContainerBehaviour *containerBehaviour;
+@interface IFSlideViewController : SWRevealViewController <IFPostActionHandler, IFPostActionTargetContainer> {
     FrontViewPosition slideOpenPosition;
     FrontViewPosition slideClosedPosition;
-    IFProxyTargetContainer *slideProxy;
-    IFProxyTargetContainer *mainProxy;
 }
 
 /** Action URI rewrite rules. */

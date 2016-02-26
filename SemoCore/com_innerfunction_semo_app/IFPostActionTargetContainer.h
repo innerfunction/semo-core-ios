@@ -1,5 +1,5 @@
 //
-//  IFPostMessageHandler.h
+//  IFPostActionTargetContainer.h
 //  SemoCore
 //
 //  Created by Julian Goacher on 26/02/2016.
@@ -7,10 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFPostScheme.h"
 
-@protocol IFPostActionHandler <NSObject>
+@protocol IFPostActionTargetContainer <NSObject>
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender;
+- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender;
 
 @end

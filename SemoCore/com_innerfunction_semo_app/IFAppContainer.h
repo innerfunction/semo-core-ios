@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "IFContainer.h"
-#import "IFTarget.h"
-#import "IFDefaultTargetContainerBehaviour.h"
 #import "IFStandardURIHandler.h"
-#import "IFPostActionHandler.h"
 #import "IFLocals.h"
 #import "IFNamedScheme.h"
 
@@ -19,10 +16,19 @@
 #define Platform                    (@"ios")
 #define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
 
-@interface IFAppContainer : IFContainer <IFPostActionHandler, IFTarget> {
+@class IFAppContainer;
+
+@interface IFAppUIPostActionHandler : NSObject <IFPostActionHandler> {
+    __weak IFAppContainer *_appContainer;
+}
+
+- (id)initWithAppContainer:(IFAppContainer *)appContainer;
+
+@end
+
+@interface IFAppContainer : IFContainer {
     NSMutableDictionary *_globals;
     IFLocals *_locals;
-    IFDefaultTargetContainerBehaviour *_rootTargetContainer;
 }
 
 @property (nonatomic, strong) IFStandardURIHandler *uriHandler;
@@ -33,8 +39,6 @@
 - (void)loadConfiguration:(id)configSource;
 /** Return the app's root view. */
 - (UIViewController *)getRootView;
-/** Post an action URI. */
-- (void)postAction:(NSString *)actionURI sender:(id)sender;
 
 /** Return the app container singleton instance. */
 + (IFAppContainer *)getAppContainer;

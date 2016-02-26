@@ -10,7 +10,7 @@
 #import "IFURIHandling.h"
 
 @interface IFPostAction : NSObject {
-    BOOL _absTarget;
+    NSString *_target;
     NSArray *_targetPath;
 }
 
@@ -19,8 +19,10 @@
 
 - (id)initWithTarget:(NSString *)target message:(NSString *)message parameters:(NSDictionary *)parameters;
 - (id)initWithTargetPath:(NSArray *)targetPath message:(NSString *)message parameters:(NSDictionary *)parameters;
-/** Check whether the action has an absolute target path (i.e. a path prefixed with /). */
-- (BOOL)hasAbsoluteTarget;
+/** Test whether the action has an empty target. */
+- (BOOL)hasEmptyTarget;
+/** Test if the (entire) target matches the specified string. */
+- (BOOL)hasTarget:(NSString *)target;
 /** Get the target name at the head of the target path. */
 - (NSString *)targetHead;
 /**

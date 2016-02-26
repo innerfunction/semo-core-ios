@@ -8,8 +8,7 @@
 
 #import "IFAppContainer.h"
 #import "IFConfiguration.h"
-#import "IFTargetContainerViewController.h"
-#import "IFDoScheme.h"
+#import "IFViewController.h"
 #import "IFNewScheme.h"
 #import "IFMakeScheme.h"
 #import "IFPostScheme.h"
@@ -17,6 +16,49 @@
 #import "IFI18nMap.h"
 #import "IFLogging.h"
 #import "NSString+IF.h"
+
+@implementation IFAppUIPostActionHandler
+
+- (id)initWithAppContainer:(IFAppContainer *)appContainer {
+    self = [super init];
+    if (self) {
+        _appContainer = appContainer;
+    }
+    return self;
+}
+
+- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+    BOOL handled = NO;
+    id handler = sender;
+    // Evaluate actions with relative target paths against the sender.
+    while (!handled && handler) {
+        if ([handler conformsToProtocol:@protocol(IFPostActionHandler)]) {
+            handled = [(id<IFPostActionHandler>)handler handlePostAction:postAction sender:sender];
+        }
+        if ([handler isKindOfClass:[UIViewController class]]) {
+            // If action sender is a view controller then bubble the action up through the
+            // view controller hierachy until a hander is found.
+            handler = ((UIViewController *)handler).parentViewController;
+        }
+        else if ([handler isKindOfClass:[UIView class]]) {
+            // If action sender is a view then bubble the action up through the view hierarchy.
+            handler = [(UIView *)handler nextResponder];
+        }
+        else {
+            // Can't process the action any further.
+            break;
+        }
+    }
+    // Evaluate non-handled actions against the receiver, i.e. the app container, but only if no
+    // target is specified. This means that actions generally addressed to 'ui' will bubble up to
+    // the default action handlers in the app container.
+    if (!handled && [postAction hasEmptyTarget]) {
+        handled = [_appContainer handlePostAction:postAction sender:sender];
+    }
+    return handled;
+}
+
+@end
 
 @interface IFAppContainer ()
 
@@ -29,8 +71,6 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _rootTargetContainer = [[IFDefaultTargetContainerBehaviour alloc] init];
-        _rootTargetContainer.owner = self;
         self.appBackgroundColor = [UIColor redColor];
         self.uriHandler = [[IFStandardURIHandler alloc] init];
     }
@@ -41,11 +81,6 @@
     _window = window;
     _window.rootViewController = [self getRootView];
     _window.backgroundColor = self.appBackgroundColor;
-}
-
-- (void)setUriHandler:(IFStandardURIHandler *)uriHandler {
-    _uriHandler = uriHandler;
-    _rootTargetContainer.uriHandler = uriHandler;
 }
 
 - (void)loadConfiguration:(id)configSource {
@@ -107,10 +142,10 @@
     [self addTypes:[configuration getValueAsConfiguration:@"types"]];
     
     // Add additional schemes to the resolver/dispatcher.
-    [_uriHandler addHandler:[[IFDoSchemeHandler alloc] init] forScheme:@"do"];
     [_uriHandler addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
     [_uriHandler addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
     [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithContainer:self] forScheme:@"named"];
+    [_uriHandler addHandler:[[IFPostScheme alloc] init] forScheme:@"post"];
     // Additional configured schemes.
     IFConfiguration *dispatcherConfig = [configuration getValueAsConfiguration:@"schemes"];
     if (dispatcherConfig) {
@@ -134,12 +169,11 @@
     [_named setObject:_globals forKey:@"globals"];
     [_named setObject:_locals forKey:@"locals"];
     [_named setObject:self forKey:@"container"];
+    // Posted actions addressed to the UI are handled by the following object.
+    [_named setObject:[[IFAppUIPostActionHandler alloc] initWithAppContainer:self] forKey:@"ui"];
     
     // Perform default container configuration.
     [super configureWith:configuration];
-    
-    // Any named object can be a potential action target.
-    _rootTargetContainer.namedTargets = _named;
 }
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration {
@@ -224,46 +258,26 @@
     }
     else if ([rootView isKindOfClass:[UIView class]]) {
         // Promote UIView to a view controller.
-        IFTargetContainerViewController *viewController = [[IFTargetContainerViewController alloc] initWithView:(UIView *)rootView];
+        IFViewController *viewController = [[IFViewController alloc] initWithView:(UIView *)rootView];
         rootView = viewController;
     }
     else if (![rootView isKindOfClass:[UIViewController class]]) {
         DDLogError(@"%@: The component named 'rootView' is not an instance of UIView or UIViewController", LogTag);
         rootView = nil;
     }
-    if ([rootView conformsToProtocol:@protocol(IFTargetContainer)]) {
-        ((id<IFTargetContainer>)rootView).parentTargetContainer = _rootTargetContainer;
-    }
     return rootView;
 }
 
 - (void)postAction:(NSString *)actionURI sender:(id)sender {
+    // Parse the action URI.
     IFCompoundURI *uri = [IFCompoundURI parse:actionURI error:nil];
     if (uri) {
+        // See if the URI resolves to an action object.
         id action = [_uriHandler dereference:uri];
         if ([action isKindOfClass:[IFPostAction class]]) {
             IFPostAction *postAction = (IFPostAction *)action;
-            BOOL handled = NO;
-            if (![action hasAbsoluteTarget]) {
-                // Evaluate actions with relative target paths against the sender.
-                while (!handled && sender) {
-                    if ([sender conformsToProtocol:@protocol(IFPostActionHandler)]) {
-                        handled = [(id<IFPostActionHandler>)sender handlePostAction:postAction];
-                    }
-                    else if ([sender isKindOfClass:[UIViewController class]]) {
-                        // If action sender is a view controller then bubble the action up through the
-                        // view controller hierachy until a hander is found.
-                        sender = ((UIViewController *)sender).parentViewController;
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
-            // Evaluate non-handled actions against the receiver, i.e. the app container.
-            if (!handled) {
-                [self handlePostAction:postAction];
-            }
+            // Dispatch the action.
+            [self dispatchAction:postAction sender:sender];
         }
     }
 }
@@ -274,57 +288,15 @@
     [super configureObject:object withConfiguration:configuration identifier:identifier];
 }
 
-- (void)doStandardProtocolChecks:(id)object {
-    [super doStandardProtocolChecks:object];
-    // Set URI handler on any target container objects. TODO: Move to protocol checks
-    if ([object conformsToProtocol:@protocol(IFTargetContainer)]) {
-        ((id<IFTargetContainer>)object).uriHandler = _uriHandler;
-    }
-}
-
 #pragma mark - IFPostActionHandler protocol
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction {
-    // TODO: Target checking code can be removed to the IFContainer superclass
-    // If should then return true/false according to appropriately, and the conditional in this
-    // method follow on from there.
-    NSString *targetHead = [postAction targetHead];
-    if (targetHead) {
-        id target = [_named valueForKey:targetHead];
-        if (target && [target conformsToProtocol:@protocol(IFPostActionHandler)]) {
-            [(id<IFPostActionHandler>)target handlePostAction:[postAction popTargetHead]];
-        }
-    }
-    else {
-        if ([@"open-url" isEqualToString:postAction.message]) {
-            NSURL *url = [[postAction parameterValue:@"url"] asURL];
-            [[UIApplication sharedApplication] openURL:url];
-        }
-        else if ([@"open" isEqualToString:postAction.message]) {
-            id view = [postAction parameterValue:@"view"];
-            if ([view isKindOfClass:[UIViewController class]]) {
-                [UIView transitionWithView: self.window
-                                  duration: 0.5
-                                   options: UIViewAnimationOptionTransitionFlipFromLeft
-                                animations: ^{
-                                    self.window.rootViewController = view;
-                                }
-                                completion:nil];
-            }
-        }
-    }
-    return YES;
-}
-
-#pragma mark - IFActionTarget protocol
-
-- (void)doAction:(IFDoAction *)action {
-    if ([@"system-open" isEqualToString:action.name]) {
-        NSURL *url = [[action parameterValue:@"url"] asURL];
+- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+    if ([@"open-url" isEqualToString:postAction.message]) {
+        NSURL *url = [[postAction parameterValue:@"url"] asURL];
         [[UIApplication sharedApplication] openURL:url];
     }
-    else if ([@"replace-root-view" isEqualToString:action.name]) {
-        id view = [action parameterValue:@"view"];
+    else if ([@"open" isEqualToString:postAction.message]) {
+        id view = [postAction parameterValue:@"view"];
         if ([view isKindOfClass:[UIViewController class]]) {
             [UIView transitionWithView: self.window
                               duration: 0.5
@@ -335,6 +307,7 @@
                             completion:nil];
         }
     }
+    return YES;
 }
 
 #pragma mark - Class statics

@@ -7,31 +7,13 @@
 //
 
 #import "IFNavigationViewController.h"
-#import "IFTargetContainerViewController.h"
+#import "IFViewController.h"
 #import "IFLogging.h"
-
-@interface IFNavigationViewController()
-
-- (void)updateContainerBehaviourState;
-
-@end
 
 @implementation IFNavigationViewController
 
-@synthesize parentTargetContainer;
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        containerBehaviour = [[IFDefaultTargetContainerBehaviour alloc] init];
-        containerBehaviour.owner = self;
-    }
-    return self;
-}
-
 - (void)setRootView:(UIViewController *)rootView {
     self.viewControllers = @[ rootView ];
-    [self updateContainerBehaviourState];
 }
 
 - (UIViewController *)getRootView {
@@ -41,46 +23,21 @@
     return nil;
 }
 
-- (id<IFURIHandler>)uriHandler {
-    return containerBehaviour.uriHandler;
-}
-
-- (void)setUriHandler:(id<IFURIHandler>)uriHandler {
-    containerBehaviour.uriHandler = uriHandler;
-}
-
-- (void)setUriRewriteRules:(IFStringRewriteRules *)uriRewriteRules {
-    _uriRewriteRules = uriRewriteRules;
-    containerBehaviour.uriRewriteRules = uriRewriteRules;
-}
-
-- (void)setNamedTargets:(NSDictionary *)namedTargets {
-    containerBehaviour.namedTargets = namedTargets;
-}
-
-- (NSDictionary *)getNamedTargets {
-    return containerBehaviour.namedTargets;
-}
-
-- (BOOL)dispatchURI:(NSString *)uri {
-    return [containerBehaviour dispatchURI:uri];
-}
-
-- (void)doAction:(IFDoAction *)action {
-    if ([@"open" isEqualToString:action.name]) {
+- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+    if ([@"open" isEqualToString:postAction.message]) {
         UIViewController *view = nil;
         // Resolve the view to a view controller instance.
-        id _view = [action.parameters valueForKey:@"view"];
+        id maybeView = [postAction.parameters valueForKey:@"view"];
         /*
-        if ([_view isKindOfClass:[IFResource class]]) {
-            _view = ((IFResource *)_view).data;
+        if ([maybeView isKindOfClass:[IFResource class]]) {
+            maybeView = ((IFResource *)maybeView).data;
         }
         */
-        if ([_view isKindOfClass:[UIViewController class]]) {
-            view = (UIViewController *)_view;
+        if ([maybeView isKindOfClass:[UIViewController class]]) {
+            view = (UIViewController *)maybeView;
         }
-        else if ([_view isKindOfClass:[UIView class]]) {
-            view = [[IFTargetContainerViewController alloc] initWithView:(UIView *)_view];
+        else if ([maybeView isKindOfClass:[UIView class]]) {
+            view = [[IFViewController alloc] initWithView:(UIView *)maybeView];
         }
         // Push the new view.
         if (view) {
@@ -89,38 +46,13 @@
         else {
             DDLogWarn(@"%@: Unable to push view parameter of type %@", LogTag, [view.class description]);
         }
+        return YES;
     }
-    else if ([@"back" isEqualToString:action.name]) {
+    else if ([@"back" isEqualToString:postAction.message]) {
         [self popViewControllerAnimated:YES];
+        return YES;
     }
-}
-
-- (NSDictionary *)namedTargets {
-    return [NSDictionary dictionary];
-}
-
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    [super pushViewController:viewController animated:YES];
-    [self updateContainerBehaviourState];
-}
-
-- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
-    UIViewController *popped = [super popViewControllerAnimated:animated];
-    [self updateContainerBehaviourState];
-    return popped;
-}
-
-#pragma mark - private
-
-- (void)updateContainerBehaviourState {
-    if ([self.topViewController conformsToProtocol:@protocol(IFTargetContainer)]) {
-        id<IFTargetContainer> container = (id<IFTargetContainer>)self.topViewController;
-        container.parentTargetContainer = self;
-        containerBehaviour.namedTargets = container.namedTargets;
-    }
-    else {
-        containerBehaviour.namedTargets = [NSDictionary dictionary];
-    }
+    return NO;
 }
 
 @end
