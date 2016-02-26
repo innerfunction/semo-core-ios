@@ -69,16 +69,23 @@
         [self handlePostAction:postAction sender:sender];
     }
     else if ([postAction hasTarget:@"slide"]) {
-        if ([@"open" isEqualToString:postAction.message]) {
-            // Replace the slide view.
-            self.slideView = [postAction.parameters valueForKey:@"view"];
+        postAction = [postAction popTargetHead];
+        if ([postAction hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFPostActionHandler)]) {
+            [(id<IFPostActionHandler>)self.slideView handlePostAction:postAction sender:sender];
+        }
+        else if ([self.slideView conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
+            [(id<IFPostActionTargetContainer>)self.slideView dispatchAction:postAction sender:sender];
         }
     }
     else if ([postAction hasTarget:@"main"]) {
-        if ([@"open" isEqualToString:postAction.message]) {
-            // Replace the slide view.
-            self.mainView = [postAction.parameters valueForKey:@"view"];
+        postAction = [postAction popTargetHead];
+        if ([postAction hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFPostActionHandler)]) {
+            [(id<IFPostActionHandler>)self.mainView handlePostAction:postAction sender:sender];
         }
+        else if ([self.mainView conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
+            [(id<IFPostActionTargetContainer>)self.mainView dispatchAction:postAction sender:sender];
+        }
+        self.frontViewPosition = slideClosedPosition;
     }
 }
 
@@ -88,12 +95,16 @@
         self.mainView = [postAction.parameters valueForKey:@"view"];
         return YES;
     }
-    if ([@"open-slide" isEqualToString:postAction.message]) {
+    if ([@"open-in-slide" isEqualToString:postAction.message]) {
+        // Replace the slide view.
+        self.slideView = [postAction.parameters valueForKey:@"view"];
+    }
+    if ([@"show-slide" isEqualToString:postAction.message]) {
         // Open the slide view.
         self.frontViewPosition = slideOpenPosition;
         return YES;
     }
-    if ([@"close-slide" isEqualToString:postAction.message]) {
+    if ([@"hide-slide" isEqualToString:postAction.message]) {
         // Close the slide view.
         self.frontViewPosition = slideClosedPosition;
         return YES;

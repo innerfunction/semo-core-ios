@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFIOCTypeInspectable.h"
+#import "IFIOCConfigurationInitable.h"
 #import "IFRegExp.h"
 #import "IFStringTemplate.h"
 
@@ -37,7 +38,7 @@
 @end
 
 /** A set of string rewrite rules. */
-@interface IFStringRewriteRules : NSObject <IFIOCTypeInspectable>
+@interface IFStringRewriteRules : NSObject <IFIOCTypeInspectable, IFIOCConfigurationInitable>
 
 /** A list of rewrite rules, in evaluation order. */
 @property (nonatomic, strong) NSArray *rules;

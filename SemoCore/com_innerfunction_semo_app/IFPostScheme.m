@@ -15,6 +15,9 @@
     if (self) {
         _target = target;
         _targetPath = [target componentsSeparatedByString:@"/"];
+        if ([_targetPath count] > 0 && [[_targetPath objectAtIndex:0] isEqualToString:@""]) {
+            _targetPath = [_targetPath subarrayWithRange:NSMakeRange(1, [_targetPath count] - 1)];
+        }
         _message = message;
         _parameters = parameters;
     }
@@ -68,7 +71,7 @@
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     IFPostAction *action = [[IFPostAction alloc] initWithTarget:uri.name
                                                         message:uri.fragment
-                                                     parameters:uri.parameters];
+                                                     parameters:params];
     return action;
 }
 

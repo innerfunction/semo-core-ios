@@ -473,14 +473,14 @@
         if (target) {
             // Target found, so remove top name from head of target path.
             postAction = [postAction popTargetHead];
-            if ([target conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
-                // Target is a container, so dispatch the action with the remained of the target info to it.
-                [(id<IFPostActionTargetContainer>)target dispatchAction:postAction sender:sender];
-            }
-            else if ([target conformsToProtocol:@protocol(IFPostActionHandler)] && [postAction hasEmptyTarget]) {
+            if ([target conformsToProtocol:@protocol(IFPostActionHandler)] && [postAction hasEmptyTarget]) {
                 // Ask target to handle action only if target path is empty, i.e. implying that we have
                 // the correct target for the action.
                 [(id<IFPostActionHandler>)target handlePostAction:postAction sender:sender];
+            }
+            else if ([target conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
+                // Target is a container, so dispatch the action with the remained of the target info to it.
+                [(id<IFPostActionTargetContainer>)target dispatchAction:postAction sender:sender];
             }
         }
     }

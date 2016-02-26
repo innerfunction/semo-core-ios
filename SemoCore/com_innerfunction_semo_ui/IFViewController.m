@@ -89,17 +89,22 @@
 #pragma mark - private
 
 - (void)doViewInitialization {
-    // If no view already specified and a layout name has been specified then load the nib file of
-    // that name.
-    if (!self.view && _layoutName) {
-        NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:nil];
-        if ([result count] > 0) {
-            [self insertNamedViews];
+    // Ensure this code is run on the UI thread.
+    // (When the view is being instantiated by an IOC container, view initialization might be invoked
+    // from a background thread).
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // If no view already specified and a layout name has been specified then load the nib file of
+        // that name.
+        if (!self.view && _layoutName) {
+            NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:nil];
+            if ([result count] > 0) {
+                [self insertNamedViews];
+            }
+            else {
+                DDLogWarn(@"%@: Unable to load nib file %@.xib", LogTag, _layoutName);
+            }
         }
-        else {
-            DDLogWarn(@"%@: Unable to load nib file %@.xib", LogTag, _layoutName);
-        }
-    }
+    });
 }
 
 - (void)insertNamedViews {

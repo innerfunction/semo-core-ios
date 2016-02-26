@@ -18,7 +18,7 @@
 
 @class IFAppContainer;
 
-@interface IFAppUIPostActionHandler : NSObject <IFPostActionHandler> {
+@interface IFAppUIPostActionHandler : NSObject <IFPostActionTargetContainer, IFPostActionHandler> {
     __weak IFAppContainer *_appContainer;
 }
 

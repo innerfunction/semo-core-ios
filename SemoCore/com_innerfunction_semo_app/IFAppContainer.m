@@ -27,6 +27,30 @@
     return self;
 }
 
+- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender {
+    id handler = sender;
+    // Evaluate actions with relative target paths against the sender.
+    while (handler) {
+        if ([handler conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
+            [(id<IFPostActionTargetContainer>)handler dispatchAction:postAction sender:sender];
+            break;
+        }
+        if ([handler isKindOfClass:[UIViewController class]]) {
+            // If action sender is a view controller then bubble the action up through the
+            // view controller hierachy until a hander is found.
+            handler = ((UIViewController *)handler).parentViewController;
+        }
+        else if ([handler isKindOfClass:[UIView class]]) {
+            // If action sender is a view then bubble the action up through the view hierarchy.
+            handler = [(UIView *)handler nextResponder];
+        }
+        else {
+            // Can't process the action any further.
+            break;
+        }
+    }
+}
+
 - (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
     BOOL handled = NO;
     id handler = sender;
