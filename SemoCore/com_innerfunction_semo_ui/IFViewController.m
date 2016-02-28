@@ -66,20 +66,17 @@
 
 #pragma mark - Instance methods
 
-- (void)postAction:(NSString *)action {
-    if (_uriRewriteRules) {
-        action = [_uriRewriteRules rewriteString:action];
-    }
-    [_iocContainer postAction:action sender:self];
+- (void)postMessage:(NSString *)message {
+    [IFAppContainer postMessage:message sender:self];
 }
 
-#pragma mark - IFPostActionHandler protocol
+#pragma mark - IFMessageHandler protocol
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
-    if ([@"toast" isEqualToString:postAction.message]) {
-        NSString *message = [[postAction.parameters valueForKey:@"message"] description];
-        if (message) {
-            [self showToastMessage:message];
+- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+    if ([message hasName:@"toast"]) {
+        NSString *toastMessage = [[message.parameters valueForKey:@"message"] description];
+        if (toastMessage) {
+            [self showToastMessage:toastMessage];
         }
         return YES;
     }

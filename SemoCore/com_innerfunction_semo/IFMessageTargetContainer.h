@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IFMessage.h"
 
-@protocol IFPostActionTargetContainer <NSObject>
+/** Protocol for dispatching messages to named targets. */
+@protocol IFMessageTargetContainer <NSObject>
 
-- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender;
+- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender;
 
 @end

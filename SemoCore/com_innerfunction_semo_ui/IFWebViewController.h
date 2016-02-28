@@ -8,9 +8,9 @@
 
 #import "IFViewController.h"
 #import "IFIOCConfigurable.h"
-#import "IFPostActionHandler.h"
+#import "IFMessageHandler.h"
 
-@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFPostActionHandler> {
+@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFMessageHandler> {
     UIWebView *webView;
     UIImageView *loadingImageView;
     UIActivityIndicatorView *loadingIndicatorView;

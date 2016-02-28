@@ -16,16 +16,6 @@
 #define Platform                    (@"ios")
 #define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
 
-@class IFAppContainer;
-
-@interface IFAppUIPostActionHandler : NSObject <IFPostActionTargetContainer, IFPostActionHandler> {
-    __weak IFAppContainer *_appContainer;
-}
-
-- (id)initWithAppContainer:(IFAppContainer *)appContainer;
-
-@end
-
 @interface IFAppContainer : IFContainer {
     NSMutableDictionary *_globals;
     IFLocals *_locals;
@@ -39,6 +29,8 @@
 - (void)loadConfiguration:(id)configSource;
 /** Return the app's root view. */
 - (UIViewController *)getRootView;
+/** Post a message URI. */
+- (void)postMessage:(NSString *)messageURI sender:(id)sender;
 
 /** Return the app container singleton instance. */
 + (IFAppContainer *)getAppContainer;
@@ -50,5 +42,8 @@
  * Returns the app container configured with the files contents.
  */
 + (IFAppContainer *)bindToWindow:(UIWindow *)window;
+
+/** Post a message URI. */
++ (void)postMessage:(NSString *)messageURI sender:(id)sender;
 
 @end

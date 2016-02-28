@@ -8,6 +8,7 @@
 
 #import "IFTableViewController.h"
 #import "IFContainer.h"
+#import "IFAppContainer.h"
 #import "UIViewController+Toast.h"
 #import "NSDictionary+IFValues.h"
 #import "IFLogging.h"
@@ -191,7 +192,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *action = [[_tableData rowDataForIndexPath:indexPath] getValueAsString:@"action"];
     if (action) {
-        [self postAction:action];
+        [self postMessage:action];
     }
     [_tableData clearFilter];
 }
@@ -239,11 +240,8 @@
     return data;
 }
 
-- (void)postAction:(NSString *)action {
-    if (_uriRewriteRules) {
-        action = [_uriRewriteRules rewriteString:action];
-    }
-    [_iocContainer postAction:action sender:self];
+- (void)postMessage:(NSString *)message {
+    [IFAppContainer postMessage:message sender:self];
 }
 
 #pragma mark - private methods
@@ -322,11 +320,11 @@
     });
 }
 
-#pragma mark - IFPostActionHandler
+#pragma mark - IFMessageHandler
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
-    if ([@"load" isEqualToString:postAction.message]) {
-        self.content = [postAction.parameters objectForKey:@"content"];
+- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+    if ([message hasName:@"load"]) {
+        self.content = [message.parameters objectForKey:@"content"];
         return YES;
     }
     return NO;

@@ -7,17 +7,14 @@
 //
 
 #import "SWRevealViewController.h"
-#import "IFPostActionHandler.h"
-#import "IFPostActionTargetContainer.h"
-#import "IFStringRewriteRules.h"
+#import "IFMessageHandler.h"
+#import "IFMessageTargetContainer.h"
 
-@interface IFSlideViewController : SWRevealViewController <IFPostActionHandler, IFPostActionTargetContainer> {
+@interface IFSlideViewController : SWRevealViewController <IFMessageHandler, IFMessageTargetContainer> {
     FrontViewPosition slideOpenPosition;
     FrontViewPosition slideClosedPosition;
 }
 
-/** Action URI rewrite rules. */
-@property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 /** The slide view. */
 @property (nonatomic, strong) id slideView;
 /** The main view. */

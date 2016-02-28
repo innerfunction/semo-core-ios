@@ -64,47 +64,50 @@
     self.frontViewPosition = slideOpenPosition;
 }
 
-- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender {
-    if ([postAction hasEmptyTarget]) {
-        [self handlePostAction:postAction sender:sender];
+#pragma mark - IFMessageTargetContainer
+
+- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
+    BOOL dispatched = NO;
+    if ([message hasTarget:@"slide"]) {
+        message = [message popTargetHead];
+        if ([message hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFMessageHandler)]) {
+            dispatched = [(id<IFMessageHandler>)self.slideView handleMessage:message sender:sender];
+        }
+        else if ([self.slideView conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+            dispatched = [(id<IFMessageTargetContainer>)self.slideView dispatchMessage:message sender:sender];
+        }
     }
-    else if ([postAction hasTarget:@"slide"]) {
-        postAction = [postAction popTargetHead];
-        if ([postAction hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFPostActionHandler)]) {
-            [(id<IFPostActionHandler>)self.slideView handlePostAction:postAction sender:sender];
+    else if ([message hasTarget:@"main"]) {
+        message = [message popTargetHead];
+        if ([message hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFMessageHandler)]) {
+            dispatched = [(id<IFMessageHandler>)self.mainView handleMessage:message sender:sender];
         }
-        else if ([self.slideView conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
-            [(id<IFPostActionTargetContainer>)self.slideView dispatchAction:postAction sender:sender];
-        }
-    }
-    else if ([postAction hasTarget:@"main"]) {
-        postAction = [postAction popTargetHead];
-        if ([postAction hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFPostActionHandler)]) {
-            [(id<IFPostActionHandler>)self.mainView handlePostAction:postAction sender:sender];
-        }
-        else if ([self.mainView conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
-            [(id<IFPostActionTargetContainer>)self.mainView dispatchAction:postAction sender:sender];
+        else if ([self.mainView conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+            dispatched = [(id<IFMessageTargetContainer>)self.mainView dispatchMessage:message sender:sender];
         }
         self.frontViewPosition = slideClosedPosition;
     }
+    return dispatched;
 }
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
-    if ([@"open" isEqualToString:postAction.message]) {
+#pragma mark - IFMessageHandler
+
+- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+    if ([message hasName:@"open"]) {
         // Replace main view.
-        self.mainView = [postAction.parameters valueForKey:@"view"];
+        self.mainView = [message.parameters valueForKey:@"view"];
         return YES;
     }
-    if ([@"open-in-slide" isEqualToString:postAction.message]) {
+    if ([message hasName:@"open-in-slide"]) {
         // Replace the slide view.
-        self.slideView = [postAction.parameters valueForKey:@"view"];
+        self.slideView = [message.parameters valueForKey:@"view"];
     }
-    if ([@"show-slide" isEqualToString:postAction.message]) {
+    if ([message hasName:@"show-slide"]) {
         // Open the slide view.
         self.frontViewPosition = slideOpenPosition;
         return YES;
     }
-    if ([@"hide-slide" isEqualToString:postAction.message]) {
+    if ([message hasName:@"hide-slide"]) {
         // Close the slide view.
         self.frontViewPosition = slideClosedPosition;
         return YES;

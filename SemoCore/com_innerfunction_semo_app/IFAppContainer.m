@@ -17,73 +17,6 @@
 #import "IFLogging.h"
 #import "NSString+IF.h"
 
-@implementation IFAppUIPostActionHandler
-
-- (id)initWithAppContainer:(IFAppContainer *)appContainer {
-    self = [super init];
-    if (self) {
-        _appContainer = appContainer;
-    }
-    return self;
-}
-
-- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender {
-    id handler = sender;
-    // Evaluate actions with relative target paths against the sender.
-    while (handler) {
-        if ([handler conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
-            [(id<IFPostActionTargetContainer>)handler dispatchAction:postAction sender:sender];
-            break;
-        }
-        if ([handler isKindOfClass:[UIViewController class]]) {
-            // If action sender is a view controller then bubble the action up through the
-            // view controller hierachy until a hander is found.
-            handler = ((UIViewController *)handler).parentViewController;
-        }
-        else if ([handler isKindOfClass:[UIView class]]) {
-            // If action sender is a view then bubble the action up through the view hierarchy.
-            handler = [(UIView *)handler nextResponder];
-        }
-        else {
-            // Can't process the action any further.
-            break;
-        }
-    }
-}
-
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
-    BOOL handled = NO;
-    id handler = sender;
-    // Evaluate actions with relative target paths against the sender.
-    while (!handled && handler) {
-        if ([handler conformsToProtocol:@protocol(IFPostActionHandler)]) {
-            handled = [(id<IFPostActionHandler>)handler handlePostAction:postAction sender:sender];
-        }
-        if ([handler isKindOfClass:[UIViewController class]]) {
-            // If action sender is a view controller then bubble the action up through the
-            // view controller hierachy until a hander is found.
-            handler = ((UIViewController *)handler).parentViewController;
-        }
-        else if ([handler isKindOfClass:[UIView class]]) {
-            // If action sender is a view then bubble the action up through the view hierarchy.
-            handler = [(UIView *)handler nextResponder];
-        }
-        else {
-            // Can't process the action any further.
-            break;
-        }
-    }
-    // Evaluate non-handled actions against the receiver, i.e. the app container, but only if no
-    // target is specified. This means that actions generally addressed to 'ui' will bubble up to
-    // the default action handlers in the app container.
-    if (!handled && [postAction hasEmptyTarget]) {
-        handled = [_appContainer handlePostAction:postAction sender:sender];
-    }
-    return handled;
-}
-
-@end
-
 @interface IFAppContainer ()
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration;
@@ -193,8 +126,6 @@
     [_named setObject:_globals forKey:@"globals"];
     [_named setObject:_locals forKey:@"locals"];
     [_named setObject:self forKey:@"container"];
-    // Posted actions addressed to the UI are handled by the following object.
-    [_named setObject:[[IFAppUIPostActionHandler alloc] initWithAppContainer:self] forKey:@"ui"];
     
     // Perform default container configuration.
     [super configureWith:configuration];
@@ -292,35 +223,79 @@
     return rootView;
 }
 
-- (void)postAction:(NSString *)actionURI sender:(id)sender {
+- (void)postMessage:(NSString *)messageURI sender:(id)sender {
     // Parse the action URI.
-    IFCompoundURI *uri = [IFCompoundURI parse:actionURI error:nil];
+    IFCompoundURI *uri = [IFCompoundURI parse:messageURI error:nil];
     if (uri) {
-        // See if the URI resolves to an action object.
-        id action = [_uriHandler dereference:uri];
-        if ([action isKindOfClass:[IFPostAction class]]) {
-            IFPostAction *postAction = (IFPostAction *)action;
-            // Dispatch the action.
-            [self dispatchAction:postAction sender:sender];
+        // See if the URI resolves to a post message object.
+        id message = [_uriHandler dereference:uri];
+        if (![message isKindOfClass:[IFMessage class]]) {
+            // Automatically promote views to 'open' messages.
+            if ([message isKindOfClass:[UIViewController class]]) {
+                message = [[IFMessage alloc] initWithTargetPath:@[] name:@"open" parameters:@{ @"view": message }];
+            }
+            else return; // Can't promote the message, so can't dispatch it.
+        }
+        if ([message isKindOfClass:[IFMessage class]]) {
+            // Dispatch the message.
+            [self dispatchMessage:(IFMessage *)message sender:sender];
         }
     }
 }
 
-#pragma mark - Overrides
+#pragma mark - IFMessageTargetContainer
 
-- (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
-    [super configureObject:object withConfiguration:configuration identifier:identifier];
+- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
+    BOOL dispatched = NO;
+    // If the sender is within the UI then search the view hierarchy for a message handler.
+    id handler = sender;
+    // Evaluate actions with relative target paths against the sender.
+    while (handler && !dispatched) {
+        // See if the current handler can take the message.
+        if ([message hasEmptyTarget]) {
+            // Message has no target info so looking for a message handler.
+            if ([handler conformsToProtocol:@protocol(IFMessageHandler)]) {
+                dispatched = [(id<IFMessageHandler>)handler handleMessage:message sender:sender];
+            }
+        }
+        else if ([handler conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+            // Message does have target info so looking for a message dispatcher.
+            dispatched = [(id<IFMessageTargetContainer>)handler dispatchMessage:message sender:sender];
+        }
+        if (!dispatched) {
+            // Message not dispatched, so try moving up the view hierarchy.
+            if ([handler isKindOfClass:[UIViewController class]]) {
+                // If action sender is a view controller then bubble the action up through the
+                // view controller hierachy until a hander is found.
+                handler = ((UIViewController *)handler).parentViewController;
+            }
+            else if ([handler isKindOfClass:[UIView class]]) {
+                // If action sender is a view then bubble the action up through the view hierarchy.
+                // TODO: This may not work...
+                handler = [(UIView *)handler nextResponder];
+            }
+            else {
+                // Can't process the action any further, so leave the loop.
+                break;
+            }
+        }
+    }
+    // If message not dispatched then let this container try handling it.
+    if (!dispatched) {
+        dispatched = [super dispatchMessage:message sender:sender];
+    }
+    return dispatched;
 }
 
-#pragma mark - IFPostActionHandler protocol
+#pragma mark - IFMessageHandler
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
-    if ([@"open-url" isEqualToString:postAction.message]) {
-        NSURL *url = [[postAction parameterValue:@"url"] asURL];
+- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+    if ([message hasName:@"open-url"]) {
+        NSURL *url = [[message parameterValue:@"url"] asURL];
         [[UIApplication sharedApplication] openURL:url];
     }
-    else if ([@"open" isEqualToString:postAction.message]) {
-        id view = [postAction parameterValue:@"view"];
+    else if ([message hasName:@"open"]) {
+        id view = [message parameterValue:@"view"];
         if ([view isKindOfClass:[UIViewController class]]) {
             [UIView transitionWithView: self.window
                               duration: 0.5
@@ -332,6 +307,12 @@
         }
     }
     return YES;
+}
+
+#pragma mark - Overrides
+
+- (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
+    [super configureObject:object withConfiguration:configuration identifier:identifier];
 }
 
 #pragma mark - Class statics
@@ -353,6 +334,10 @@ static IFAppContainer *instance;
     [container startService];
     container.window = window;
     return container;
+}
+
++ (void)postMessage:(NSString *)messageURI sender:(id)sender {
+    [instance postMessage:messageURI sender:sender];
 }
 
 @end

@@ -7,14 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFPostActionHandler.h"
-#import "IFStringRewriteRules.h"
+#import "IFMessageHandler.h"
 
-@interface IFNavigationViewController : UINavigationController <IFPostActionHandler>
+@interface IFNavigationViewController : UINavigationController <IFMessageHandler>
 
 /** The first view in the navigation stack. */
 @property (nonatomic, strong) UIViewController *rootView;
-/** Action URI rewrite rules. */
-@property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 
 @end

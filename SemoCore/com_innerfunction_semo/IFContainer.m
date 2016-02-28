@@ -458,39 +458,38 @@
     return value;
 }
 
-#pragma mark - IFPostActionHandler & related
+#pragma mark - IFMessageTargetContainer
 
-- (void)postAction:(NSString *)actionURI sender:(id)sender {
-    // Do nothing; See IFAppContainer for an implementation of this method.
-}
-
-- (void)dispatchAction:(IFPostAction *)postAction sender:(id)sender {
-    // Check whether the action is addressed to a named object.
-    NSString *targetHead = [postAction targetHead];
-    if (targetHead) {
-        // Resolve the named target.
-        id target = [_named valueForKey:targetHead];
+- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
+    BOOL dispatched = NO;
+    if ([message hasEmptyTarget]) {
+        // Message is targetted at this object.
+        dispatched = [self handleMessage:message sender:sender];
+    }
+    else {
+        // Look-up the message target in named objects.
+        NSString *targetHead = [message targetHead];
+        id target = [_named objectForKey:targetHead];
         if (target) {
-            // Target found, so remove top name from head of target path.
-            postAction = [postAction popTargetHead];
-            if ([target conformsToProtocol:@protocol(IFPostActionHandler)] && [postAction hasEmptyTarget]) {
-                // Ask target to handle action only if target path is empty, i.e. implying that we have
-                // the correct target for the action.
-                [(id<IFPostActionHandler>)target handlePostAction:postAction sender:sender];
+            message = [message popTargetHead];
+            // If we have the intended target, and the target is a message handler, then let it handle the message.
+            if ([message hasEmptyTarget]) {
+                if ([target conformsToProtocol:@protocol(IFMessageHandler)]) {
+                    dispatched = [(id<IFMessageHandler>)target handleMessage:message sender:sender];
+                }
             }
-            else if ([target conformsToProtocol:@protocol(IFPostActionTargetContainer)]) {
-                // Target is a container, so dispatch the action with the remained of the target info to it.
-                [(id<IFPostActionTargetContainer>)target dispatchAction:postAction sender:sender];
+            else if ([target conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+                // Let the current target dispatch the message to its intended target.
+                dispatched = [(id<IFMessageTargetContainer>)target dispatchMessage:message sender:sender];
             }
         }
     }
-    else {
-        // Action has no target info so is addressed to this container.
-        [self handlePostAction:postAction sender:sender];
-    }
+    return dispatched;
 }
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
+#pragma mark - IFMessageHandler
+
+- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
     return NO;
 }
 

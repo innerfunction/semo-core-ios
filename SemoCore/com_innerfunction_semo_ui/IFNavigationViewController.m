@@ -23,11 +23,11 @@
     return nil;
 }
 
-- (BOOL)handlePostAction:(IFPostAction *)postAction sender:(id)sender {
-    if ([@"open" isEqualToString:postAction.message]) {
+- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+    if ([message hasName:@"open"]) {
         UIViewController *view = nil;
         // Resolve the view to a view controller instance.
-        id maybeView = [postAction.parameters valueForKey:@"view"];
+        id maybeView = [message.parameters valueForKey:@"view"];
         /*
         if ([maybeView isKindOfClass:[IFResource class]]) {
             maybeView = ((IFResource *)maybeView).data;
@@ -48,7 +48,7 @@
         }
         return YES;
     }
-    else if ([@"back" isEqualToString:postAction.message]) {
+    else if ([message hasName:@"back"]) {
         [self popViewControllerAnimated:YES];
         return YES;
     }

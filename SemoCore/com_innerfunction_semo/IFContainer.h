@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "IFConfiguration.h"
-#import "IFPostActionHandler.h"
-#import "IFPostActionTargetContainer.h"
+#import "IFMessageTargetContainer.h"
+#import "IFMessageHandler.h"
 #import "IFService.h"
 #import "IFTypeInfo.h"
 
@@ -20,7 +20,7 @@
  * The object's properties may be configured using other built objects, or using references
  * to named objects contained by the container.
  */
-@interface IFContainer : NSObject <IFService, IFConfigurationRoot, IFPostActionHandler, IFPostActionTargetContainer> {
+@interface IFContainer : NSObject <IFService, IFConfigurationRoot, IFMessageHandler, IFMessageTargetContainer> {
     // A map of named objects.
     NSMutableDictionary *_named;
     // A list of contained services.
@@ -67,7 +67,5 @@
 - (void)configureWithData:(id)configData;
 /** Perform standard container-recognized protocol checks on a new object instance. */
 - (void)doStandardProtocolChecks:(id)object;
-/** Post an action URI. */
-- (void)postAction:(NSString *)actionURI sender:(id)sender;
 
 @end

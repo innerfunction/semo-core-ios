@@ -13,8 +13,7 @@
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCConfigurable.h"
 #import "IFIOCContainerAware.h"
-#import "IFPostActionHandler.h"
-#import "IFStringRewriteRules.h"
+#import "IFMessageHandler.h"
 
 // A basic table view component.
 // Recognized configuration keys are:
@@ -48,7 +47,7 @@
 // * selectedBackgroundImage: URI of the cell background image when selected. (Optional).
 // * height:            The row height.
 // * action:            A dispatch URI which is invoked when a table cell is selected.
-@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable, IFIOCContainerAware, IFPostActionHandler> {
+@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable, IFIOCContainerAware, IFMessageHandler> {
     
     UISearchBar *searchBar;
     UISearchDisplayController *searchDisplayController;
@@ -68,16 +67,14 @@
 @property (nonatomic, assign) BOOL hasSearchBar;
 @property (nonatomic, strong) NSString *clearFilterMessage;
 @property (nonatomic, strong) id content;
-/** Action URI rewrite rules. */
-@property (nonatomic, strong) IFStringRewriteRules *uriRewriteRules;
 
 // Format incoming list data.
 // Principally intended as a mechanism for subclasses to interface with specific data sources.
 - (NSArray *)formatData:(NSArray *)data;
 // Clear any currently applied table data filter.
 - (void)clearFilter;
-
-- (void)postAction:(NSString *)action;
+// Post a message.
+- (void)postMessage:(NSString *)message;
 
 // Image loading methods.
 
