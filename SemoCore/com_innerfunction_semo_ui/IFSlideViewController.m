@@ -36,6 +36,7 @@
     if ([mainView isKindOfClass:[UIViewController class]]) {
         _mainView = mainView;
         self.frontViewController = mainView;
+        //[self setFrontViewController:mainView animated:YES];
         
         // Set gesture receive on main view.
         UIView *gestureReceiver = nil;
