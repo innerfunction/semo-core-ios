@@ -14,6 +14,14 @@
 
 #pragma mark - Overrides
 
+- (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers animated:(BOOL)animated {
+    [super setViewControllers:viewControllers animated:animated];
+    if (_panGestureRecognizer) {
+        UIViewController *viewController = [viewControllers lastObject];
+        [viewController.view addGestureRecognizer:_panGestureRecognizer];
+    }
+}
+
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [super pushViewController:viewController animated:animated];
     if (_panGestureRecognizer) {
@@ -21,15 +29,32 @@
     }
 }
 
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    UIViewController *result = [super popViewControllerAnimated:animated];
+    if (_panGestureRecognizer) {
+        UIViewController *viewController = [self.viewControllers lastObject];
+        [viewController.view addGestureRecognizer:_panGestureRecognizer];
+    }
+    return result;
+}
+
+- (NSArray<__kindof UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
+    NSArray<__kindof UIViewController *> *result = [super popToRootViewControllerAnimated:animated];
+    if (_panGestureRecognizer) {
+        UIViewController *viewController = [self.viewControllers lastObject];
+        [viewController.view addGestureRecognizer:_panGestureRecognizer];
+    }
+    return result;
+}
+
 #pragma mark - Instance methods
 
 - (void)replaceBackSwipeGesture:(UIPanGestureRecognizer *)recognizer {
     [self.view removeGestureRecognizer:self.interactivePopGestureRecognizer];
     _panGestureRecognizer = recognizer;
-    // Set the new gesture recognizer on any view's already on the navigation stack.
-    for (UIViewController *viewController in self.viewControllers) {
-        [viewController.view addGestureRecognizer:_panGestureRecognizer];
-    }
+    // Set the new gesture recognizer on any visible view already on the navigation stack.
+    UIViewController *viewController = [self.viewControllers lastObject];
+    [viewController.view addGestureRecognizer:_panGestureRecognizer];
 }
 
 - (void)setRootView:(UIViewController *)rootView {
@@ -89,6 +114,9 @@
     else if ([message hasName:@"back"]) {
         [self popViewControllerAnimated:YES];
         return YES;
+    }
+    else if ([message hasName:@"home"]) {
+        [self popToRootViewControllerAnimated:YES];
     }
     return NO;
 }

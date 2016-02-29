@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+// TODO: Investigate whether lightweight generics can be used to replace this protocol.
 @protocol IFIOCTypeInspectable <NSObject>
 
 /**
