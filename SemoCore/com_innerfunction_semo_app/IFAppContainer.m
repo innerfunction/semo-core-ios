@@ -28,7 +28,6 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.appBackgroundColor = [UIColor redColor];
         self.uriHandler = [[IFStandardURIHandler alloc] init];
     }
     return self;
@@ -37,7 +36,7 @@
 - (void)setWindow:(UIWindow *)window {
     _window = window;
     _window.rootViewController = [self getRootView];
-    _window.backgroundColor = self.appBackgroundColor;
+    _window.backgroundColor = _appBackgroundColor;
 }
 
 - (void)loadConfiguration:(id)configSource {
