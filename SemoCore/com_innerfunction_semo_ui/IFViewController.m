@@ -10,6 +10,7 @@
 #import "IFAppContainer.h"
 #import "IFLogging.h"
 #import "UIViewController+Toast.h"
+#import "UIViewController+ImageView.h"
 
 @interface IFViewController()
 
@@ -74,11 +75,17 @@
 
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"toast"]) {
-        NSString *toastMessage = [[message.parameters valueForKey:@"message"] description];
+        NSString *toastMessage = [message parameterValue:@"message"];
         if (toastMessage) {
             [self showToastMessage:toastMessage];
         }
         return YES;
+    }
+    if ([message hasName:@"show-image"]) {
+        NSString *url = [message parameterValue:@"url"];
+        if (url) {
+            [self showImageAtURL:url referenceView:self.view];
+        }
     }
     return NO;
 }

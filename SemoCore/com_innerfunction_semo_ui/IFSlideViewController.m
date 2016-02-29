@@ -8,6 +8,7 @@
 
 #import "IFSlideViewController.h"
 #import "IFViewController.h"
+#import "IFNavigationViewController.h"
 
 @implementation IFSlideViewController
 
@@ -39,16 +40,11 @@
         //[self setFrontViewController:mainView animated:YES];
         
         // Set gesture receive on main view.
-        UIView *gestureReceiver = nil;
-        if ([mainView isKindOfClass:[UINavigationController class]]) {
-            gestureReceiver = [(UINavigationController *)mainView topViewController].view;
-            // TODO: What happens when user navigates to a new view?
+        if ([mainView isKindOfClass:[IFNavigationViewController class]]) {
+            [(IFNavigationViewController *)mainView replaceBackSwipeGesture:self.panGestureRecognizer];
         }
-        else if ([mainView isKindOfClass:[UIViewController class]]) {
-            gestureReceiver = ((UIViewController *)mainView).view;
-        }
-        if (gestureReceiver) {
-            [gestureReceiver addGestureRecognizer:[self panGestureRecognizer]];
+        else {
+            [((UIViewController *)mainView).view addGestureRecognizer:self.panGestureRecognizer];
         }
     }
 }
@@ -94,21 +90,22 @@
 #pragma mark - IFMessageHandler
 
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
-    if ([message hasName:@"open"]) {
+    // NOTE 'open' is deprecated. Note also other deprecations below.
+    if ([message hasName:@"show"] || [message hasName:@"open"]) {
         // Replace main view.
         self.mainView = [message.parameters valueForKey:@"view"];
         return YES;
     }
-    if ([message hasName:@"open-in-slide"]) {
+    if ([message hasName:@"show-in-slide"] || [message hasName:@"open-in-slide"]) {
         // Replace the slide view.
         self.slideView = [message.parameters valueForKey:@"view"];
     }
-    if ([message hasName:@"show-slide"]) {
+    if ([message hasName:@"open-slide"] || [message hasName:@"show-slide"]) {
         // Open the slide view.
         self.frontViewPosition = slideOpenPosition;
         return YES;
     }
-    if ([message hasName:@"hide-slide"]) {
+    if ([message hasName:@"close-slide"] || [message hasName:@"hide-slide"]) {
         // Close the slide view.
         self.frontViewPosition = slideClosedPosition;
         return YES;

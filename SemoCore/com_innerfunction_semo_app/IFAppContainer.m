@@ -229,9 +229,9 @@
         // See if the URI resolves to a post message object.
         id message = [_uriHandler dereference:uri];
         if (![message isKindOfClass:[IFMessage class]]) {
-            // Automatically promote views to 'open' messages.
+            // Automatically promote views to 'show' messages.
             if ([message isKindOfClass:[UIViewController class]]) {
-                message = [[IFMessage alloc] initWithTargetPath:@[] name:@"open" parameters:@{ @"view": message }];
+                message = [[IFMessage alloc] initWithTargetPath:@[] name:@"show" parameters:@{ @"view": message }];
             }
             else return; // Can't promote the message, so can't dispatch it.
         }
@@ -293,7 +293,7 @@
         NSURL *url = [[message parameterValue:@"url"] asURL];
         [[UIApplication sharedApplication] openURL:url];
     }
-    else if ([message hasName:@"open"]) {
+    else if ([message hasName:@"show"]) {
         id view = [message parameterValue:@"view"];
         if ([view isKindOfClass:[UIViewController class]]) {
             [UIView transitionWithView: self.window

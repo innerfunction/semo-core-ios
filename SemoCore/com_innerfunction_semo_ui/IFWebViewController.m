@@ -8,6 +8,7 @@
 
 #import "IFWebViewController.h"
 #import "IFFileResource.h"
+#import "UIViewController+ImageView.h"
 
 @interface IFWebViewController ()
 
@@ -89,6 +90,8 @@
     if (_loadingImage) {
         loadingImageView = [[UIImageView alloc] initWithImage:_loadingImage];
         loadingImageView.frame = webView.frame;
+        loadingImageView.contentMode = UIViewContentModeCenter;
+        loadingImageView.backgroundColor = _backgroundColor;
         [self.view addSubview:loadingImageView];
     }
     if (_showLoadingIndicator) {
@@ -120,6 +123,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSURL *url = [request URL];
+    // Allow pre-configured URLs to load.
     if (_allowedExternalURLs) {
         NSString *urlString = [url description];
         for (NSString *allowedURL in _allowedExternalURLs) {
@@ -128,16 +132,27 @@
             }
         }
     }
-    
+    // Load images (identified by file extension) when requested by a user action.
+    NSString *ext = url.pathExtension;
+    if ( navigationType == UIWebViewNavigationTypeLinkClicked && (
+            [@"jpeg" isEqualToString:ext] ||
+            [@"jpg" isEqualToString:ext] ||
+            [@"png" isEqualToString:ext] ||
+            [@"gif" isEqualToString:ext]) ) {
+        [self showImageAtURL:url referenceView:self.view];
+        return NO;
+    }
+    // Always load file: URLs.
     if ([@"file" isEqualToString:url.scheme]) {
         loadingExternalURL = NO;
         return YES;
     }
+    // Always load data: URLs.
     if ([@"data" isEqualToString:url.scheme]) {
         loadingExternalURL = NO;
         return YES;
     }
-    
+    // If loading a pre-configured exernal URL...
     if (loadingExternalURL) {
         loadingExternalURL = NO;
         return YES;
@@ -195,8 +210,8 @@
 
 - (void)hideLoadingImage {
     if (loadingImageView && !loadingImageView.hidden) {
-        [UIView animateWithDuration: 0.75
-                              delay: 0.0
+        [UIView animateWithDuration: 0.5f
+                              delay: 0.0f
                             options: UIViewAnimationOptionCurveLinear
                          animations: ^{ loadingImageView.alpha = 0.0; }
                          completion: ^(BOOL finished) { loadingImageView.hidden = YES; }];

@@ -12,6 +12,26 @@
 
 @implementation IFNavigationViewController
 
+#pragma mark - Overrides
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    [super pushViewController:viewController animated:animated];
+    if (_panGestureRecognizer) {
+        [viewController.view addGestureRecognizer:_panGestureRecognizer];
+    }
+}
+
+#pragma mark - Instance methods
+
+- (void)replaceBackSwipeGesture:(UIPanGestureRecognizer *)recognizer {
+    [self.view removeGestureRecognizer:self.interactivePopGestureRecognizer];
+    _panGestureRecognizer = recognizer;
+    // Set the new gesture recognizer on any view's already on the navigation stack.
+    for (UIViewController *viewController in self.viewControllers) {
+        [viewController.view addGestureRecognizer:_panGestureRecognizer];
+    }
+}
+
 - (void)setRootView:(UIViewController *)rootView {
     self.viewControllers = @[ rootView ];
 }
@@ -23,8 +43,20 @@
     return nil;
 }
 
+- (void)setTitleBarColor:(UIColor *)titleBarColor {
+    _titleBarColor = titleBarColor;
+    self.navigationBar.barTintColor = titleBarColor;
+}
+
+- (void)setTitleTextColor:(UIColor *)titleTextColor {
+    _titleTextColor = titleTextColor;
+    self.navigationBar.tintColor = titleTextColor;
+    self.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName: titleTextColor };
+}
+
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
-    if ([message hasName:@"open"]) {
+    // NOTE: 'open' is deprecated.
+    if ([message hasName:@"show"] || [message hasName:@"open"]) {
         UIViewController *view = nil;
         // Resolve the view to a view controller instance.
         id maybeView = [message.parameters valueForKey:@"view"];
@@ -41,7 +73,13 @@
         }
         // Push the new view.
         if (view) {
-            [self pushViewController:view animated:YES];
+            if ([@"reset" isEqualToString:[message parameterValue:@"navigation"]]) {
+                NSArray *viewControllers = @[ [self.viewControllers firstObject], view ];
+                [self setViewControllers:viewControllers animated:YES];
+            }
+            else {
+                [self pushViewController:view animated:YES];
+            }
         }
         else {
             DDLogWarn(@"%@: Unable to push view parameter of type %@", LogTag, [view.class description]);
