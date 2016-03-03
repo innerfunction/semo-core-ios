@@ -18,19 +18,6 @@
 
 @end
 
-// TODO: Following are to force the webview and activity indicator to the full size of their subviews -
-// Is there a better way to achieve this?
-
-@interface UIWebView (FullScreen) @end
-
-@implementation UIWebView (FullScreen)
-
-- (void)didMoveToSuperview {
-    self.frame = self.superview.frame;
-}
-
-@end
-
 @interface UIActivityIndicatorView (FullScreen) @end
 
 @implementation UIActivityIndicatorView (FullScreen)
@@ -40,7 +27,6 @@
 }
 
 @end
-// -------------------------------------
 
 @implementation IFWebViewController
 
@@ -49,23 +35,15 @@
     if (self) {
         _backgroundColor = [UIColor whiteColor];
         _useHTMLTitle = YES;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        
+        webView = [[UIWebView alloc] init];
+        webView.delegate = self;
+        
+        self.view = webView;
+        self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
     return self;
-}
-
-#pragma mark - view lifecycle
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.autoresizesSubviews = YES;
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    webView = [[UIWebView alloc] init];
-    webView.autoresizingMask = 1;
-    webView.delegate = self;
-    
-    [self.view addSubview:webView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
