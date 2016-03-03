@@ -236,8 +236,10 @@
             else return; // Can't promote the message, so can't dispatch it.
         }
         if ([message isKindOfClass:[IFMessage class]]) {
-            // Dispatch the message.
-            [self dispatchMessage:(IFMessage *)message sender:sender];
+            // Dispatch the message on the UI thread.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self dispatchMessage:(IFMessage *)message sender:sender];
+            });
         }
     }
 }

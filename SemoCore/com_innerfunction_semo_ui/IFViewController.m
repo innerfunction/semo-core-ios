@@ -84,7 +84,7 @@
     if ([message hasName:@"show-image"]) {
         NSString *url = [message parameterValue:@"url"];
         if (url) {
-            [self showImageAtURL:url referenceView:self.view];
+            [self showImageAtURL:[NSURL URLWithString:url] referenceView:self.view];
         }
     }
     return NO;
