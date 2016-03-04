@@ -226,21 +226,22 @@
     // Parse the action URI.
     IFCompoundURI *uri = [IFCompoundURI parse:messageURI error:nil];
     if (uri) {
-        // See if the URI resolves to a post message object.
-        id message = [_uriHandler dereference:uri];
-        if (![message isKindOfClass:[IFMessage class]]) {
-            // Automatically promote views to 'show' messages.
-            if ([message isKindOfClass:[UIViewController class]]) {
-                message = [[IFMessage alloc] initWithTargetPath:@[] name:@"show" parameters:@{ @"view": message }];
+        // Process the message on the main thread. This is because the URI may dereference to a view,
+        // and some views (e.g. web views) have to be instantiated on the UI thread.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // See if the URI resolves to a post message object.
+            id message = [_uriHandler dereference:uri];
+            if (![message isKindOfClass:[IFMessage class]]) {
+                // Automatically promote views to 'show' messages.
+                if ([message isKindOfClass:[UIViewController class]]) {
+                    message = [[IFMessage alloc] initWithTargetPath:@[] name:@"show" parameters:@{ @"view": message }];
+                }
+                else return; // Can't promote the message, so can't dispatch it.
             }
-            else return; // Can't promote the message, so can't dispatch it.
-        }
-        if ([message isKindOfClass:[IFMessage class]]) {
-            // Dispatch the message on the UI thread.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self dispatchMessage:(IFMessage *)message sender:sender];
-            });
-        }
+            if ([message isKindOfClass:[IFMessage class]]) {
+                    [self dispatchMessage:(IFMessage *)message sender:sender];
+            }
+        });
     }
 }
 

@@ -119,7 +119,12 @@
 }
 
 - (id)newInstanceForClassName:(NSString *)className withConfiguration:(IFConfiguration *)configuration {
-    id instance = [NSClassFromString(className) alloc];
+    Class class = NSClassFromString(className);
+    if (class == nil) {
+        DDLogError(@"%@: Class not found %@", LogTag, className);
+        return nil;
+    }
+    id instance = [class alloc];
     if ([instance conformsToProtocol:@protocol(IFIOCConfigurationInitable)]) {
         instance = [(id<IFIOCConfigurationInitable>)instance initWithConfiguration:configuration];
     }
@@ -148,12 +153,6 @@
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             [(id<IFIOCConfigurable>)object beforeConfiguration:configuration inContainer:self];
         }
-        /*
-        id<IFIOCTypeInspectable> typeInspectable = nil;
-        if ([object conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
-            typeInspectable = (id<IFIOCTypeInspectable>)object;
-        }
-        */
         for (NSString *name in [configuration getValueNames]) {
             NSString *propName = name;
             if ([name hasPrefix:@"*"]) {
@@ -175,86 +174,6 @@
                 continue;
             }
             [self configureProperty:propName info:propertyInfo object:object configuration:configuration];
-            /*
-            id value = nil;
-            if ([propertyInfo isBoolean]) {
-                value = [NSNumber numberWithBool:[configuration getValueAsBoolean:propName]];
-            }
-            else if ([propertyInfo isInteger]) {
-                value = [configuration getValueAsNumber:propName];
-            }
-            else if ([propertyInfo isFloat]) {
-                value = [configuration getValueAsNumber:propName];
-            }
-            else if ([propertyInfo isDouble]) {
-                value = [configuration getValueAsNumber:propName];
-            }
-            else if ([propertyInfo isId]) {
-                value = [configuration getValue:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[NSNumber class]]) {
-                value = [configuration getValueAsNumber:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[NSString class]]) {
-                value = [configuration getValueAsString:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[NSDate class]]) {
-                value = [configuration getValueAsDate:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[UIImage class]]) {
-                value = [configuration getValueAsImage:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[UIColor class]]) {
-                value = [configuration getValueAsColor:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[IFConfiguration class]]) {
-                value = [configuration getValueAsConfiguration:propName];
-            }
-            else if ([propertyInfo isAssignableFrom:[NSArray class]]) {
-                if ([configuration getValueType:propName] == IFValueTypeList) {
-                    NSArray *list = (NSArray *)[configuration getValue:propName];
-                    NSInteger length = [list count];
-                    NSMutableArray *propValues = [[NSMutableArray alloc] initWithCapacity:length];
-                    __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];
-                    if (!propertyClass) {
-                        propertyClass = [NSObject class];
-                    }
-                    for (NSInteger idx = 0; idx < length; idx++) {
-                        id propValue = [self resolveObjectPropertyOfType:propertyClass
-                                                       fromConfiguration:configuration
-                                                                    name:[NSString stringWithFormat:@"%@.%ld", propName, (long)idx]
-                                                                   value:nil];
-                        [propValues addObject:propValue];
-                    }
-                    value = propValues;
-                }
-            }
-            else if ([propertyInfo isAssignableFrom:[NSDictionary class]]) {
-                IFConfiguration *propConfigs = [configuration getValueAsConfiguration:propName];
-                if (propConfigs) {
-                    NSMutableDictionary *propValues = [[NSMutableDictionary alloc] init];
-                    __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];
-                    if (!propertyClass) {
-                        propertyClass = [NSObject class];
-                    }
-                    for (NSString *valueName in [propConfigs getValueNames]) {
-                        id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs name:valueName value:nil];
-                        if (propValue) {
-                            [propValues setObject:propValue forKey:valueName];
-                        }
-                    }
-                    value = propValues;
-                }
-            }
-            else {
-                __unsafe_unretained Class propClass = [propertyInfo getPropertyClass];
-                id propValue = [object valueForKey:propName];
-                value = [self resolveObjectPropertyOfType:propClass fromConfiguration:configuration name:propName value:propValue];
-            }
-            if (value != nil) {
-                [object setValue:value forKey:propName];
-            }
-             */
         }
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
