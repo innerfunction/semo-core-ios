@@ -56,6 +56,8 @@
             self.tableView.backgroundColor = backgroundColor;
         }
         _hideTitleBar = NO;
+        // Hide empty rows.
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     }
     return self;
 }
@@ -324,7 +326,7 @@
 
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"load"]) {
-        self.content = [message.parameters objectForKey:@"content"];
+        self.content = message.parameters[@"content"];
         return YES;
     }
     return NO;
