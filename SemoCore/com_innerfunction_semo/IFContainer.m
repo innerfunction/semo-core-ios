@@ -153,7 +153,8 @@
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             [(id<IFIOCConfigurable>)object beforeConfiguration:configuration inContainer:self];
         }
-        for (NSString *name in [configuration getValueNames]) {
+        NSArray *valueNames = [configuration getValueNames];
+        for (NSString *name in valueNames) {
             NSString *propName = name;
             if ([name hasPrefix:@"*"]) {
                 if ([name hasPrefix:@"*ios-"]) {
