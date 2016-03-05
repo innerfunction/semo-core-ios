@@ -245,6 +245,10 @@
     }
 }
 
+- (BOOL)isInternalURISchemeName:(NSString *)schemeName {
+    return [_uriHandler hasHandlerForURIScheme:schemeName];
+}
+
 #pragma mark - IFMessageTargetContainer
 
 - (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
@@ -293,8 +297,8 @@
 
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"open-url"]) {
-        NSURL *url = [[message parameterValue:@"url"] asURL];
-        [[UIApplication sharedApplication] openURL:url];
+        NSString *url = (NSString *)[message parameterValue:@"url"];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
     }
     else if ([message hasName:@"show"]) {
         id view = [message parameterValue:@"view"];

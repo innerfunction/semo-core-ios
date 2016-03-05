@@ -27,6 +27,11 @@
 		072DA4B51C8491070023FAEC /* UIImage+CropScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 072DA4B11C8491070023FAEC /* UIImage+CropScale.m */; };
 		072DA4B61C8491070023FAEC /* UIViewController+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 072DA4B21C8491070023FAEC /* UIViewController+Toast.h */; };
 		072DA4B71C8491070023FAEC /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 072DA4B31C8491070023FAEC /* UIViewController+Toast.m */; };
+		07933EEF1C8A41EF003D6227 /* IFIOCProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */; };
+		07933EF21C8A42B2003D6227 /* IFIOCProxyObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EF01C8A42B2003D6227 /* IFIOCProxyObject.h */; };
+		07933EF31C8A42B2003D6227 /* IFIOCProxyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 07933EF11C8A42B2003D6227 /* IFIOCProxyObject.m */; };
+		07933EF61C8A588B003D6227 /* IFIOCLabelProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EF41C8A588B003D6227 /* IFIOCLabelProxy.h */; };
+		07933EF71C8A588B003D6227 /* IFIOCLabelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07933EF51C8A588B003D6227 /* IFIOCLabelProxy.m */; };
 		07A9E5341C836B6500AB32A0 /* IFMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5321C836B6500AB32A0 /* IFMessage.h */; };
 		07A9E5351C836B6500AB32A0 /* IFMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A9E5331C836B6500AB32A0 /* IFMessage.m */; };
 		07A9E5371C836B8400AB32A0 /* IFMessageTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5361C836B8400AB32A0 /* IFMessageTargetContainer.h */; };
@@ -178,6 +183,11 @@
 		072DA4B11C8491070023FAEC /* UIImage+CropScale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CropScale.m"; path = "com_innerfunction_semo_ui/UIImage+CropScale.m"; sourceTree = SOURCE_ROOT; };
 		072DA4B21C8491070023FAEC /* UIViewController+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Toast.h"; path = "com_innerfunction_semo_ui/UIViewController+Toast.h"; sourceTree = SOURCE_ROOT; };
 		072DA4B31C8491070023FAEC /* UIViewController+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Toast.m"; path = "com_innerfunction_semo_ui/UIViewController+Toast.m"; sourceTree = SOURCE_ROOT; };
+		07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCProxy.h; path = com_innerfunction_semo/IFIOCProxy.h; sourceTree = SOURCE_ROOT; };
+		07933EF01C8A42B2003D6227 /* IFIOCProxyObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCProxyObject.h; path = com_innerfunction_semo/IFIOCProxyObject.h; sourceTree = SOURCE_ROOT; };
+		07933EF11C8A42B2003D6227 /* IFIOCProxyObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFIOCProxyObject.m; path = com_innerfunction_semo/IFIOCProxyObject.m; sourceTree = SOURCE_ROOT; };
+		07933EF41C8A588B003D6227 /* IFIOCLabelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCLabelProxy.h; path = com_innerfunction_semo_ui/IFIOCLabelProxy.h; sourceTree = SOURCE_ROOT; };
+		07933EF51C8A588B003D6227 /* IFIOCLabelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFIOCLabelProxy.m; path = com_innerfunction_semo_ui/IFIOCLabelProxy.m; sourceTree = SOURCE_ROOT; };
 		07A9E5321C836B6500AB32A0 /* IFMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessage.h; path = com_innerfunction_semo/IFMessage.h; sourceTree = SOURCE_ROOT; };
 		07A9E5331C836B6500AB32A0 /* IFMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFMessage.m; path = com_innerfunction_semo/IFMessage.m; sourceTree = SOURCE_ROOT; };
 		07A9E5361C836B8400AB32A0 /* IFMessageTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageTargetContainer.h; path = com_innerfunction_semo/IFMessageTargetContainer.h; sourceTree = SOURCE_ROOT; };
@@ -410,6 +420,9 @@
 				07A9E5331C836B6500AB32A0 /* IFMessage.m */,
 				07A9E5361C836B8400AB32A0 /* IFMessageTargetContainer.h */,
 				07A9E5381C836CC800AB32A0 /* IFMessageHandler.h */,
+				07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */,
+				07933EF01C8A42B2003D6227 /* IFIOCProxyObject.h */,
+				07933EF11C8A42B2003D6227 /* IFIOCProxyObject.m */,
 			);
 			name = com.innerfunction.semo;
 			sourceTree = "<group>";
@@ -454,6 +467,8 @@
 				072DA4AD1C848E4B0023FAEC /* UIViewController+ImageView.m */,
 				072DA4B21C8491070023FAEC /* UIViewController+Toast.h */,
 				072DA4B31C8491070023FAEC /* UIViewController+Toast.m */,
+				07933EF41C8A588B003D6227 /* IFIOCLabelProxy.h */,
+				07933EF51C8A588B003D6227 /* IFIOCLabelProxy.m */,
 			);
 			name = com.innerfunction.semo.ui;
 			sourceTree = "<group>";
@@ -666,6 +681,7 @@
 				07BD8A561C7653400058D7A8 /* IFIOCObjectFactoryBase.h in Headers */,
 				07BD8AFD1C7653AD0058D7A8 /* NSArray+IF.h in Headers */,
 				07BD8AB91C7653930058D7A8 /* IFCompoundURI.h in Headers */,
+				07933EF21C8A42B2003D6227 /* IFIOCProxyObject.h in Headers */,
 				07A9E5341C836B6500AB32A0 /* IFMessage.h in Headers */,
 				07BD8AA51C76537E0058D7A8 /* IFWebViewController.h in Headers */,
 				07BD8AEC1C7653AD0058D7A8 /* IFI18nMap.h in Headers */,
@@ -676,6 +692,7 @@
 				07BD8A4A1C7653400058D7A8 /* IFConfiguration.h in Headers */,
 				07BD8AF21C7653AD0058D7A8 /* IFLogger.h in Headers */,
 				07BD8A4E1C7653400058D7A8 /* IFContainer.h in Headers */,
+				07933EF61C8A588B003D6227 /* IFIOCLabelProxy.h in Headers */,
 				07BD8A781C7653670058D7A8 /* IFAppContainer.h in Headers */,
 				07BD8B1E1C7653F00058D7A8 /* DDLog.h in Headers */,
 				07BD8B031C7653AD0058D7A8 /* UIColor+IF.h in Headers */,
@@ -685,6 +702,7 @@
 				07BD8AEE1C7653AD0058D7A8 /* IFJSONData.h in Headers */,
 				07BD8B4E1C7653FC0058D7A8 /* unzip.h in Headers */,
 				07BD8A9B1C76537E0058D7A8 /* IFSlideViewController.h in Headers */,
+				07933EEF1C8A41EF003D6227 /* IFIOCProxy.h in Headers */,
 				07BD8B481C7653FC0058D7A8 /* crypt.h in Headers */,
 				07BD8B241C7653F00058D7A8 /* DispatchQueueLogFormatter.h in Headers */,
 				07BD8A591C7653400058D7A8 /* IFService.h in Headers */,
@@ -810,6 +828,8 @@
 				07BD8AC21C7653930058D7A8 /* IFReprSchemeHandler.m in Sources */,
 				07BD8AC41C7653930058D7A8 /* IFResource.m in Sources */,
 				07BD8A4D1C7653400058D7A8 /* IFConfiguredLocals.m in Sources */,
+				07933EF31C8A42B2003D6227 /* IFIOCProxyObject.m in Sources */,
+				07933EF71C8A588B003D6227 /* IFIOCLabelProxy.m in Sources */,
 				07BD8AED1C7653AD0058D7A8 /* IFI18nMap.m in Sources */,
 				072DA4AB1C848D680023FAEC /* UIImage+JTSImageEffects.m in Sources */,
 				072DA4A91C848D680023FAEC /* UIApplication+JTSImageViewController.m in Sources */,

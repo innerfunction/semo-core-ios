@@ -1,0 +1,56 @@
+- buildObjectWithConfiguration: identifier:                                                     BUILD
+    ?factory
+        -> [<IFIOCObjectFactory> buildObjectWithConfiguration: inContainer: identifier:]
+        -> doStandardProtocolChecks:
+    :else
+        -> instantiateObjectWithConfiguration: identifier:                                      INSTANTIATE
+        -> configureObject: withConfiguration: identifier:                                      CONFIGURE
+
+
+- instantiateObjectWithConfiguration: identifier:                                               INSTANTIATE
+    -> newInstanceForClassName: withConfiguration:
+
+- newInstanceForClassName: withConfiguration:                                                   INSTANTIATE(Class)
+    -> doStandardProtocolChecks:
+
+- newInstanceForTypeName: withConfiguration:                                                    INSTANTIATE(Type)
+    -> newInstanceForClassName: withConfiguration:
+
+- configureObject: withConfiguration: identifier:                                               CONFIGURE
+    >for *valueNames
+        -> configureProperty: info: object: configuration:                                      CONFIGURE_PROP
+
+- configureProperty: info: object: configuration:                                               CONFIGURE_PROP
+    ?NSarray assignable
+        >for *idx
+            -> resolveObjectPropertyOfType: fromConfiguration: name: value:                     RESOLVE_PROP
+    ?NSDictionary assignable
+        > for *keys
+            -> resolveObjectPropertyOfType: fromConfiguration: name: value:                     RESOLVE_PROP
+    :else
+        # Any in-place property value resolved here.
+        -> resolveObjectPropertyOfType: fromConfiguration: name: value:                         RESOLVE_PROP
+
+- configureWith:                                                                                <configure container>
+    >for *names
+        -> buildNamedObject:
+
+- buildNamedObject:                                                                             BUILD_NAMED
+    ?instantiation hint
+        -> buildObjectWithConfiguration: identifier:                                            BUILD
+    :else
+        -> newInstanceForClassName: withConfiguration:                                          INSTANTIATE(Class)
+        -> configureObject: withConfiguration: identifier:                                      CONFIGURE
+    ?assignable to property
+        -> 
+    :else
+        -> configureProperty: info: object: configuration:                                      CONFIGURE_PROP
+
+- resolveObjectPropertyOfType: fromConfiguration: name: value:                                  RESOLVE_PROP
+    ?instantiation hint
+        -> buildObjectWithConfiguration: identifier:                                            BUILD
+    :else
+        -> configureObject: withConfiguration: identifier:                                      CONFIGURE
+    -> newInstanceForClassName: withConfiguration:                                              INSTANTIATE(Class)
+    -> configureObject: withConfiguration: identifier                                           CONFIGURE
+

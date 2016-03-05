@@ -13,9 +13,22 @@
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
 #import "IFIOCObjectFactory.h"
+#import "IFIOCProxy.h"
 #import "IFPostScheme.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
+
+/** Entry for a configurable proxy in the proxy lookup table. */
+@interface IFIOCProxyLookupEntry : NSObject {
+    __unsafe_unretained Class _class;
+}
+
+- (id)initWithClass:(__unsafe_unretained Class)class;
+
+/** Use this entry to instantiate a new proxy instance for the specified property of the specified object. */
+- (id<IFIOCProxy>)instantiateProxyWithPropertyName:(NSString *)propertyName ofObject:(id)object;
+
+@end
 
 @interface IFContainer ()
 
@@ -34,8 +47,11 @@
                              name:(NSString *)name
                             value:(id)value;
 
-// Instantiate and configure a named object.
+/** Instantiate and configure a named object. */
 - (id)buildNamedObject:(NSString *)name;
+
+/** Lookup a configuration proxy for an object instance. */
++ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object;
 
 @end
 
@@ -516,6 +532,76 @@
 
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
     return NO;
+}
+
+#pragma mark - Static methods
+
+// May of configuration proxies keyed by class name. Classes without a registered proxy get an NSNull entry.
+static NSMutableDictionary *configurationProxies;
+
++ (void)initialize {
+    configurationProxies = [NSMutableDictionary new];
+}
+
++ (void)registerConfigurationProxyClassName:(NSString *)proxyClassName forClassName:(NSString *)className {
+    if (proxyClassName == nil) {
+        configurationProxies[className] = [NSNull null];
+    }
+    else {
+        __unsafe_unretained Class proxyClass = NSClassFromString(proxyClassName);
+        if (proxyClass) {
+            IFIOCProxyLookupEntry *proxyEntry = [[IFIOCProxyLookupEntry alloc] initWithClass:proxyClass];
+            configurationProxies[className] = proxyEntry;
+        }
+    }
+}
+
++ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object {
+    __unsafe_unretained Class class = [object class];
+    NSString *className = NSStringFromClass(class);
+    // First check for an entry under the current object's specific class name.
+    id proxyEntry = configurationProxies[className];
+    if (proxyEntry != nil) {
+        // NSNull at this stage indicates no proxy available for the specific object class.
+        return proxyEntry == [NSNull null] ? nil : (IFIOCProxyLookupEntry *)proxyEntry;
+    }
+    // No entry found for the specific class, search for the closest superclass proxy.
+    NSString *specificClassName = className;
+    class = [class superclass];
+    while (class) {
+        className = NSStringFromClass(class);
+        proxyEntry = configurationProxies[className];
+        if (proxyEntry) {
+            // Proxy found, record the same proxy for the specific class and return the result.
+            configurationProxies[specificClassName] = proxyEntry;
+            return proxyEntry == [NSNull null] ? nil : (IFIOCProxyLookupEntry *)proxyEntry;
+        }
+        // Nothing found yet, continue to the next superclass.
+        class = [class superclass];
+    }
+    // If we get to here then there is no registered proxy available for the object's class or any of its
+    // superclasses; register an NSNull in the dictionary so that future lookups can complete quicker.
+    configurationProxies[specificClassName] = [NSNull null];
+    return nil;
+}
+
+@end
+
+#pragma mark - IFIOCProxyLookupEntry
+
+@implementation IFIOCProxyLookupEntry
+
+- (id)initWithClass:(__unsafe_unretained Class)class {
+    self = [super init];
+    if (self) {
+        _class = class;
+    }
+    return self;
+}
+
+- (id<IFIOCProxy>)instantiateProxyWithPropertyName:(NSString *)propertyName ofObject:(id)object {
+    id<IFIOCProxy> instance = (id<IFIOCProxy>)[_class alloc];
+    return [instance initWithPropertyName:propertyName ofObject:object];
 }
 
 @end

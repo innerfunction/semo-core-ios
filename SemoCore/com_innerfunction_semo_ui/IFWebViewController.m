@@ -9,6 +9,7 @@
 #import "IFWebViewController.h"
 #import "IFFileResource.h"
 #import "UIViewController+ImageView.h"
+#import "IFAppContainer.h"
 
 @interface IFWebViewController ()
 
@@ -139,7 +140,14 @@
         return YES;
     }
     else if (webViewLoaded && (navigationType != UIWebViewNavigationTypeOther)) {
-        [self postMessage:[url description]];
+        NSString *message;
+        if ([[IFAppContainer getAppContainer] isInternalURISchemeName:url.scheme]) {
+            message = [url description];
+        }
+        else {
+            message = [NSString stringWithFormat:@"post:open-url+url=%@", url];
+        }
+        [self postMessage:message];
         return NO;
     }
     return YES;

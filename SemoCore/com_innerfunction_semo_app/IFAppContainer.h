@@ -31,6 +31,8 @@
 - (UIViewController *)getRootView;
 /** Post a message URI. */
 - (void)postMessage:(NSString *)messageURI sender:(id)sender;
+/** Test whether a URI scheme name belongs to an internal URI scheme. */
+- (BOOL)isInternalURISchemeName:(NSString *)schemeName;
 
 /** Return the app container singleton instance. */
 + (IFAppContainer *)getAppContainer;
