@@ -112,7 +112,7 @@
         }
     }
     // Load images (identified by file extension) when requested by a user action.
-    NSString *ext = url.pathExtension;
+    NSString *ext = [url.pathExtension lowercaseString];
     if ( navigationType == UIWebViewNavigationTypeLinkClicked && (
             [@"jpeg" isEqualToString:ext] ||
             [@"jpg" isEqualToString:ext] ||

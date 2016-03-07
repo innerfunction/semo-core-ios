@@ -14,5 +14,6 @@
 - (NSString *)substringFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
 - (NSArray *)split:(NSString *)pattern;
 - (NSString *)replaceAllOccurrences:(NSString *)pattern with:(NSString *)string;
+- (id)parseJSON:(NSError *)error;
 
 @end

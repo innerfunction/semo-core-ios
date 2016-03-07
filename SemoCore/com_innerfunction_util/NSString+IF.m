@@ -51,4 +51,10 @@
     return result;
 }
 
+- (id)parseJSON:(NSError *)error {
+    return [NSJSONSerialization JSONObjectWithData:[self dataUsingEncoding:NSUTF8StringEncoding]
+                                           options:0
+                                             error:&error];
+}
+
 @end

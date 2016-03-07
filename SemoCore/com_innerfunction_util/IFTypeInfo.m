@@ -40,15 +40,15 @@
 }
 
 - (BOOL)isBoolean {
-    return strcmp(propertyType, @encode(BOOL)) == 0;
+    return strcmp(propertyType, @encode(BOOL)) == 0 || strcmp(propertyType, @encode(Boolean)) == 0;
 }
 
 - (BOOL)isInteger {
-    return strcmp(propertyType, @encode(int)) == 0;
+    return strcmp(propertyType, @encode(int)) == 0 || strcmp(propertyType, @encode(NSInteger)) == 0;
 }
 
 - (BOOL)isFloat {
-    return strcmp(propertyType, @encode(float)) == 0;
+    return strcmp(propertyType, @encode(float)) == 0 || strcmp(propertyType, @encode(CGFloat)) == 0;
 }
 
 - (BOOL)isDouble {
