@@ -128,6 +128,7 @@
             DDLogError(@"%@: Making %@, Component configuration missing *type or *ios-class property", LogTag, identifier);
         }
     }
+    // PROXY If config proxy available for classname then instantiate proxy instead of new instance.
     if (className) {
         object = [self newInstanceForClassName:className withConfiguration:configuration];
     }
@@ -283,6 +284,8 @@
         value = [self resolveObjectPropertyOfType:propClass fromConfiguration:configuration name:propName value:propValue];
     }
     if (value != nil) {
+        // PROXY If value is a config proxy then unwrap the underlying value
+        // PROXY Only set value if property is writeable
         [object setValue:value forKey:propName];
     }
     return value;
@@ -423,6 +426,7 @@
             return [self buildObjectWithConfiguration:propConfig identifier:name];
         }
         else if (value != nil) {
+            // PROXY If [value class] has a config proxy then instantiate that using the value.
             // No instantiation hints on the configuration, but the property already has a
             // value so try configuring that instead.
             [self configureObject:value withConfiguration:propConfig identifier:name];

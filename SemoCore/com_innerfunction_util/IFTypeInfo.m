@@ -13,62 +13,65 @@
 - (id)initWithProperty:(objc_property_t)property {
     self = [super init];
     if (self) {
+        _propertyClass = nil;
+        
         // Read property attributes.
-        const char * attr = property_getAttributes( property );
+        const char * chattr = property_getAttributes( property );
         
-        // Find index of end of type information in attribute string.
-        int idx, len = (int)strlen(attr);
-        for (idx = 0; attr[idx] != ',' && idx < len; idx++);
+        // Convert to nsstring and tokenize
+        NSString *nsattr = [NSString stringWithUTF8String:chattr];
+        NSArray *attrs = [nsattr componentsSeparatedByString:@","];
+
+        // Get the property type.
+        NSString *typeAttr = [attrs firstObject];
+        _propertyType = [[typeAttr substringFromIndex:1] UTF8String];
         
-        // Copy type info to its own var.
-        propertyType = malloc(idx);
-        strncpy(propertyType, attr + 1, idx);
-        propertyType[idx - 1] = '\0';
-        
-        // Try extracting class info from the type info.
-        if (strncmp(propertyType, "@", 1) == 0 && idx > 3) {
-            // The type identified includes quotes around the class name, e.g. T@"NSData", so extract the class name from
-            // within the quotes. The length is idx - 4 because (i) the end index is idx - 2; (ii) + 2 for the start offset.
-            NSString *className = [[NSString stringWithUTF8String:propertyType] substringWithRange:NSMakeRange(2, idx - 4)];
-            propertyClass = NSClassFromString(className);
+        // Try extracting class info.
+        if ([typeAttr hasPrefix:@"T@"] && [typeAttr length] > 4) {
+            // The type specifies a property type name in the form e.g. T@"NSData"
+            // Note that if no class info is available then the attr will be just 'T@'
+            NSRange range = NSMakeRange(3, [typeAttr length] - (1 + 3));
+            NSString *className = [typeAttr substringWithRange:range];
+            _propertyClass = NSClassFromString(className);
         }
-        else {
-            propertyClass = nil;
-        }
+        
+        // Check for read-only flag.
+        _isWriteable = ![attrs containsObject:@"R"];
+
     }
     return self;
 }
 
 - (BOOL)isBoolean {
-    return strcmp(propertyType, @encode(BOOL)) == 0 || strcmp(propertyType, @encode(Boolean)) == 0;
+    return strcmp(_propertyType, @encode(BOOL)) == 0 || strcmp(_propertyType, @encode(Boolean)) == 0;
 }
 
 - (BOOL)isInteger {
-    return strcmp(propertyType, @encode(int)) == 0 || strcmp(propertyType, @encode(NSInteger)) == 0;
+    return strcmp(_propertyType, @encode(int)) == 0 || strcmp(_propertyType, @encode(NSInteger)) == 0;
 }
 
 - (BOOL)isFloat {
-    return strcmp(propertyType, @encode(float)) == 0 || strcmp(propertyType, @encode(CGFloat)) == 0;
+    return strcmp(_propertyType, @encode(float)) == 0 || strcmp(_propertyType, @encode(CGFloat)) == 0;
 }
 
 - (BOOL)isDouble {
-    return strcmp(propertyType, @encode(double)) == 0;
+    return strcmp(_propertyType, @encode(double)) == 0;
 }
 
 - (BOOL)isId {
-    return strcmp(propertyType, @encode(id)) == 0;
+    return strcmp(_propertyType, @encode(id)) == 0;
 }
 
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj {
-    return [propertyClass isSubclassOfClass:classObj];
+    return [_propertyClass isSubclassOfClass:classObj];
 }
 
 - (__unsafe_unretained Class)getPropertyClass {
-    return propertyClass;
+    return _propertyClass;
 }
 
-- (void)dealloc {
-    free(propertyType);
+- (BOOL)isWriteable {
+    return _isWriteable;
 }
 
 @end
@@ -85,7 +88,7 @@
 - (id)initWithObject:(id)object {
     self = [super init];
     if (self) {
-        properties = [[NSMutableDictionary alloc] init];
+        _properties = [[NSMutableDictionary alloc] init];
         unsigned int propCount;
         // Get properties for the current object's class and all its superclasses.
         Class c = [object class];
@@ -95,7 +98,7 @@
                 objc_property_t prop = props[i];
                 NSString *propName = [NSString stringWithUTF8String:property_getName(prop)];
                 IFPropertyInfo *propInfo = [[IFPropertyInfo alloc] initWithProperty:prop];
-                [properties setObject:propInfo forKey:propName];
+                [_properties setObject:propInfo forKey:propName];
             }
             // Get the class' superclass
             c = [c superclass];
@@ -105,7 +108,7 @@
 }
 
 - (IFPropertyInfo *)infoForProperty:(NSString *)propName {
-    return [properties valueForKey:propName];
+    return [_properties valueForKey:propName];
 }
 
 + (IFTypeInfo *)typeInfoForObject:(id)object {

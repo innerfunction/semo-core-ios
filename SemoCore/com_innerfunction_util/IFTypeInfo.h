@@ -10,8 +10,9 @@
 #import <objc/runtime.h>
 
 @interface IFPropertyInfo : NSObject {
-    char * propertyType;
-    __unsafe_unretained Class propertyClass;
+    const char * _propertyType;
+    __unsafe_unretained Class _propertyClass;
+    BOOL _isWriteable;
 }
 
 - (id)initWithProperty:(objc_property_t)property;
@@ -22,11 +23,12 @@
 - (BOOL)isId;
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj;
 - (__unsafe_unretained Class)getPropertyClass;
+- (BOOL)isWriteable;
 
 @end
 
 @interface IFTypeInfo : NSObject {
-    NSMutableDictionary *properties;
+    NSMutableDictionary *_properties;
 }
 
 - (id)initWithObject:(id)object;

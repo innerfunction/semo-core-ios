@@ -1,3 +1,7 @@
+BUILD -> INSTANTIATE
+      -> CONFIGURE      -> CONFIGURE_PROP   -> RESOLVE_PROP -> (BUILD | INSTANTIATE, CONFIGURE)
+
+
 - buildObjectWithConfiguration: identifier:                                                     BUILD
     ?factory
         -> [<IFIOCObjectFactory> buildObjectWithConfiguration: inContainer: identifier:]
