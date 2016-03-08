@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IFIOCConfigurable.h"
 
-@protocol IFIOCProxy <IFIOCConfigurable>
+@protocol IFIOCProxy <NSObject>
 
-- (id)initWithPropertyName:(NSString *)propertyName ofObject:(id)object;
+- (id)initWithValue:(id)value;
+- (id)unwrapValue;
 
 @end

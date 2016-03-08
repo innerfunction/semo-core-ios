@@ -56,6 +56,7 @@
             self.tableView.backgroundColor = backgroundColor;
         }
         _hideTitleBar = NO;
+        _actionProxyLookup = [NSMutableDictionary new];
         // Hide empty rows.
         self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     }
@@ -167,6 +168,19 @@
     }
     if (_scrollToSelected) {
         [self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }
+}
+
+#pragma mark - IFActionProxy
+
+- (void)registerAction:(NSString *)action forObject:(id)object {
+    _actionProxyLookup[object] = action;
+}
+
+- (void)postActionForObject:(id)object {
+    NSString *action = _actionProxyLookup[object];
+    if (action) {
+        [self postMessage:action];
     }
 }
 

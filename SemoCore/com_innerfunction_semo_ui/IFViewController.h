@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "IFIOCContainerAware.h"
 #import "IFMessageHandler.h"
+#import "IFActionProxy.h"
 
 @class IFViewController;
 
 typedef void (^IFViewControllerEvent)(IFViewController *);
 
-@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageHandler>
+@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageHandler, IFActionProxy> {
+    NSMutableDictionary *_actionProxyLookup;
+}
 
 /** Flag indicating whether to show or hide the title bar. */
 @property (nonatomic, assign) BOOL hideTitleBar;

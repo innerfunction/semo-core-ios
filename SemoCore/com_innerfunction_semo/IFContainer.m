@@ -12,6 +12,7 @@
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
+#import "IFIOCObjectAware.h"
 #import "IFIOCObjectFactory.h"
 #import "IFIOCProxy.h"
 #import "IFPostScheme.h"
@@ -25,8 +26,11 @@
 
 - (id)initWithClass:(__unsafe_unretained Class)class;
 
-/** Use this entry to instantiate a new proxy instance for the specified property of the specified object. */
-- (id<IFIOCProxy>)instantiateProxyWithPropertyName:(NSString *)propertyName ofObject:(id)object;
+/** Use the entry to instantiate a new proxy instance with no in-place value. */
+- (id<IFIOCProxy>)instantiateProxy;
+
+/** Use the entry to instantiate a new proxy instance with an in-place value. */
+- (id<IFIOCProxy>)instantiateProxyWithValue:(id)value;
 
 @end
 
@@ -52,6 +56,12 @@
 
 /** Lookup a configuration proxy for an object instance. */
 + (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object;
+
+/** Lookup a configuration proxy for a named class. */
++ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClassName:(NSString *)className;
+
+/** Lookup a configuration proxy for a class. */
++ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClass:(__unsafe_unretained Class)class className:(NSString *)className;
 
 @end
 
@@ -128,9 +138,15 @@
             DDLogError(@"%@: Making %@, Component configuration missing *type or *ios-class property", LogTag, identifier);
         }
     }
-    // PROXY If config proxy available for classname then instantiate proxy instead of new instance.
     if (className) {
-        object = [self newInstanceForClassName:className withConfiguration:configuration];
+        // PROXY If config proxy available for classname then instantiate proxy instead of new instance.
+        IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForClassName:className];
+        if (proxyEntry) {
+            object = [proxyEntry instantiateProxy];
+        }
+        else {
+            object = [self newInstanceForClassName:className withConfiguration:configuration];
+        }
     }
     return object;
 }
@@ -283,10 +299,20 @@
         id propValue = [object valueForKey:propName];
         value = [self resolveObjectPropertyOfType:propClass fromConfiguration:configuration name:propName value:propValue];
     }
-    if (value != nil) {
-        // PROXY If value is a config proxy then unwrap the underlying value
-        // PROXY Only set value if property is writeable
-        [object setValue:value forKey:propName];
+    // Notify object aware values that they are about to be injected into the object under the current property name.
+    // NOTE: This happens at this point - instead of after the value injection - so that value proxies can receive the
+    // notification. If it notification was deferred until after the injection then any proxied values probably won't
+    // implement the protocol.
+    if ([value conformsToProtocol:@protocol(IFIOCObjectAware)]) {
+        [(id<IFIOCObjectAware>)value notifyIOCObject:object propertyName:propName];
+    }
+    // PROXY If value is a config proxy then unwrap the underlying value
+    if ([value conformsToProtocol:@protocol(IFIOCProxy)]) {
+        value = [(id<IFIOCProxy>)value unwrapValue];
+    }
+    // PROXY Only set value if property is writeable
+    if (value != nil && [propInfo isWriteable]) {
+        object[propName] = value;
     }
     return value;
 }
@@ -356,6 +382,9 @@
     if (object != nil) {
         // If the named object corresponds to a property on the container then try setting that property.
         if (propertyInfo) {
+            // TODO: Is the 'if' term needed here, or can just the 'else' term be used?
+            // If the 'if' term is needed then need to add code to check for IFIOCObjectAware and IFIOCProxy
+            // (see lines ~306-312 above); otherwise configureProperty: will do the required checks.
             if ([propertyInfo isAssignableFrom:[object class]]) {
                 [self setValue:object forKey:name];
             }
@@ -427,6 +456,10 @@
         }
         else if (value != nil) {
             // PROXY If [value class] has a config proxy then instantiate that using the value.
+            IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForObject:value];
+            if (proxyEntry) {
+                value = [proxyEntry instantiateProxyWithValue:value];
+            }
             // No instantiation hints on the configuration, but the property already has a
             // value so try configuring that instead.
             [self configureObject:value withConfiguration:propConfig identifier:name];
@@ -547,22 +580,28 @@ static NSMutableDictionary *configurationProxies;
     configurationProxies = [NSMutableDictionary new];
 }
 
-+ (void)registerConfigurationProxyClassName:(NSString *)proxyClassName forClassName:(NSString *)className {
-    if (proxyClassName == nil) {
++ (void)registerConfigurationProxyClassName:(__unsafe_unretained Class)proxyClass forClassName:(NSString *)className {
+    if (!proxyClass) {
         configurationProxies[className] = [NSNull null];
     }
     else {
-        __unsafe_unretained Class proxyClass = NSClassFromString(proxyClassName);
-        if (proxyClass) {
-            IFIOCProxyLookupEntry *proxyEntry = [[IFIOCProxyLookupEntry alloc] initWithClass:proxyClass];
-            configurationProxies[className] = proxyEntry;
-        }
+        IFIOCProxyLookupEntry *proxyEntry = [[IFIOCProxyLookupEntry alloc] initWithClass:proxyClass];
+        configurationProxies[className] = proxyEntry;
     }
 }
 
 + (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object {
     __unsafe_unretained Class class = [object class];
     NSString *className = NSStringFromClass(class);
+    return [IFContainer lookupConfigurationProxyForClass:class className:className];
+}
+
++ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClassName:(NSString *)className {
+    __unsafe_unretained Class class = NSClassFromString(className);
+    return [IFContainer lookupConfigurationProxyForClass:class className:className];
+}
+
++ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClass:(__unsafe_unretained Class)class className:(NSString *)className {
     // First check for an entry under the current object's specific class name.
     id proxyEntry = configurationProxies[className];
     if (proxyEntry != nil) {
@@ -603,9 +642,13 @@ static NSMutableDictionary *configurationProxies;
     return self;
 }
 
-- (id<IFIOCProxy>)instantiateProxyWithPropertyName:(NSString *)propertyName ofObject:(id)object {
+- (id<IFIOCProxy>)instantiateProxy {
+    return (id<IFIOCProxy>)[_class new];
+}
+
+- (id<IFIOCProxy>)instantiateProxyWithValue:(id)value {
     id<IFIOCProxy> instance = (id<IFIOCProxy>)[_class alloc];
-    return [instance initWithPropertyName:propertyName ofObject:object];
+    return [instance initWithValue:value];
 }
 
 @end

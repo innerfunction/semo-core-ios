@@ -14,6 +14,7 @@
 #import "IFIOCConfigurable.h"
 #import "IFIOCContainerAware.h"
 #import "IFMessageHandler.h"
+#import "IFActionProxy.h"
 
 // A basic table view component.
 // Recognized configuration keys are:
@@ -47,13 +48,14 @@
 // * selectedBackgroundImage: URI of the cell background image when selected. (Optional).
 // * height:            The row height.
 // * action:            A dispatch URI which is invoked when a table cell is selected.
-@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable, IFIOCContainerAware, IFMessageHandler> {
+@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable, IFIOCContainerAware, IFMessageHandler, IFActionProxy> {
     
     UISearchBar *searchBar;
     UISearchDisplayController *searchDisplayController;
     IFTableViewCellFactory *defaultFactory;
     BOOL isFirstShow;
     NSCache *imageCache;
+    NSMutableDictionary *_actionProxyLookup;
 }
 
 @property (nonatomic, assign) BOOL hideTitleBar;

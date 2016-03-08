@@ -73,6 +73,6 @@
  * The proxy will be used for all subclasses of the property class also, unless a different proxy is registered
  * for a specific subclass. No proxy will be used for a specific subclass if a nil proxy class name is registered.
  */
-+ (void)registerConfigurationProxyClassName:(NSString *)proxyClassName forClassName:(NSString *)className;
++ (void)registerConfigurationProxyClass:(__unsafe_unretained Class)proxyClass forClassName:(NSString *)className;
 
 @end

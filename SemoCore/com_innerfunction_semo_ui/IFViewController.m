@@ -29,6 +29,7 @@
     if (self) {
         _hideTitleBar = NO;
         _namedViews = [NSDictionary dictionary];
+        _actionProxyLookup = [NSMutableDictionary new];
         [self doViewInitialization];
     }
     return self;
@@ -40,6 +41,7 @@
         self.view = view;
         _hideTitleBar = NO;
         _namedViews = [NSDictionary dictionary];
+        _actionProxyLookup = [NSMutableDictionary new];
         [self doViewInitialization];
     }
     return self;
@@ -154,6 +156,19 @@
     NSUInteger idx = [superview.subviews indexOfObject:subview];
     [subview removeFromSuperview];
     [superview insertSubview:view atIndex:idx];
+}
+
+#pragma mark - IFActionProxy
+
+- (void)registerAction:(NSString *)action forObject:(id)object {
+    _actionProxyLookup[object] = action;
+}
+
+- (void)postActionForObject:(id)object {
+    NSString *action = _actionProxyLookup[object];
+    if (action) {
+        [self postMessage:action];
+    }
 }
 
 @end
