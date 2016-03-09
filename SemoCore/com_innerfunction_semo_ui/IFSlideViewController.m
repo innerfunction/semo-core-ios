@@ -110,6 +110,10 @@
         self.frontViewPosition = slideClosedPosition;
         return YES;
     }
+    if ([message hasName:@"toggle-slide"]) {
+        [self revealToggleAnimated:YES];
+        return YES;
+    }
     return NO;
 }
 

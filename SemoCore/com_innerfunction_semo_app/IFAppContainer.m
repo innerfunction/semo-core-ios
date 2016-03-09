@@ -236,10 +236,14 @@
                 if ([message isKindOfClass:[UIViewController class]]) {
                     message = [[IFMessage alloc] initWithTargetPath:@[] name:@"show" parameters:@{ @"view": message }];
                 }
+                else if ([message isKindOfClass:[NSString class]]) {
+                    // Assume a simple name only message with no parameters.
+                    message = [[IFMessage alloc] initWithTarget:nil name:message parameters:nil];
+                }
                 else return; // Can't promote the message, so can't dispatch it.
             }
             if ([message isKindOfClass:[IFMessage class]]) {
-                    [self dispatchMessage:(IFMessage *)message sender:sender];
+                [self dispatchMessage:(IFMessage *)message sender:sender];
             }
         });
     }
@@ -323,15 +327,15 @@
 
 #pragma mark - Class statics
 
-static IFAppContainer *instance;
+static IFAppContainer *IFAppContainer_instance;
 
 + (void)initialize {
-    instance = [[IFAppContainer alloc] init];
-    [instance addTypes:[IFCoreTypes types]];
+    IFAppContainer_instance = [[IFAppContainer alloc] init];
+    [IFAppContainer_instance addTypes:[IFCoreTypes types]];
 }
 
 + (IFAppContainer *)getAppContainer {
-    return instance;
+    return IFAppContainer_instance;
 }
 
 + (IFAppContainer *)bindToWindow:(UIWindow *)window {
@@ -343,7 +347,7 @@ static IFAppContainer *instance;
 }
 
 + (void)postMessage:(NSString *)messageURI sender:(id)sender {
-    [instance postMessage:messageURI sender:sender];
+    [IFAppContainer_instance postMessage:messageURI sender:sender];
 }
 
 @end

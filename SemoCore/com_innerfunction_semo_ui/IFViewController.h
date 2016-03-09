@@ -23,6 +23,10 @@ typedef void (^IFViewControllerEvent)(IFViewController *);
 @property (nonatomic, assign) BOOL hideTitleBar;
 /** The title of the view's back button when presented within a navigation controller. */
 @property (nonatomic, strong) NSString *backButtonTitle;
+/** An optional left-side title bar item. */
+@property (nonatomic, strong) UIBarButtonItem *leftTitleBarButton;
+/** An optional right-side title bar item. */
+@property (nonatomic, strong) UIBarButtonItem *rightTitleBarButton;
 /** Block invoked when view is displayed. */
 @property (nonatomic, copy) IFViewControllerEvent onShow;
 /** The layout name. Corresponds to the name of a nib file. */

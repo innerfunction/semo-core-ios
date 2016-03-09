@@ -49,7 +49,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    webView.frame = self.view.bounds;
     loadingImageView.frame = self.view.bounds;
 }
 
@@ -94,7 +93,7 @@
         }
     }
     // Disable long touch events. See http://stackoverflow.com/questions/4314193/how-to-disable-long-touch-in-uiwebview
-    [view stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='none'; document.body.style.KhtmlUserSelect='none'"];
+    [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='none'; document.body.style.KhtmlUserSelect='none'"];
     // Change console.log to use the epConsoleLog function.
     //[view stringByEvaluatingJavaScriptFromString:@"console.log = epConsoleLog"];
     webViewLoaded = YES;

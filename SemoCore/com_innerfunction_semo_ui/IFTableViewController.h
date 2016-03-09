@@ -60,6 +60,10 @@
 
 @property (nonatomic, assign) BOOL hideTitleBar;
 @property (nonatomic, strong) NSString *backButtonTitle;
+/** An optional left-side title bar item. */
+@property (nonatomic, strong) UIBarButtonItem *leftTitleBarButton;
+/** An optional right-side title bar item. */
+@property (nonatomic, strong) UIBarButtonItem *rightTitleBarButton;
 @property (nonatomic, strong) NSDictionary *cellFactoriesByDisplayMode;
 @property (nonatomic, strong) UIColor *sectionTitleColor;
 @property (nonatomic, strong) UIColor *sectionTitleBackgroundColor;

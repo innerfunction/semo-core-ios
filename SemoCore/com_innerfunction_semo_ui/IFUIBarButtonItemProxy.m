@@ -70,7 +70,7 @@
 #pragma mark - Class loading
 
 + (void)load {
-    [IFContainer registerConfigurationProxyClass:self forClassName:@"UIBarButtonItem"];
+    [IFIOCProxyObject registerConfigurationProxyClass:self forClassName:@"UIBarButtonItem"];
 }
 
 @end

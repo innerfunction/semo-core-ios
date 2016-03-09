@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFIOCProxy.h"
+#import "IFIOCProxyObject.h"
 #import "IFTextStyle.h"
 
-@interface IFUILabelProxy : NSObject <IFIOCProxy> {
+@interface IFUILabelProxy : IFIOCProxyObject {
     UILabel *_label;
 }
 

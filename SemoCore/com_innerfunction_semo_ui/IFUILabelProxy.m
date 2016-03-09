@@ -43,7 +43,7 @@
 #pragma mark - Class loading
 
 + (void)load {
-    [IFContainer registerConfigurationProxyClass:self forClassName:@"UILabel"];
+    [IFIOCProxyObject registerConfigurationProxyClass:self forClassName:@"UILabel"];
 }
 
 @end

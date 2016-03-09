@@ -151,6 +151,13 @@
                                                                                 action:nil];
     }
 
+    if (_leftTitleBarButton) {
+        self.navigationItem.leftBarButtonItem = _leftTitleBarButton;
+    }
+    if (_rightTitleBarButton) {
+        self.navigationItem.rightBarButtonItem = _rightTitleBarButton;
+    }
+
     if (_selectedID) {
         NSIndexPath *selectedPath = [_tableData pathForRowWithValue:_selectedID forField:@"id"];
         if (selectedPath) {
@@ -174,11 +181,13 @@
 #pragma mark - IFActionProxy
 
 - (void)registerAction:(NSString *)action forObject:(id)object {
-    _actionProxyLookup[object] = action;
+    NSValue *key = [NSValue valueWithNonretainedObject:object];
+    _actionProxyLookup[key] = action;
 }
 
 - (void)postActionForObject:(id)object {
-    NSString *action = _actionProxyLookup[object];
+    NSValue *key = [NSValue valueWithNonretainedObject:object];
+    NSString *action = _actionProxyLookup[key];
     if (action) {
         [self postMessage:action];
     }

@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFIOCProxy.h"
+#import "IFIOCProxyObject.h"
 #import "IFIOCObjectAware.h"
 
-@interface IFUIBarButtonItemProxy : NSObject <IFIOCProxy, IFIOCObjectAware> {
+@interface IFUIBarButtonItemProxy : IFIOCProxyObject <IFIOCObjectAware> {
     UIBarButtonItem *_barButtonItem;
 }
 

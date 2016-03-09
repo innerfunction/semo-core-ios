@@ -15,6 +15,7 @@
 #import "IFIOCObjectAware.h"
 #import "IFIOCObjectFactory.h"
 #import "IFIOCProxy.h"
+#import "IFIOCProxyObject.h"
 #import "IFPostScheme.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
@@ -139,19 +140,18 @@
         }
     }
     if (className) {
-        // PROXY If config proxy available for classname then instantiate proxy instead of new instance.
-        IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForClassName:className];
-        if (proxyEntry) {
-            object = [proxyEntry instantiateProxy];
-        }
-        else {
-            object = [self newInstanceForClassName:className withConfiguration:configuration];
-        }
+        object = [self newInstanceForClassName:className withConfiguration:configuration];
     }
     return object;
 }
 
 - (id)newInstanceForClassName:(NSString *)className withConfiguration:(IFConfiguration *)configuration {
+    // PROXY If config proxy available for classname then instantiate proxy instead of new instance.
+    IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForClassName:className];
+    if (proxyEntry) {
+        return [proxyEntry instantiateProxy];
+    }
+    // Otherwise continue with class instantiation.
     Class class = NSClassFromString(className);
     if (class == nil) {
         DDLogError(@"%@: Class not found %@", LogTag, className);
@@ -312,7 +312,7 @@
     }
     // PROXY Only set value if property is writeable
     if (value != nil && [propInfo isWriteable]) {
-        object[propName] = value;
+        [object setValue:value forKey:propName];
     }
     return value;
 }
@@ -388,6 +388,9 @@
             if ([propertyInfo isAssignableFrom:[object class]]) {
                 [self setValue:object forKey:name];
             }
+            // TODO: Following doesn't make total sense, as a property value (object) has already been resolved at
+            // this point, yet the value is discarded and re-resolved below. Note that currently only top-level
+            // string property values seem to take this route. Any change here relates to the TODO above on proxies.
             else {
                 // Else try setting through the standard property setting machinery.
                 object = [self configureProperty:name info:propertyInfo object:self configuration:_containerConfig];
@@ -463,8 +466,8 @@
             // No instantiation hints on the configuration, but the property already has a
             // value so try configuring that instead.
             [self configureObject:value withConfiguration:propConfig identifier:name];
-            // The property value doesn't need to be set, so return nil.
-            return nil;
+            // Return the configured value.
+            return value;
         }
     }
     // See if object type is compatible with the property.
@@ -475,10 +478,10 @@
     if ([object isKindOfClass:[IFResource class]]) {
         // TODO: Should we instead recurse into this method with the unpacked resource value?
         object = ((IFResource *)object).data;
-    }
-    // Try setting property again.
-    if ([[object class] isSubclassOfClass:propClass]) {
-        return object;
+        // Try setting property again.
+        if ([[object class] isSubclassOfClass:propClass]) {
+            return object;
+        }
     }
     // If a configuration was found but no type or class info specified then try instantiating an object using the
     // configuration and inferred type information.
@@ -574,19 +577,26 @@
 #pragma mark - Static methods
 
 // May of configuration proxies keyed by class name. Classes without a registered proxy get an NSNull entry.
-static NSMutableDictionary *configurationProxies;
+static NSMutableDictionary *IFContainer_proxies;
 
 + (void)initialize {
-    configurationProxies = [NSMutableDictionary new];
+    IFContainer_proxies = [NSMutableDictionary new];
+    NSDictionary *registeredProxyClasses = [IFIOCProxyObject registeredProxyClasses];
+    for (NSString *className in registeredProxyClasses) {
+        NSValue *value = (NSValue *)registeredProxyClasses[className];
+        __unsafe_unretained Class proxyClass = (Class)[value nonretainedObjectValue];
+        IFIOCProxyLookupEntry *proxyEntry = [[IFIOCProxyLookupEntry alloc] initWithClass:proxyClass];
+        IFContainer_proxies[className] = proxyEntry;
+    }
 }
 
 + (void)registerConfigurationProxyClassName:(__unsafe_unretained Class)proxyClass forClassName:(NSString *)className {
     if (!proxyClass) {
-        configurationProxies[className] = [NSNull null];
+        IFContainer_proxies[className] = [NSNull null];
     }
     else {
         IFIOCProxyLookupEntry *proxyEntry = [[IFIOCProxyLookupEntry alloc] initWithClass:proxyClass];
-        configurationProxies[className] = proxyEntry;
+        IFContainer_proxies[className] = proxyEntry;
     }
 }
 
@@ -603,7 +613,7 @@ static NSMutableDictionary *configurationProxies;
 
 + (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClass:(__unsafe_unretained Class)class className:(NSString *)className {
     // First check for an entry under the current object's specific class name.
-    id proxyEntry = configurationProxies[className];
+    id proxyEntry = IFContainer_proxies[className];
     if (proxyEntry != nil) {
         // NSNull at this stage indicates no proxy available for the specific object class.
         return proxyEntry == [NSNull null] ? nil : (IFIOCProxyLookupEntry *)proxyEntry;
@@ -613,10 +623,10 @@ static NSMutableDictionary *configurationProxies;
     class = [class superclass];
     while (class) {
         className = NSStringFromClass(class);
-        proxyEntry = configurationProxies[className];
+        proxyEntry = IFContainer_proxies[className];
         if (proxyEntry) {
             // Proxy found, record the same proxy for the specific class and return the result.
-            configurationProxies[specificClassName] = proxyEntry;
+            IFContainer_proxies[specificClassName] = proxyEntry;
             return proxyEntry == [NSNull null] ? nil : (IFIOCProxyLookupEntry *)proxyEntry;
         }
         // Nothing found yet, continue to the next superclass.
@@ -624,7 +634,7 @@ static NSMutableDictionary *configurationProxies;
     }
     // If we get to here then there is no registered proxy available for the object's class or any of its
     // superclasses; register an NSNull in the dictionary so that future lookups can complete quicker.
-    configurationProxies[specificClassName] = [NSNull null];
+    IFContainer_proxies[specificClassName] = [NSNull null];
     return nil;
 }
 
