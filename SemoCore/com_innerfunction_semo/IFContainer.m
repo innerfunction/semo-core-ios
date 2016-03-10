@@ -496,6 +496,10 @@
             DDLogCInfo(@"Failed to instantiate instance of inferred type %@: %@", className, exception);
         }
     }
+    // If class is nil then then property is defined with (id) type, so should accept the current object, if any.
+    if (propClass == nil) {
+        return object;
+    }
     // Unable to instantiate an object of a compatible type, so return nil.
     return nil;
 }

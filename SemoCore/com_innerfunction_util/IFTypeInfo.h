@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 
 @interface IFPropertyInfo : NSObject {
-    const char * _propertyType;
+    NSString *_propertyType;
     __unsafe_unretained Class _propertyClass;
     BOOL _isWriteable;
 }
@@ -34,5 +34,6 @@
 - (id)initWithObject:(id)object;
 - (IFPropertyInfo *)infoForProperty:(NSString *)propName;
 + (IFTypeInfo *)typeInfoForObject:(id)object;
++ (void)clearCache;
 
 @end
