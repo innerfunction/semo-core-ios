@@ -43,10 +43,24 @@
 }
 
 - (UIImage *)asImage {
-    // NOTE: We first attempt to resolve the image as a named image (i.e. as an image packaged with the app) first, before
-    // attempting to load it as a file from the specified path. Is there a small posibility that this could load the wrong image,
-    // in certain circumstances?
-    UIImage *image = [IFTypeConversions asImage:self.uri.name];
+    // First try loading the image by name; this will only work for file based URI schemes, and
+    // ensures that the correct version of the image is loaded for the current screen resolution
+    // (i.e. @2x @3x) if multiple versions are available.
+    NSString *imageName = self.uri.name;
+    // Remove any leading slash from the image name (i.e. file path) as [UIImage imageNamed:] won't
+    // find the image otherwise.
+    if ([imageName hasPrefix:@"/"]) {
+        imageName = [imageName substringFromIndex:1];
+    }
+    // Try loading the image by name.
+    UIImage *image = [IFTypeConversions asImage:imageName];
+    // Image can't be loaded by name, try loading from file instead.
+    if (!image) {
+        image = [UIImage imageWithContentsOfFile:self.uri.name];
+    }
+    // Image can't be loaded by name or from file, try loading using the resource data instead.
+    // (Note that this method is probably only useful for subclasses of this resource class that
+    // aren't backed by a file on the device file system).
     if (!image) {
         image = [UIImage imageWithData:[self asData]];
     }
