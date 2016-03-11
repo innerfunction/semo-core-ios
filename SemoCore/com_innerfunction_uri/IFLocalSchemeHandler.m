@@ -10,28 +10,24 @@
 
 @implementation IFLocalResource
 
-@synthesize key, storage;
-
-- (id)getData {
-    return [storage objectForKey:key];
+- (id)data {
+    return [_storage objectForKey:_key];
 }
 
-- (void)setData:(id)_data {
-    self.data = _data;
-
+- (void)setData:(id)data {
     // TODO: It's not clear whether NSUserDefaults will perform correct type conversions when a value
     // set using setObject: is read back out using a type specific method.
     // For example, is an NSNumber is passed here, representing either a bool or a float, will a read
     // using the corresponding floatForKey: or bookForKey: methods return the correct value?
     // Testing is necessary to find out.
-    [storage setObject:self.data forKey:key];
+    [_storage setObject:data forKey:_key];
     
     // Send notification of the update.
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"IFNotificationLocalDataUpdate" object:key];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"IFNotificationLocalDataUpdate" object:_key];
 }
 
 - (NSString *)asString {
-    return [storage stringForKey:key];
+    return [_storage stringForKey:_key];
 }
 
 @end
