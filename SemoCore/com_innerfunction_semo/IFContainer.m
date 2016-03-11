@@ -260,7 +260,7 @@
     }
     else if ([propInfo isAssignableFrom:[NSArray class]]) {
         if ([configuration getValueType:propName] == IFValueTypeList) {
-            NSArray *list = (NSArray *)[configuration getValue:propName];
+            NSArray *list = (NSArray *)[configuration getValue:propName asRepresentation:@"json"];
             NSInteger length = [list count];
             NSMutableArray *propValues = [[NSMutableArray alloc] initWithCapacity:length];
             __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];

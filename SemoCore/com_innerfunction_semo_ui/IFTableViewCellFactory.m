@@ -20,6 +20,7 @@
 - (id)init {
     self = [super init];
     if (self) {
+        _height = DefaultRowHeight;
     }
     return self;
 }
