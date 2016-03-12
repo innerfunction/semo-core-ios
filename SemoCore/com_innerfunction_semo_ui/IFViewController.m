@@ -22,7 +22,7 @@
 
 @implementation IFViewController
 
-@synthesize iocContainer = _iocContainer;
+@synthesize iocContainer = _iocContainer, behaviours = _behaviours;
 
 - (id)init {
     self = [super init];
@@ -30,6 +30,7 @@
         _hideTitleBar = NO;
         _namedViews = [NSDictionary dictionary];
         _actionProxyLookup = [NSMutableDictionary new];
+        _behaviours = [NSArray array];
         [self doViewInitialization];
     }
     return self;
@@ -42,9 +43,36 @@
         _hideTitleBar = NO;
         _namedViews = [NSDictionary dictionary];
         _actionProxyLookup = [NSMutableDictionary new];
+        _behaviours = [NSArray array];
         [self doViewInitialization];
     }
     return self;
+}
+
+#pragma mark - IFViewBehaviourController protocol
+
+- (void)setBehaviour:(id<IFViewBehaviour>)behaviour {
+    self.behaviours = @[ behaviour ];
+}
+
+- (id<IFViewBehaviour>)behaviour {
+    return [self.behaviours firstObject];
+}
+
+- (void)setBehaviours:(NSArray *)behaviours {
+    NSPredicate *isNotNil = [NSPredicate predicateWithBlock:^BOOL(id  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return evaluatedObject != nil;
+    }];
+    _behaviours = [behaviours filteredArrayUsingPredicate:isNotNil];
+    for (id<IFViewBehaviour> behaviour in _behaviours) {
+        behaviour.viewController = self;
+    }
+}
+
+- (void)addBehaviour:(id<IFViewBehaviour>)behaviour {
+    if (behaviour) {
+        _behaviours = [_behaviours arrayByAddingObject:behaviour];
+    }
 }
 
 #pragma mark - Lifecycle methods
@@ -68,8 +96,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (_onShow) {
-        _onShow(self);
+    for (id<IFViewBehaviour> behaviour in _behaviours) {
+        [behaviour viewDidAppear];
     }
 }
 
@@ -82,6 +110,11 @@
 #pragma mark - IFMessageHandler protocol
 
 - (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+    for (id<IFViewBehaviour> behaviour in _behaviours) {
+        if ([behaviour handleMessage:message sender:sender]) {
+            return YES;
+        }
+    }
     if ([message hasName:@"toast"]) {
         NSString *toastMessage = [message parameterValue:@"message"];
         if (toastMessage) {

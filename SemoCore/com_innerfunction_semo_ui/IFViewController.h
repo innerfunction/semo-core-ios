@@ -10,12 +10,9 @@
 #import "IFIOCContainerAware.h"
 #import "IFMessageHandler.h"
 #import "IFActionProxy.h"
+#import "IFViewBehaviour.h"
 
-@class IFViewController;
-
-typedef void (^IFViewControllerEvent)(IFViewController *);
-
-@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageHandler, IFActionProxy> {
+@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageHandler, IFActionProxy, IFViewBehaviourController> {
     NSMutableDictionary *_actionProxyLookup;
 }
 
@@ -27,8 +24,6 @@ typedef void (^IFViewControllerEvent)(IFViewController *);
 @property (nonatomic, strong) UIBarButtonItem *leftTitleBarButton;
 /** An optional right-side title bar item. */
 @property (nonatomic, strong) UIBarButtonItem *rightTitleBarButton;
-/** Block invoked when view is displayed. */
-@property (nonatomic, copy) IFViewControllerEvent onShow;
 /** The layout name. Corresponds to the name of a nib file. */
 @property (nonatomic, strong) NSString *layoutName;
 /** Map of named view components. */

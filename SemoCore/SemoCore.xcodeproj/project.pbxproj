@@ -27,6 +27,9 @@
 		072DA4B51C8491070023FAEC /* UIImage+CropScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 072DA4B11C8491070023FAEC /* UIImage+CropScale.m */; };
 		072DA4B61C8491070023FAEC /* UIViewController+Toast.h in Headers */ = {isa = PBXBuildFile; fileRef = 072DA4B21C8491070023FAEC /* UIViewController+Toast.h */; };
 		072DA4B71C8491070023FAEC /* UIViewController+Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 072DA4B31C8491070023FAEC /* UIViewController+Toast.m */; };
+		074C3DC31C944D32009BBEEF /* IFViewBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 074C3DC21C944D32009BBEEF /* IFViewBehaviour.h */; };
+		074C3DC61C944FC3009BBEEF /* IFViewBehaviourObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 074C3DC41C944FC3009BBEEF /* IFViewBehaviourObject.h */; };
+		074C3DC71C944FC3009BBEEF /* IFViewBehaviourObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 074C3DC51C944FC3009BBEEF /* IFViewBehaviourObject.m */; };
 		07933EEF1C8A41EF003D6227 /* IFIOCProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */; };
 		07933EF61C8A588B003D6227 /* IFUILabelProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EF41C8A588B003D6227 /* IFUILabelProxy.h */; };
 		07933EF71C8A588B003D6227 /* IFUILabelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07933EF51C8A588B003D6227 /* IFUILabelProxy.m */; };
@@ -191,6 +194,9 @@
 		072DA4B11C8491070023FAEC /* UIImage+CropScale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CropScale.m"; path = "com_innerfunction_semo_ui/UIImage+CropScale.m"; sourceTree = SOURCE_ROOT; };
 		072DA4B21C8491070023FAEC /* UIViewController+Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Toast.h"; path = "com_innerfunction_semo_ui/UIViewController+Toast.h"; sourceTree = SOURCE_ROOT; };
 		072DA4B31C8491070023FAEC /* UIViewController+Toast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Toast.m"; path = "com_innerfunction_semo_ui/UIViewController+Toast.m"; sourceTree = SOURCE_ROOT; };
+		074C3DC21C944D32009BBEEF /* IFViewBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFViewBehaviour.h; path = com_innerfunction_semo_ui/IFViewBehaviour.h; sourceTree = SOURCE_ROOT; };
+		074C3DC41C944FC3009BBEEF /* IFViewBehaviourObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFViewBehaviourObject.h; path = com_innerfunction_semo_ui/IFViewBehaviourObject.h; sourceTree = SOURCE_ROOT; };
+		074C3DC51C944FC3009BBEEF /* IFViewBehaviourObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFViewBehaviourObject.m; path = com_innerfunction_semo_ui/IFViewBehaviourObject.m; sourceTree = SOURCE_ROOT; };
 		07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCProxy.h; path = com_innerfunction_semo/IFIOCProxy.h; sourceTree = SOURCE_ROOT; };
 		07933EF41C8A588B003D6227 /* IFUILabelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFUILabelProxy.h; path = com_innerfunction_semo_ui/IFUILabelProxy.h; sourceTree = SOURCE_ROOT; };
 		07933EF51C8A588B003D6227 /* IFUILabelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFUILabelProxy.m; path = com_innerfunction_semo_ui/IFUILabelProxy.m; sourceTree = SOURCE_ROOT; };
@@ -473,6 +479,9 @@
 				07933F041C8F801C003D6227 /* IFUIBarButtonItemProxy.h */,
 				07933F051C8F801C003D6227 /* IFUIBarButtonItemProxy.m */,
 				07933F0A1C8F8A8F003D6227 /* IFActionProxy.h */,
+				074C3DC21C944D32009BBEEF /* IFViewBehaviour.h */,
+				074C3DC41C944FC3009BBEEF /* IFViewBehaviourObject.h */,
+				074C3DC51C944FC3009BBEEF /* IFViewBehaviourObject.m */,
 				07BD8A8B1C76537E0058D7A8 /* IFNavigationViewController.h */,
 				07BD8A8C1C76537E0058D7A8 /* IFNavigationViewController.m */,
 				07BD8A8D1C76537E0058D7A8 /* IFSlideViewController.h */,
@@ -693,6 +702,7 @@
 				072DA4A61C848D680023FAEC /* JTSSimpleImageDownloader.h in Headers */,
 				07BD8A821C7653670058D7A8 /* IFNewScheme.h in Headers */,
 				07BD8A541C7653400058D7A8 /* IFIOCContainerAware.h in Headers */,
+				074C3DC61C944FC3009BBEEF /* IFViewBehaviourObject.h in Headers */,
 				07BD8AA31C76537E0058D7A8 /* IFViewController.h in Headers */,
 				07BD8A551C7653400058D7A8 /* IFIOCObjectFactory.h in Headers */,
 				07BD8AF41C7653AD0058D7A8 /* IFLogging.h in Headers */,
@@ -736,6 +746,7 @@
 				07BD8A991C76537E0058D7A8 /* IFNavigationViewController.h in Headers */,
 				07BD8B4A1C7653FC0058D7A8 /* ioapi.h in Headers */,
 				07BD8B511C7653FC0058D7A8 /* ZipArchive.h in Headers */,
+				074C3DC31C944D32009BBEEF /* IFViewBehaviour.h in Headers */,
 				07BD8AF91C7653AD0058D7A8 /* IFTypeConversions.h in Headers */,
 				07BD8A5D1C7653400058D7A8 /* NSDictionary+IFValues.h in Headers */,
 				07BD8AC71C7653930058D7A8 /* IFStringSchemeHandler.h in Headers */,
@@ -890,6 +901,7 @@
 				07BD8AEF1C7653AD0058D7A8 /* IFJSONData.m in Sources */,
 				07BD8B1D1C7653F00058D7A8 /* DDFileLogger.m in Sources */,
 				072DA4B71C8491070023FAEC /* UIViewController+Toast.m in Sources */,
+				074C3DC71C944FC3009BBEEF /* IFViewBehaviourObject.m in Sources */,
 				07BD8B451C7653FC0058D7A8 /* SWRevealViewController.m in Sources */,
 				07BD8ABE1C7653930058D7A8 /* IFFileResource.m in Sources */,
 				07190CB21C8054A400CE8F22 /* IFPostScheme.m in Sources */,

@@ -275,9 +275,15 @@
         if (!dispatched) {
             // Message not dispatched, so try moving up the view hierarchy.
             if ([handler isKindOfClass:[UIViewController class]]) {
+                UIViewController *currentHandler = (UIViewController *)handler;
                 // If action sender is a view controller then bubble the action up through the
                 // view controller hierachy until a hander is found.
-                handler = ((UIViewController *)handler).parentViewController;
+                if (currentHandler.presentingViewController) {
+                    handler = currentHandler.presentingViewController;
+                }
+                else {
+                    handler = currentHandler.parentViewController;
+                }
             }
             else if ([handler isKindOfClass:[UIView class]]) {
                 // If action sender is a view then bubble the action up through the view hierarchy.

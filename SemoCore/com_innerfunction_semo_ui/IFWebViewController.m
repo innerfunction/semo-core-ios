@@ -210,7 +210,7 @@
         self.content = [message.parameters objectForKey:@"content"];
         return YES;
     }
-    return NO;
+    return [super handleMessage:message sender:sender];
 }
 
 @end
