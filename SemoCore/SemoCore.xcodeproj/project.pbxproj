@@ -171,6 +171,8 @@
 		07BD8B5B1C7654ED0058D7A8 /* SemoCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8B551C7654ED0058D7A8 /* SemoCore-Prefix.pch */; };
 		07BD8B5C1C7654ED0058D7A8 /* SemoCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8B561C7654ED0058D7A8 /* SemoCore.h */; };
 		07BD8B5D1C7654ED0058D7A8 /* SemoCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8B571C7654ED0058D7A8 /* SemoCore.m */; };
+		07CD9B951C96F39B00427681 /* IFIOCPendingNamed.h in Headers */ = {isa = PBXBuildFile; fileRef = 07CD9B931C96F39B00427681 /* IFIOCPendingNamed.h */; };
+		07CD9B961C96F39B00427681 /* IFIOCPendingNamed.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD9B941C96F39B00427681 /* IFIOCPendingNamed.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -344,6 +346,8 @@
 		07BD8B571C7654ED0058D7A8 /* SemoCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SemoCore.m; sourceTree = SOURCE_ROOT; };
 		07BD8B581C7654ED0058D7A8 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = SOURCE_ROOT; };
 		07BD8B641C7658AF0058D7A8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		07CD9B931C96F39B00427681 /* IFIOCPendingNamed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCPendingNamed.h; path = com_innerfunction_semo/IFIOCPendingNamed.h; sourceTree = SOURCE_ROOT; };
+		07CD9B941C96F39B00427681 /* IFIOCPendingNamed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFIOCPendingNamed.m; path = com_innerfunction_semo/IFIOCPendingNamed.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -425,6 +429,8 @@
 				07BD8A331C7653400058D7A8 /* IFConfiguredLocals.m */,
 				07BD8A341C7653400058D7A8 /* IFContainer.h */,
 				07BD8A351C7653400058D7A8 /* IFContainer.m */,
+				07CD9B931C96F39B00427681 /* IFIOCPendingNamed.h */,
+				07CD9B941C96F39B00427681 /* IFIOCPendingNamed.m */,
 				07BD8A361C7653400058D7A8 /* IFCoreTypes.h */,
 				07BD8A371C7653400058D7A8 /* IFCoreTypes.m */,
 				07BD8A381C7653400058D7A8 /* IFIOCConfigurable.h */,
@@ -754,6 +760,7 @@
 				07BD8AC91C7653930058D7A8 /* IFURIHandling.h in Headers */,
 				07BD8A521C7653400058D7A8 /* IFIOCConfigurable.h in Headers */,
 				07BD8B1A1C7653F00058D7A8 /* DDASLLogger.h in Headers */,
+				07CD9B951C96F39B00427681 /* IFIOCPendingNamed.h in Headers */,
 				07A9E5371C836B8400AB32A0 /* IFMessageTargetContainer.h in Headers */,
 				07BD8ABD1C7653930058D7A8 /* IFFileResource.h in Headers */,
 				07BD8AFF1C7653AD0058D7A8 /* NSDictionary+IF.h in Headers */,
@@ -906,6 +913,7 @@
 				07BD8ABE1C7653930058D7A8 /* IFFileResource.m in Sources */,
 				07190CB21C8054A400CE8F22 /* IFPostScheme.m in Sources */,
 				07BD8B231C7653F00058D7A8 /* ContextFilterLogFormatter.m in Sources */,
+				07CD9B961C96F39B00427681 /* IFIOCPendingNamed.m in Sources */,
 				07BD8B1B1C7653F00058D7A8 /* DDASLLogger.m in Sources */,
 				07BD8AA61C76537E0058D7A8 /* IFWebViewController.m in Sources */,
 				07BD8B491C7653FC0058D7A8 /* ioapi.c in Sources */,

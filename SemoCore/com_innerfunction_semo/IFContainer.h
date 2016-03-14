@@ -33,7 +33,7 @@
     IFTypeInfo *_propertyTypeInfo;
     // A list containing the names of objects currently being built (instantiated/configured).
     // Used to detect dependency cycles when building the named object graph.
-    NSMutableArray *_pendingNames;
+    NSMutableDictionary *_pendingNames;
     // Flag indicating whether the container and all its services are running.
     BOOL _running;
 }
@@ -73,6 +73,6 @@
  * The proxy will be used for all subclasses of the property class also, unless a different proxy is registered
  * for a specific subclass. No proxy will be used for a specific subclass if a nil proxy class name is registered.
  */
-+ (void)registerConfigurationProxyClass:(__unsafe_unretained Class)proxyClass forClassName:(NSString *)className;
++ (void)registerConfigurationProxyClassName:(__unsafe_unretained Class)proxyClass forClassName:(NSString *)className;
 
 @end

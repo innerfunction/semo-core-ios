@@ -52,7 +52,9 @@
 #pragma mark - IFViewBehaviourController protocol
 
 - (void)setBehaviour:(id<IFViewBehaviour>)behaviour {
-    self.behaviours = @[ behaviour ];
+    if (behaviour != nil) {
+        self.behaviours = @[ behaviour ];
+    }
 }
 
 - (id<IFViewBehaviour>)behaviour {
@@ -60,10 +62,7 @@
 }
 
 - (void)setBehaviours:(NSArray *)behaviours {
-    NSPredicate *isNotNil = [NSPredicate predicateWithBlock:^BOOL(id  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return evaluatedObject != nil;
-    }];
-    _behaviours = [behaviours filteredArrayUsingPredicate:isNotNil];
+    _behaviours = behaviours;
     for (id<IFViewBehaviour> behaviour in _behaviours) {
         behaviour.viewController = self;
     }

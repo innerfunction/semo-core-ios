@@ -16,6 +16,7 @@
 #import "IFIOCObjectFactory.h"
 #import "IFIOCProxy.h"
 #import "IFIOCProxyObject.h"
+#import "IFIOCPendingNamed.h"
 #import "IFPostScheme.h"
 #import "IFTypeConversions.h"
 #import "IFLogging.h"
@@ -55,6 +56,9 @@
 /** Instantiate and configure a named object. */
 - (id)buildNamedObject:(NSString *)name;
 
+/** Set a named property on an object. */
+- (id)setProperty:(NSString *)propName info:(IFPropertyInfo *)propInfo object:(id)object value:(id)value;
+
 /** Lookup a configuration proxy for an object instance. */
 + (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object;
 
@@ -71,12 +75,12 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _named = [[NSMutableDictionary alloc] init];
-        _services = [[NSMutableArray alloc] init];
+        _named = [NSMutableDictionary new];
+        _services = [NSMutableArray new];
         _types = [IFConfiguration emptyConfiguration];
         _running = NO;
         _propertyTypeInfo = [IFTypeInfo typeInfoForObject:self];
-        _pendingNames = [[NSMutableArray alloc] init];
+        _pendingNames = [NSMutableDictionary new];
     }
     return self;
 }
@@ -299,6 +303,11 @@
         id propValue = [object valueForKey:propName];
         value = [self resolveObjectPropertyOfType:propClass fromConfiguration:configuration name:propName value:propValue];
     }
+    value = [self setProperty:propName info:propInfo object:object value:value];
+    return value;
+}
+
+- (id)setProperty:(NSString *)propName info:(IFPropertyInfo *)propInfo object:(id)object value:(id)value {
     // Notify object aware values that they are about to be injected into the object under the current property name.
     // NOTE: This happens at this point - instead of after the value injection - so that value proxies can receive the
     // notification. If it notification was deferred until after the injection then any proxied values probably won't
@@ -306,12 +315,19 @@
     if ([value conformsToProtocol:@protocol(IFIOCObjectAware)]) {
         [(id<IFIOCObjectAware>)value notifyIOCObject:object propertyName:propName];
     }
-    // PROXY If value is a config proxy then unwrap the underlying value
+    // If value is a config proxy then unwrap the underlying value
     if ([value conformsToProtocol:@protocol(IFIOCProxy)]) {
         value = [(id<IFIOCProxy>)value unwrapValue];
     }
-    // PROXY Only set value if property is writeable
-    if (value != nil && [propInfo isWriteable]) {
+    if ([value isKindOfClass:[IFIOCPendingNamed class]]) {
+        // Value is a pending named value. Record the current property and object info, but skip further processing.
+        // The property value will be set once the named reference is fully configured, see buildNamedObject:.
+        IFIOCPendingNamed *pending = (IFIOCPendingNamed *)value;
+        pending.propName = propName;
+        pending.propInfo = propInfo;
+        pending.object = object;
+    }
+    else if (value != nil && [propInfo isWriteable]) {
         [object setValue:value forKey:propName];
     }
     return value;
@@ -351,7 +367,7 @@
 // Build a named object from the available configuration and property type info.
 - (id)buildNamedObject:(NSString *)name {
     // Track that we're about to build this name.
-    [_pendingNames addObject:name];
+    [_pendingNames setObject:@[] forKey:name];
     // Resolve the object's configuration.
     id object = [_containerConfig getValue:name];
     IFPropertyInfo *propertyInfo = [_propertyTypeInfo infoForProperty:name];
@@ -398,8 +414,14 @@
         }
         [_named setObject:object forKey:name];
     }
+    // Object is configured, notify any pending named references
+    NSArray *pendings = [_pendingNames objectForKey:name];
+    for (IFIOCPendingNamed *pending in pendings) {
+        id value = [pending resolveValue:object];
+        [self setProperty:pending.propName info:pending.propInfo object:pending.object value:value];
+    }
     // Finished building the current name, remove from list.
-    [_pendingNames removeLastObject];
+    [_pendingNames removeObjectForKey:name];
     return object;
 }
 
@@ -408,12 +430,21 @@
     id object = [_named objectForKey:name];
     // If named object not found then consider whether to try building it.
     if (object == nil) {
-        // Check for a dependency cycle.
-        if ([_pendingNames containsObject:name]) {
-            NSLog(@"WARNING: Named dependency cycle detected %@ -> %@", [_pendingNames componentsJoinedByString:@" -> "], name);
+        // Check for a dependency cycle. If the requested name exists in _pendingNames then the named object is currently
+        // being configured.
+        NSArray *pending = _pendingNames[name];
+        if (pending != nil) {
+            //NSLog(@"WARNING: Named dependency cycle detected %@ -> %@", [_pendingNames componentsJoinedByString:@" -> "], name);
+            NSLog(@"IDO: Named dependency cycle detected, creating pending entry for %@...", name);
+            // Create a placeholder object and record in the list of placeholders waiting for the named configuration to complete.
+            // Note that the placeholder is returned in place of the named - code above detects the placeholder and ensures that
+            // the correct value is resolved instead.
+            object = [[IFIOCPendingNamed alloc] initWithNamed:name];
+            pending = [pending arrayByAddingObject:object];
+            [_pendingNames setObject:pending forKey:name];
         }
         else if ([_containerConfig hasValue:name]) {
-            NSLog(@"IDO: Prioritizing building of named %@ -> %@", [_pendingNames componentsJoinedByString:@"."], name);
+            //NSLog(@"IDO: Prioritizing building of named %@ -> %@", [_pendingNames componentsJoinedByString:@"."], name);
             // The container config contains a configuration for the wanted name, but _named doesn't contain
             // any reference so therefore it's likely that the object hasn't been built yet; try building it now.
             object = [self buildNamedObject:name];
@@ -449,6 +480,10 @@
                              name:(NSString *)name
                             value:(id)value {
     id object = [configuration getValue:name];
+    // Return pending names immediately.
+    if ([object isKindOfClass:[IFIOCPendingNamed class]]) {
+        return object;
+    }
     IFConfiguration *propConfig = nil;
     // If object is a dictionary then try resolving an object using the configuration.
     if ([object isKindOfClass:[NSDictionary class]]) {

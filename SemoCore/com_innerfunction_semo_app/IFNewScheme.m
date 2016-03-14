@@ -26,6 +26,11 @@
     NSString *typeName = uri.name;
     IFConfiguration *config = [[[IFConfiguration alloc] initWithData:params] normalize];
     id result = [container newInstanceForTypeName:typeName withConfiguration:config];
+    if (!result) {
+        // If instantiation fails (i.e. because the type name isn't recognized) then try instantiating
+        // from class name.
+        result = [container newInstanceForClassName:typeName withConfiguration:config];
+    }
     if (result) {
         [container configureObject:result withConfiguration:config identifier:[uri description]];
     }
