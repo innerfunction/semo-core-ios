@@ -10,15 +10,13 @@
 
 @implementation IFIOCPendingNamed
 
-- (id)initWithNamed:(NSString *)named {
-    self = [super init];
-    if (self) {
-        _named = named;
-    }
-    return self;
+- (void)setObject:(id)object {
+    _object = object;
+    _objectKey = [NSValue valueWithNonretainedObject:object];
 }
 
 - (id)resolveValue:(id)value {
+    // If a reference path is set then use it to fully resolve the pending value on the named object.
     if (_referencePath) {
         if ([value respondsToSelector:@selector(valueForKeyPath:)]) {
             value = [value valueForKeyPath:_referencePath];

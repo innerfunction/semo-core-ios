@@ -57,7 +57,10 @@
 - (id)buildNamedObject:(NSString *)name;
 
 /** Set a named property on an object. */
-- (id)setProperty:(NSString *)propName info:(IFPropertyInfo *)propInfo object:(id)object value:(id)value;
+- (id)setProperty:(id)propKey info:(IFPropertyInfo *)propInfo object:(id)object value:(id)value;
+
+/** Increment the number of pending value refs for an object. */
+- (void)incPendingValueRefCountForPendingObject:(IFIOCPendingNamed *)pending;
 
 /** Lookup a configuration proxy for an object instance. */
 + (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object;
@@ -81,6 +84,8 @@
         _running = NO;
         _propertyTypeInfo = [IFTypeInfo typeInfoForObject:self];
         _pendingNames = [NSMutableDictionary new];
+        _pendingValueRefs = [NSMutableDictionary new];
+        _pendingValueObjectConfigs = [NSMutableDictionary new];
     }
     return self;
 }
@@ -214,7 +219,16 @@
             [self configureProperty:propName info:propertyInfo object:object configuration:configuration];
         }
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
-            [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
+            NSValue *objectKey = [NSValue valueWithNonretainedObject:object];
+            // Check that no pending value refs are outstanding for the object.
+            if (_pendingValueRefs[objectKey] == nil) {
+                [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
+            }
+            else {
+                // Else afterConfiguration: is called once all pending values are resolved; record the object
+                // configuration for use later.
+                _pendingValueObjectConfigs[objectKey] = configuration;
+            }
         }
         // If running and the object is a service instance then start the service now that it is fully configured.
         if (_running && [object conformsToProtocol:@protocol(IFService)]) {
@@ -276,7 +290,18 @@
                                                fromConfiguration:configuration
                                                             name:[NSString stringWithFormat:@"%@.%ld", propName, (long)idx]
                                                            value:nil];
-                [propValues addObject:propValue];
+                if ([propValue isKindOfClass:[IFIOCPendingNamed class]]) {
+                    // Value is a pending named value. Record the current property and object info, but skip further processing.
+                    // The property value will be set once the named reference is fully configured, see buildNamedObject:.
+                    IFIOCPendingNamed *pending = (IFIOCPendingNamed *)propValue;
+                    pending.key = [NSNumber numberWithInteger:idx];
+                    pending.object = propValues;
+                    // Keep count of the number of pending value refs for the current object.
+                    [self incPendingValueRefCountForPendingObject:pending];
+                }
+                else {
+                    [propValues addObject:propValue];
+                }
             }
             value = propValues;
         }
@@ -292,7 +317,18 @@
             for (NSString *valueName in [propConfigs getValueNames]) {
                 id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs name:valueName value:nil];
                 if (propValue) {
-                    [propValues setObject:propValue forKey:valueName];
+                    if ([propValue isKindOfClass:[IFIOCPendingNamed class]]) {
+                        // Value is a pending named value. Record the current property and object info, but skip further processing.
+                        // The property value will be set once the named reference is fully configured, see buildNamedObject:.
+                        IFIOCPendingNamed *pending = (IFIOCPendingNamed *)propValue;
+                        pending.key = valueName;
+                        pending.object = propValues;
+                        // Keep count of the number of pending value refs for the current object.
+                        [self incPendingValueRefCountForPendingObject:pending];
+                    }
+                    else {
+                        [propValues setObject:propValue forKey:valueName];
+                    }
                 }
             }
             value = propValues;
@@ -307,7 +343,8 @@
     return value;
 }
 
-- (id)setProperty:(NSString *)propName info:(IFPropertyInfo *)propInfo object:(id)object value:(id)value {
+- (id)setProperty:(id)propKey info:(IFPropertyInfo *)propInfo object:(id)object value:(id)value {
+    NSString *propName = [propKey description];
     // Notify object aware values that they are about to be injected into the object under the current property name.
     // NOTE: This happens at this point - instead of after the value injection - so that value proxies can receive the
     // notification. If it notification was deferred until after the injection then any proxied values probably won't
@@ -323,12 +360,28 @@
         // Value is a pending named value. Record the current property and object info, but skip further processing.
         // The property value will be set once the named reference is fully configured, see buildNamedObject:.
         IFIOCPendingNamed *pending = (IFIOCPendingNamed *)value;
-        pending.propName = propName;
+        pending.key = propKey;
         pending.propInfo = propInfo;
         pending.object = object;
+        // Keep count of the number of pending value refs for the current object.
+        [self incPendingValueRefCountForPendingObject:pending];
     }
-    else if (value != nil && [propInfo isWriteable]) {
-        [object setValue:value forKey:propName];
+    else if (value != nil) {
+        if ([propInfo isWriteable]) {
+            // Standard object property reference.
+            [object setValue:value forKey:propName];
+        }
+        else if ([object isKindOfClass:[NSDictionary class]]) {
+            // Dictionary collection entry.
+            // NOTE: Assuming here that object is a mutable dictionary.
+            object[propName] = value;
+        }
+        else if ([object isKindOfClass:[NSArray class]]) {
+            // Array item.
+            // NOTE: Assuming here that object is a mutable array, and that propKey is the
+            // index of the value's position in the array.
+            [(NSMutableArray *)object insertObject:value atIndex:[(NSNumber *)propKey integerValue]];
+        }
     }
     return value;
 }
@@ -418,7 +471,22 @@
     NSArray *pendings = [_pendingNames objectForKey:name];
     for (IFIOCPendingNamed *pending in pendings) {
         id value = [pending resolveValue:object];
-        [self setProperty:pending.propName info:pending.propInfo object:pending.object value:value];
+        [self setProperty:pending.key info:pending.propInfo object:pending.object value:value];
+        // Decrement the number of pending value refs for the property object.
+        NSInteger refCount = [(NSNumber *)_pendingValueRefs[pending.objectKey] integerValue] - 1;
+        if (refCount > 0) {
+            _pendingValueRefs[pending.objectKey] = [NSNumber numberWithInteger:refCount];
+        }
+        else {
+            [_pendingValueRefs removeObjectForKey:pending.objectKey];
+            // The property object is now fully configured, invoke its afterConfiguration: method if it
+            // implements IFIOCConifgurable
+            if ([pending.object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
+                IFConfiguration *objConfig = _pendingValueObjectConfigs[pending.objectKey];
+                [(id<IFIOCConfigurable>)pending.object afterConfiguration:objConfig inContainer:self];
+                [_pendingValueObjectConfigs removeObjectForKey:pending.objectKey];
+            }
+        }
     }
     // Finished building the current name, remove from list.
     [_pendingNames removeObjectForKey:name];
@@ -439,7 +507,7 @@
             // Create a placeholder object and record in the list of placeholders waiting for the named configuration to complete.
             // Note that the placeholder is returned in place of the named - code above detects the placeholder and ensures that
             // the correct value is resolved instead.
-            object = [[IFIOCPendingNamed alloc] initWithNamed:name];
+            object = [IFIOCPendingNamed new];
             pending = [pending arrayByAddingObject:object];
             [_pendingNames setObject:pending forKey:name];
         }
@@ -537,6 +605,16 @@
     }
     // Unable to instantiate an object of a compatible type, so return nil.
     return nil;
+}
+
+- (void)incPendingValueRefCountForPendingObject:(IFIOCPendingNamed *)pending {
+    NSNumber *refCount = _pendingValueRefs[pending.objectKey];
+    if (refCount) {
+        _pendingValueRefs[pending.objectKey] = [NSNumber numberWithInteger:([refCount integerValue] + 1)];
+    }
+    else {
+        _pendingValueRefs[pending.objectKey] = @1;
+    }
 }
 
 #pragma mark - IFService

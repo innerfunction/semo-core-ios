@@ -31,9 +31,19 @@
     IFConfiguration *_containerConfig;
     // Type info for the container's properties - allows type inferring of named properties.
     IFTypeInfo *_propertyTypeInfo;
-    // A list containing the names of objects currently being built (instantiated/configured).
+    // A map of pending object names (i.e. objects in the process of being configured) mapped onto
+    // a list of pending value references (i.e. property value references to other pending objects,
+    // which are caused by circular dependency cycles and which can't be fully resolved until the
+    // referenced value has been fully built).
     // Used to detect dependency cycles when building the named object graph.
     NSMutableDictionary *_pendingNames;
+    // A map of pending property value references, keyed by the property's parent object. Used to
+    // manage deferred calls to the <IFIOCConfigurable> [afterConfiguration:inContainer] method.
+    NSMutableDictionary *_pendingValueRefs;
+    // A map of pending value object configurations. These are the configurations for the parent
+    // objects of pending property values. These are needed for deferred calls to the
+    // <IFIOCConfigurable> [afterConfiguration:inContainer] method.
+    NSMutableDictionary *_pendingValueObjectConfigs;
     // Flag indicating whether the container and all its services are running.
     BOOL _running;
 }

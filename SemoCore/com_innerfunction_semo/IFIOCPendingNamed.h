@@ -9,14 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "IFTypeInfo.h"
 
-// TODO: There are a number or problems/shortcomings with this circular dependency solution:
-// 1. It doesn't work for direct mappings in collections, e.g. { "xxx": "@named:yyy" }. The container
-//    configuration cycle could be extended to support this use case, but then the approach probably
-//    wouldn't work on Android due to the stricter typing (i.e. on a generically typed collection,
-//    although because of type erasure, it might work...)
-// 2. Not sure if the approach works for new: and make: URI schemes, due to different configuration
-//    cycle. This needs testing.
-
 /**
  * A placeholder value used to represent a deferred named value.
  * Deferred names happen when circular dependencies are detected. In such cases, the named
@@ -26,14 +18,18 @@
  */
 @interface IFIOCPendingNamed : NSObject
 
-- (id)initWithNamed:(NSString *)named;
-
-@property (nonatomic, strong) NSString *named;
-@property (nonatomic, strong) NSString *propName;
-@property (nonatomic, strong) IFPropertyInfo *propInfo;
+/** The parent object of the property whose value is pending. */
 @property (nonatomic, strong) id object;
+/** A key value to use when tracking this pending in different container dictionaries. */
+@property (nonatomic, strong) NSValue *objectKey;
+/** The property key, e.g. property name; or array index or dictionary key. */
+@property (nonatomic, strong) id key;
+/** Information about the property. */
+@property (nonatomic, strong) IFPropertyInfo *propInfo;
+/** The key path of the property value on the named object. */
 @property (nonatomic, strong) NSString *referencePath;
 
+/** Fully resolve the pending value. */
 - (id)resolveValue:(id)value;
 
 @end
