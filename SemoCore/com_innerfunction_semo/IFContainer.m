@@ -400,9 +400,9 @@
 //   attempt to build and return the named object. This means that in effect, building of an object is
 //   temporarily suspended whilst building of its dependency is prioritized. This process will recurse
 //   until the full dependency chain is resolved.
-// * The container maintains a stack of names being built. This allows the container to detect dependency
-//   cycles and so avoid infinite regression. Dependency cycles cannot be fully resolved, and the last
-//   dependency in a cycle will resolve to nil.
+// * The container maintains a map of names being built. This allows the container to detect dependency
+//   cycles and so avoid infinite regression. Dependency cycles are resolved, but the final object in a
+//   cycle won't be fully configured when injected into the dependent.
 - (void)configureWith:(IFConfiguration *)configuration {
     _containerConfig = configuration;
     // Iterate over named object configs and build each object.
