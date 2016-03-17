@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFPropertyType.m
-//  SemoCore
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 22/04/2015.
 //  Copyright (c) 2015 InnerFunction. All rights reserved.
@@ -169,37 +179,6 @@ static NSMutableDictionary *IFTypeInfo_typeInfoCache;
                 [IFTypeInfo_propertiesByClassName setObject:[_properties copy] forKey:className];
             }
         }
-        
-        /*
-        // Get properties for the current object's class and all its superclasses.
-        _properties = [[NSMutableDictionary alloc] init];
-        unsigned int propCount;
-        Class c = [object class];
-        while (c) {
-            objc_property_t * props = class_copyPropertyList(c, &propCount);
-            for (int i = 0; i < propCount; i++) {
-                objc_property_t prop = props[i];
-                
-                NSString *propName = [NSString stringWithUTF8String:property_getName(prop)];
-                
-                // Skip nil property names.
-                if (propName == nil) continue;
-                
-                // Skip properties beginning with '_'; there are quite a lot of these on iOS core classes,
-                // and the presumably indicate private properties.
-                if ([propName hasPrefix:@"_"]) continue;
-                
-                // Skip properties already mapped (i.e. properties overriden in a subclass).
-                if ([_properties objectForKey:propName] != nil) continue;
-                
-                // Otherwise map the property.
-                IFPropertyInfo *propInfo = [[IFPropertyInfo alloc] initWithProperty:prop];
-                [_properties setObject:propInfo forKey:propName];
-            }
-            // Get the class' superclass
-            c = [c superclass];
-        }
-        */
     }
     return self;
 }

@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  EPStringTemplate.m
-//  EventPacComponents
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 12/04/2013.
 //  Copyright (c) 2013 InnerFunction. All rights reserved.
@@ -9,16 +19,19 @@
 #import "IFStringTemplate.h"
 #import "IFRegExp.h"
 
+/**
+ * A block type used internally by the template engine to represent different nodes
+ * of the compiled template.
+ */
+typedef NSString* (^IFStringTemplateBlock) (id context, BOOL uriEncode);
+
 @interface IFStringTemplate()
 
 - (void)parse:(NSString*)s;
-- (EPStringTemplateBlock)textBlock:(NSString*)text;
-- (EPStringTemplateBlock)refBlock:(NSString*)ref;
+- (IFStringTemplateBlock)textBlock:(NSString*)text;
+- (IFStringTemplateBlock)refBlock:(NSString*)ref;
 
 @end
-
-#define URIEncode(s) ((NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(\
-                        NULL, (__bridge CFStringRef)s, NULL, CFSTR("!*'();:@&=+$,/?%#[]"), kCFStringEncodingUTF8)))
 
 @implementation IFStringTemplate
 
@@ -58,13 +71,13 @@
     _refs = refs;
 }
 
-- (EPStringTemplateBlock)textBlock:(NSString *)text {
+- (IFStringTemplateBlock)textBlock:(NSString *)text {
     return ^(id ctx, BOOL uriEncode) {
         return text;
     };
 }
 
-- (EPStringTemplateBlock)refBlock:(NSString *)ref {
+- (IFStringTemplateBlock)refBlock:(NSString *)ref {
     return ^(id ctx, BOOL uriEncode) {
         id val = nil;
         if ([ctx respondsToSelector:@selector(valueForKeyPath:)]) {
@@ -75,7 +88,7 @@
                 val = e;
             }
             if (val && uriEncode) {
-                val = URIEncode(val);
+                val = [val stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
             }
         }
         return val ? val : @"";
@@ -88,22 +101,22 @@
 
 - (NSString*)render:(id)context uriEncode:(BOOL)uriEncode {
     NSMutableString* result = [[NSMutableString alloc] init];
-    for (EPStringTemplateBlock block in blocks) {
+    for (IFStringTemplateBlock block in blocks) {
         [result appendString:block( context, uriEncode )];
     }
     return result;
 }
 
-+ (IFStringTemplate*)templateWithString:(NSString *)s {
-    return [[IFStringTemplate alloc] initWithString:s];
++ (IFStringTemplate*)templateWithString:(NSString *)string {
+    return [[IFStringTemplate alloc] initWithString:string];
 }
 
-+ (NSString*)render:(NSString *)t context:(id)context {
-    return [[IFStringTemplate templateWithString:t] render:context];
++ (NSString*)render:(NSString *)template context:(id)context {
+    return [[IFStringTemplate templateWithString:template] render:context];
 }
 
-+ (NSString*)render:(NSString *)t context:(id)context uriEncode:(BOOL)uriEncode {
-    return [[IFStringTemplate templateWithString:t] render:context uriEncode:uriEncode];
++ (NSString*)render:(NSString *)template context:(id)context uriEncode:(BOOL)uriEncode {
+    return [[IFStringTemplate templateWithString:template] render:context uriEncode:uriEncode];
 }
 
 @end

@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFLocalSchemeHandler.m
-//  EventPacComponents
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 13/03/2013.
 //  Copyright (c) 2013 InnerFunction. All rights reserved.
@@ -37,7 +47,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        storage = [NSUserDefaults standardUserDefaults];
+        _storage = [NSUserDefaults standardUserDefaults];
     }
     return self;
 }
@@ -46,7 +56,7 @@
     // Init resource with nil data - data will be resolved when data property is requested.
     IFLocalResource *resource = [[IFLocalResource alloc] initWithData:nil uri:uri];
     resource.key = uri.name;
-    resource.storage = storage;
+    resource.storage = _storage;
     return resource;
 }
 

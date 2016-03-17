@@ -411,9 +411,9 @@
 				07BD8B581C7654ED0058D7A8 /* TODO */,
 				07BD8B051C7653B90058D7A8 /* com.innerfunction.util */,
 				07BD8ACA1C76539E0058D7A8 /* com.innerfunction.uri */,
+				07BD8A631C76534C0058D7A8 /* com.innerfunction.semo */,
 				07BD8AA71C7653840058D7A8 /* com.innerfunction.semo.ui */,
 				07BD8A8A1C76536D0058D7A8 /* com.innerfunction.semo.app */,
-				07BD8A631C76534C0058D7A8 /* com.innerfunction.semo */,
 				07BD8B061C7653D30058D7A8 /* Externals */,
 			);
 			path = SemoCore;
@@ -517,21 +517,21 @@
 			children = (
 				07BD8AA81C7653930058D7A8 /* IFCompoundURI.h */,
 				07BD8AA91C7653930058D7A8 /* IFCompoundURI.m */,
-				07BD8AAA1C7653930058D7A8 /* IFFileBasedSchemeHandler.h */,
-				07BD8AAB1C7653930058D7A8 /* IFFileBasedSchemeHandler.m */,
+				07BD8AB81C7653930058D7A8 /* IFURIHandling.h */,
+				07BD8AB21C7653930058D7A8 /* IFResource.h */,
+				07BD8AB31C7653930058D7A8 /* IFResource.m */,
 				07BD8AAC1C7653930058D7A8 /* IFFileResource.h */,
 				07BD8AAD1C7653930058D7A8 /* IFFileResource.m */,
+				07BD8AAA1C7653930058D7A8 /* IFFileBasedSchemeHandler.h */,
+				07BD8AAB1C7653930058D7A8 /* IFFileBasedSchemeHandler.m */,
 				07BD8AAE1C7653930058D7A8 /* IFLocalSchemeHandler.h */,
 				07BD8AAF1C7653930058D7A8 /* IFLocalSchemeHandler.m */,
 				07BD8AB01C7653930058D7A8 /* IFReprSchemeHandler.h */,
 				07BD8AB11C7653930058D7A8 /* IFReprSchemeHandler.m */,
-				07BD8AB21C7653930058D7A8 /* IFResource.h */,
-				07BD8AB31C7653930058D7A8 /* IFResource.m */,
 				07BD8AB41C7653930058D7A8 /* IFStandardURIHandler.h */,
 				07BD8AB51C7653930058D7A8 /* IFStandardURIHandler.m */,
 				07BD8AB61C7653930058D7A8 /* IFStringSchemeHandler.h */,
 				07BD8AB71C7653930058D7A8 /* IFStringSchemeHandler.m */,
-				07BD8AB81C7653930058D7A8 /* IFURIHandling.h */,
 			);
 			name = com.innerfunction.uri;
 			sourceTree = "<group>";
