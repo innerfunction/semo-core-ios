@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFConfiguration.m
-//  EventPacComponents
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 07/03/2013.
 //  Copyright (c) 2013 InnerFunction. All rights reserved.
@@ -206,9 +216,9 @@
     }
 }
 
-- (id)getValue:(NSString*)name asRepresentation:(NSString *)representation {
+- (id)getValue:(NSString*)KeyPath asRepresentation:(NSString *)representation {
     
-    id value = [IFJSONData resolvePath:name onData:_data handler:propertyHandler representation:representation];
+    id value = [IFJSONData resolvePath:KeyPath onData:_data handler:propertyHandler representation:representation];
     
     // Perform type conversions according to the requested representation.
     // These are pretty basic:
@@ -256,85 +266,80 @@
     return value;
 }
 
-- (BOOL)hasValue:(NSString *)name {
-    return [self getValue:name asRepresentation:@"bare"] != nil;
+- (BOOL)hasValue:(NSString *)keyPath {
+    return [self getValue:keyPath asRepresentation:@"bare"] != nil;
 }
 
-- (NSString *)getValueAsString:(NSString *)name {
-    return [self getValueAsString:name defaultValue:nil];
+- (NSString *)getValueAsString:(NSString *)keyPath {
+    return [self getValueAsString:keyPath defaultValue:nil];
 }
 
-- (NSString *)getValueAsString:(NSString*)name defaultValue:(NSString*)defaultValue {
-    NSString* value = [self getValue:name asRepresentation:@"string"];
+- (NSString *)getValueAsString:(NSString*)keyPath defaultValue:(NSString*)defaultValue {
+    NSString* value = [self getValue:keyPath asRepresentation:@"string"];
     return value == nil || ![value isKindOfClass:[NSString class]] ? defaultValue : value;
 }
 
-- (NSString *)getValueAsLocalizedString:(NSString *)name {
-    NSString *value = [self getValueAsString:name];
+- (NSString *)getValueAsLocalizedString:(NSString *)keyPath {
+    NSString *value = [self getValueAsString:keyPath];
     return value == nil ? nil : NSLocalizedString(value, @"");
 }
 
-- (NSNumber *)getValueAsNumber:(NSString *)name {
-    return [self getValueAsNumber:name defaultValue:nil];
+- (NSNumber *)getValueAsNumber:(NSString *)keyPath {
+    return [self getValueAsNumber:keyPath defaultValue:nil];
 }
 
-- (NSNumber *)getValueAsNumber:(NSString*)name defaultValue:(NSNumber*)defaultValue {
-    NSNumber* value = [self getValue:name asRepresentation:@"number"];
+- (NSNumber *)getValueAsNumber:(NSString*)keyPath defaultValue:(NSNumber*)defaultValue {
+    NSNumber* value = [self getValue:keyPath asRepresentation:@"number"];
     return value == nil || ![value isKindOfClass:[NSNumber class]] ? defaultValue : value;
 }
 
-- (BOOL)getValueAsBoolean:(NSString *)name {
-    return [self getValueAsBoolean:name defaultValue:NO];
+- (BOOL)getValueAsBoolean:(NSString *)keyPath {
+    return [self getValueAsBoolean:keyPath defaultValue:NO];
 }
 
-- (BOOL)getValueAsBoolean:(NSString*)name defaultValue:(BOOL)defaultValue {
-    NSNumber* value = [self getValue:name asRepresentation:@"number"];
+- (BOOL)getValueAsBoolean:(NSString*)keyPath defaultValue:(BOOL)defaultValue {
+    NSNumber* value = [self getValue:keyPath asRepresentation:@"number"];
     return value == nil ? defaultValue : [value boolValue];
 }
 
 // Resolve a date value on the cell data at the specified path.
-- (NSDate *)getValueAsDate:(NSString *)name {
-    return [self getValueAsDate:name defaultValue:nil];
+- (NSDate *)getValueAsDate:(NSString *)keyPath {
+    return [self getValueAsDate:keyPath defaultValue:nil];
 }
 
 // Resolve a date value on the cell data at the specified path, return the default value if not set.
-- (NSDate *)getValueAsDate:(NSString *)name defaultValue:(NSDate *)defaultValue {
-    NSDate *value = [self getValue:name asRepresentation:@"date"];
+- (NSDate *)getValueAsDate:(NSString *)keyPath defaultValue:(NSDate *)defaultValue {
+    NSDate *value = [self getValue:keyPath asRepresentation:@"date"];
     return value == nil || ![value isKindOfClass:[NSDate class]] ? defaultValue : value;
 }
 
-- (UIColor *)getValueAsColor:(NSString *)name {
-    NSString *hexValue = [self getValueAsString:name];
+- (UIColor *)getValueAsColor:(NSString *)keyPath {
+    NSString *hexValue = [self getValueAsString:keyPath];
     return hexValue ? [UIColor colorForHex:hexValue] : nil;
 }
 
-- (UIColor *)getValueAsColor:(NSString *)name defaultValue:(UIColor *)defaultValue {
-    UIColor *color = [self getValueAsColor:name];
+- (UIColor *)getValueAsColor:(NSString *)keyPath defaultValue:(UIColor *)defaultValue {
+    UIColor *color = [self getValueAsColor:keyPath];
     return color ? color : defaultValue;
 }
 
-- (NSURL *)getValueAsURL:(NSString *)name {
-    NSURL *value = [self getValue:name asRepresentation:@"url"];
+- (NSURL *)getValueAsURL:(NSString *)keyPath {
+    NSURL *value = [self getValue:keyPath asRepresentation:@"url"];
     return [value isKindOfClass:[NSURL class]] ? value : nil;
 }
 
-- (NSData *)getValueAsData:(NSString *)name {
-    NSData *value = [self getValue:name asRepresentation:@"data"];
+- (NSData *)getValueAsData:(NSString *)keyPath {
+    NSData *value = [self getValue:keyPath asRepresentation:@"data"];
     return [value isKindOfClass:[NSData class]] ? value : nil;
 }
 
-- (UIImage *)getValueAsImage:(NSString *)name {
-    UIImage *value = [self getValue:name asRepresentation:@"image"];
+- (UIImage *)getValueAsImage:(NSString *)keyPath {
+    UIImage *value = [self getValue:keyPath asRepresentation:@"image"];
     return [value isKindOfClass:[UIImage class]] ? value : nil;
 }
-/*
-- (IFResource *)getValueAsResource:(NSString *)name {
-    IFResource *value = [self getValue:name asRepresentation:@"resource"];
-    return [value isKindOfClass:[IFResource class]] ? value : nil;
-}
-*/
-- (id)getValue:(NSString *)name {
-    return [self getValue:name asRepresentation:@"bare"];
+
+- (id)getValue:(NSString *)keyPath {
+    return [self getValue:keyPath asRepresentation:@"bare"];
 }
 
 - (NSArray *)getValueNames {
@@ -344,8 +349,8 @@
     return [NSArray array];
 }
 
-- (IFValueType)getValueType:(NSString *)name {
-    id value = [self getValue:name asRepresentation:@"json"];
+- (IFValueType)getValueType:(NSString *)keyPath {
+    id value = [self getValue:keyPath asRepresentation:@"json"];
     if (value == nil)                           return IFValueTypeUndefined;
     // NOTE: Can't reliably detect boolean here, as boolean values are represented using NSNumber.
     if ([value isKindOfClass:[NSNumber class]]) return IFValueTypeNumber;
@@ -356,26 +361,26 @@
     return IFValueTypeOther;
 }
 
-- (IFConfiguration *)getValueAsConfiguration:(NSString *)name {
-    return [self getValue:name asRepresentation:@"configuration"];
+- (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath {
+    return [self getValue:keyPath asRepresentation:@"configuration"];
 }
 
-- (IFConfiguration *)getValueAsConfiguration:(NSString *)name defaultValue:(IFConfiguration *)defaultValue {
-    IFConfiguration *result = [self getValueAsConfiguration:name];
+- (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath defaultValue:(IFConfiguration *)defaultValue {
+    IFConfiguration *result = [self getValueAsConfiguration:keyPath];
     return result ? result : defaultValue;
 }
 
-- (NSArray *)getValueAsConfigurationList:(NSString *)name {
+- (NSArray *)getValueAsConfigurationList:(NSString *)keyPath {
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    if ([self getValueType:name] == IFValueTypeList) {
-        NSArray *valuesArray = (NSArray *)[self getValue:name];
+    if ([self getValueType:keyPath] == IFValueTypeList) {
+        NSArray *valuesArray = (NSArray *)[self getValue:keyPath];
         if (![valuesArray isKindOfClass:[NSArray class]]) {
-            valuesArray = [self getValue:name asRepresentation:@"json"];
+            valuesArray = [self getValue:keyPath asRepresentation:@"json"];
         }
         if ([valuesArray isKindOfClass:[NSArray class]]) {
             for (NSInteger i = 0; i < [valuesArray count]; i++) {
-                NSString *itemName = [NSString stringWithFormat:@"%@.%ld", name, (long)i];
-                IFConfiguration *item = [self getValueAsConfiguration:itemName];
+                NSString *itemKeyPath = [NSString stringWithFormat:@"%@.%ld", keyPath, (long)i];
+                IFConfiguration *item = [self getValueAsConfiguration:itemKeyPath];
                 [result addObject:item];
             }
         }
@@ -383,14 +388,14 @@
     return result;
 }
 
-- (NSDictionary *)getValueAsConfigurationMap:(NSString *)name {
+- (NSDictionary *)getValueAsConfigurationMap:(NSString *)keyPath {
     NSMutableDictionary *result = [[NSMutableDictionary alloc] init];
-    id values = [self getValue:name];
+    id values = [self getValue:keyPath];
     if ([values isKindOfClass:[NSDictionary class]]) {
         NSDictionary *valuesDictionary = (NSDictionary *)values;
         for (id key in [valuesDictionary allKeys]) {
-            NSString *itemName = [NSString stringWithFormat:@"%@.%@", name, key];
-            IFConfiguration *item = [self getValueAsConfiguration:itemName];
+            NSString *itemKeyPath = [NSString stringWithFormat:@"%@.%@", keyPath, key];
+            IFConfiguration *item = [self getValueAsConfiguration:itemKeyPath];
             [result setObject:item forKey:key];
         }
     }
@@ -415,25 +420,6 @@
     return result;
 }
 
-- (IFConfiguration *)normalize {
-    // Start by flattening this configuration (i.e. merging its "config" property into the top level).
-    IFConfiguration *result = [self flatten];
-    // Next, start processing the "extends" chain...
-    IFConfiguration *current = result;
-    // A set of previously visited parent configurations, to detect dependency loops.
-    NSMutableSet *visited = [[NSMutableSet alloc] init];
-    while ([current getValueType:@"*extends"] == IFValueTypeObject) {
-        current = [current getValueAsConfiguration:@"*extends"];
-        if ([visited containsObject:current]) {
-            // Dependency loop detected, stop extending the config.
-            break;
-        }
-        [visited addObject:current];
-        result = [[current flatten] mergeConfiguration:result];
-    }
-    return result;
-}
-
 - (IFConfiguration *)flatten {
     IFConfiguration *result = self;
     // TODO: *config to be deprecated in place of mixin (- maybe; the term makes sense in some cases).
@@ -443,6 +429,28 @@
     // TODO: Add support for an array of mixin objects, or support *mixins property as same.
     if ([self getValueType:@"*mixin"] == IFValueTypeObject) {
         result = [self mergeConfiguration:[self getValueAsConfiguration:@"*mixin"]];
+    }
+    return result;
+}
+
+- (IFConfiguration *)normalize {
+    // Start by flattening this configuration (i.e. merging its "config" property into the top level).
+    IFConfiguration *result = [self flatten];
+    // Next, start processing the "extends" chain...
+    IFConfiguration *current = result;
+    // A set of previously visited parent configurations, to detect dependency loops.
+    NSMutableSet *visited = [[NSMutableSet alloc] init];
+    // TODO: Following seems wrong, it will work OK for a two-level extends chain, but is wrong for
+    // deeper chains. Instead, the full extension hierarchy should be resolved, and then merged in
+    // reverse order.
+    while ([current getValueType:@"*extends"] == IFValueTypeObject) {
+        current = [current getValueAsConfiguration:@"*extends"];
+        if ([visited containsObject:current]) {
+            // Dependency loop detected, stop extending the config.
+            break;
+        }
+        [visited addObject:current];
+        result = [[current flatten] mergeConfiguration:result];
     }
     return result;
 }
