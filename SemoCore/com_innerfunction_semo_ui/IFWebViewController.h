@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFWebViewController.h
-//  SemoCore
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 23/10/2015.
 //  Copyright © 2015 InnerFunction. All rights reserved.
@@ -10,11 +20,22 @@
 #import "IFIOCConfigurable.h"
 #import "IFMessageHandler.h"
 
+/**
+ * A configurable web view for display HTML etc.
+ * The class implements the _IFMessageHandler_ protocol and responds to the following message:
+ * - _load_: Load new content into the web view. The message must have a _content_ parameter.
+ * See the component's _content_ property.
+ */
 @interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFMessageHandler> {
+    /// The underlying web view.
     UIWebView *webView;
+    /// An image to display whilst the web view content is loading.
     UIImageView *loadingImageView;
+    /// An activity indicator to display whilst loading content.
     UIActivityIndicatorView *loadingIndicatorView;
+    /// A flag indicating that an external URL is loading.
     BOOL loadingExternalURL;
+    /// A flag indicating that content has loaded.
     BOOL webViewLoaded;
 }
 

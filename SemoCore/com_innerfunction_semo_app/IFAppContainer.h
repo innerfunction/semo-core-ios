@@ -1,6 +1,16 @@
+// Copyright 2016 InnerFunction Ltd.
 //
-//  IFAppContainer.h
-//  SemoCore
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 //  Created by Julian Goacher on 23/04/2015.
 //  Copyright (c) 2015 InnerFunction. All rights reserved.
@@ -16,13 +26,32 @@
 #define Platform                    (@"ios")
 #define IOSVersion                  ([[UIDevice currentDevice] systemVersion])
 
+/**
+ * An IOC container encapsulating an app's UI and functionality.
+ */
 @interface IFAppContainer : IFContainer {
+    /**
+     * Global values available to the container's configuration. Can be referenced from within templated
+     * configuration values.
+     * Available values include the following:
+     * - platform: Information about the container platform. Has the following values:
+     *   - _name_: Always "ios" on iOS systems.
+     *   - _display_: The display scale, e.g. 2x, 3x.
+     * - locale: Information about the device's default locale. Has the following values:
+     *   - _id_: The locale identifier, e.g. en_US
+     *   - _lang_: The locale's language code, e.g. en
+     *   - _variant_: The locale's varianet, e.g. US
+     */
     NSMutableDictionary *_globals;
+    /// Access to the app's local storage.
     IFLocals *_locals;
 }
 
+/// The app's URI handler.
 @property (nonatomic, strong) IFStandardURIHandler *uriHandler;
+/// The app's default background colour.
 @property (nonatomic, strong) UIColor *appBackgroundColor;
+/// The app's window.
 @property (nonatomic, weak) UIWindow *window;
 
 /** Load the app configuration. */
