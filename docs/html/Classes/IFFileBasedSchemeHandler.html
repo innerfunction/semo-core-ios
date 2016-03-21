@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>IFFileBasedSchemeHandler Class Reference</title>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
+</head>
+<body class="appledoc">
+	<header>
+		<div class="container" class="hide-in-xcode">
+			
+			<h1 id="library-title">
+				<a href="../index.html">Pttn </a>
+			</h1>
+
+			<p id="developer-home">
+				<a href="../index.html">InnerFunction</a>
+			</p>
+			
+		</div>
+	</header>
+
+	<aside>
+		<div class="container">
+			<nav>
+				<ul id="header-buttons" role="toolbar">
+					<li><a href="../index.html">Index</a></li>
+<li><a href="../hierarchy.html">Hierarchy</a></li>
+
+					<li id="on-this-page" role="navigation">
+						<label>
+							On This Page
+
+							<div class="chevron">
+								<div class="chevy chevron-left"></div>
+								<div class="chevy chevron-right"></div>
+							</div>
+
+							<select id="jump-to">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+
+	
+	
+
+	
+
+	
+	<optgroup label="Instance Methods">
+		
+		<option value="//api/name/dereference:againstPath:">- dereference:againstPath:</option>
+		
+		<option value="//api/name/dereference:parameters:">- dereference:parameters:</option>
+		
+		<option value="//api/name/initWithDirectory:">- initWithDirectory:</option>
+		
+		<option value="//api/name/initWithPath:">- initWithPath:</option>
+		
+		<option value="//api/name/resolve:against:">- resolve:against:</option>
+		
+	</optgroup>
+	
+	
+</select>
+						</label>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</aside>
+
+	<article>
+		<div id="overview_contents" class="container">
+			<div id="content">
+				<main role="main">
+					<h1 class="title">IFFileBasedSchemeHandler Class Reference</h1>
+
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<th>Inherits from</th>
+	<td>NSObject</td>
+</tr><tr>
+	<th>Conforms to</th>
+	<td><a href="../Protocols/IFSchemeHandler.html">IFSchemeHandler</a></td>
+</tr><tr>
+	<th>Declared in</th>
+	<td>IFFileBasedSchemeHandler.h<br />IFFileBasedSchemeHandler.m</td>
+</tr>
+						</tbody></table></div>
+					
+
+                    
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>A URI scheme handler for referencing file data. Instances of this handler are
+initialized with directory search paths (defined using standard NS file definitions),
+or a single standard base path. The compound URI <em>name</em> is used as the file path.
+The handler uses the path to search for a matching file under each of its configured
+base paths.
+File based schemes support relative URIs, where a URI name representing a relative
+path (i.e. a path not starting with /) is resolved against a reference absolute URI.</p>
+					</div>
+					
+					
+
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						
+
+						
+						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/initWithDirectory:" title="initWithDirectory:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithDirectory:">&ndash;&nbsp;initWithDirectory:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Initialize the handler with a specific search path.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)initWithDirectory:(NSSearchPathDirectory)<em>directory</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Initialize the handler with a specific search path.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFFileBasedSchemeHandler.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/initWithPath:" title="initWithPath:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithPath:">&ndash;&nbsp;initWithPath:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Initialize the handler with the specified base path.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)initWithPath:(NSString *)<em>path</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Initialize the handler with the specified base path.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFFileBasedSchemeHandler.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dereference:againstPath:" title="dereference:againstPath:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dereference:againstPath:">&ndash;&nbsp;dereference:againstPath:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Try dererencing a URI against a specified base path.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (IFResource *)dereference:(IFCompoundURI *)<em>uri</em> againstPath:(NSString *)<em>path</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>uri</code></th>
+						<td><p>A URI belonging to the current handler&rsquo;s URI scheme.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>path</code></th>
+						<td><p>A base path.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>If a file exists at the path, specified by the URI&rsquo;s name, relative to the specified
+base path, then return a resource (@see <a href="../Classes/IFFileResource.html">IFFileResource</a>) representing that file; otherwise
+return <em>nil</em>.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Try dererencing a URI against a specified base path.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFFileBasedSchemeHandler.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+
+						
+						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/resolve:against:" title="resolve:against:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resolve:against:">&ndash;&nbsp;resolve:against:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Resolve a possibly relative URI against a reference URI.
+Not all URI schemes support relative URIs, but e.g. file based URIs (@see <a href="../Classes/IFFileBasedSchemeHandler.html">IFFileBasedSchemeHandler</a>)
+do allow relative path references in their URIs.
+Each URI handler maintains a map of reference URIs, keyed by scheme name. When asked to resolve a
+relative URI, the handler checks for a reference URI in the same scheme, and if one is found then
+asks the scheme handler to resolve the relative URI against the reference URI.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (IFCompoundURI *)resolve:(IFCompoundURI *)<em>uri</em> against:(IFCompoundURI *)<em>reference</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Resolve a possibly relative URI against a reference URI.
+Not all URI schemes support relative URIs, but e.g. file based URIs (@see <a href="../Classes/IFFileBasedSchemeHandler.html">IFFileBasedSchemeHandler</a>)
+do allow relative path references in their URIs.
+Each URI handler maintains a map of reference URIs, keyed by scheme name. When asked to resolve a
+relative URI, the handler checks for a reference URI in the same scheme, and if one is found then
+asks the scheme handler to resolve the relative URI against the reference URI.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFURIHandling.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dereference:parameters:" title="dereference:parameters:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dereference:parameters:">&ndash;&nbsp;dereference:parameters:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Dereference a URI.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)dereference:(IFCompoundURI *)<em>uri</em> parameters:(NSDictionary *)<em>params</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>uri</code></th>
+						<td><p>The parsed URI to be dereferenced.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>params</code></th>
+						<td><p>A dictionary of the URI&rsquo;s parameters name and values. All parameters have their
+URI values dereferenced to their actual values.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The value referenced by the URI.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Dereference a URI.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFURIHandling.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+					</div>
+					
+					
+
+                    
+                    
+          
+				</main>
+
+				<footer>
+					<div class="footer-copyright">
+						
+						<p class="copyright">Copyright &copy; 2016 InnerFunction. All rights reserved. Updated: 2016-03-21</p>
+						
+						
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
+						
+					</div>
+				</footer>
+			</div>
+		</div>
+	</article>
+
+	<script src="../js/script.js"></script>
+</body>
+</html>

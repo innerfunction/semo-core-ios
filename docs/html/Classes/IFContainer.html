@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>IFContainer Class Reference</title>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
+</head>
+<body class="appledoc">
+	<header>
+		<div class="container" class="hide-in-xcode">
+			
+			<h1 id="library-title">
+				<a href="../index.html">Pttn </a>
+			</h1>
+
+			<p id="developer-home">
+				<a href="../index.html">InnerFunction</a>
+			</p>
+			
+		</div>
+	</header>
+
+	<aside>
+		<div class="container">
+			<nav>
+				<ul id="header-buttons" role="toolbar">
+					<li><a href="../index.html">Index</a></li>
+<li><a href="../hierarchy.html">Hierarchy</a></li>
+
+					<li id="on-this-page" role="navigation">
+						<label>
+							On This Page
+
+							<div class="chevron">
+								<div class="chevy chevron-left"></div>
+								<div class="chevy chevron-right"></div>
+							</div>
+
+							<select id="jump-to">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+
+	
+	
+
+	
+	<optgroup label="Class Methods">
+		
+		<option value="//api/name/lookupConfigurationProxyForClass:className:">+ lookupConfigurationProxyForClass:className:</option>
+		
+		<option value="//api/name/lookupConfigurationProxyForClassName:">+ lookupConfigurationProxyForClassName:</option>
+		
+		<option value="//api/name/lookupConfigurationProxyForObject:">+ lookupConfigurationProxyForObject:</option>
+		
+		<option value="//api/name/registerConfigurationProxyClassName:forClassName:">+ registerConfigurationProxyClassName:forClassName:</option>
+		
+	</optgroup>
+	
+
+	
+	<optgroup label="Instance Methods">
+		
+		<option value="//api/name/addTypes:">- addTypes:</option>
+		
+		<option value="//api/name/buildNamedObject:">- buildNamedObject:</option>
+		
+		<option value="//api/name/buildObjectWithConfiguration:identifier:">- buildObjectWithConfiguration:identifier:</option>
+		
+		<option value="//api/name/configureObject:withConfiguration:identifier:">- configureObject:withConfiguration:identifier:</option>
+		
+		<option value="//api/name/configureProperty:info:object:configuration:">- configureProperty:info:object:configuration:</option>
+		
+		<option value="//api/name/configureWith:">- configureWith:</option>
+		
+		<option value="//api/name/configureWithData:">- configureWithData:</option>
+		
+		<option value="//api/name/dispatchMessage:sender:">- dispatchMessage:sender:</option>
+		
+		<option value="//api/name/doStandardProtocolChecks:">- doStandardProtocolChecks:</option>
+		
+		<option value="//api/name/getNamed:">- getNamed:</option>
+		
+		<option value="//api/name/getValue:asRepresentation:">- getValue:asRepresentation:</option>
+		
+		<option value="//api/name/handleMessage:sender:">- handleMessage:sender:</option>
+		
+		<option value="//api/name/hasInstantiationHint:">- hasInstantiationHint:</option>
+		
+		<option value="//api/name/incPendingValueRefCountForPendingObject:">- incPendingValueRefCountForPendingObject:</option>
+		
+		<option value="//api/name/instantiateObjectWithConfiguration:identifier:">- instantiateObjectWithConfiguration:identifier:</option>
+		
+		<option value="//api/name/newInstanceForClassName:withConfiguration:">- newInstanceForClassName:withConfiguration:</option>
+		
+		<option value="//api/name/newInstanceForTypeName:withConfiguration:">- newInstanceForTypeName:withConfiguration:</option>
+		
+		<option value="//api/name/resolveObjectPropertyOfType:fromConfiguration:name:value:">- resolveObjectPropertyOfType:fromConfiguration:name:value:</option>
+		
+		<option value="//api/name/setProperty:info:object:value:">- setProperty:info:object:value:</option>
+		
+		<option value="//api/name/setTypes:">- setTypes:</option>
+		
+		<option value="//api/name/startService">- startService</option>
+		
+		<option value="//api/name/stopService">- stopService</option>
+		
+	</optgroup>
+	
+	
+</select>
+						</label>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</aside>
+
+	<article>
+		<div id="overview_contents" class="container">
+			<div id="content">
+				<main role="main">
+					<h1 class="title">IFContainer Class Reference</h1>
+
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<th>Inherits from</th>
+	<td>NSObject</td>
+</tr><tr>
+	<th>Conforms to</th>
+	<td><a href="../Protocols/IFConfigurationRoot.html">IFConfigurationRoot</a><br /><a href="../Protocols/IFMessageHandler.html">IFMessageHandler</a><br /><a href="../Protocols/IFMessageTargetContainer.html">IFMessageTargetContainer</a><br /><a href="../Protocols/IFService.html">IFService</a></td>
+</tr><tr>
+	<th>Declared in</th>
+	<td>IFContainer.h<br />IFContainer.m</td>
+</tr>
+						</tbody></table></div>
+					
+
+                    
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>A container for named objects and services.
+Acts as an object factory and IOC container. Objects built using this class are
+instantiated and configured using an object definition read from a JSON configuration.
+The object&rsquo;s properties may be configured using other built objects, or using references
+to named objects contained by the container.</p>
+					</div>
+					
+					
+
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						
+
+						
+						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/getNamed:" title="getNamed:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/getNamed:">&ndash;&nbsp;getNamed:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get a named component.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)getNamed:(NSString *)<em>name</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get a named component.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/setTypes:" title="setTypes:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/setTypes:">&ndash;&nbsp;setTypes:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Set the type map.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)setTypes:(IFConfiguration *)<em>types</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Set the type map.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/addTypes:" title="addTypes:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/addTypes:">&ndash;&nbsp;addTypes:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Add additional type name mappings to the type map.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)addTypes:(id)<em>types</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Add additional type name mappings to the type map.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/buildObjectWithConfiguration:identifier:" title="buildObjectWithConfiguration:identifier:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/buildObjectWithConfiguration:identifier:">&ndash;&nbsp;buildObjectWithConfiguration:identifier:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Instantiate and configure an object using the specified configuration.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)buildObjectWithConfiguration:(IFConfiguration *)<em>configuration</em> identifier:(NSString *)<em>identifier</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>configuration</code></th>
+						<td><p>A configuration describing the object to build.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>identifier</code></th>
+						<td><p>An identifier (e.g. the configuration&rsquo;s key path) used identify the object in logs.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The instantiated and fully configured object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Instantiate and configure an object using the specified configuration.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/instantiateObjectWithConfiguration:identifier:" title="instantiateObjectWithConfiguration:identifier:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/instantiateObjectWithConfiguration:identifier:">&ndash;&nbsp;instantiateObjectWithConfiguration:identifier:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Instantiate an object from the specified configuration.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)instantiateObjectWithConfiguration:(IFConfiguration *)<em>configuration</em> identifier:(NSString *)<em>identifier</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>configuration</code></th>
+						<td><p>A configuration with instantiation hints that can be used to create an object instance.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>identifier</code></th>
+						<td><p>An identifier (e.g. the configuration&rsquo;s key path) used identify the object in logs.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>A newly instantiated object.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Instantiate an object from the specified configuration.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/newInstanceForTypeName:withConfiguration:" title="newInstanceForTypeName:withConfiguration:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/newInstanceForTypeName:withConfiguration:">&ndash;&nbsp;newInstanceForTypeName:withConfiguration:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Instantiate an instance of the named type. Looks for a classname in the set of registered types, and then
+returns the result of calling [newInstanceForClassName: withConfiguration:].</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)newInstanceForTypeName:(NSString *)<em>typeName</em> withConfiguration:(IFConfiguration *)<em>configuration</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Instantiate an instance of the named type. Looks for a classname in the set of registered types, and then
+returns the result of calling [newInstanceForClassName: withConfiguration:].</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/newInstanceForClassName:withConfiguration:" title="newInstanceForClassName:withConfiguration:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/newInstanceForClassName:withConfiguration:">&ndash;&nbsp;newInstanceForClassName:withConfiguration:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Instantiate an instance of the named class.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)newInstanceForClassName:(NSString *)<em>className</em> withConfiguration:(IFConfiguration *)<em>configuration</em></code></div>
+
+		    
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Returns a new instance of the class, unless a configuration proxy is registered for the class name
+in which case a new instance of the proxy class is returned.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Instantiate an instance of the named class.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/configureObject:withConfiguration:identifier:" title="configureObject:withConfiguration:identifier:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/configureObject:withConfiguration:identifier:">&ndash;&nbsp;configureObject:withConfiguration:identifier:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Configure an object using the specified configuration.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)configureObject:(id)<em>object</em> withConfiguration:(IFConfiguration *)<em>configuration</em> identifier:(NSString *)<em>identifier</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>object</code></th>
+						<td><p>The object to configure.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>configuration</code></th>
+						<td><p>The object&rsquo;s configuration.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>identifier</code></th>
+						<td><p>An identifier (e.g. the configuration&rsquo;s key path) used identify the object in logs.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Configure an object using the specified configuration.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/configureWith:" title="configureWith:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/configureWith:">&ndash;&nbsp;configureWith:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Configure the container and its contents using the specified configuration.
+The set of &lsquo;named&rsquo; components is instantiated from the top-level configuration properties. In addition, if
+any named property has the same name as one of the container&rsquo;s properties, then the container property is set
+to the value of the named property. Type inference will be attempted for named container properties without
+explicitly configured types. The mapping of named container properties is primarily useful in container subclasses,
+and can be used to define functional modules as configurable containers.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)configureWith:(IFConfiguration *)<em>configuration</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Configure the container and its contents using the specified configuration.
+The set of &lsquo;named&rsquo; components is instantiated from the top-level configuration properties. In addition, if
+any named property has the same name as one of the container&rsquo;s properties, then the container property is set
+to the value of the named property. Type inference will be attempted for named container properties without
+explicitly configured types. The mapping of named container properties is primarily useful in container subclasses,
+and can be used to define functional modules as configurable containers.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/configureWithData:" title="configureWithData:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/configureWithData:">&ndash;&nbsp;configureWithData:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Configure the container with the specified data.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)configureWithData:(id)<em>configData</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Configure the container with the specified data.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/doStandardProtocolChecks:" title="doStandardProtocolChecks:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/doStandardProtocolChecks:">&ndash;&nbsp;doStandardProtocolChecks:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Perform standard container-recognized protocol checks on a new object instance.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)doStandardProtocolChecks:(id)<em>object</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Perform standard container-recognized protocol checks on a new object instance.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/registerConfigurationProxyClassName:forClassName:" title="registerConfigurationProxyClassName:forClassName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/registerConfigurationProxyClassName:forClassName:">+&nbsp;registerConfigurationProxyClassName:forClassName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Register an IOC configuration proxy class for properties of a specific class.
+The proxy will be used for all subclasses of the property class also, unless a different proxy is registered
+for a specific subclass. No proxy will be used for a specific subclass if a nil proxy class name is registered.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (void)registerConfigurationProxyClassName:(__unsafe_unretained Class)<em>proxyClass</em> forClassName:(NSString *)<em>className</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Register an IOC configuration proxy class for properties of a specific class.
+The proxy will be used for all subclasses of the property class also, unless a different proxy is registered
+for a specific subclass. No proxy will be used for a specific subclass if a nil proxy class name is registered.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+
+						
+						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/configureProperty:info:object:configuration:" title="configureProperty:info:object:configuration:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/configureProperty:info:object:configuration:">&ndash;&nbsp;configureProperty:info:object:configuration:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Configure a named property of an object using the specified configuration and type info.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)configureProperty:(NSString *)<em>propName</em> info:(IFPropertyInfo *)<em>propInfo</em> object:(id)<em>object</em> configuration:(IFConfiguration *)<em>configuration</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Configure a named property of an object using the specified configuration and type info.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/setProperty:info:object:value:" title="setProperty:info:object:value:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/setProperty:info:object:value:">&ndash;&nbsp;setProperty:info:object:value:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Set a named property on an object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)setProperty:(id)<em>propKey</em> info:(IFPropertyInfo *)<em>propInfo</em> object:(id)<em>object</em> value:(id)<em>value</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Set a named property on an object.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/buildNamedObject:" title="buildNamedObject:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/buildNamedObject:">&ndash;&nbsp;buildNamedObject:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Instantiate and configure a named object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)buildNamedObject:(NSString *)<em>name</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Instantiate and configure a named object.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/hasInstantiationHint:" title="hasInstantiationHint:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/hasInstantiationHint:">&ndash;&nbsp;hasInstantiationHint:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Test if a configuration contains an instantiation hint, e.g. a type, class or factory specifier.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)hasInstantiationHint:(IFConfiguration *)<em>configuration</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Test if a configuration contains an instantiation hint, e.g. a type, class or factory specifier.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/resolveObjectPropertyOfType:fromConfiguration:name:value:" title="resolveObjectPropertyOfType:fromConfiguration:name:value:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/resolveObjectPropertyOfType:fromConfiguration:name:value:">&ndash;&nbsp;resolveObjectPropertyOfType:fromConfiguration:name:value:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Resolve an object property value compatible with the specified type from the specified configuration.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)<em>type</em> fromConfiguration:(IFConfiguration *)<em>configuration</em> name:(NSString *)<em>name</em> value:(id)<em>value</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Resolve an object property value compatible with the specified type from the specified configuration.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/incPendingValueRefCountForPendingObject:" title="incPendingValueRefCountForPendingObject:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/incPendingValueRefCountForPendingObject:">&ndash;&nbsp;incPendingValueRefCountForPendingObject:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Increment the number of pending value refs for an object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)incPendingValueRefCountForPendingObject:(IFIOCPendingNamed *)<em>pending</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Increment the number of pending value refs for an object.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/startService" title="startService"></a>
+	<h3 class="method-title"><code><a href="#//api/name/startService">&ndash;&nbsp;startService</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Signal that the service should start.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)startService</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Signal that the service should start.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFService.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/stopService" title="stopService"></a>
+	<h3 class="method-title"><code><a href="#//api/name/stopService">&ndash;&nbsp;stopService</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Signal that the service should stop.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)stopService</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Signal that the service should stop.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFService.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/getValue:asRepresentation:" title="getValue:asRepresentation:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/getValue:asRepresentation:">&ndash;&nbsp;getValue:asRepresentation:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get a particular representation of a configuration value.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)getValue:(NSString *)<em>name</em> asRepresentation:(NSString *)<em>representation</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>name</code></th>
+						<td><p>The value name.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>representation</code></th>
+						<td><p>The name of the required representation. @see <a href="../Classes/IFTypeInfo.html">IFTypeInfo</a> for a list
+of representation names.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>The value in the requried representation.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get a particular representation of a configuration value.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFConfiguration.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/dispatchMessage:sender:" title="dispatchMessage:sender:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/dispatchMessage:sender:">&ndash;&nbsp;dispatchMessage:sender:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Try dispatching the message to message targets within the current compnent.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)dispatchMessage:(IFMessage *)<em>message</em> sender:(id)<em>sender</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>message</code></th>
+						<td><p>The message.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>sender</code></th>
+						<td><p>The component sending the message.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Returns <em>true</em> if the message was dipatched (received and acted upon) by
+some target.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Try dispatching the message to message targets within the current compnent.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFMessageTargetContainer.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/handleMessage:sender:" title="handleMessage:sender:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/handleMessage:sender:">&ndash;&nbsp;handleMessage:sender:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Try handling a message.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)handleMessage:(IFMessage *)<em>message</em> sender:(id)<em>sender</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>message</code></th>
+						<td><p>The message to handle.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>sender</code></th>
+						<td><p>The component which sent the message.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Returns <em>true</em> if the message was handled (i.e. acted upon), <em>false</em> otherwise.
+A <em>true</em> result will stop further processing of the message. A <em>false</em> result may mean
+that the message continues to be dispatched to other components (i.e. until some component
+handles it).</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Try handling a message.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFMessageHandler.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/lookupConfigurationProxyForObject:" title="lookupConfigurationProxyForObject:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/lookupConfigurationProxyForObject:">+&nbsp;lookupConfigurationProxyForObject:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Lookup a configuration proxy for an object instance.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)<em>object</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Lookup a configuration proxy for an object instance.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/lookupConfigurationProxyForClassName:" title="lookupConfigurationProxyForClassName:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/lookupConfigurationProxyForClassName:">+&nbsp;lookupConfigurationProxyForClassName:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Lookup a configuration proxy for a named class.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClassName:(NSString *)<em>className</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Lookup a configuration proxy for a named class.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/lookupConfigurationProxyForClass:className:" title="lookupConfigurationProxyForClass:className:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/lookupConfigurationProxyForClass:className:">+&nbsp;lookupConfigurationProxyForClass:className:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Lookup a configuration proxy for a class.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (IFIOCProxyLookupEntry *)lookupConfigurationProxyForClass:(__unsafe_unretained Class)<em>class</em> className:(NSString *)<em>className</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Lookup a configuration proxy for a class.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFContainer.m</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+					</div>
+					
+					
+
+                    
+                    
+          
+				</main>
+
+				<footer>
+					<div class="footer-copyright">
+						
+						<p class="copyright">Copyright &copy; 2016 InnerFunction. All rights reserved. Updated: 2016-03-21</p>
+						
+						
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
+						
+					</div>
+				</footer>
+			</div>
+		</div>
+	</article>
+
+	<script src="../js/script.js"></script>
+</body>
+</html>

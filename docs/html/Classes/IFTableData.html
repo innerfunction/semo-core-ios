@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>IFTableData Class Reference</title>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
+</head>
+<body class="appledoc">
+	<header>
+		<div class="container" class="hide-in-xcode">
+			
+			<h1 id="library-title">
+				<a href="../index.html">Pttn </a>
+			</h1>
+
+			<p id="developer-home">
+				<a href="../index.html">InnerFunction</a>
+			</p>
+			
+		</div>
+	</header>
+
+	<aside>
+		<div class="container">
+			<nav>
+				<ul id="header-buttons" role="toolbar">
+					<li><a href="../index.html">Index</a></li>
+<li><a href="../hierarchy.html">Hierarchy</a></li>
+
+					<li id="on-this-page" role="navigation">
+						<label>
+							On This Page
+
+							<div class="chevron">
+								<div class="chevy chevron-left"></div>
+								<div class="chevy chevron-right"></div>
+							</div>
+
+							<select id="jump-to">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+
+	
+	
+	<optgroup label="Properties">
+		
+		<option value="//api/name/data">data</option>
+		
+		<option value="//api/name/delegate">delegate</option>
+		
+		<option value="//api/name/searchFieldNames">searchFieldNames</option>
+		
+		<option value="//api/name/uriHandler">uriHandler</option>
+		
+	</optgroup>
+	
+
+	
+	<optgroup label="Class Methods">
+		
+		<option value="//api/name/withData:">+ withData:</option>
+		
+	</optgroup>
+	
+
+	
+	<optgroup label="Instance Methods">
+		
+		<option value="//api/name/clearFilter">- clearFilter</option>
+		
+		<option value="//api/name/filterBy:scope:">- filterBy:scope:</option>
+		
+		<option value="//api/name/filterWithBlock:">- filterWithBlock:</option>
+		
+		<option value="//api/name/isEmpty">- isEmpty</option>
+		
+		<option value="//api/name/pathForRowWithValue:forField:">- pathForRowWithValue:forField:</option>
+		
+		<option value="//api/name/rowDataForIndexPath:">- rowDataForIndexPath:</option>
+		
+		<option value="//api/name/sectionCount">- sectionCount</option>
+		
+		<option value="//api/name/sectionSize:">- sectionSize:</option>
+		
+		<option value="//api/name/sectionTitle:">- sectionTitle:</option>
+		
+	</optgroup>
+	
+	
+</select>
+						</label>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</aside>
+
+	<article>
+		<div id="overview_contents" class="container">
+			<div id="content">
+				<main role="main">
+					<h1 class="title">IFTableData Class Reference</h1>
+
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<th>Inherits from</th>
+	<td>NSObject</td>
+</tr><tr>
+	<th>Declared in</th>
+	<td>IFTableData.h<br />IFTableData.m</td>
+</tr>
+						</tbody></table></div>
+					
+
+                    
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>A class for using JSON array <a href="#//api/name/data">data</a> as a table <a href="#//api/name/data">data</a> source.
+Uses <em>NSIndexPath</em> to reference cell (row) <a href="#//api/name/data">data</a>, and allows key paths for referencing <a href="#//api/name/data">data</a> items within cell
+<a href="#//api/name/data">data</a>.
+Supports both grouped (for tables with sections) and non-grouped <a href="#//api/name/data">data</a>.</p>
+					</div>
+					
+					
+
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						
+
+						
+						
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/data" title="data"></a>
+	<h3 class="method-title"><code><a href="#//api/name/data">&nbsp;&nbsp;data</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Configure the table data. Can be either an array of cell data dictionaries; or an array of section dictionaries.
+A section dictionary should have the following properties:
+- <em>sectionTitle</em>: The section title.
+- <em>sectionData</em>: An array of cell data items for the section.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) NSArray *data</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Configure the table data. Can be either an array of cell data dictionaries; or an array of section dictionaries.
+A section dictionary should have the following properties:
+- <em>sectionTitle</em>: The section title.
+- <em>sectionData</em>: An array of cell data items for the section.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/searchFieldNames" title="searchFieldNames"></a>
+	<h3 class="method-title"><code><a href="#//api/name/searchFieldNames">&nbsp;&nbsp;searchFieldNames</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>An array of searchable field names.
+If a filter is applied then the search term is applied to each named field on each cell <a href="#//api/name/data">data</a> item.
+Defaults to [ &ldquo;title&rdquo;, &ldquo;description&rdquo; ].</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) NSArray *searchFieldNames</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>An array of searchable field names.
+If a filter is applied then the search term is applied to each named field on each cell <a href="#//api/name/data">data</a> item.
+Defaults to [ &ldquo;title&rdquo;, &ldquo;description&rdquo; ].</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/delegate" title="delegate"></a>
+	<h3 class="method-title"><code><a href="#//api/name/delegate">&nbsp;&nbsp;delegate</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>A delegate for modifying how <a href="#//api/name/data">data</a> is resolved.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) id&lt;IFTableDataDelegate&gt; delegate</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>A delegate for modifying how <a href="#//api/name/data">data</a> is resolved.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/uriHandler" title="uriHandler"></a>
+	<h3 class="method-title"><code><a href="#//api/name/uriHandler">&nbsp;&nbsp;uriHandler</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The URI handler to use to resolve table <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) id&lt;IFURIHandler&gt; uriHandler</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The URI handler to use to resolve table <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/withData:" title="withData:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/withData:">+&nbsp;withData:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return an IPTableData object initialized with the specified <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>+ (IFTableData *)withData:(NSArray *)<em>data</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return an IPTableData object initialized with the specified <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/rowDataForIndexPath:" title="rowDataForIndexPath:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/rowDataForIndexPath:">&ndash;&nbsp;rowDataForIndexPath:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Get row <a href="#//api/name/data">data</a> for the specified path.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSDictionary *)rowDataForIndexPath:(NSIndexPath *)<em>path</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Get row <a href="#//api/name/data">data</a> for the specified path.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/isEmpty" title="isEmpty"></a>
+	<h3 class="method-title"><code><a href="#//api/name/isEmpty">&ndash;&nbsp;isEmpty</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Test whether the <a href="#//api/name/data">data</a> is empty - i.e. contains no rows.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)isEmpty</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Test whether the <a href="#//api/name/data">data</a> is empty - i.e. contains no rows.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/sectionCount" title="sectionCount"></a>
+	<h3 class="method-title"><code><a href="#//api/name/sectionCount">&ndash;&nbsp;sectionCount</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return the number of sections in the table <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSInteger)sectionCount</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return the number of sections in the table <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/sectionSize:" title="sectionSize:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/sectionSize:">&ndash;&nbsp;sectionSize:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return the number of rows in the specified section.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSInteger)sectionSize:(NSInteger)<em>section</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return the number of rows in the specified section.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/sectionTitle:" title="sectionTitle:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/sectionTitle:">&ndash;&nbsp;sectionTitle:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return the title for the specified section.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSString *)sectionTitle:(NSInteger)<em>section</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return the title for the specified section.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/filterBy:scope:" title="filterBy:scope:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/filterBy:scope:">&ndash;&nbsp;filterBy:scope:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Filter the table <a href="#//api/name/data">data</a> by applying a search term.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)filterBy:(NSString *)<em>searchTerm</em> scope:(NSString *)<em>scope</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>searchTerm</code></th>
+						<td><p>The string to search for.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>scope</code></th>
+						<td><p>An optional field name to limit the search to. If not specified then uses
+the fields defined in <em><a href="#//api/name/searchFieldNames">searchFieldNames</a></em>.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Filter the table <a href="#//api/name/data">data</a> by applying a search term.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/filterWithBlock:" title="filterWithBlock:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/filterWithBlock:">&ndash;&nbsp;filterWithBlock:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Filter the table <a href="#//api/name/data">data</a> using the specified block.
+The block is called for each row in the table <a href="#//api/name/data">data</a> with the cell <a href="#//api/name/data">data</a> as its argument. The block
+should return <em>true</em> if cell <a href="#//api/name/data">data</a> matches the filter test, i.e. should be displayed in the result.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)filterWithBlock:(IFTableDataFilterBlock)<em>filterTest</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Filter the table <a href="#//api/name/data">data</a> using the specified block.
+The block is called for each row in the table <a href="#//api/name/data">data</a> with the cell <a href="#//api/name/data">data</a> as its argument. The block
+should return <em>true</em> if cell <a href="#//api/name/data">data</a> matches the filter test, i.e. should be displayed in the result.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/clearFilter" title="clearFilter"></a>
+	<h3 class="method-title"><code><a href="#//api/name/clearFilter">&ndash;&nbsp;clearFilter</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Clear any filter currently applied to the table <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)clearFilter</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Clear any filter currently applied to the table <a href="#//api/name/data">data</a>.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/pathForRowWithValue:forField:" title="pathForRowWithValue:forField:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/pathForRowWithValue:forField:">&ndash;&nbsp;pathForRowWithValue:forField:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return the index path of the first row with the specified field name set to the specified value.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSIndexPath *)pathForRowWithValue:(NSString *)<em>value</em> forField:(NSString *)<em>name</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return the index path of the first row with the specified field name set to the specified value.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableData.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+					</div>
+					
+					
+
+                    
+                    
+          
+				</main>
+
+				<footer>
+					<div class="footer-copyright">
+						
+						<p class="copyright">Copyright &copy; 2016 InnerFunction. All rights reserved. Updated: 2016-03-21</p>
+						
+						
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
+						
+					</div>
+				</footer>
+			</div>
+		</div>
+	</article>
+
+	<script src="../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<title>IFTableViewController Class Reference</title>
+
+	<link rel="stylesheet" href="../css/style.css">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
+	<meta name="generator" content="appledoc 2.2.1 (build 1334)">
+</head>
+<body class="appledoc">
+	<header>
+		<div class="container" class="hide-in-xcode">
+			
+			<h1 id="library-title">
+				<a href="../index.html">Pttn </a>
+			</h1>
+
+			<p id="developer-home">
+				<a href="../index.html">InnerFunction</a>
+			</p>
+			
+		</div>
+	</header>
+
+	<aside>
+		<div class="container">
+			<nav>
+				<ul id="header-buttons" role="toolbar">
+					<li><a href="../index.html">Index</a></li>
+<li><a href="../hierarchy.html">Hierarchy</a></li>
+
+					<li id="on-this-page" role="navigation">
+						<label>
+							On This Page
+
+							<div class="chevron">
+								<div class="chevy chevron-left"></div>
+								<div class="chevy chevron-right"></div>
+							</div>
+
+							<select id="jump-to">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+
+	
+	
+	<optgroup label="Properties">
+		
+		<option value="//api/name/backButtonTitle">backButtonTitle</option>
+		
+		<option value="//api/name/cellFactoriesByDisplayMode">cellFactoriesByDisplayMode</option>
+		
+		<option value="//api/name/clearFilterMessage">clearFilterMessage</option>
+		
+		<option value="//api/name/content">content</option>
+		
+		<option value="//api/name/hasSearchBar">hasSearchBar</option>
+		
+		<option value="//api/name/hideTitleBar">hideTitleBar</option>
+		
+		<option value="//api/name/leftTitleBarButton">leftTitleBarButton</option>
+		
+		<option value="//api/name/rightTitleBarButton">rightTitleBarButton</option>
+		
+		<option value="//api/name/scrollToSelected">scrollToSelected</option>
+		
+		<option value="//api/name/sectionTitleBackgroundColor">sectionTitleBackgroundColor</option>
+		
+		<option value="//api/name/sectionTitleColor">sectionTitleColor</option>
+		
+		<option value="//api/name/selectedID">selectedID</option>
+		
+		<option value="//api/name/tableData">tableData</option>
+		
+	</optgroup>
+	
+
+	
+
+	
+	<optgroup label="Instance Methods">
+		
+		<option value="//api/name/afterConfiguration:inContainer:">- afterConfiguration:inContainer:</option>
+		
+		<option value="//api/name/beforeConfiguration:inContainer:">- beforeConfiguration:inContainer:</option>
+		
+		<option value="//api/name/clearFilter">- clearFilter</option>
+		
+		<option value="//api/name/formatData:">- formatData:</option>
+		
+		<option value="//api/name/handleMessage:sender:">- handleMessage:sender:</option>
+		
+		<option value="//api/name/initWithConfiguration:">- initWithConfiguration:</option>
+		
+		<option value="//api/name/memberClassForCollection:">- memberClassForCollection:</option>
+		
+		<option value="//api/name/postActionForObject:">- postActionForObject:</option>
+		
+		<option value="//api/name/postMessage:">- postMessage:</option>
+		
+		<option value="//api/name/registerAction:forObject:">- registerAction:forObject:</option>
+		
+	</optgroup>
+	
+	
+</select>
+						</label>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</aside>
+
+	<article>
+		<div id="overview_contents" class="container">
+			<div id="content">
+				<main role="main">
+					<h1 class="title">IFTableViewController Class Reference</h1>
+
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<th>Inherits from</th>
+	<td>UITableViewController</td>
+</tr><tr>
+	<th>Conforms to</th>
+	<td><a href="../Protocols/IFActionProxy.html">IFActionProxy</a><br /><a href="../Protocols/IFIOCConfigurable.html">IFIOCConfigurable</a><br /><a href="../Protocols/IFIOCConfigurationInitable.html">IFIOCConfigurationInitable</a><br /><a href="../Protocols/IFIOCContainerAware.html">IFIOCContainerAware</a><br /><a href="../Protocols/IFIOCTypeInspectable.html">IFIOCTypeInspectable</a><br /><a href="../Protocols/IFMessageHandler.html">IFMessageHandler</a><br />UISearchBarDelegate<br />UISearchDisplayDelegate<br />UITableViewDelegate</td>
+</tr><tr>
+	<th>Declared in</th>
+	<td>IFTableViewController.h<br />IFTableViewController.m</td>
+</tr>
+						</tbody></table></div>
+					
+
+                    
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>A configurable table view component.
+The following configuration keys are used to control the table&rsquo;s basic display:
+- <em>tableStyle</em>:      String to control the table style; values are &ldquo;Grouped&rdquo; or &ldquo;Plain&rdquo;. See UITableViewStyle.
+- <em>backgroundColor</em>: The table&rsquo;s background color.</p>
+
+<p>Table data can be presented as plain (non-grouped) or grouped. @see <a href="../Classes/IFTableData.html">IFTableData</a>:
+- Plain tables:   Data should be an NSArray of table cell data.
+- Grouped tables: Data should be an NSArray of table sections, where each section is an NSArray of table cell data.</p>
+
+<p>Each table cell data item must be an NSDictionary with the following properties:
+- <em>title</em>:           The main text displayed on the cell.
+- <em>description</em>:     Additional text displayed below the title (Optional).
+- <em>image</em>:           URI of an image to display on the LHS of the cell (Optional).
+- <em>accessory</em>        Type of the accessory view displayed on the RHS of the cell (Optional).
+Takes the following values, corresponding to the values defined for UITableViewCellAccessoryType:
+- None
+- DisclosureIndicator
+- DetailButton
+- Checkmark
+- <em>style</em>:           The cell style. Overrides the style specified in the configuration when supplied (Optional).
+Has the following values, corresponding to the values defined by UITableViewCellStyle:
+- Default
+- Style1
+- Style2
+- Subtitle
+- <em>backgroundImage</em>: A cell background image. (Optional).
+- <em>selectedBackgroundImage</em>: A cell background image when selected. (Optional).
+- <em>height</em>:          The row height.
+- <em>action</em>:          An action message which is posted when a table cell is selected.</p>
+					</div>
+					
+					
+
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						
+
+						
+						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/hideTitleBar" title="hideTitleBar"></a>
+	<h3 class="method-title"><code><a href="#//api/name/hideTitleBar">&nbsp;&nbsp;hideTitleBar</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Flag indicating whether to hide the screen&rsquo;s title bar.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) BOOL hideTitleBar</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Flag indicating whether to hide the screen&rsquo;s title bar.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/backButtonTitle" title="backButtonTitle"></a>
+	<h3 class="method-title"><code><a href="#//api/name/backButtonTitle">&nbsp;&nbsp;backButtonTitle</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The title of the back button.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) NSString *backButtonTitle</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The title of the back button.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/leftTitleBarButton" title="leftTitleBarButton"></a>
+	<h3 class="method-title"><code><a href="#//api/name/leftTitleBarButton">&nbsp;&nbsp;leftTitleBarButton</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>An optional left-side title bar item.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) UIBarButtonItem *leftTitleBarButton</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>An optional left-side title bar item.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/rightTitleBarButton" title="rightTitleBarButton"></a>
+	<h3 class="method-title"><code><a href="#//api/name/rightTitleBarButton">&nbsp;&nbsp;rightTitleBarButton</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>An optional right-side title bar item.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) UIBarButtonItem *rightTitleBarButton</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>An optional right-side title bar item.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/cellFactoriesByDisplayMode" title="cellFactoriesByDisplayMode"></a>
+	<h3 class="method-title"><code><a href="#//api/name/cellFactoriesByDisplayMode">&nbsp;&nbsp;cellFactoriesByDisplayMode</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>A map of additional cell factories. Different cell factories can be configured via this property, supporting the
+generation of table cells with different display properties. Which cell factory is used is controlled by a &ldquo;mode&rdquo;
+property in the cell data. If the &ldquo;mode&rdquo; value corresponds to the key of one of the factories in this map then
+that factory is used to generate the cell, otherwise the default cell is used.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) NSDictionary *cellFactoriesByDisplayMode</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>A map of additional cell factories. Different cell factories can be configured via this property, supporting the
+generation of table cells with different display properties. Which cell factory is used is controlled by a &ldquo;mode&rdquo;
+property in the cell data. If the &ldquo;mode&rdquo; value corresponds to the key of one of the factories in this map then
+that factory is used to generate the cell, otherwise the default cell is used.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/sectionTitleColor" title="sectionTitleColor"></a>
+	<h3 class="method-title"><code><a href="#//api/name/sectionTitleColor">&nbsp;&nbsp;sectionTitleColor</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The colour of the section title text.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) UIColor *sectionTitleColor</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The colour of the section title text.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/sectionTitleBackgroundColor" title="sectionTitleBackgroundColor"></a>
+	<h3 class="method-title"><code><a href="#//api/name/sectionTitleBackgroundColor">&nbsp;&nbsp;sectionTitleBackgroundColor</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The background colour for section titles.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) UIColor *sectionTitleBackgroundColor</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The background colour for section titles.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/scrollToSelected" title="scrollToSelected"></a>
+	<h3 class="method-title"><code><a href="#//api/name/scrollToSelected">&nbsp;&nbsp;scrollToSelected</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Flag indicating whether the table should scroll to the selected cell when displayed.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) BOOL scrollToSelected</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Flag indicating whether the table should scroll to the selected cell when displayed.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/tableData" title="tableData"></a>
+	<h3 class="method-title"><code><a href="#//api/name/tableData">&nbsp;&nbsp;tableData</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The table&rsquo;s data.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) IFTableData *tableData</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The table&rsquo;s data.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/selectedID" title="selectedID"></a>
+	<h3 class="method-title"><code><a href="#//api/name/selectedID">&nbsp;&nbsp;selectedID</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The ID of the selected cell. Set to the value of the &ldquo;id&rdquo; property of a cell data item.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) NSString *selectedID</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The ID of the selected cell. Set to the value of the &ldquo;id&rdquo; property of a cell data item.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/hasSearchBar" title="hasSearchBar"></a>
+	<h3 class="method-title"><code><a href="#//api/name/hasSearchBar">&nbsp;&nbsp;hasSearchBar</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Flag indicating whether the table has a search bar.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) BOOL hasSearchBar</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Flag indicating whether the table has a search bar.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/clearFilterMessage" title="clearFilterMessage"></a>
+	<h3 class="method-title"><code><a href="#//api/name/clearFilterMessage">&nbsp;&nbsp;clearFilterMessage</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>A message which is displayed when the search filter is cleared.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) NSString *clearFilterMessage</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>A message which is displayed when the search filter is cleared.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/content" title="content"></a>
+	<h3 class="method-title"><code><a href="#//api/name/content">&nbsp;&nbsp;content</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>The table&rsquo;s content.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>@property (nonatomic, strong) id content</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>The table&rsquo;s content.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/formatData:" title="formatData:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/formatData:">&ndash;&nbsp;formatData:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Format incoming list data. Principally intended as a mechanism for subclasses to interface with specific data sources.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (NSArray *)formatData:(NSArray *)<em>data</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Format incoming list data. Principally intended as a mechanism for subclasses to interface with specific data sources.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/clearFilter" title="clearFilter"></a>
+	<h3 class="method-title"><code><a href="#//api/name/clearFilter">&ndash;&nbsp;clearFilter</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Clear any currently applied table data filter.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)clearFilter</code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Clear any currently applied table data filter.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/postMessage:" title="postMessage:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/postMessage:">&ndash;&nbsp;postMessage:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Post a message.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)postMessage:(NSString *)<em>message</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Post a message.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFTableViewController.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+
+						
+						<h2 class="task-title">Other Methods</h2>
+
+						<div class="task-list">
+							<div class="section-method">
+	<a name="//api/name/initWithConfiguration:" title="initWithConfiguration:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/initWithConfiguration:">&ndash;&nbsp;initWithConfiguration:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Initialize the object instance with the specified configuration.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (id)initWithConfiguration:(IFConfiguration *)<em>configuration</em></code></div>
+
+		    
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Initialize the object instance with the specified configuration.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFIOCConfigurationInitable.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/memberClassForCollection:" title="memberClassForCollection:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/memberClassForCollection:">&ndash;&nbsp;memberClassForCollection:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Return the expected class for members of the named property collection.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (Class)memberClassForCollection:(NSString *)<em>propertyName</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>propertyName</code></th>
+						<td><p>The name of a collection property.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Returns the default class of member items of the specified collection.
+Can return <em>nil</em> if the property name isn&rsquo;t recognized, or if the collection has
+no default member class.</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Return the expected class for members of the named property collection.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFIOCTypeInspectable.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/beforeConfiguration:inContainer:" title="beforeConfiguration:inContainer:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/beforeConfiguration:inContainer:">&ndash;&nbsp;beforeConfiguration:inContainer:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Called immediately before the object is configured via dependency injection.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)beforeConfiguration:(IFConfiguration *)<em>configuration</em> inContainer:(IFContainer *)<em>container</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>configuration</code></th>
+						<td><p>The object&rsquo;s configuration.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>container</code></th>
+						<td><p>The container the object is being instantiated within.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Called immediately before the object is configured via dependency injection.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFIOCConfigurable.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/afterConfiguration:inContainer:" title="afterConfiguration:inContainer:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/afterConfiguration:inContainer:">&ndash;&nbsp;afterConfiguration:inContainer:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Called immediately after the object is configured via dependency injection.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)afterConfiguration:(IFConfiguration *)<em>configuration</em> inContainer:(IFContainer *)<em>container</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>configuration</code></th>
+						<td><p>The object&rsquo;s configuration.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>container</code></th>
+						<td><p>The container the object is being instantiated within.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Called immediately after the object is configured via dependency injection.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFIOCConfigurable.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/registerAction:forObject:" title="registerAction:forObject:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/registerAction:forObject:">&ndash;&nbsp;registerAction:forObject:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Register an action message which should be posted when the specified object requests.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)registerAction:(NSString *)<em>action</em> forObject:(id)<em>object</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>action</code></th>
+						<td><p>The action message.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>object</code></th>
+						<td><p>The object associated with the action message.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Register an action message which should be posted when the specified object requests.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFActionProxy.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/postActionForObject:" title="postActionForObject:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/postActionForObject:">&ndash;&nbsp;postActionForObject:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Post the registered action for the specified object.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (void)postActionForObject:(id)<em>object</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>object</code></th>
+						<td><p>An object previously registered by a call to [registerAction:forObject:];
+the action proxy will then post the action message provided during registration.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Post the registered action for the specified object.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFActionProxy.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div><div class="section-method">
+	<a name="//api/name/handleMessage:sender:" title="handleMessage:sender:"></a>
+	<h3 class="method-title"><code><a href="#//api/name/handleMessage:sender:">&ndash;&nbsp;handleMessage:sender:</a></code>
+</h3>
+
+	<div class="method-info">
+		<div class="pointy-thing"></div>
+
+		<div class="method-info-container">
+			
+			
+			<div class="method-subsection brief-description">
+				<p>Try handling a message.</p>
+			</div>
+			
+		    
+
+			<div class="method-subsection method-declaration"><code>- (BOOL)handleMessage:(IFMessage *)<em>message</em> sender:(id)<em>sender</em></code></div>
+
+		    
+			
+			<div class="method-subsection arguments-section parameters">
+				<h4 class="method-subtitle parameter-title">Parameters</h4>
+				<table class="argument-def parameter-def">
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>message</code></th>
+						<td><p>The message to handle.</p></td>
+					</tr>
+				
+					<tr>
+						<th scope="row" class="argument-name"><code>sender</code></th>
+						<td><p>The component which sent the message.</p></td>
+					</tr>
+				
+				</table>
+			</div>
+			
+
+			
+			<div class="method-subsection return">
+				<h4 class="method-subtitle parameter-title">Return Value</h4>
+				<p>Returns <em>true</em> if the message was handled (i.e. acted upon), <em>false</em> otherwise.
+A <em>true</em> result will stop further processing of the message. A <em>false</em> result may mean
+that the message continues to be dispatched to other components (i.e. until some component
+handles it).</p>
+			</div>
+			
+
+			
+
+			
+			<div class="method-subsection discussion-section">
+				<h4 class="method-subtitle">Discussion</h4>
+				<p>Try handling a message.</p>
+			</div>
+			
+
+			
+
+			
+
+			
+			<div class="method-subsection declared-in-section">
+				<h4 class="method-subtitle">Declared In</h4>
+				<p><code class="declared-in-ref">IFMessageHandler.h</code></p>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
+						</div>
+						
+					</div>
+					
+					
+
+                    
+                    
+          
+				</main>
+
+				<footer>
+					<div class="footer-copyright">
+						
+						<p class="copyright">Copyright &copy; 2016 InnerFunction. All rights reserved. Updated: 2016-03-21</p>
+						
+						
+						<p class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.2.1 (build 1334)</a>.</p>
+						
+					</div>
+				</footer>
+			</div>
+		</div>
+	</article>
+
+	<script src="../js/script.js"></script>
+</body>
+</html>
