@@ -19,9 +19,7 @@
 #import <Foundation/Foundation.h>
 
 #define IFCompoundURIParseError                     1
-#define IFCompoundURIUnbalancedBracket              2
-#define IFCompoundURIInvalidNameRef                 3
-#define IFCompoundURITrailingAfterParamAssignment   4
+#define IFCompoundURITrailingCharacters             2
 
 /**
  * A class representing a parsed compound URI string.
@@ -52,19 +50,6 @@
  */
 @property (nonatomic, strong) NSDictionary *parameters;
 
-/**
- * Parse a URI.
- * @param uri The URI string to parse.
- * @param error Returns a parse error, if any occurs.
- */
-- (id)initWithURI:(NSString *)uri error:(NSError **)error;
-/**
- * Parse a nested URI within a string.
- * @param uri The URI string being parsed.
- * @param trailing Returns the portion of the string after the end of the nested URI.
- * @param error Returns a parse error, if any occurs.
- */
-- (id)initWithURI:(NSString *)uri trailing:(NSString **)trailing error:(NSError **)error;
 /**
  * Create a new URI with a scheme and name.
  * @param scheme The URI's scheme name.
@@ -99,5 +84,10 @@
 - (IFCompoundURI *)copyOfWithFragment:(NSString *)fragment;
 /** Static utility method for parsing a URI string. */
 + (IFCompoundURI *)parse:(NSString *)uri error:(NSError **)error;
+/**
+ * Static utility method for parsing a URI string.
+ * Swallows any error and instead returns _nil_ for invalid URIs.
+ */
++ (IFCompoundURI *)parse:(NSString *)uri;
 
 @end

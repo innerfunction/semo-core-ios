@@ -63,7 +63,7 @@
         }
         else if ([configSource isKindOfClass:[NSString class]]) {
             NSError *error = nil;
-            uri = [[IFCompoundURI alloc] initWithURI:(NSString *)configSource error:&error];
+            uri = [IFCompoundURI parse:(NSString *)configSource error:&error];
             if (error) {
                 DDLogCError(@"%@: Error parsing app container configuration URI: %@", LogTag, error);
                 return;
@@ -233,8 +233,13 @@
 }
 
 - (void)postMessage:(NSString *)messageURI sender:(id)sender {
-    // Parse the action URI.
-    IFCompoundURI *uri = [IFCompoundURI parse:messageURI error:nil];
+    // Try parsing the action URI.
+    IFCompoundURI *uri = [IFCompoundURI parse:messageURI];
+    // If URI doesn't parse then it may be a bare message, try prepending post: and parsing again.
+    if (!uri) {
+        messageURI = [@"post:" stringByAppendingString:messageURI];
+        uri = [IFCompoundURI parse:messageURI];
+    }
     if (uri) {
         // Process the message on the main thread. This is because the URI may dereference to a view,
         // and some views (e.g. web views) have to be instantiated on the UI thread.

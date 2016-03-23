@@ -423,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				07BD8A2F1C7653400058D7A8 /* IFConfigurable.h */,
+				07BD8A421C7653400058D7A8 /* IFValues.h */,
 				07BD8A301C7653400058D7A8 /* IFConfiguration.h */,
 				07BD8A311C7653400058D7A8 /* IFConfiguration.m */,
 				07BD8A321C7653400058D7A8 /* IFConfiguredLocals.h */,
@@ -445,7 +446,6 @@
 				07933F101C902CD6003D6227 /* IFIOCProxyObject.h */,
 				07933F111C902CD6003D6227 /* IFIOCProxyObject.m */,
 				07BD8A3F1C7653400058D7A8 /* IFService.h */,
-				07BD8A421C7653400058D7A8 /* IFValues.h */,
 				07BD8A431C7653400058D7A8 /* NSDictionary+IFValues.h */,
 				07BD8A441C7653400058D7A8 /* NSDictionary+IFValues.m */,
 				07A9E5321C836B6500AB32A0 /* IFMessage.h */,

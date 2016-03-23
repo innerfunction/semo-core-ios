@@ -27,10 +27,8 @@
 
 - (id)initWithData:(id)data uri:(IFCompoundURI *)uri {
     self = [super init];
-    if (self) {
-        self.data = data;
-        self.uri = uri;
-    }
+    self.data = data;
+    self.uri = uri;
     return self;
 }
 

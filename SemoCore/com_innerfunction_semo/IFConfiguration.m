@@ -104,10 +104,8 @@
 - (id)init {
     // Initialize with an empty dictionary.
     self = [super init];
-    if (self) {
-        self.data = [NSDictionary dictionary];
-        [self initializeContext];
-    }
+    self.data = [NSDictionary dictionary];
+    [self initializeContext];
     return self;
 }
 
@@ -117,9 +115,7 @@
 
 - (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler {
     self = [self initWithData:data];
-    if (self) {
-        self.uriHandler = uriHandler;
-    }
+    self.uriHandler = uriHandler;
     return self;
 }
 

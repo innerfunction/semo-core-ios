@@ -23,11 +23,9 @@
 
 - (id)initWithHandle:(NSFileHandle *)handle url:(NSURL *)url path:(NSString *)path {
     self = [super init];
-    if (self) {
-        self.handle = handle;
-        self.url = url;
-        self.path = path;
-    }
+    self.handle = handle;
+    self.url = url;
+    self.path = path;
     return self;
 }
 
@@ -38,9 +36,7 @@
 - (id)initWithHandle:(NSFileHandle *)handle url:(NSURL *)url path:(NSString *)filePath uri:(IFCompoundURI *)uri {
     IFFileDescription *fileDesc = [[IFFileDescription alloc] initWithHandle:handle url:url path:filePath];
     self = [super initWithData:fileDesc uri:uri];
-    if (self) {
-        self.fileDescription = fileDesc;
-    }
+    self.fileDescription = fileDesc;
     return self;
 }
 
