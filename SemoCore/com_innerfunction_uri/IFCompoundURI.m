@@ -176,16 +176,16 @@
     return [object isKindOfClass:[IFCompoundURI class]] && [[self description] isEqualToString:[object description]];
 }
 
-// URI ::= ( NESTED_URI | UNNESTED_URI )
+// URI ::= ( BRACKETED_URI | PLAIN_URI )
 BOOL parseURI(NSString *input, NSMutableDictionary *ast) {
-    return parseNestedURI( input, ast ) || parseUnnestedURI( input, ast );
+    return parseBracketedURI( input, ast ) || parsePlainURI( input, ast );
 }
 
-// NESTED_URI ::= '[' UNNESTED_URI ']'
-BOOL parseNestedURI(NSString *input, NSMutableDictionary *ast) {
+// BRACKETED_URI ::= '[' PLAIN_URI ']'
+BOOL parseBracketedURI(NSString *input, NSMutableDictionary *ast) {
     if ([input hasPrefix:@"["]) {
         input = [input substringFromIndex:1];
-        if (parseUnnestedURI( input, ast )) {
+        if (parsePlainURI( input, ast )) {
             input = ast[@"__trailing"];
             if ([input hasPrefix:@"]"]) {
                 ast[@"__trailing"] = [input substringFromIndex:1];
@@ -196,8 +196,8 @@ BOOL parseNestedURI(NSString *input, NSMutableDictionary *ast) {
     return NO;
 }
 
-// UNNESTED_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS?
-BOOL parseUnnestedURI(NSString *input, NSMutableDictionary *ast) {
+// PLAIN_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS?
+BOOL parsePlainURI(NSString *input, NSMutableDictionary *ast) {
     if (parseScheme( input, ast )) {
         input = ast[@"__trailing"];
         if ([input hasPrefix:@":"]) {

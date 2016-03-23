@@ -56,22 +56,17 @@
         _schemeHandlers = schemeHandlers;
         _schemeContexts = schemeContexts;
         // Add standard schemes.
-        [_schemeHandlers setValue:[[IFStringSchemeHandler alloc] init]
-                          forKey:@"s"];
+        _schemeHandlers[@"s"] = [IFStringSchemeHandler new];
         // See following for info on iOS file system dirs.
         // https://developer.apple.com/library/mac/#documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_Constants/Reference/reference.html
         // http://developer.apple.com/library/ios/#documentation/FileManagement/Conceptual/FileSystemProgrammingGUide/FileSystemOverview/FileSystemOverview.html
         // TODO: app: scheme handler not resolving (in simulator anyway):
         // Resolved path: /Users/juliangoacher/Library/Application\ Support/iPhone\ Simulator/5.0/Applications/F578A85D-A358-4897-A0BE-9BE8714B50D4/Applications/
         // Actual path:   /Users/juliangoacher/Library/Application\ Support/iPhone\ Simulator/5.0/Applications/F578A85D-A358-4897-A0BE-9BE8714B50D4/EventPacComponents.app/
-        [_schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithPath:mainBundlePath]
-                           forKey:@"app"];
-        [_schemeHandlers setValue:[[IFFileBasedSchemeHandler alloc] initWithDirectory:NSCachesDirectory]
-                           forKey:@"cache"];
-        [_schemeHandlers setValue:[[IFLocalSchemeHandler alloc] init]
-                           forKey:@"local"];
-        [_schemeHandlers setValue:[[IFReprSchemeHandler alloc] init]
-                           forKey:@"repr"];
+        _schemeHandlers[@"app"] = [[IFFileBasedSchemeHandler alloc] initWithPath:mainBundlePath];
+        _schemeHandlers[@"cache"] = [[IFFileBasedSchemeHandler alloc] initWithDirectory:NSCachesDirectory];
+        _schemeHandlers[@"local"] = [IFLocalSchemeHandler new];
+        _schemeHandlers[@"repr"] = [IFReprSchemeHandler new];
     }
     return self;
 }
@@ -167,12 +162,12 @@
     else {
         uriString = [uri description];
     }
-    IFCompoundURI *compUri = [IFCompoundURI parse:uriString error:&error];
+    IFCompoundURI *result = [IFCompoundURI parse:uriString error:&error];
     if (error) {
         NSString *reason = [NSString stringWithFormat:@"Error parsing URI %@ code: %ld message: %@", uriString, (long)error.code, [error.userInfo valueForKey:@"message"]];
         @throw [[NSException alloc] initWithName:@"IFURIResolver" reason:reason userInfo:nil];
     }
-    return compUri;
+    return result;
 }
 
 @end

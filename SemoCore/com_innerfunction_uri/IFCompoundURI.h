@@ -25,9 +25,9 @@
  * A class representing a parsed compound URI string.
  * The URI syntax conforms to the following (approximate) BNF:
  *
- *             URI ::= ( NESTED_URI | UNNESTED_URI )
- *      NESTED_URI ::= '[' UNNESTED_URI ']'
- *    UNNESTED_URI ::= SCHEME ':' NAME? ('#' FRAGMENT)? PARAMETERS?
+ *             URI ::= ( BRACKETED_URI | PLAIN_URI )
+ *   BRACKETED_URI ::= '[' PLAIN_URI ']'
+ *       PLAIN_URI ::= SCHEME ':' NAME? ('#' FRAGMENT)? PARAMETERS?
  *      PARAMETERS ::= '+' PARAM_NAME ( '@' | '=' ) PARAM_VALUE PARAMETERS*
  *     PARAM_VALUE ::= ( LITERAL | URI )
  *          SCHEME ::= (name characters)+

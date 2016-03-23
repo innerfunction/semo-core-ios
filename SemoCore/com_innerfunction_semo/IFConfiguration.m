@@ -24,6 +24,8 @@
 #import "UIColor+IF.h"
 #import "IFLogging.h"
 
+#define ValueOrDefault(v,dv)   (v == nil ? dv : v)
+
 @interface IFConfiguration()
 
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
@@ -140,6 +142,8 @@
 - (id)initWithConfiguration:(IFConfiguration *)config parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {
+        // TODO: Note quite different semantics for data & context in this constructor
+        // vs. the previos constructor above, despite v. similar method sigs.
         NSDictionary *data = [[NSMutableDictionary alloc] init];
         if ([config.data isKindOfClass:[NSDictionary class]]) {
             data = [data extendWith:(NSDictionary *)config.data];
@@ -315,8 +319,7 @@
 }
 
 - (UIColor *)getValueAsColor:(NSString *)keyPath defaultValue:(UIColor *)defaultValue {
-    UIColor *color = [self getValueAsColor:keyPath];
-    return color ? color : defaultValue;
+    return ValueOrDefault([self getValueAsColor:keyPath], defaultValue);
 }
 
 - (NSURL *)getValueAsURL:(NSString *)keyPath {
@@ -362,8 +365,7 @@
 }
 
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath defaultValue:(IFConfiguration *)defaultValue {
-    IFConfiguration *result = [self getValueAsConfiguration:keyPath];
-    return result ? result : defaultValue;
+    return ValueOrDefault([self getValueAsConfiguration:keyPath], defaultValue);
 }
 
 - (NSArray *)getValueAsConfigurationList:(NSString *)keyPath {
@@ -398,6 +400,7 @@
     return result;
 }
 
+// Should be called extendFromConfiguration
 - (IFConfiguration *)mergeConfiguration:(IFConfiguration *)otherConfig {
     // See note in Configuration.java about the parent argument below.
     return [[IFConfiguration alloc] initWithConfiguration:self parent:otherConfig];
@@ -448,6 +451,23 @@
         [visited addObject:current];
         result = [[current flatten] mergeConfiguration:result];
     }
+    
+    // ----
+    NSMutableArray *parents = [NSMutableArray new];
+    while ([current getValueType:@"*extends"] == IFValueTypeObject) {
+        current = [current getValueAsConfiguration:@"*extends"];
+        if ([parents containsObject:current]) {
+            // Dependency loop detected, stop extending the config.
+            break;
+        }
+        [parents addObject:current];
+    }
+    [parents addObject:[self flatten]];
+    result = [IFConfiguration emptyConfiguration];
+    for (IFConfiguration *parent in [parents reverseObjectEnumerator]) {
+        result = [result mergeConfiguration:[parent flatten]];
+    }
+    // ----
     return result;
 }
 
@@ -459,12 +479,6 @@
     result.uriHandler = _uriHandler;
     return result;
 }
-
-/*
-- (NSUInteger)hash {
-    return self.resource ? [self.resource hash] : [super hash];
-}
-*/
 
 - (BOOL)isEqual:(id)object {
     // Two configurations are equal if the have the same source resource.
