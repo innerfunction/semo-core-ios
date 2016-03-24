@@ -24,8 +24,8 @@
  * An internal URI handler for the _make:_ scheme.
  * The _make:_ scheme allows new components to be instantiated from a pre-defined configuration.
  * The set of pre-defined configurations must be declared in a top-level property of the app
- * container named _makeConfigs_. The _name_ part of the _make:_ URI then refers to a key within
- * the makeConfigs map. Make configurations can be parameterized, with parameter values provided
+ * container named _makes_. The _name_ part of the _make:_ URI then refers to a key within
+ * the makes map. Make configurations can be parameterized, with parameter values provided
  * via the _make:_ URI's parameters.
  */
 @interface IFMakeScheme : NSObject <IFSchemeHandler> {

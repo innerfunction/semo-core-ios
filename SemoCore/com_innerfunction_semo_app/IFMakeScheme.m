@@ -34,7 +34,7 @@
 
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     id result = nil;
-    id configs = [container getNamed:@"makeConfigs"];
+    id configs = [container getNamed:@"makes"];
     if (configs && [configs isKindOfClass:[IFConfiguration class]]) {
         IFConfiguration *config = [configs getValueAsConfiguration:uri.name];
         if (config) {
