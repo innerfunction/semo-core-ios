@@ -28,8 +28,6 @@
 
 @interface IFConfiguration()
 
-- (id)initWithData:(id)data parent:(IFConfiguration *)parent;
-- (id)initWithData:(id)data resource:(IFResource *)resource;
 - (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin precedent:(IFConfiguration *)precedent;
 - (void)initializeContext;
 
@@ -47,12 +45,6 @@
 
 - (id)initWithData:(id)data {
     return [self initWithData:data parent:[IFConfiguration emptyConfiguration]];
-}
-
-- (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler {
-    self = [self initWithData:data];
-    self.uriHandler = uriHandler;
-    return self;
 }
 
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent {
@@ -85,16 +77,9 @@
 }
 
 - (id)initWithResource:(IFResource *)resource {
-    return [self initWithData:[resource asJSONData] resource:resource];
-}
-
-- (id)initWithData:(id)data resource:(IFResource *)resource {
-    if (self = [super init]) {
-        self.data = data;
-        self.root = self;
-        self.uriHandler = resource.uriHandler;
-        [self initializeContext];
-    }
+    //return [self initWithData:[resource asJSONData] resource:resource];
+    self = [self initWithData:[resource asJSONData]];
+    self.uriHandler = resource.uriHandler;
     return self;
 }
 
@@ -462,7 +447,6 @@
 
 - (BOOL)isEqual:(id)object {
     // Two configurations are equal if the have the same source resource.
-    //return [object isKindOfClass:[IFConfiguration class]] && [self.resource isEqual:((IFConfiguration *)object).resource];
     return [object isKindOfClass:[IFConfiguration class]] && [_data isEqual:((IFConfiguration *)object).data];
 }
 

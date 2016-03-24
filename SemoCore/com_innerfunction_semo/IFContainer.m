@@ -658,8 +658,8 @@
 
 #pragma mark - IFConfigurationRoot
 
-- (id)getValue:(NSString *)name asRepresentation:(NSString *)representation {
-    id value = [self getNamed:name];
+- (id)getValue:(NSString *)keyPath asRepresentation:(NSString *)representation {
+    id value = [self getNamed:keyPath];
     if (value && ![@"bare" isEqualToString:representation]) {
         value = [IFTypeConversions value:value asRepresentation:representation];
     }

@@ -27,12 +27,12 @@
 
 /**
  * Get a particular representation of a configuration value.
- * @param name The value name.
+ * @param key The value key.
  * @param representation The name of the required representation. @see <IFTypeInfo> for a list
  * of representation names.
- * @return The value in the requried representation.
+ * @return The value in the required representation.
  */
-- (id)getValue:(NSString *)name asRepresentation:(NSString *)representation;
+- (id)getValue:(NSString *)keyPath asRepresentation:(NSString *)representation;
 
 @end
 
@@ -70,8 +70,6 @@
  * _uriHandler_ variables.
  */
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
-/// Initialize the configuration with the specified data and URI handler.
-- (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler;
 /// Initialize the configuration by reading JSON from the specified resource.
 - (id)initWithResource:(IFResource *)resource;
 /// Initialize the configuration by reading JSON from the specified resource, and using another configuraation as the parent.
