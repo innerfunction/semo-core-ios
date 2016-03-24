@@ -36,7 +36,7 @@
     // Flatten the object configuration.
     configuration = [configuration flatten];
     // Extend the object configuration from the base configuration.
-    configuration = [_baseConfiguration mergeConfiguration:configuration];
+    configuration = [configuration mixoverConfiguration:_baseConfiguration];
     // If any parameters then extend the configuration using them.
     if (params) {
         configuration = [configuration extendWithParameters:params];

@@ -112,8 +112,6 @@
 		07BD8AE91C7653AD0058D7A8 /* IFFileIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8ACC1C7653AD0058D7A8 /* IFFileIO.m */; };
 		07BD8AEC1C7653AD0058D7A8 /* IFI18nMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8ACF1C7653AD0058D7A8 /* IFI18nMap.h */; };
 		07BD8AED1C7653AD0058D7A8 /* IFI18nMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8AD01C7653AD0058D7A8 /* IFI18nMap.m */; };
-		07BD8AEE1C7653AD0058D7A8 /* IFJSONData.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8AD11C7653AD0058D7A8 /* IFJSONData.h */; };
-		07BD8AEF1C7653AD0058D7A8 /* IFJSONData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8AD21C7653AD0058D7A8 /* IFJSONData.m */; };
 		07BD8AF01C7653AD0058D7A8 /* IFLocals.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8AD31C7653AD0058D7A8 /* IFLocals.h */; };
 		07BD8AF11C7653AD0058D7A8 /* IFLocals.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8AD41C7653AD0058D7A8 /* IFLocals.m */; };
 		07BD8AF21C7653AD0058D7A8 /* IFLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8AD51C7653AD0058D7A8 /* IFLogger.h */; };
@@ -282,8 +280,6 @@
 		07BD8ACC1C7653AD0058D7A8 /* IFFileIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFFileIO.m; path = com_innerfunction_util/IFFileIO.m; sourceTree = SOURCE_ROOT; };
 		07BD8ACF1C7653AD0058D7A8 /* IFI18nMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFI18nMap.h; path = com_innerfunction_util/IFI18nMap.h; sourceTree = SOURCE_ROOT; };
 		07BD8AD01C7653AD0058D7A8 /* IFI18nMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFI18nMap.m; path = com_innerfunction_util/IFI18nMap.m; sourceTree = SOURCE_ROOT; };
-		07BD8AD11C7653AD0058D7A8 /* IFJSONData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFJSONData.h; path = com_innerfunction_util/IFJSONData.h; sourceTree = SOURCE_ROOT; };
-		07BD8AD21C7653AD0058D7A8 /* IFJSONData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFJSONData.m; path = com_innerfunction_util/IFJSONData.m; sourceTree = SOURCE_ROOT; };
 		07BD8AD31C7653AD0058D7A8 /* IFLocals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFLocals.h; path = com_innerfunction_util/IFLocals.h; sourceTree = SOURCE_ROOT; };
 		07BD8AD41C7653AD0058D7A8 /* IFLocals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFLocals.m; path = com_innerfunction_util/IFLocals.m; sourceTree = SOURCE_ROOT; };
 		07BD8AD51C7653AD0058D7A8 /* IFLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFLogger.h; path = com_innerfunction_util/IFLogger.h; sourceTree = SOURCE_ROOT; };
@@ -543,8 +539,6 @@
 				07BD8ACC1C7653AD0058D7A8 /* IFFileIO.m */,
 				07BD8ACF1C7653AD0058D7A8 /* IFI18nMap.h */,
 				07BD8AD01C7653AD0058D7A8 /* IFI18nMap.m */,
-				07BD8AD11C7653AD0058D7A8 /* IFJSONData.h */,
-				07BD8AD21C7653AD0058D7A8 /* IFJSONData.m */,
 				07BD8AD31C7653AD0058D7A8 /* IFLocals.h */,
 				07BD8AD41C7653AD0058D7A8 /* IFLocals.m */,
 				07BD8AD51C7653AD0058D7A8 /* IFLogger.h */,
@@ -741,7 +735,6 @@
 				07BD8B4C1C7653FC0058D7A8 /* mztools.h in Headers */,
 				07BD8B501C7653FC0058D7A8 /* zip.h in Headers */,
 				07BD8B1C1C7653F00058D7A8 /* DDFileLogger.h in Headers */,
-				07BD8AEE1C7653AD0058D7A8 /* IFJSONData.h in Headers */,
 				07BD8B4E1C7653FC0058D7A8 /* unzip.h in Headers */,
 				07BD8A9B1C76537E0058D7A8 /* IFSlideViewController.h in Headers */,
 				07933EEF1C8A41EF003D6227 /* IFIOCProxy.h in Headers */,
@@ -905,7 +898,6 @@
 				07BD8B001C7653AD0058D7A8 /* NSDictionary+IF.m in Sources */,
 				07BD8AC01C7653930058D7A8 /* IFLocalSchemeHandler.m in Sources */,
 				07BD8B251C7653F00058D7A8 /* DispatchQueueLogFormatter.m in Sources */,
-				07BD8AEF1C7653AD0058D7A8 /* IFJSONData.m in Sources */,
 				07BD8B1D1C7653F00058D7A8 /* DDFileLogger.m in Sources */,
 				072DA4B71C8491070023FAEC /* UIViewController+Toast.m in Sources */,
 				074C3DC71C944FC3009BBEEF /* IFViewBehaviourObject.m in Sources */,

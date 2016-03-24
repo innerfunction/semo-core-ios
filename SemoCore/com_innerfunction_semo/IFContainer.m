@@ -113,7 +113,7 @@
         else {
             typeConfig = [[IFConfiguration alloc] initWithData:types];
         }
-        _types = [_types mergeConfiguration:typeConfig];
+        _types = [_types mixinConfiguration:typeConfig];
     }
 }
 

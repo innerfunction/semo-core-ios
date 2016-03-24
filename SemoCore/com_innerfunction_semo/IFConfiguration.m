@@ -30,74 +30,8 @@
 
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
 - (id)initWithData:(id)data resource:(IFResource *)resource;
-- (id)initWithConfiguration:(IFConfiguration *)config parent:(IFConfiguration *)parent;
+- (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin precedent:(IFConfiguration *)precedent;
 - (void)initializeContext;
-
-@end
-
-@implementation IFConfigurationPropertyHandler
-
-- (id)initWithConfiguration:(IFConfiguration *)_parent {
-    self = [super init];
-    if (self) {
-        parent = _parent;
-    }
-    return self;
-}
-
-- (id)resolveName:(NSString *)name on:(id)value representation:(NSString *)representation {
-    if ([value isKindOfClass:[IFResource class]]) {
-        value = [(IFResource *)value asJSONData];
-    }
-    return [super resolveName:name on:value representation:representation];
-}
-
-- (id)modifyValue:(id)value forName:(id)name representation:(NSString *)representation {
-    if ([value isKindOfClass:[NSString class]]) {
-        // Interpret the string value.
-        NSString* stringValue = (NSString *)value;
-        // First, attempt resolving any context references. If these in turn resolve to a
-        // $ or # prefixed value, then they will be resolved in the following code.
-        if ([stringValue hasPrefix:@"$"]) {
-            value = [parent.context objectForKey:stringValue];
-            if ([value isKindOfClass:[NSString class]]) {
-                stringValue = (NSString *)value;
-            }
-            else {
-                return value;
-            }
-        }
-        // Evaluate any string beginning with ? as a string template.
-        if ([stringValue hasPrefix:@"?"]) {
-            stringValue = [stringValue substringFromIndex:1];
-            stringValue = [IFStringTemplate render:(NSString*)stringValue context:parent.context];
-        }
-        // Any string values starting with a '@' are potentially internal URI references.
-        // Normalize to URI references with a default representation qualifier.
-        // If a dispatcher is also set on this configuration object then attempt to resolve
-        // the URI and return its value instead.
-        if ([stringValue hasPrefix:@"@"]) {
-            NSString* uri = [stringValue substringFromIndex:1];
-            value = [parent.uriHandler dereference:uri];
-        }
-        // Any string values starting with a '#' are potential path references to other
-        // properties in the same configuration. Attempt to resolve them against the configuration
-        // root; if they don't resolve then return the original value.
-        else if ([stringValue hasPrefix:@"#"]) {
-            value = [parent.root getValue:[stringValue substringFromIndex:1] asRepresentation:representation];
-            if (value == nil) {
-                value = stringValue;
-            }
-        }
-        else if ([stringValue hasPrefix:@"`"]) {
-            value = [stringValue substringFromIndex:1];
-        }
-        else if (stringValue) {
-            value = stringValue;
-        }
-    }
-    return value;
-}
 
 @end
 
@@ -134,29 +68,18 @@
         self.context = parent.context;
         self.uriHandler = parent.uriHandler;
         [self initializeContext];
-        propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
     return self;
 }
 
-- (id)initWithConfiguration:(IFConfiguration *)config parent:(IFConfiguration *)parent {
+- (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin precedent:(IFConfiguration *)precedent {
     self = [super init];
     if (self) {
-        // TODO: Note quite different semantics for data & context in this constructor
-        // vs. the previos constructor above, despite v. similar method sigs.
-        NSDictionary *data = [[NSMutableDictionary alloc] init];
-        if ([config.data isKindOfClass:[NSDictionary class]]) {
-            data = [data extendWith:(NSDictionary *)config.data];
-        }
-        if ([parent.data isKindOfClass:[NSDictionary class]]) {
-            data = [data extendWith:(NSDictionary *)parent.data];
-        }
-        self.data = data;
-        self.root = parent.root;
-        self.context = [config.context extendWith:parent.context];
-        self.uriHandler = parent.uriHandler;
+        self.data = [config.data extendWith:mixin.data];
+        self.context = [config.context extendWith:mixin.context];
+        self.root = precedent.root;
+        self.uriHandler = precedent.uriHandler;
         [self initializeContext];
-        propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
     return self;
 }
@@ -171,7 +94,6 @@
         self.root = self;
         self.uriHandler = resource.uriHandler;
         [self initializeContext];
-        propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
     return self;
 }
@@ -184,21 +106,20 @@
         self.context = parent.context;
         self.uriHandler = parent.uriHandler;
         [self initializeContext];
-        propertyHandler = [[IFConfigurationPropertyHandler alloc] initWithConfiguration:self];
     }
     return self;
 }
 
 - (void)initializeContext {
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *values = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    NSMutableDictionary *values = [NSMutableDictionary new];
     // Search the configuration data for any parameter values, filter parameter values out of main data values.
     for (NSString *name in [_data allKeys]) {
         if ([name hasPrefix:@"$"]) {
-            [params setObject:[_data objectForKey:name] forKey:name];
+            params[name] = _data[name];
         }
         else {
-            [values setObject:[_data objectForKey:name] forKey:name];
+            values[name] = _data[name];
         }
     }
     // Initialize/modify the context with parameter values, if any.
@@ -216,10 +137,79 @@
     }
 }
 
-- (id)getValue:(NSString*)KeyPath asRepresentation:(NSString *)representation {
-    
-    id value = [IFJSONData resolvePath:KeyPath onData:_data handler:propertyHandler representation:representation];
-    
+- (id)getValue:(NSString*)keyPath asRepresentation:(NSString *)representation {
+    id value = _data;
+    NSArray *components = [keyPath componentsSeparatedByString:@"."];
+    for (NSString *key in components) {
+        // Unpack any resource value.
+        if ([value isKindOfClass:[IFResource class]]) {
+            value = [(IFResource *)value asJSONData];
+        }
+        // Lookup the key value on the current object.
+        if ([value isKindOfClass:[NSArray class]]) {
+            NSInteger idx = [key integerValue];
+            value = value[idx];
+        }
+        else if ([value respondsToSelector:@selector(objectForKey:)]) {
+            value = value[key];
+        }
+        else {
+            value = nil;
+        }
+        // Continue if we have a value, else break out of the loop.
+        if (value != nil) {
+            // Modify the value by accounting for any value prefixes.
+            if ([value isKindOfClass:[NSString class]]) {
+                // Interpret the string value.
+                NSString* valueStr = (NSString *)value;
+                // First, attempt resolving any context references. If these in turn resolve to a
+                // $ or # prefixed value, then they will be resolved in the following code.
+                if ([valueStr hasPrefix:@"$"]) {
+                    value = _context[valueStr];
+                    // If context value is also a string then continue to following modifiers...
+                    if ([value isKindOfClass:[NSString class]]) {
+                        valueStr = (NSString *)value;
+                    }
+                    else {
+                        // ...else continue to next key.
+                        continue;
+                    }
+                }
+                // Evaluate any string beginning with ? as a string template.
+                if ([valueStr hasPrefix:@"?"]) {
+                    valueStr = [valueStr substringFromIndex:1];
+                    valueStr = [IFStringTemplate render:valueStr context:_context];
+                }
+                // Any string values starting with a '@' are potentially internal URI references.
+                // Normalize to URI references with a default representation qualifier.
+                // If a dispatcher is also set on this configuration object then attempt to resolve
+                // the URI and return its value instead.
+                if ([valueStr hasPrefix:@"@"]) {
+                    NSString *uri = [valueStr substringFromIndex:1];
+                    value = [_uriHandler dereference:uri];
+                }
+                // Any string values starting with a '#' are potential path references to other
+                // properties in the same configuration. Attempt to resolve them against the configuration
+                // root; if they don't resolve then return the original value.
+                else if ([valueStr hasPrefix:@"#"]) {
+                    value = [_root getValue:[valueStr substringFromIndex:1] asRepresentation:representation];
+                    if (value == nil) {
+                        // If no value resolved then reset value to the #string
+                        value = valueStr;
+                    }
+                }
+                else if ([valueStr hasPrefix:@"`"]) {
+                    value = [valueStr substringFromIndex:1];
+                }
+                else if (valueStr) {
+                    value = valueStr;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
     // Perform type conversions according to the requested representation.
     // These are pretty basic:
     // * Bare values are return unchanged
@@ -231,37 +221,29 @@
     // * A String can be converted to a URL and is valid JSON data;
     // * A Number can be converted to a String and is valid JSON data;
     // * Anything else is only valid JSON data.
-    if ([@"bare" isEqualToString:representation]) {
-    }
-    /*
-    else if ([@"resource" isEqualToString:representation]) {
-        if ( value && ![value isKindOfClass:[IFResource class]]) {
-            IFCompoundURI *uri = [resource.uri copyOfWithFragment:name];
-            value = [[IFResource alloc] initWithData:value uri:uri parent:resource];
-        }
-    }
-    */
-    else if ([@"configuration" isEqualToString:representation]) {
-        if (![value isKindOfClass:[IFConfiguration class]]) {
-            // If value isn't already a configuration, but is a dictionary then construct a new config using the values in that dictionary...
-            if ([value isKindOfClass:[NSDictionary class]]) {
-                value = [[IFConfiguration alloc] initWithData:value parent:self];
-            }
-            // Else if value is a resource, then construct a new config using the resource...
-            else if ([value isKindOfClass:[IFResource class]]) {
-                value = [[IFConfiguration alloc] initWithResource:(IFResource *)value parent:self];
-            }
-            // Else the value can't be resolved to a resource, so return nil.
-            else {
-                value = nil;
+    if (![@"bare" isEqualToString:representation]) {
+        if ([@"configuration" isEqualToString:representation]) {
+            if (![value isKindOfClass:[IFConfiguration class]]) {
+                // If value isn't already a configuration, but is a dictionary then construct a new config using the values in that dictionary...
+                if ([value isKindOfClass:[NSDictionary class]]) {
+                    value = [[IFConfiguration alloc] initWithData:value parent:self];
+                }
+                // Else if value is a resource, then construct a new config using the resource...
+                else if ([value isKindOfClass:[IFResource class]]) {
+                    value = [[IFConfiguration alloc] initWithResource:(IFResource *)value parent:self];
+                }
+                // Else the value can't be resolved to a resource, so return nil.
+                else {
+                    value = nil;
+                }
             }
         }
-    }
-    else if ([value isKindOfClass:[IFResource class]]) {
-        value = [(IFResource*)value asRepresentation:representation];
-    }
-    else if (![@"json" isEqualToString:representation]) {
-        value = [IFTypeConversions value:value asRepresentation:representation];
+        else if ([value isKindOfClass:[IFResource class]]) {
+            value = [(IFResource*)value asRepresentation:representation];
+        }
+        else if (![@"json" isEqualToString:representation]) {
+            value = [IFTypeConversions value:value asRepresentation:representation];
+        }
     }
     return value;
 }
@@ -342,10 +324,14 @@
 }
 
 - (NSArray *)getValueNames {
-    if ([_data respondsToSelector:@selector(allKeys)]) {
-        return [_data allKeys];
+    NSMutableArray *names = [NSMutableArray new];
+    // Filter out all parameter names from the config's data.
+    for (NSString *name in [_data allKeys]) {
+        if (![name hasPrefix:@"$"]) {
+            [names addObject:name];
+        }
     }
-    return [NSArray array];
+    return names;
 }
 
 - (IFValueType)getValueType:(NSString *)keyPath {
@@ -400,20 +386,23 @@
     return result;
 }
 
-// Should be called extendFromConfiguration
-- (IFConfiguration *)mergeConfiguration:(IFConfiguration *)otherConfig {
-    // See note in Configuration.java about the parent argument below.
-    return [[IFConfiguration alloc] initWithConfiguration:self parent:otherConfig];
+- (IFConfiguration *)mixinConfiguration:(IFConfiguration *)otherConfig {
+    return [[IFConfiguration alloc] initWithConfiguration:self mixin:otherConfig precedent:self];
+}
+
+- (IFConfiguration *)mixoverConfiguration:(IFConfiguration *)otherConfig {
+    return [[IFConfiguration alloc] initWithConfiguration:otherConfig mixin:self precedent:self];
 }
 
 - (IFConfiguration *)extendWithParameters:(NSDictionary *)params {
     IFConfiguration *result = self;
     if ([params count] > 0) {
-        result = [[IFConfiguration alloc] initWithData:self.data parent:self];
-        NSMutableDictionary *$params = [[NSMutableDictionary alloc] initWithCapacity:[params count]];
-        for (NSString *name in [params allKeys]) {
-            [$params setObject:[params objectForKey:name] forKey:[NSString stringWithFormat:@"$%@", name]];
+        NSMutableDictionary *$params = [NSMutableDictionary new];
+        for (NSString *key in [params allKeys]) {
+            NSString *$key = [NSString stringWithFormat:@"$%@", key];
+            $params[$key] = params[key];
         }
+        result = [[IFConfiguration alloc] initWithData:_data parent:self];
         result.context = [result.context extendWith:$params];
     }
     return result;
@@ -421,58 +410,49 @@
 
 - (IFConfiguration *)flatten {
     IFConfiguration *result = self;
-    // TODO: *config to be deprecated in place of mixin (- maybe; the term makes sense in some cases).
-    if ([self getValueType:@"*config"] == IFValueTypeObject) {
-        result = [self mergeConfiguration:[self getValueAsConfiguration:@"*config"]];
+    IFConfiguration *mixin = [self getValueAsConfiguration:@"*config"];
+    if (mixin) {
+        result = [self mixinConfiguration:mixin];
     }
-    // TODO: Add support for an array of mixin objects, or support *mixins property as same.
-    if ([self getValueType:@"*mixin"] == IFValueTypeObject) {
-        result = [self mergeConfiguration:[self getValueAsConfiguration:@"*mixin"]];
+    mixin = [self getValueAsConfiguration:@"*mixin"];
+    if (mixin) {
+        result = [self mixinConfiguration:mixin];
+    }
+    NSArray *mixins = [self getValueAsConfigurationList:@"*mixins"];
+    if (mixins) {
+        for (IFConfiguration *mixin in mixins) {
+            result = [self mixinConfiguration:mixin];
+        }
     }
     return result;
 }
 
 - (IFConfiguration *)normalize {
-    // Start by flattening this configuration (i.e. merging its "config" property into the top level).
-    IFConfiguration *result = [self flatten];
-    // Next, start processing the "extends" chain...
-    IFConfiguration *current = result;
-    // A set of previously visited parent configurations, to detect dependency loops.
-    NSMutableSet *visited = [[NSMutableSet alloc] init];
-    // TODO: Following seems wrong, it will work OK for a two-level extends chain, but is wrong for
-    // deeper chains. Instead, the full extension hierarchy should be resolved, and then merged in
-    // reverse order.
+    // Build a hierarchy of configurations extended by other configs.
+    NSMutableArray *hierarchy = [NSMutableArray new];
+    IFConfiguration *current = [self flatten];
+    [hierarchy addObject:current];
     while ([current getValueType:@"*extends"] == IFValueTypeObject) {
-        current = [current getValueAsConfiguration:@"*extends"];
-        if ([visited containsObject:current]) {
-            // Dependency loop detected, stop extending the config.
+        current = [[current getValueAsConfiguration:@"*extends"] flatten];
+        if ([hierarchy containsObject:current]) {
+            // Extension loop detected, stop extending the config.
             break;
         }
-        [visited addObject:current];
-        result = [[current flatten] mergeConfiguration:result];
+        [hierarchy addObject:current];
     }
-    
-    // ----
-    NSMutableArray *parents = [NSMutableArray new];
-    while ([current getValueType:@"*extends"] == IFValueTypeObject) {
-        current = [current getValueAsConfiguration:@"*extends"];
-        if ([parents containsObject:current]) {
-            // Dependency loop detected, stop extending the config.
-            break;
-        }
-        [parents addObject:current];
+    // Build a single unified configuration from the hierarchy of configs.
+    IFConfiguration *result = [IFConfiguration emptyConfiguration];
+    // Process the hierarchy in reverse order (i.e. from most distant ancestor to current config).
+    for (IFConfiguration *config in [hierarchy reverseObjectEnumerator]) {
+        result = [[IFConfiguration alloc] initWithConfiguration:result mixin:config precedent:result];
     }
-    [parents addObject:[self flatten]];
-    result = [IFConfiguration emptyConfiguration];
-    for (IFConfiguration *parent in [parents reverseObjectEnumerator]) {
-        result = [result mergeConfiguration:[parent flatten]];
-    }
-    // ----
+    result.root = _root;
+    result.uriHandler = _uriHandler;
     return result;
 }
 
 - (IFConfiguration *)configurationWithKeysExcluded:(NSArray *)excludedKeys {
-    NSDictionary *data = [(NSDictionary *)_data dictionaryWithKeysExcluded:excludedKeys];
+    NSDictionary *data = [_data dictionaryWithKeysExcluded:excludedKeys];
     IFConfiguration *result = [[IFConfiguration alloc] initWithData:data];
     result.root = _root;
     result.context = _context;

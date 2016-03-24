@@ -17,7 +17,6 @@
 //
 
 #import "IFResource.h"
-#import "IFJSONData.h"
 #import "IFValues.h"
 
 /**
@@ -37,25 +36,13 @@
 
 @end
 
-@class IFConfiguration;
-
-@interface IFConfigurationPropertyHandler : IFJSONPropertyHandler {
-    IFConfiguration *parent;
-}
-
-- (id)initWithConfiguration:(IFConfiguration *)_parent;
-
-@end
-
 /**
  * A class used to parse and access component configurations.
  */
-@interface IFConfiguration : NSObject <IFValues, IFConfigurationRoot> {
-    IFConfigurationPropertyHandler *propertyHandler;
-}
+@interface IFConfiguration : NSObject <IFValues, IFConfigurationRoot>
 
-/// The configuration data. Normally an _NSDictionary_ instance.
-@property (nonatomic, strong) id data;
+/// The configuration data.
+@property (nonatomic, strong) NSDictionary *data;
 /**
  * The top-level configuration.
  * When being processed, sub-parts of a configuration are often instantiated as new
@@ -71,6 +58,7 @@
  * - Configuration template values, indicated by property values prefixed with _$_.
  */
 @property (nonatomic, strong) NSDictionary *context;
+
 /// A URI handler used to derefence URIs within the configuration.
 @property (nonatomic, strong) id<IFURIHandler> uriHandler;
 
@@ -123,8 +111,17 @@
  * The merge works by performing a top-level copy of properties from the argument to the current object.
  * This means that names in the argument will overwrite any properties with the same name in the current
  * configuration.
+ * The _root_, _context_ and _uriHandler_ properties of the current configuration are copied to the result.
  */
-- (IFConfiguration *)mergeConfiguration:(IFConfiguration *)otherConfig;
+- (IFConfiguration *)mixinConfiguration:(IFConfiguration *)otherConfig;
+
+/**
+ * Create a new configuration by merging the values of the current configuration over the values of another
+ * configuration. This method is similar to the _mixinConfiguration:_ method except that value precedence
+ * is in the reverse order (i.e. the current configuration's values take precedence over the other configs.
+ * The _root_, _context_ and _uriHandler_ properties of the current configuration are copied to the result.
+ */
+- (IFConfiguration *)mixoverConfiguration:(IFConfiguration *)otherConfig;
 
 /**
  * Create a new configuration with this configuration's data context extended with a set of named parameters.
@@ -140,16 +137,20 @@
  * Flatten a configuration by resolving all _*config_ or _*mixin_ properties.
  * The *config and *mixin properties are provided as a horizontal extension mechanism. The property values
  * are resolved a configuration instances, and are then merged with the current configuration (see the
- * [mergeConfiguration:] method).
+ * [mixinConfiguration:] method).
  * @return Returns the current configuration with the *config and *mixin properties merged in.
  */
 - (IFConfiguration *)flatten;
 
 /**
  * Normalize a configuration by first flattening, and then resolving any _*extends_ property.
- * This method first calls the [flatten] method. Then, if the configuration contains an *extends property,
- * that property is resolved as a configuration and the current configuration is then merged over that
- * configuration (see [mergeConfiguration:]).
+ * This method resolves an extension hierarchy by resolving the _*extends_ property of the current
+ * configuration, instantiating a configuration from that property value, and then resolving that
+ * configuration's _*extends_ property, and so on until a root configuration is found. (Any closed
+ * loops in the hierarchy are detected and ignored). Each configuration in the hierarchy is flattened
+ * as it is resolved (i.e. mixins are copied in over the result). The hierarchy is then merged into
+ * a single configuration result, with properties in child configurations taking priority over
+ * properties with the same name in parent configurations.
  * @return Returns a new configuration containing the normalized result.
  */
 - (IFConfiguration *)normalize;
