@@ -63,7 +63,7 @@
 /**
  * Dereference a URI.
  * @param uri The parsed URI to be dereferenced.
- * @param params A dictionary of the URI's parameters name and values. All parameters have their
+ * @param params A dictionary of the URI's parameter name and values. All parameters have their
  * URI values dereferenced to their actual values.
  * @return The value referenced by the URI.
  */

@@ -165,10 +165,7 @@
                     valueStr = [valueStr substringFromIndex:1];
                     valueStr = [IFStringTemplate render:valueStr context:_context];
                 }
-                // Any string values starting with a '@' are potentially internal URI references.
-                // Normalize to URI references with a default representation qualifier.
-                // If a dispatcher is also set on this configuration object then attempt to resolve
-                // the URI and return its value instead.
+                // String values beginning with @ are internal URI references, so dereference the URI.
                 if ([valueStr hasPrefix:@"@"]) {
                     NSString *uri = [valueStr substringFromIndex:1];
                     value = [_uriHandler dereference:uri];
@@ -196,16 +193,10 @@
         }
     }
     // Perform type conversions according to the requested representation.
-    // These are pretty basic:
-    // * Bare values are return unchanged
-    // * If the requested representation is 'resource', and the value isn't already a result, then
-    //   construct a new resource with the current value. Note that the new resource URI is the same
-    //   as this configuration's base resource.
-    // Otherwise:
-    // * A Resource can be converted to anything its getRepresentation method supports;
-    // * A String can be converted to a URL and is valid JSON data;
-    // * A Number can be converted to a String and is valid JSON data;
-    // * Anything else is only valid JSON data.
+    // * 'bare' representations don't need to be converted.
+    // * 'configuration' reprs can be constructed from dictionary instances or resources.
+    // * Resource instances can be used to perform the requested representation conversion.
+    // * Otherwise use the type conversions to resolve the representation.
     if (![@"bare" isEqualToString:representation]) {
         if ([@"configuration" isEqualToString:representation]) {
             if (![value isKindOfClass:[IFConfiguration class]]) {
@@ -217,7 +208,7 @@
                 else if ([value isKindOfClass:[IFResource class]]) {
                     value = [[IFConfiguration alloc] initWithResource:(IFResource *)value parent:self];
                 }
-                // Else the value can't be resolved to a resource, so return nil.
+                // Else the value can't be resolved to a configuration, so return nil.
                 else {
                     value = nil;
                 }
@@ -309,14 +300,7 @@
 }
 
 - (NSArray *)getValueNames {
-    NSMutableArray *names = [NSMutableArray new];
-    // Filter out all parameter names from the config's data.
-    for (NSString *name in [_data allKeys]) {
-        if (![name hasPrefix:@"$"]) {
-            [names addObject:name];
-        }
-    }
-    return names;
+    return [_data allKeys];
 }
 
 - (IFValueType)getValueType:(NSString *)keyPath {

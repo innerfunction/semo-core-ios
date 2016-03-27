@@ -282,7 +282,7 @@ BOOL parseParameters(NSString *input, NSMutableDictionary *ast) {
                 }
             }
             else {
-                ast[@"__error"] = [NSString stringWithFormat:@"Expected @ or + at %@", input];
+                ast[@"__error"] = [NSString stringWithFormat:@"Expected @ or = at %@", input];
             }
         }
     }
