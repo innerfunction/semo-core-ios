@@ -20,18 +20,18 @@
 #import "IFMessage.h"
 
 /**
- * Protocol for dispatching messages to named targets.
+ * Protocol for routing messages to named targets.
  * Components which contain addressable message targets should implement this protocol.
  */
 @protocol IFMessageTargetContainer <NSObject>
 
 /**
- * Try dispatching a message to message targets within the current component.
+ * Try routing a message to a message target within the current component.
  * @param message   The message to be dispatched.
  * @param sender    The component sending the message.
- * @return Returns _true_ if the message was dispatched (received and acted upon) by
- * some target.
+ * @return Returns _true_ if the message was routed to a message target which accepted and
+ * processed the message.
  */
-- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender;
+- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender;
 
 @end

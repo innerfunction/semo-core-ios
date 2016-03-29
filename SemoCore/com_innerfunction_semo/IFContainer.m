@@ -668,11 +668,11 @@
 
 #pragma mark - IFMessageTargetContainer
 
-- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
-    BOOL dispatched = NO;
+- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
+    BOOL routed = NO;
     if ([message hasEmptyTarget]) {
         // Message is targetted at this object.
-        dispatched = [self handleMessage:message sender:sender];
+        routed = [self receiveMessage:message sender:sender];
     }
     else {
         // Look-up the message target in named objects.
@@ -682,22 +682,22 @@
             message = [message popTargetHead];
             // If we have the intended target, and the target is a message handler, then let it handle the message.
             if ([message hasEmptyTarget]) {
-                if ([target conformsToProtocol:@protocol(IFMessageHandler)]) {
-                    dispatched = [(id<IFMessageHandler>)target handleMessage:message sender:sender];
+                if ([target conformsToProtocol:@protocol(IFMessageTarget)]) {
+                    routed = [(id<IFMessageTarget>)target receiveMessage:message sender:sender];
                 }
             }
             else if ([target conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
                 // Let the current target dispatch the message to its intended target.
-                dispatched = [(id<IFMessageTargetContainer>)target dispatchMessage:message sender:sender];
+                routed = [(id<IFMessageTargetContainer>)target routeMessage:message sender:sender];
             }
         }
     }
-    return dispatched;
+    return routed;
 }
 
-#pragma mark - IFMessageHandler
+#pragma mark - IFMessageTarget
 
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     return NO;
 }
 

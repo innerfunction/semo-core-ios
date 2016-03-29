@@ -258,7 +258,7 @@
                 else return; // Can't promote the message, so can't dispatch it.
             }
             if ([message isKindOfClass:[IFMessage class]]) {
-                [self dispatchMessage:(IFMessage *)message sender:sender];
+                [self routeMessage:(IFMessage *)message sender:sender];
             }
         });
     }
@@ -270,40 +270,40 @@
 
 #pragma mark - IFMessageTargetContainer
 
-- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
-    BOOL dispatched = NO;
+- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
+    BOOL routed = NO;
     // If the sender is within the UI then search the view hierarchy for a message handler.
-    id handler = sender;
+    id target = sender;
     // Evaluate actions with relative target paths against the sender.
-    while (handler && !dispatched) {
+    while (target && !routed) {
         // See if the current handler can take the message.
         if ([message hasEmptyTarget]) {
             // Message has no target info so looking for a message handler.
-            if ([handler conformsToProtocol:@protocol(IFMessageHandler)]) {
-                dispatched = [(id<IFMessageHandler>)handler handleMessage:message sender:sender];
+            if ([target conformsToProtocol:@protocol(IFMessageTarget)]) {
+                routed = [(id<IFMessageTarget>)target receiveMessage:message sender:sender];
             }
         }
-        else if ([handler conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+        else if ([target conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
             // Message does have target info so looking for a message dispatcher.
-            dispatched = [(id<IFMessageTargetContainer>)handler dispatchMessage:message sender:sender];
+            routed = [(id<IFMessageTargetContainer>)target routeMessage:message sender:sender];
         }
-        if (!dispatched) {
+        if (!routed) {
             // Message not dispatched, so try moving up the view hierarchy.
-            if ([handler isKindOfClass:[UIViewController class]]) {
-                UIViewController *currentHandler = (UIViewController *)handler;
+            if ([target isKindOfClass:[UIViewController class]]) {
+                UIViewController *currentTarget = (UIViewController *)target;
                 // If action sender is a view controller then bubble the action up through the
                 // view controller hierachy until a hander is found.
-                if (currentHandler.presentingViewController) {
-                    handler = currentHandler.presentingViewController;
+                if (currentTarget.presentingViewController) {
+                    target = currentTarget.presentingViewController;
                 }
                 else {
-                    handler = currentHandler.parentViewController;
+                    target = currentTarget.parentViewController;
                 }
             }
-            else if ([handler isKindOfClass:[UIView class]]) {
+            else if ([target isKindOfClass:[UIView class]]) {
                 // If action sender is a view then bubble the action up through the view hierarchy.
                 // TODO: This may not work...
-                handler = [(UIView *)handler nextResponder];
+                target = [(UIView *)target nextResponder];
             }
             else {
                 // Can't process the action any further, so leave the loop.
@@ -312,15 +312,15 @@
         }
     }
     // If message not dispatched then let this container try handling it.
-    if (!dispatched) {
-        dispatched = [super dispatchMessage:message sender:sender];
+    if (!routed) {
+        routed = [super routeMessage:message sender:sender];
     }
-    return dispatched;
+    return routed;
 }
 
-#pragma mark - IFMessageHandler
+#pragma mark - IFMessageTarget
 
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"open-url"]) {
         NSString *url = (NSString *)[message parameterValue:@"url"];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];

@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 #import "IFConfiguration.h"
 #import "IFMessageTargetContainer.h"
-#import "IFMessageHandler.h"
+#import "IFMessageTarget.h"
 #import "IFService.h"
 #import "IFTypeInfo.h"
 
@@ -30,7 +30,7 @@
  * The object's properties may be configured using other built objects, or using references
  * to named objects contained by the container.
  */
-@interface IFContainer : NSObject <IFService, IFConfigurationRoot, IFMessageHandler, IFMessageTargetContainer> {
+@interface IFContainer : NSObject <IFService, IFConfigurationRoot, IFMessageTarget, IFMessageTargetContainer> {
     /// A map of named objects.
     NSMutableDictionary *_named;
     /// A list of contained services.

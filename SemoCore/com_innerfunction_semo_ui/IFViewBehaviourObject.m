@@ -24,7 +24,7 @@
 
 - (void)viewDidAppear {}
 
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     return NO;
 }
 

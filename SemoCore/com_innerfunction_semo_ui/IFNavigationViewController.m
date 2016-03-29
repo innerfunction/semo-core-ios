@@ -89,7 +89,7 @@
     self.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName: titleTextColor };
 }
 
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     // NOTE: 'open' is deprecated.
     if ([message hasName:@"show"] || [message hasName:@"open"]) {
         UIViewController *view = nil;

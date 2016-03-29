@@ -23,17 +23,17 @@
  * A protocol to be implemented by components capable of receiving messages
  * from other components.
  */
-@protocol IFMessageHandler <NSObject>
+@protocol IFMessageTarget <NSObject>
 
 /**
- * Try handling a message.
- * @param message   The message to handle.
+ * Ask a target to receive a message.
+ * @param message   The message to receive.
  * @param sender    The component which sent the message.
- * @return Returns _true_ if the message was handled (i.e. acted upon), _false_ otherwise.
+ * @return Returns _true_ if the message was processed by the target, _false_ otherwise.
  * A _true_ result will stop further processing of the message. A _false_ result may mean
  * that the message continues to be dispatched to other components (i.e. until some component
  * handles it).
  */
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender;
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender;
 
 @end

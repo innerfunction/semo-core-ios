@@ -355,9 +355,9 @@
     });
 }
 
-#pragma mark - IFMessageHandler
+#pragma mark - IFMessageTarget
 
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"load"]) {
         self.content = message.parameters[@"content"];
         return YES;

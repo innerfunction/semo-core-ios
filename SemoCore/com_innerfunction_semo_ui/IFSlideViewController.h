@@ -17,14 +17,14 @@
 //
 
 #import "SWRevealViewController.h"
-#import "IFMessageHandler.h"
+#import "IFMessageTarget.h"
 #import "IFMessageTargetContainer.h"
 
 /**
  * A configurable version of the _SWRevealViewController_ class. Can be used for example to display a screen
  * with a menu in a hidden view which slides out from the side.
  *
- * The class implements the _IFMessageHandler_ protocol and responds to the following messages:
+ * The class implements the _IFMessageTarget_ protocol and responds to the following messages:
  * - _show_: Show a new view by replacing the view displayed in the screen's main area. The message must have
  * a _view_ parameter.
  * - _show-in-slide_: Show a new view in the slide area. The message must have a _view_ parameter.
@@ -37,7 +37,7 @@
  * - _main_: The main view area.
  * - _slide_: The slide view area.
  */
-@interface IFSlideViewController : SWRevealViewController <IFMessageHandler, IFMessageTargetContainer> {
+@interface IFSlideViewController : SWRevealViewController <IFMessageTarget, IFMessageTargetContainer> {
     FrontViewPosition slideOpenPosition;
     FrontViewPosition slideClosedPosition;
 }

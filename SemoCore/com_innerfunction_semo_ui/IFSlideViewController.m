@@ -73,33 +73,33 @@
 
 #pragma mark - IFMessageTargetContainer
 
-- (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender {
-    BOOL dispatched = NO;
+- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
+    BOOL routed = NO;
     if ([message hasTarget:@"slide"]) {
         message = [message popTargetHead];
-        if ([message hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFMessageHandler)]) {
-            dispatched = [(id<IFMessageHandler>)self.slideView handleMessage:message sender:sender];
+        if ([message hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFMessageTarget)]) {
+            routed = [(id<IFMessageTarget>)self.slideView receiveMessage:message sender:sender];
         }
         else if ([self.slideView conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
-            dispatched = [(id<IFMessageTargetContainer>)self.slideView dispatchMessage:message sender:sender];
+            routed = [(id<IFMessageTargetContainer>)self.slideView routeMessage:message sender:sender];
         }
     }
     else if ([message hasTarget:@"main"]) {
         message = [message popTargetHead];
-        if ([message hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFMessageHandler)]) {
-            dispatched = [(id<IFMessageHandler>)self.mainView handleMessage:message sender:sender];
+        if ([message hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFMessageTarget)]) {
+            routed = [(id<IFMessageTarget>)self.mainView receiveMessage:message sender:sender];
         }
         else if ([self.mainView conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
-            dispatched = [(id<IFMessageTargetContainer>)self.mainView dispatchMessage:message sender:sender];
+            routed = [(id<IFMessageTargetContainer>)self.mainView routeMessage:message sender:sender];
         }
         self.frontViewPosition = slideClosedPosition;
     }
-    return dispatched;
+    return routed;
 }
 
-#pragma mark - IFMessageHandler
+#pragma mark - IFMessageTarget
 
-- (BOOL)handleMessage:(IFMessage *)message sender:(id)sender {
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     // NOTE 'open' is deprecated. Note also other deprecations below.
     if ([message hasName:@"show"] || [message hasName:@"open"]) {
         // Replace main view.
