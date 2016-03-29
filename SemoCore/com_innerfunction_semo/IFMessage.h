@@ -35,14 +35,14 @@
 
 - (id)initWithTarget:(NSString *)target name:(NSString *)name parameters:(NSDictionary *)parameters;
 - (id)initWithTargetPath:(NSArray *)targetPath name:(NSString *)name parameters:(NSDictionary *)parameters;
-/** Test whether the action has an empty target. */
+/** Test whether the message has an empty target. */
 - (BOOL)hasEmptyTarget;
 /** Test if the (entire) target matches the specified string. */
 - (BOOL)hasTarget:(NSString *)target;
 /** Get the target name at the head of the target path. */
 - (NSString *)targetHead;
 /**
- * Pop the head name from the target path and return a new action whose target path is the remained.
+ * Pop the head name from the target path and return a new message whose target path is the remainder.
  * Return nil if there is no trailing target path.
  */
 - (IFMessage *)popTargetHead;

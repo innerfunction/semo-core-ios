@@ -18,7 +18,7 @@
 
 #import "IFNamedScheme.h"
 #import "IFContainer.h"
-#import "IFIOCPendingNamed.h"
+#import "IFPendingNamed.h"
 
 @implementation IFNamedSchemeHandler
 
@@ -55,8 +55,8 @@
     if (path) {
         // Check for pending names. These are only returned during the container's configuration cycle, and are
         // used to resolve circular dependencies. When these are returned then just the path needs to be recorded.
-        if ([result isKindOfClass:[IFIOCPendingNamed class]]) {
-            ((IFIOCPendingNamed *)result).referencePath = path;
+        if ([result isKindOfClass:[IFPendingNamed class]]) {
+            ((IFPendingNamed *)result).referencePath = path;
         }
         else {
             @try {

@@ -26,10 +26,10 @@
 @protocol IFMessageTargetContainer <NSObject>
 
 /**
- * Try dispatching the message to message targets within the current compnent.
- * @param message   The message.
+ * Try dispatching a message to message targets within the current component.
+ * @param message   The message to be dispatched.
  * @param sender    The component sending the message.
- * @return Returns _true_ if the message was dipatched (received and acted upon) by
+ * @return Returns _true_ if the message was dispatched (received and acted upon) by
  * some target.
  */
 - (BOOL)dispatchMessage:(IFMessage *)message sender:(id)sender;

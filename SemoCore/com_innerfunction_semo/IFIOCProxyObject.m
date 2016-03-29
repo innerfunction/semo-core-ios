@@ -30,7 +30,7 @@
 
 #pragma mark - Static methods
 
-// May of configuration proxies keyed by class name. Classes without a registered proxy get an NSNull entry.
+// Map of configuration proxies keyed by class name. Classes without a registered proxy get an NSNull entry.
 static NSMutableDictionary *IFIOCProxyObject_proxies;
 
 + (void)initialize {

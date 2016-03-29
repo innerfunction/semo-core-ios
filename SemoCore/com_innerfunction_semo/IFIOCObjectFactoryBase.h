@@ -23,9 +23,7 @@
 #import "IFURIHandling.h"
 
 /**
- * Utility base class for IOC object factory instances.
- * Supports a factory class style which uses a parameterized, partial base configuration which
- * is extended with a configuration provided by the container to yield the full object configuration.
+
  */
 @interface IFIOCObjectFactoryBase : NSObject <IFIOCObjectFactory> {
     /**

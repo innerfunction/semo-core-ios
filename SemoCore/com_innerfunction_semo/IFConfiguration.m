@@ -28,7 +28,7 @@
 
 @interface IFConfiguration()
 
-- (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin precedent:(IFConfiguration *)precedent;
+- (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin parent:(IFConfiguration *)parent;
 - (void)initializeContext;
 
 @end
@@ -64,13 +64,13 @@
     return self;
 }
 
-- (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin precedent:(IFConfiguration *)precedent {
+- (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin parent:(IFConfiguration *)parent {
     self = [super init];
     if (self) {
         self.data = [config.data extendWith:mixin.data];
         self.context = [config.context extendWith:mixin.context];
-        self.root = precedent.root;
-        self.uriHandler = precedent.uriHandler;
+        self.root = parent.root;
+        self.uriHandler = parent.uriHandler;
         [self initializeContext];
     }
     return self;
@@ -356,11 +356,11 @@
 }
 
 - (IFConfiguration *)mixinConfiguration:(IFConfiguration *)otherConfig {
-    return [[IFConfiguration alloc] initWithConfiguration:self mixin:otherConfig precedent:self];
+    return [[IFConfiguration alloc] initWithConfiguration:self mixin:otherConfig parent:self];
 }
 
 - (IFConfiguration *)mixoverConfiguration:(IFConfiguration *)otherConfig {
-    return [[IFConfiguration alloc] initWithConfiguration:otherConfig mixin:self precedent:self];
+    return [[IFConfiguration alloc] initWithConfiguration:otherConfig mixin:self parent:self];
 }
 
 - (IFConfiguration *)extendWithParameters:(NSDictionary *)params {
@@ -413,7 +413,7 @@
     IFConfiguration *result = [IFConfiguration emptyConfiguration];
     // Process the hierarchy in reverse order (i.e. from most distant ancestor to current config).
     for (IFConfiguration *config in [hierarchy reverseObjectEnumerator]) {
-        result = [[IFConfiguration alloc] initWithConfiguration:result mixin:config precedent:result];
+        result = [[IFConfiguration alloc] initWithConfiguration:result mixin:config parent:result];
     }
     result.root = _root;
     result.uriHandler = _uriHandler;

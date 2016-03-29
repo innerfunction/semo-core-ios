@@ -16,9 +16,9 @@
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
-#import "IFIOCPendingNamed.h"
+#import "IFPendingNamed.h"
 
-@implementation IFIOCPendingNamed
+@implementation IFPendingNamed
 
 - (void)setObject:(id)object {
     _object = object;

@@ -26,14 +26,14 @@
  * using the _*factory_ instantiation hint.
  * Note that object factories take full responsibility for creating and building the required component
  * from its configuration, i.e. the container won't perform any dependency injection on the component
- * after its construction has been delegeted to the function.
+ * after its construction has been delegated to the function.
  */
 @protocol IFIOCObjectFactory <NSObject>
 
 /**
- * Build and object from its configuration. Instantiates and configures the object.
+ * Build an object from its configuration. Instantiates and configures the object.
  * @param configuration     The object configuration.
- * @param container         The IOC container delgating the configuration.
+ * @param container         The IOC container delegating the configuration.
  * @param identifier        An identifier for the object instance, used for log output.
  * @returns Returns a fully configured object instance.
  */

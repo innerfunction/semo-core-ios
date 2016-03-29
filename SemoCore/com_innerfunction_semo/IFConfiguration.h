@@ -72,7 +72,7 @@
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
 /// Initialize the configuration by reading JSON from the specified resource.
 - (id)initWithResource:(IFResource *)resource;
-/// Initialize the configuration by reading JSON from the specified resource, and using another configuraation as the parent.
+/// Initialize the configuration by reading JSON from the specified resource, and using another configuration as the parent.
 - (id)initWithResource:(IFResource *)resource parent:(IFConfiguration *)parent;
 
 /**

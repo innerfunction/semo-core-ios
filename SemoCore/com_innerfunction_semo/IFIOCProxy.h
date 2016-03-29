@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- * A procol which must be implemented by configuration proxies.
+ * A protocol which must be implemented by configuration proxies.
  * A configuration proxy is a class for objects which are configured in place of objects of
  * another class. They are useful for providing standardized configuration APIs which are
  * consistent across platforms; or for providing simplified configuration interfaces for
@@ -33,7 +33,7 @@
  * Initialize the proxy with a wrapped value.
  * This method will be called by the container when configuring an in-place value (i.e. a
  * value already on the object instance before dependency injection starts).
- * Support for this method is optional, depending on the particularaties of the class being
+ * Support for this method is optional, depending on the particularities of the class being
  * proxied, but in general most proxies should support two modes of operation; (1) where the
  * value being proxied is new, and (2) where the value being proxied is in-place.
  */

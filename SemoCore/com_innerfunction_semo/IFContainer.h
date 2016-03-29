@@ -47,7 +47,7 @@
      * which are caused by circular dependency cycles and which can't be fully resolved until the
      * referenced value has been fully built).
      * Used to detect dependency cycles when building the named object graph.
-     * @see <IFIOCPendingNamed>
+     * @see <IFPendingNamed>
      */
     NSMutableDictionary *_pendingNames;
     /**

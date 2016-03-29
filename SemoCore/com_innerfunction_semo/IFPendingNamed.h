@@ -26,7 +26,7 @@
  * the details of the named dependency to be recorded so that it can be resolved after the
  * configuration cycle has completed.
  */
-@interface IFIOCPendingNamed : NSObject
+@interface IFPendingNamed : NSObject
 
 /** The parent object of the property whose value is pending. */
 @property (nonatomic, strong) id object;
