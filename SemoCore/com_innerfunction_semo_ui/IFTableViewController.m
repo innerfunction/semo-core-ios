@@ -82,15 +82,15 @@
     return nil;
 }
 
-#pragma mark - IFIOCConfigurable
+#pragma mark - IFIOCContainerAware
 
-- (void)beforeConfiguration:(IFConfiguration *)configuration inContainer:(IFContainer *)container {}
+- (void)beforeIOCConfiguration:(IFConfiguration *)configuration {}
 
-- (void)afterConfiguration:(IFConfiguration *)configuration inContainer:(IFContainer *)container {
+- (void)afterIOCConfiguration:(IFConfiguration *)configuration {
     defaultFactory = (IFTableViewCellFactory *)[_cellFactoriesByDisplayMode objectForKey:@"default"];
     if (!defaultFactory) {
          defaultFactory = [[IFTableViewCellFactory alloc] init];
-        [container configureObject:defaultFactory withConfiguration:configuration identifier:@"IFTableViewController.defaultFactory"];
+        [_iocContainer configureObject:defaultFactory withConfiguration:configuration identifier:@"IFTableViewController.defaultFactory"];
          defaultFactory.tableData = _tableData;
     }
 }

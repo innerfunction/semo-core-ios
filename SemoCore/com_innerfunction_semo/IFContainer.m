@@ -18,7 +18,6 @@
 
 #import "IFContainer.h"
 #import "IFConfigurable.h"
-#import "IFIOCConfigurable.h"
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCConfigurationInitable.h"
 #import "IFIOCContainerAware.h"
@@ -202,8 +201,8 @@
     }
     else {
         IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:object];
-        if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
-            [(id<IFIOCConfigurable>)object beforeConfiguration:configuration inContainer:self];
+        if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
+            [(id<IFIOCContainerAware>)object beforeIOCConfiguration:configuration];
         }
         NSArray *valueNames = [configuration getValueNames];
         for (NSString *name in valueNames) {
@@ -228,11 +227,11 @@
             }
             [self configureProperty:propName info:propertyInfo object:object configuration:configuration];
         }
-        if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
+        if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
             NSValue *objectKey = [NSValue valueWithNonretainedObject:object];
             // Check that no pending value refs are outstanding for the object.
             if (_pendingValueRefCounts[objectKey] == nil) {
-                [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
+                [(id<IFIOCContainerAware>)object afterIOCConfiguration:configuration];
             }
             else {
                 // Else afterConfiguration: is called once all pending values are resolved; record the object
@@ -490,11 +489,11 @@
         else {
             [_pendingValueRefCounts removeObjectForKey:pending.objectKey];
             // The property object is now fully configured, invoke its afterConfiguration: method if it
-            // implements IFIOCConfigurable
+            // implements IFIOCContainerAware protocol.
             // TODO: Remove configuration from IOCConfigurable calls, _pendingValueObjectConfigs not needed then.
-            if ([pending.object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
+            if ([pending.object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
                 IFConfiguration *objConfig = _pendingValueObjectConfigs[pending.objectKey];
-                [(id<IFIOCConfigurable>)pending.object afterConfiguration:objConfig inContainer:self];
+                [(id<IFIOCContainerAware>)pending.object afterIOCConfiguration:objConfig];
                 [_pendingValueObjectConfigs removeObjectForKey:pending.objectKey];
             }
         }

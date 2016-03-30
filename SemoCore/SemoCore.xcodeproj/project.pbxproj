@@ -58,7 +58,6 @@
 		07BD8A4F1C7653400058D7A8 /* IFContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A351C7653400058D7A8 /* IFContainer.m */; };
 		07BD8A501C7653400058D7A8 /* IFCoreTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A361C7653400058D7A8 /* IFCoreTypes.h */; };
 		07BD8A511C7653400058D7A8 /* IFCoreTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8A371C7653400058D7A8 /* IFCoreTypes.m */; };
-		07BD8A521C7653400058D7A8 /* IFIOCConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A381C7653400058D7A8 /* IFIOCConfigurable.h */; };
 		07BD8A531C7653400058D7A8 /* IFIOCConfigurationInitable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A391C7653400058D7A8 /* IFIOCConfigurationInitable.h */; };
 		07BD8A541C7653400058D7A8 /* IFIOCContainerAware.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A3A1C7653400058D7A8 /* IFIOCContainerAware.h */; };
 		07BD8A551C7653400058D7A8 /* IFIOCObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A3B1C7653400058D7A8 /* IFIOCObjectFactory.h */; };
@@ -226,7 +225,6 @@
 		07BD8A351C7653400058D7A8 /* IFContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFContainer.m; path = com_innerfunction_semo/IFContainer.m; sourceTree = SOURCE_ROOT; };
 		07BD8A361C7653400058D7A8 /* IFCoreTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFCoreTypes.h; path = com_innerfunction_semo/IFCoreTypes.h; sourceTree = SOURCE_ROOT; };
 		07BD8A371C7653400058D7A8 /* IFCoreTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFCoreTypes.m; path = com_innerfunction_semo/IFCoreTypes.m; sourceTree = SOURCE_ROOT; };
-		07BD8A381C7653400058D7A8 /* IFIOCConfigurable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCConfigurable.h; path = com_innerfunction_semo/IFIOCConfigurable.h; sourceTree = SOURCE_ROOT; };
 		07BD8A391C7653400058D7A8 /* IFIOCConfigurationInitable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCConfigurationInitable.h; path = com_innerfunction_semo/IFIOCConfigurationInitable.h; sourceTree = SOURCE_ROOT; };
 		07BD8A3A1C7653400058D7A8 /* IFIOCContainerAware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCContainerAware.h; path = com_innerfunction_semo/IFIOCContainerAware.h; sourceTree = SOURCE_ROOT; };
 		07BD8A3B1C7653400058D7A8 /* IFIOCObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCObjectFactory.h; path = com_innerfunction_semo/IFIOCObjectFactory.h; sourceTree = SOURCE_ROOT; };
@@ -430,7 +428,6 @@
 				07CD9B941C96F39B00427681 /* IFPendingNamed.m */,
 				07BD8A361C7653400058D7A8 /* IFCoreTypes.h */,
 				07BD8A371C7653400058D7A8 /* IFCoreTypes.m */,
-				07BD8A381C7653400058D7A8 /* IFIOCConfigurable.h */,
 				07BD8A391C7653400058D7A8 /* IFIOCConfigurationInitable.h */,
 				07BD8A3A1C7653400058D7A8 /* IFIOCContainerAware.h */,
 				07933F081C8F851D003D6227 /* IFIOCObjectAware.h */,
@@ -751,7 +748,6 @@
 				07BD8AC71C7653930058D7A8 /* IFStringSchemeHandler.h in Headers */,
 				07BD8AC11C7653930058D7A8 /* IFReprSchemeHandler.h in Headers */,
 				07BD8AC91C7653930058D7A8 /* IFURIHandling.h in Headers */,
-				07BD8A521C7653400058D7A8 /* IFIOCConfigurable.h in Headers */,
 				07BD8B1A1C7653F00058D7A8 /* DDASLLogger.h in Headers */,
 				07CD9B951C96F39B00427681 /* IFPendingNamed.h in Headers */,
 				07A9E5371C836B8400AB32A0 /* IFMessageRouter.h in Headers */,

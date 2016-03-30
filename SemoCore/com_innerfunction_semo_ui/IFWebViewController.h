@@ -17,7 +17,7 @@
 //
 
 #import "IFViewController.h"
-#import "IFIOCConfigurable.h"
+#import "IFIOCContainerAware.h"
 #import "IFMessageReceiver.h"
 
 /**
@@ -26,7 +26,7 @@
  * - _load_: Load new content into the web view. The message must have a _content_ parameter.
  * See the component's _content_ property.
  */
-@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFMessageReceiver> {
+@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCContainerAware, IFMessageReceiver> {
     /// The underlying web view.
     UIWebView *webView;
     /// An image to display whilst the web view content is loading.

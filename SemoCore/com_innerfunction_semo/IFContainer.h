@@ -52,13 +52,13 @@
     NSMutableDictionary *_pendingNames;
     /**
      * A map of pending property value reference counts, keyed by the property's parent object. Used to
-     * manage deferred calls to the <IFIOCConfigurable> [afterConfiguration:inContainer] method.
+     * manage deferred calls to the <IFIOCContainerAware> [afterIOCConfiguration:] method.
      */
     NSMutableDictionary *_pendingValueRefCounts;
     /**
      * A map of pending value object configurations. These are the configurations for the parent
      * objects of pending property values. These are needed for deferred calls to the
-     * <IFIOCConfigurable> [afterConfiguration:inContainer] method.
+     * <IFIOCContainerAware> [afterIOCConfiguration] method.
      */
     NSMutableDictionary *_pendingValueObjectConfigs;
     /// Flag indicating whether the container and all its services are running.

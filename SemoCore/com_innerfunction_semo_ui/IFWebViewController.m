@@ -41,6 +41,8 @@
 
 @implementation IFWebViewController
 
+@synthesize iocContainer=_iocContainer;
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -67,11 +69,11 @@
     [self loadContent];
 }
 
-#pragma mark - IFIOCConfigurable
+#pragma mark - IFIOCContainerAware
 
-- (void)beforeConfiguration:(id)configuration inContainer:(IFContainer *)container {}
+- (void)beforeIOCConfiguration:(id)configuration {}
 
-- (void)afterConfiguration:(id)configuration inContainer:(IFContainer *)container {
+- (void)afterIOCConfiguration:(id)configuration {
     webView.backgroundColor = _backgroundColor;
     webView.opaque = _opaque;
     webView.scrollView.bounces = _scrollViewBounces;

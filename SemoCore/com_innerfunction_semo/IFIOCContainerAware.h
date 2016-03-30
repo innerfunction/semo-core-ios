@@ -29,4 +29,16 @@
 /// The component's container.
 @property (nonatomic, weak) IFContainer *iocContainer;
 
+/**
+ * Called immediately before the object is configured via dependency injection.
+ * @param configuration The object's configuration.
+ */
+- (void)beforeIOCConfiguration:(IFConfiguration *)configuration;
+
+/**
+ * Called immediately after the object is configured via dependency injection.
+ * @param configuration The object's configuration.
+ */
+- (void)afterIOCConfiguration:(IFConfiguration *)configuration;
+
 @end

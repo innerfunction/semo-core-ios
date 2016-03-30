@@ -21,7 +21,6 @@
 #import "IFTableViewCellFactory.h"
 #import "IFIOCTypeInspectable.h"
 #import "IFIOCConfigurationInitable.h"
-#import "IFIOCConfigurable.h"
 #import "IFIOCContainerAware.h"
 #import "IFMessageReceiver.h"
 #import "IFActionProxy.h"
@@ -57,7 +56,7 @@
  * - _height_:          The row height.
  * - _action_:          An action message which is posted when a table cell is selected.
  */
-@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCConfigurable, IFIOCContainerAware, IFMessageReceiver, IFActionProxy> {
+@interface IFTableViewController : UITableViewController <UITableViewDelegate, UISearchDisplayDelegate, UISearchBarDelegate, IFIOCTypeInspectable, IFIOCConfigurationInitable, IFIOCContainerAware, IFMessageReceiver, IFActionProxy> {
     
     /// The table's search bar.
     UISearchBar *searchBar;
