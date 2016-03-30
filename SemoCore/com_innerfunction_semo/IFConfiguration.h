@@ -20,10 +20,10 @@
 #import "IFValues.h"
 
 /**
- * A protocol used to represent the root configuration of a configuration instance.
+ * A protocol providing access to configuration data.
  * See the _root_ property of @see <IFConfiguration>.
  */
-@protocol IFConfigurationRoot <NSObject>
+@protocol IFConfigurationData <NSObject>
 
 /**
  * Get a particular representation of a configuration value.
@@ -39,7 +39,7 @@
 /**
  * A class used to parse and access component configurations.
  */
-@interface IFConfiguration : NSObject <IFValues, IFConfigurationRoot>
+@interface IFConfiguration : NSObject <IFValues, IFConfigurationData>
 
 /// The configuration data.
 @property (nonatomic, strong) NSDictionary *data;
@@ -49,7 +49,7 @@
  * configuration objects, but a reference to the top-level configuration must be
  * retained in order to properly resolve hash # property value references.
  */
-@property (nonatomic, strong) id<IFConfigurationRoot> root;
+@property (nonatomic, strong) id<IFConfigurationData> root;
 /**
  * The configuration's data context.
  * Used as the data context for templated values. A configuration supports two types of templated

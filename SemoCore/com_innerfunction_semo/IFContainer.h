@@ -30,7 +30,7 @@
  * The object's properties may be configured using other built objects, or using references
  * to named objects contained by the container.
  */
-@interface IFContainer : NSObject <IFService, IFConfigurationRoot, IFMessageTarget, IFMessageTargetContainer> {
+@interface IFContainer : NSObject <IFConfigurationData, IFService, IFMessageTarget, IFMessageTargetContainer> {
     /// A map of named objects.
     NSMutableDictionary *_named;
     /// A list of contained services.
@@ -51,10 +51,10 @@
      */
     NSMutableDictionary *_pendingNames;
     /**
-     * A map of pending property value references, keyed by the property's parent object. Used to
+     * A map of pending property value reference counts, keyed by the property's parent object. Used to
      * manage deferred calls to the <IFIOCConfigurable> [afterConfiguration:inContainer] method.
      */
-    NSMutableDictionary *_pendingValueRefs;
+    NSMutableDictionary *_pendingValueRefCounts;
     /**
      * A map of pending value object configurations. These are the configurations for the parent
      * objects of pending property values. These are needed for deferred calls to the

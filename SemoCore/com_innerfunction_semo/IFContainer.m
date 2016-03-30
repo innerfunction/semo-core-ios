@@ -94,7 +94,7 @@
         _running = NO;
         _propertyTypeInfo = [IFTypeInfo typeInfoForObject:self];
         _pendingNames = [NSMutableDictionary new];
-        _pendingValueRefs = [NSMutableDictionary new];
+        _pendingValueRefCounts = [NSMutableDictionary new];
         _pendingValueObjectConfigs = [NSMutableDictionary new];
     }
     return self;
@@ -151,11 +151,11 @@
         if (type) {
             className = [_types getValueAsString:type];
             if (!className) {
-                DDLogError(@"%@: Making %@, no class name found for type %@", LogTag, identifier, type);
+                DDLogError(@"%@: Instantiating %@, no class name found for type %@", LogTag, identifier, type);
             }
         }
         else {
-            DDLogError(@"%@: Making %@, Component configuration missing *type or *ios-class property", LogTag, identifier);
+            DDLogError(@"%@: Instantiating %@, Component configuration missing *type or *ios-class property", LogTag, identifier);
         }
     }
     if (className) {
@@ -165,7 +165,7 @@
 }
 
 - (id)newInstanceForClassName:(NSString *)className withConfiguration:(IFConfiguration *)configuration {
-    // PROXY If config proxy available for classname then instantiate proxy instead of new instance.
+    // If config proxy available for classname then instantiate proxy instead of new instance.
     IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForClassName:className];
     if (proxyEntry) {
         return [proxyEntry instantiateProxy];
@@ -217,7 +217,7 @@
                         continue;
                     }
                 }
-                else if ([name hasPrefix:@"*"]) {
+                else {
                     continue; // Skip all other reserved names
                 }
 
@@ -231,7 +231,7 @@
         if ([object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
             NSValue *objectKey = [NSValue valueWithNonretainedObject:object];
             // Check that no pending value refs are outstanding for the object.
-            if (_pendingValueRefs[objectKey] == nil) {
+            if (_pendingValueRefCounts[objectKey] == nil) {
                 [(id<IFIOCConfigurable>)object afterConfiguration:configuration inContainer:self];
             }
             else {
@@ -240,10 +240,10 @@
                 _pendingValueObjectConfigs[objectKey] = configuration;
             }
         }
-        // If running and the object is a service instance then start the service now that it is fully configured.
-        if (_running && [object conformsToProtocol:@protocol(IFService)]) {
-            [(id<IFService>)object startService];
-        }
+    }
+    // If running and the object is a service instance then start the service now that it is fully configured.
+    if (_running && [object conformsToProtocol:@protocol(IFService)]) {
+        [(id<IFService>)object startService];
     }
 }
 
@@ -399,7 +399,7 @@
 // Configure the container with the specified configuration.
 // The container performs implicit dependency ordering. This means that if an object A has a dependency
 // on another object B, then B will be built (instantiated & configured) before A. This will work for an
-// arbitary length dependency chain (e.g. A -> B -> C -> etc.)
+// arbitrary length dependency chain (e.g. A -> B -> C -> etc.)
 // Implicit dependency ordering relies on the fact that dependencies like this can only be specified using
 // the named: URI scheme, which uses the container's getNamed: method to resolve named objects.
 // The configuration process works as follows:
@@ -418,7 +418,7 @@
     // Iterate over named object configs and build each object.
     NSArray *names = [_containerConfig getValueNames];
     for (NSString *name in names) {
-        // Build the object only if it has not already been built and added to _named.
+        // Build the object only if it has not already been built and added to _named_.
         // (Objects which are dependencies of other objects may be configured via getNamed:
         // before this loop has iterated around to them).
         if ([_named objectForKey:name] == nil) {
@@ -483,14 +483,15 @@
         id value = [pending resolveValue:object];
         [self setProperty:pending.key info:pending.propInfo object:pending.object value:value];
         // Decrement the number of pending value refs for the property object.
-        NSInteger refCount = [(NSNumber *)_pendingValueRefs[pending.objectKey] integerValue] - 1;
+        NSInteger refCount = [(NSNumber *)_pendingValueRefCounts[pending.objectKey] integerValue] - 1;
         if (refCount > 0) {
-            _pendingValueRefs[pending.objectKey] = [NSNumber numberWithInteger:refCount];
+            _pendingValueRefCounts[pending.objectKey] = [NSNumber numberWithInteger:refCount];
         }
         else {
-            [_pendingValueRefs removeObjectForKey:pending.objectKey];
+            [_pendingValueRefCounts removeObjectForKey:pending.objectKey];
             // The property object is now fully configured, invoke its afterConfiguration: method if it
-            // implements IFIOCConifgurable
+            // implements IFIOCConfigurable
+            // TODO: Remove configuration from IOCConfigurable calls, _pendingValueObjectConfigs not needed then.
             if ([pending.object conformsToProtocol:@protocol(IFIOCConfigurable)]) {
                 IFConfiguration *objConfig = _pendingValueObjectConfigs[pending.objectKey];
                 [(id<IFIOCConfigurable>)pending.object afterConfiguration:objConfig inContainer:self];
@@ -508,7 +509,7 @@
     id object = [_named objectForKey:name];
     // If named object not found then consider whether to try building it.
     if (object == nil) {
-        // Check for a dependency cycle. If the requested name exists in _pendingNames then the named object is currently
+        // Check for a dependency cycle. If the requested name exists in _pendingNames_ then the named object is currently
         // being configured.
         NSArray *pending = _pendingNames[name];
         if (pending != nil) {
@@ -523,7 +524,7 @@
         }
         else if ([_containerConfig hasValue:name]) {
             //NSLog(@"IDO: Prioritizing building of named %@ -> %@", [_pendingNames componentsJoinedByString:@"."], name);
-            // The container config contains a configuration for the wanted name, but _named doesn't contain
+            // The container config contains a configuration for the wanted name, but _named_ doesn't contain
             // any reference so therefore it's likely that the object hasn't been built yet; try building it now.
             object = [self buildNamedObject:name];
         }
@@ -550,7 +551,9 @@
 #pragma mark - Private methods
 
 - (BOOL)hasInstantiationHint:(IFConfiguration *)configuration {
-    return [configuration hasValue:@"*type"] || [configuration hasValue:@"*ios-class"] || [configuration hasValue:@"*factory"];
+    return [configuration hasValue:@"*type"]
+    || [configuration hasValue:@"*ios-class"]
+    || [configuration hasValue:@"*factory"];
 }
 
 - (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)propClass
@@ -571,13 +574,13 @@
             return [self buildObjectWithConfiguration:propConfig identifier:name];
         }
         else if (value != nil) {
-            // PROXY If [value class] has a config proxy then instantiate that using the value.
+            // No instantiation hints on the configuration, but the property already has a
+            // value so try configuring that instead.
+            // If [value class] has a config proxy then instantiate that using the value.
             IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForObject:value];
             if (proxyEntry) {
                 value = [proxyEntry instantiateProxyWithValue:value];
             }
-            // No instantiation hints on the configuration, but the property already has a
-            // value so try configuring that instead.
             [self configureObject:value withConfiguration:propConfig identifier:name];
             // Return the configured value.
             return value;
@@ -618,12 +621,12 @@
 }
 
 - (void)incPendingValueRefCountForPendingObject:(IFPendingNamed *)pending {
-    NSNumber *refCount = _pendingValueRefs[pending.objectKey];
+    NSNumber *refCount = _pendingValueRefCounts[pending.objectKey];
     if (refCount) {
-        _pendingValueRefs[pending.objectKey] = [NSNumber numberWithInteger:([refCount integerValue] + 1)];
+        _pendingValueRefCounts[pending.objectKey] = [NSNumber numberWithInteger:([refCount integerValue] + 1)];
     }
     else {
-        _pendingValueRefs[pending.objectKey] = @1;
+        _pendingValueRefCounts[pending.objectKey] = @1;
     }
 }
 
@@ -656,7 +659,7 @@
     _running = NO;
 }
 
-#pragma mark - IFConfigurationRoot
+#pragma mark - IFConfigurationData
 
 - (id)getValue:(NSString *)keyPath asRepresentation:(NSString *)representation {
     id value = [self getNamed:keyPath];
@@ -671,7 +674,7 @@
 - (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
     BOOL routed = NO;
     if ([message hasEmptyTarget]) {
-        // Message is targetted at this object.
+        // Message is targeted at this object.
         routed = [self receiveMessage:message sender:sender];
     }
     else {
