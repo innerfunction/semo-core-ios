@@ -34,10 +34,10 @@
      * Global values available to the container's configuration. Can be referenced from within templated
      * configuration values.
      * Available values include the following:
-     * - platform: Information about the container platform. Has the following values:
+     * - *platform*: Information about the container platform. Has the following values:
      *   - _name_: Always "ios" on iOS systems.
      *   - _display_: The display scale, e.g. 2x, 3x.
-     * - locale: Information about the device's default locale. Has the following values:
+     * - *locale*: Information about the device's default locale. Has the following values:
      *   - _id_: The locale identifier, e.g. en_US
      *   - _lang_: The locale's language code, e.g. en
      *   - _variant_: The locale's varianet, e.g. US

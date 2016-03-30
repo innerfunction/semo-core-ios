@@ -257,9 +257,8 @@
                 }
                 else return; // Can't promote the message, so can't dispatch it.
             }
-            if ([message isKindOfClass:[IFMessage class]]) {
-                [self routeMessage:(IFMessage *)message sender:sender];
-            }
+            // message is always a Message instance by this point.
+            [self routeMessage:(IFMessage *)message sender:sender];
         });
     }
 }
@@ -272,27 +271,27 @@
 
 - (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
     BOOL routed = NO;
-    // If the sender is within the UI then search the view hierarchy for a message handler.
+    // If the sender is within the UI then search the view hierarchy for a message receiver.
     id target = sender;
     // Evaluate actions with relative target paths against the sender.
     while (target && !routed) {
-        // See if the current handler can take the message.
+        // See if the current target can take the message.
         if ([message hasEmptyTarget]) {
-            // Message has no target info so looking for a message handler.
+            // Message has no target info so looking for a message receiver.
             if ([target conformsToProtocol:@protocol(IFMessageReceiver)]) {
                 routed = [(id<IFMessageReceiver>)target receiveMessage:message sender:sender];
             }
         }
         else if ([target conformsToProtocol:@protocol(IFMessageRouter)]) {
-            // Message does have target info so looking for a message dispatcher.
+            // Message does have target info so looking for a message router.
             routed = [(id<IFMessageRouter>)target routeMessage:message sender:sender];
         }
         if (!routed) {
             // Message not dispatched, so try moving up the view hierarchy.
             if ([target isKindOfClass:[UIViewController class]]) {
                 UIViewController *currentTarget = (UIViewController *)target;
-                // If action sender is a view controller then bubble the action up through the
-                // view controller hierachy until a hander is found.
+                // If message sender is a view controller then bubble the message up through the
+                // view controller hierarchy until a receiver is found.
                 if (currentTarget.presentingViewController) {
                     target = currentTarget.presentingViewController;
                 }
@@ -301,17 +300,17 @@
                 }
             }
             else if ([target isKindOfClass:[UIView class]]) {
-                // If action sender is a view then bubble the action up through the view hierarchy.
+                // If message sender is a view then bubble the message up through the view hierarchy.
                 // TODO: This may not work...
                 target = [(UIView *)target nextResponder];
             }
             else {
-                // Can't process the action any further, so leave the loop.
+                // Can't process the message any further, so leave the loop.
                 break;
             }
         }
     }
-    // If message not dispatched then let this container try handling it.
+    // If message not dispatched then let this container try routing it to one of its named components.
     if (!routed) {
         routed = [super routeMessage:message sender:sender];
     }

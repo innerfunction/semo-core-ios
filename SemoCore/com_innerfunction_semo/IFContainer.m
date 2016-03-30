@@ -197,7 +197,7 @@
 
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
     if ([object conformsToProtocol:@protocol(IFConfigurable)]) {
-        [(id<IFConfigurable>)object configure:configuration];
+        [(id<IFConfigurable>)object configure:configuration inContainer:self];
     }
     else {
         IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:object];

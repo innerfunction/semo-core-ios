@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import "IFConfiguration.h"
 
+@class IFContainer;
+
 /**
  * Protocol for objects which wish to control their own configuration.
  * Objects which implement this protocol are essentially declaring to the IOC container that
@@ -28,6 +30,6 @@
 @protocol IFConfigurable <NSObject>
 
 /** Configure the object using the specified configuration. */
-- (void)configure:(IFConfiguration *)configuration;
+- (void)configure:(IFConfiguration *)configuration inContainer:(IFContainer *)container;
 
 @end
