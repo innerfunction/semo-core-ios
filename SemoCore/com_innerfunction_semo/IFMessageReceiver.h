@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-//  Created by Julian Goacher on 26/02/2016.
+//  Created by Julian Goacher on 28/02/2016.
 //  Copyright © 2016 InnerFunction. All rights reserved.
 //
 
@@ -20,18 +20,20 @@
 #import "IFMessage.h"
 
 /**
- * Protocol for routing messages to named targets.
- * Components which contain addressable message targets should implement this protocol.
+ * A protocol to be implemented by components capable of receiving messages
+ * from other components.
  */
-@protocol IFMessageTargetContainer <NSObject>
+@protocol IFMessageReceiver <NSObject>
 
 /**
- * Try routing a message to a message target within the current component.
- * @param message   The message to be dispatched.
- * @param sender    The component sending the message.
- * @return Returns _true_ if the message was routed to a message target which accepted and
- * processed the message.
+ * Ask a target to receive a message.
+ * @param message   The message to receive.
+ * @param sender    The component which sent the message.
+ * @return Returns _true_ if the message was processed by the target, _false_ otherwise.
+ * A _true_ result will stop further processing of the message. A _false_ result may mean
+ * that the message continues to be dispatched to other components (i.e. until some component
+ * handles it).
  */
-- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender;
+- (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender;
 
 @end

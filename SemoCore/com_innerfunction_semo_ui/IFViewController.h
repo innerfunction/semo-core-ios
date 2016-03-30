@@ -18,17 +18,17 @@
 
 #import <UIKit/UIKit.h>
 #import "IFIOCContainerAware.h"
-#import "IFMessageTarget.h"
+#import "IFMessageReceiver.h"
 #import "IFActionProxy.h"
 #import "IFViewBehaviour.h"
 
 /**
  * A configurable version of the _UIViewController_ class.
- * Implements the <IFMessageTarget> protocol and responds to the following messages:
+ * Implements the <IFMessageReceiver> protocol and responds to the following messages:
  * - _toast_: Display an Android style popup message. Must have a _message_ parameter.
  * - _show-image_: Display an image in a pop-over view. Must have an _image_ parameter.
  */
-@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageTarget, IFActionProxy, IFViewBehaviourController> {
+@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageReceiver, IFActionProxy, IFViewBehaviourController> {
     NSMutableDictionary *_actionProxyLookup;
 }
 

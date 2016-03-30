@@ -71,33 +71,33 @@
     self.frontViewPosition = slideOpenPosition;
 }
 
-#pragma mark - IFMessageTargetContainer
+#pragma mark - IFMessageRouter
 
 - (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
     BOOL routed = NO;
     if ([message hasTarget:@"slide"]) {
         message = [message popTargetHead];
-        if ([message hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFMessageTarget)]) {
-            routed = [(id<IFMessageTarget>)self.slideView receiveMessage:message sender:sender];
+        if ([message hasEmptyTarget] && [self.slideView conformsToProtocol:@protocol(IFMessageReceiver)]) {
+            routed = [(id<IFMessageReceiver>)self.slideView receiveMessage:message sender:sender];
         }
-        else if ([self.slideView conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
-            routed = [(id<IFMessageTargetContainer>)self.slideView routeMessage:message sender:sender];
+        else if ([self.slideView conformsToProtocol:@protocol(IFMessageRouter)]) {
+            routed = [(id<IFMessageRouter>)self.slideView routeMessage:message sender:sender];
         }
     }
     else if ([message hasTarget:@"main"]) {
         message = [message popTargetHead];
-        if ([message hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFMessageTarget)]) {
-            routed = [(id<IFMessageTarget>)self.mainView receiveMessage:message sender:sender];
+        if ([message hasEmptyTarget] && [self.mainView conformsToProtocol:@protocol(IFMessageReceiver)]) {
+            routed = [(id<IFMessageReceiver>)self.mainView receiveMessage:message sender:sender];
         }
-        else if ([self.mainView conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
-            routed = [(id<IFMessageTargetContainer>)self.mainView routeMessage:message sender:sender];
+        else if ([self.mainView conformsToProtocol:@protocol(IFMessageRouter)]) {
+            routed = [(id<IFMessageRouter>)self.mainView routeMessage:message sender:sender];
         }
         self.frontViewPosition = slideClosedPosition;
     }
     return routed;
 }
 
-#pragma mark - IFMessageTarget
+#pragma mark - IFMessageReceiver
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     // NOTE 'open' is deprecated. Note also other deprecations below.

@@ -268,7 +268,7 @@
     return [_uriHandler hasHandlerForURIScheme:schemeName];
 }
 
-#pragma mark - IFMessageTargetContainer
+#pragma mark - IFMessageRouter
 
 - (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
     BOOL routed = NO;
@@ -279,13 +279,13 @@
         // See if the current handler can take the message.
         if ([message hasEmptyTarget]) {
             // Message has no target info so looking for a message handler.
-            if ([target conformsToProtocol:@protocol(IFMessageTarget)]) {
-                routed = [(id<IFMessageTarget>)target receiveMessage:message sender:sender];
+            if ([target conformsToProtocol:@protocol(IFMessageReceiver)]) {
+                routed = [(id<IFMessageReceiver>)target receiveMessage:message sender:sender];
             }
         }
-        else if ([target conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+        else if ([target conformsToProtocol:@protocol(IFMessageRouter)]) {
             // Message does have target info so looking for a message dispatcher.
-            routed = [(id<IFMessageTargetContainer>)target routeMessage:message sender:sender];
+            routed = [(id<IFMessageRouter>)target routeMessage:message sender:sender];
         }
         if (!routed) {
             // Message not dispatched, so try moving up the view hierarchy.
@@ -318,7 +318,7 @@
     return routed;
 }
 
-#pragma mark - IFMessageTarget
+#pragma mark - IFMessageReceiver
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"open-url"]) {

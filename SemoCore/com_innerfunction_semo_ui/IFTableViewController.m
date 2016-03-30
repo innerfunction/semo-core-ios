@@ -355,7 +355,7 @@
     });
 }
 
-#pragma mark - IFMessageTarget
+#pragma mark - IFMessageReceiver
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     if ([message hasName:@"load"]) {

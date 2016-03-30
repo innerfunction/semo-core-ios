@@ -669,7 +669,7 @@
     return value;
 }
 
-#pragma mark - IFMessageTargetContainer
+#pragma mark - IFMessageRouter
 
 - (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
     BOOL routed = NO;
@@ -685,20 +685,20 @@
             message = [message popTargetHead];
             // If we have the intended target, and the target is a message handler, then let it handle the message.
             if ([message hasEmptyTarget]) {
-                if ([target conformsToProtocol:@protocol(IFMessageTarget)]) {
-                    routed = [(id<IFMessageTarget>)target receiveMessage:message sender:sender];
+                if ([target conformsToProtocol:@protocol(IFMessageReceiver)]) {
+                    routed = [(id<IFMessageReceiver>)target receiveMessage:message sender:sender];
                 }
             }
-            else if ([target conformsToProtocol:@protocol(IFMessageTargetContainer)]) {
+            else if ([target conformsToProtocol:@protocol(IFMessageRouter)]) {
                 // Let the current target dispatch the message to its intended target.
-                routed = [(id<IFMessageTargetContainer>)target routeMessage:message sender:sender];
+                routed = [(id<IFMessageRouter>)target routeMessage:message sender:sender];
             }
         }
     }
     return routed;
 }
 
-#pragma mark - IFMessageTarget
+#pragma mark - IFMessageReceiver
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     return NO;

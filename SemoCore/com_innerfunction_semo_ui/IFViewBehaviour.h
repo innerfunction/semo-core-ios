@@ -17,13 +17,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFMessageTarget.h"
+#import "IFMessageReceiver.h"
 
 /**
  * A protocol to be implemented by view behaviours.
  * A view behaviour allows a view controller to be decorated with additional functionality.
  */
-@protocol IFViewBehaviour <IFMessageTarget>
+@protocol IFViewBehaviour <IFMessageReceiver>
 
 /// The view controller the behaviour is attached to.
 @property (nonatomic, weak) UIViewController *viewController;

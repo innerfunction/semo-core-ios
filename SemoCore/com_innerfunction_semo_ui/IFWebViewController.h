@@ -18,15 +18,15 @@
 
 #import "IFViewController.h"
 #import "IFIOCConfigurable.h"
-#import "IFMessageTarget.h"
+#import "IFMessageReceiver.h"
 
 /**
  * A configurable web view for display HTML etc.
- * The class implements the _IFMessageTarget_ protocol and responds to the following message:
+ * The class implements the _IFMessageReceiver_ protocol and responds to the following message:
  * - _load_: Load new content into the web view. The message must have a _content_ parameter.
  * See the component's _content_ property.
  */
-@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFMessageTarget> {
+@interface IFWebViewController : IFViewController <UIWebViewDelegate, IFIOCConfigurable, IFMessageReceiver> {
     /// The underlying web view.
     UIWebView *webView;
     /// An image to display whilst the web view content is loading.

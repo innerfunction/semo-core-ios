@@ -45,8 +45,8 @@
 		07933F131C902CD6003D6227 /* IFIOCProxyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 07933F111C902CD6003D6227 /* IFIOCProxyObject.m */; };
 		07A9E5341C836B6500AB32A0 /* IFMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5321C836B6500AB32A0 /* IFMessage.h */; };
 		07A9E5351C836B6500AB32A0 /* IFMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A9E5331C836B6500AB32A0 /* IFMessage.m */; };
-		07A9E5371C836B8400AB32A0 /* IFMessageTargetContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5361C836B8400AB32A0 /* IFMessageTargetContainer.h */; };
-		07A9E5391C836CC800AB32A0 /* IFMessageTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5381C836CC800AB32A0 /* IFMessageTarget.h */; };
+		07A9E5371C836B8400AB32A0 /* IFMessageRouter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5361C836B8400AB32A0 /* IFMessageRouter.h */; };
+		07A9E5391C836CC800AB32A0 /* IFMessageReceiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5381C836CC800AB32A0 /* IFMessageReceiver.h */; };
 		07BD8A2C1C76531C0058D7A8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2B1C76531C0058D7A8 /* UIKit.framework */; };
 		07BD8A2E1C7653260058D7A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2D1C7653260058D7A8 /* Foundation.framework */; };
 		07BD8A491C7653400058D7A8 /* IFConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A2F1C7653400058D7A8 /* IFConfigurable.h */; };
@@ -212,8 +212,8 @@
 		07933F111C902CD6003D6227 /* IFIOCProxyObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFIOCProxyObject.m; path = com_innerfunction_semo/IFIOCProxyObject.m; sourceTree = SOURCE_ROOT; };
 		07A9E5321C836B6500AB32A0 /* IFMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessage.h; path = com_innerfunction_semo/IFMessage.h; sourceTree = SOURCE_ROOT; };
 		07A9E5331C836B6500AB32A0 /* IFMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFMessage.m; path = com_innerfunction_semo/IFMessage.m; sourceTree = SOURCE_ROOT; };
-		07A9E5361C836B8400AB32A0 /* IFMessageTargetContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageTargetContainer.h; path = com_innerfunction_semo/IFMessageTargetContainer.h; sourceTree = SOURCE_ROOT; };
-		07A9E5381C836CC800AB32A0 /* IFMessageTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageTarget.h; path = com_innerfunction_semo/IFMessageTarget.h; sourceTree = SOURCE_ROOT; };
+		07A9E5361C836B8400AB32A0 /* IFMessageRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageRouter.h; path = com_innerfunction_semo/IFMessageRouter.h; sourceTree = SOURCE_ROOT; };
+		07A9E5381C836CC800AB32A0 /* IFMessageReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageReceiver.h; path = com_innerfunction_semo/IFMessageReceiver.h; sourceTree = SOURCE_ROOT; };
 		07BD8A201C7651930058D7A8 /* SemoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SemoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BD8A2B1C76531C0058D7A8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07BD8A2D1C7653260058D7A8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -446,8 +446,8 @@
 				07BD8A441C7653400058D7A8 /* NSDictionary+IFValues.m */,
 				07A9E5321C836B6500AB32A0 /* IFMessage.h */,
 				07A9E5331C836B6500AB32A0 /* IFMessage.m */,
-				07A9E5361C836B8400AB32A0 /* IFMessageTargetContainer.h */,
-				07A9E5381C836CC800AB32A0 /* IFMessageTarget.h */,
+				07A9E5361C836B8400AB32A0 /* IFMessageRouter.h */,
+				07A9E5381C836CC800AB32A0 /* IFMessageReceiver.h */,
 			);
 			name = com.innerfunction.semo;
 			sourceTree = "<group>";
@@ -754,7 +754,7 @@
 				07BD8A521C7653400058D7A8 /* IFIOCConfigurable.h in Headers */,
 				07BD8B1A1C7653F00058D7A8 /* DDASLLogger.h in Headers */,
 				07CD9B951C96F39B00427681 /* IFPendingNamed.h in Headers */,
-				07A9E5371C836B8400AB32A0 /* IFMessageTargetContainer.h in Headers */,
+				07A9E5371C836B8400AB32A0 /* IFMessageRouter.h in Headers */,
 				07BD8ABD1C7653930058D7A8 /* IFFileResource.h in Headers */,
 				07BD8AFF1C7653AD0058D7A8 /* NSDictionary+IF.h in Headers */,
 				072DA4AE1C848E4B0023FAEC /* UIViewController+ImageView.h in Headers */,
@@ -776,7 +776,7 @@
 				07BD8A4C1C7653400058D7A8 /* IFConfiguredLocals.h in Headers */,
 				07BD8AC31C7653930058D7A8 /* IFResource.h in Headers */,
 				07190CB11C8054A400CE8F22 /* IFPostScheme.h in Headers */,
-				07A9E5391C836CC800AB32A0 /* IFMessageTarget.h in Headers */,
+				07A9E5391C836CC800AB32A0 /* IFMessageReceiver.h in Headers */,
 				07BD8B461C7653FC0058D7A8 /* UIView+Toast.h in Headers */,
 				07933F121C902CD6003D6227 /* IFIOCProxyObject.h in Headers */,
 				07BD8B401C7653FC0058D7A8 /* ISO8601DateFormatter.h in Headers */,

@@ -17,16 +17,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IFMessageTarget.h"
+#import "IFMessageReceiver.h"
 
 /**
  * A configurable navigation view controller.
- * The class implements the IFMessageTarget protocol and respond to the following messages:
+ * The class implements the IFMessageReceiver protocol and respond to the following messages:
  * - _show_: Show a view by pushing onto the navigation stack. The message must have a _view_ parameter.
  * - _back_: Navigate back to the previous view on the navigation stack.
  * - _home_: Navigate back to the root view on the navigation stack.
  */
-@interface IFNavigationViewController : UINavigationController <IFMessageTarget> {
+@interface IFNavigationViewController : UINavigationController <IFMessageReceiver> {
     UIPanGestureRecognizer *_panGestureRecognizer;
 }
 

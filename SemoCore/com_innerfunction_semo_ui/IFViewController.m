@@ -116,7 +116,7 @@
     [IFAppContainer postMessage:message sender:self];
 }
 
-#pragma mark - IFMessageTarget protocol
+#pragma mark - IFMessageReceiver protocol
 
 - (BOOL)receiveMessage:(IFMessage *)message sender:(id)sender {
     for (id<IFViewBehaviour> behaviour in _behaviours) {
