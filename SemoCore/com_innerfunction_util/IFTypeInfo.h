@@ -34,6 +34,8 @@
 
 /** Initialize with a property reference. */
 - (id)initWithProperty:(objc_property_t)property;
+/** Initialize with a class reference. */
+- (id)initWithClass:(__unsafe_unretained Class)classObj;
 /** Test whether the property is a _boolean_ type. */
 - (BOOL)isBoolean;
 /** Test whether the property is an _integer_ type. */

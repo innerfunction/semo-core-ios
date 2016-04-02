@@ -113,13 +113,13 @@
     [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithContainer:self] forScheme:@"named"];
     [_uriHandler addHandler:[[IFPostScheme alloc] init] forScheme:@"post"];
     // Additional configured schemes.
-    IFConfiguration *dispatcherConfig = [configuration getValueAsConfiguration:@"schemes"];
-    if (dispatcherConfig) {
-        for (NSString *schemeName in [dispatcherConfig getValueNames]) {
-            IFConfiguration *schemeConfig = [dispatcherConfig getValueAsConfiguration:schemeName];
-            id handler = [self buildObjectWithConfiguration:schemeConfig identifier:schemeName];
-            if ([handler conformsToProtocol:@protocol(IFSchemeHandler)]) {
-                [_uriHandler addHandler:handler forScheme:schemeName];
+    IFConfiguration *schemesConfig = [configuration getValueAsConfiguration:@"schemes"];
+    if (schemesConfig) {
+        for (NSString *schemeName in [schemesConfig getValueNames]) {
+            IFConfiguration *schemeConfig = [schemesConfig getValueAsConfiguration:schemeName];
+            id scheme = [self buildObjectWithConfiguration:schemeConfig identifier:schemeName];
+            if ([scheme conformsToProtocol:@protocol(IFSchemeHandler)]) {
+                [_uriHandler addHandler:scheme forScheme:schemeName];
             }
         }
     }
@@ -161,12 +161,12 @@
     NSString *lang = nil;
     DDLogInfo(@"%@: Current locale is %@", LogTag, locale.localeIdentifier);
     
-    // The 'assetLocales' setting can be used to declare a list of the locales that app assets are
+    // The 'supportedLocales' setting can be used to declare a list of the locales that app assets are
     // available in. If the platform's default locale (above) isn't on this list then the code below
     // will attempt to find a supported locale that uses the same language; if no match is found then
     // the first locale on the list is used as the default.
-    if ([configuration hasValue:@"assetLocales"]) {
-        NSArray *assetLocales = [configuration getValue:@"assetLocales"];
+    if ([configuration hasValue:@"supportedLocales"]) {
+        NSArray *assetLocales = [configuration getValue:@"supportedLocales"];
         if ([assetLocales count] > 0 && ![assetLocales containsObject:locale.localeIdentifier]) {
             // Attempt to find a matching locale.
             // Always assigns the first item on the list (as the default option); if a later

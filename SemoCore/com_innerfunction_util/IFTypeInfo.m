@@ -52,6 +52,15 @@
     return self;
 }
 
+- (id)initWithClass:(__unsafe_unretained Class)classObj {
+    self = [super init];
+    if (self) {
+        _propertyClass = classObj;
+        _propertyType = @"";
+    }
+    return self;
+}
+
 - (BOOL)isBoolean {
     return strcmp(_propertyType.UTF8String, @encode(BOOL)) == 0 || strcmp(_propertyType.UTF8String, @encode(Boolean)) == 0;
 }
@@ -73,7 +82,7 @@
 }
 
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj {
-    return [_propertyClass isSubclassOfClass:classObj];
+    return [_propertyClass isSubclassOfClass:classObj] || [self isId];
 }
 
 - (__unsafe_unretained Class)getPropertyClass {

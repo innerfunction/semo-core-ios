@@ -57,7 +57,7 @@
           configuration:(IFConfiguration *)configuration;
 
 /** Resolve an object property value compatible with the specified type from the specified configuration. */
-- (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)type
+- (id)resolveObjectPropertyOfType:(IFPropertyInfo *)propInfo
                 fromConfiguration:(IFConfiguration *)configuration
                              name:(NSString *)name
                             value:(id)value;
@@ -290,12 +290,13 @@
             NSArray *list = (NSArray *)[configuration getValue:propName asRepresentation:@"json"];
             NSInteger length = [list count];
             NSMutableArray *propValues = [[NSMutableArray alloc] initWithCapacity:length];
-            __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];
-            if (!propertyClass) {
-                propertyClass = [NSObject class];
+            __unsafe_unretained Class memberClass = [typeInspectable memberClassForCollection:propName];
+            if (!memberClass) {
+                memberClass = [NSObject class];
             }
+            IFPropertyInfo *memberPropInfo = [[IFPropertyInfo alloc] initWithClass:memberClass];
             for (NSInteger idx = 0; idx < length; idx++) {
-                id propValue = [self resolveObjectPropertyOfType:propertyClass
+                id propValue = [self resolveObjectPropertyOfType:memberPropInfo
                                                fromConfiguration:configuration
                                                             name:[NSString stringWithFormat:@"%@.%ld", propName, (long)idx]
                                                            value:nil];
@@ -319,12 +320,16 @@
         IFConfiguration *propConfigs = [configuration getValueAsConfiguration:propName];
         if (propConfigs) {
             NSMutableDictionary *propValues = [[NSMutableDictionary alloc] init];
-            __unsafe_unretained Class propertyClass = [typeInspectable memberClassForCollection:propName];
-            if (!propertyClass) {
-                propertyClass = [NSObject class];
+            __unsafe_unretained Class memberClass = [typeInspectable memberClassForCollection:propName];
+            if (!memberClass) {
+                memberClass = [NSObject class];
             }
+            IFPropertyInfo *memberPropInfo = [[IFPropertyInfo alloc] initWithClass:memberClass];
             for (NSString *valueName in [propConfigs getValueNames]) {
-                id propValue = [self resolveObjectPropertyOfType:propertyClass fromConfiguration:propConfigs name:valueName value:nil];
+                id propValue = [self resolveObjectPropertyOfType:memberPropInfo
+                                               fromConfiguration:propConfigs
+                                                            name:valueName
+                                                           value:nil];
                 if (propValue) {
                     if ([propValue isKindOfClass:[IFPendingNamed class]]) {
                         // Value is a pending named value. Record the current property and object info, but skip further processing.
@@ -344,9 +349,8 @@
         }
     }
     else {
-        __unsafe_unretained Class propClass = [propInfo getPropertyClass];
         id propValue = [object valueForKey:propName];
-        value = [self resolveObjectPropertyOfType:propClass fromConfiguration:configuration name:propName value:propValue];
+        value = [self resolveObjectPropertyOfType:propInfo fromConfiguration:configuration name:propName value:propValue];
     }
     value = [self setProperty:propName info:propInfo object:object value:value];
     return value;
@@ -490,7 +494,6 @@
             [_pendingValueRefCounts removeObjectForKey:pending.objectKey];
             // The property object is now fully configured, invoke its afterConfiguration: method if it
             // implements IFIOCContainerAware protocol.
-            // TODO: Remove configuration from IOCConfigurable calls, _pendingValueObjectConfigs not needed then.
             if ([pending.object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
                 IFConfiguration *objConfig = _pendingValueObjectConfigs[pending.objectKey];
                 [(id<IFIOCContainerAware>)pending.object afterIOCConfiguration:objConfig];
@@ -555,64 +558,64 @@
     || [configuration hasValue:@"*factory"];
 }
 
-- (id)resolveObjectPropertyOfType:(__unsafe_unretained Class)propClass
+- (id)resolveObjectPropertyOfType:(IFPropertyInfo *)propInfo
                 fromConfiguration:(IFConfiguration *)configuration
                              name:(NSString *)name
                             value:(id)value {
-    id object = [configuration getValue:name];
+    id configValue = [configuration getValue:name];
     // Return pending names immediately.
-    if ([object isKindOfClass:[IFPendingNamed class]]) {
-        return object;
+    if ([configValue isKindOfClass:[IFPendingNamed class]]) {
+        return configValue;
     }
+    // See if object type is compatible with the property.
+    if ([propInfo isAssignableFrom:[configValue class]]) {
+        return configValue;
+    }
+    // Unpack the object if packaged into a resource.
+    if ([configValue isKindOfClass:[IFResource class]]) {
+        configValue = ((IFResource *)configValue).data;
+        // Test for property compatibility again.
+        if ([propInfo isAssignableFrom:[configValue class]]) {
+            return configValue;
+        }
+    }
+    // If object is a dictionary then build a configuration using it and try resolving
+    // a property value using configuration.
     IFConfiguration *propConfig = nil;
-    // If object is a dictionary then try resolving an object using the configuration.
-    if ([object isKindOfClass:[NSDictionary class]]) {
+    id object = nil;
+    if ([configValue isKindOfClass:[NSDictionary class]]) {
         propConfig = [[configuration getValueAsConfiguration:name] normalize];
         // Build and return the object if the configuration contains an instantiation hint.
         if ([self hasInstantiationHint:propConfig]) {
-            return [self buildObjectWithConfiguration:propConfig identifier:name];
+            object = [self buildObjectWithConfiguration:propConfig identifier:name];
         }
         else if (value != nil) {
             // No instantiation hints on the configuration, but the property already has a
             // value so try configuring that instead.
+            object = value;
             // If [value class] has a config proxy then instantiate that using the value.
             IFIOCProxyLookupEntry *proxyEntry = [IFContainer lookupConfigurationProxyForObject:value];
             if (proxyEntry) {
-                value = [proxyEntry instantiateProxyWithValue:value];
+                object = [proxyEntry instantiateProxyWithValue:value];
             }
-            [self configureObject:value withConfiguration:propConfig identifier:name];
-            // Return the configured value.
-            return value;
-        }
-    }
-    // See if object type is compatible with the property.
-    if ([[object class] isSubclassOfClass:propClass]) {
-        return object;
-    }
-    // Unpack the object if packaged into a resource.
-    if ([object isKindOfClass:[IFResource class]]) {
-        // TODO: Should we instead recurse into this method with the unpacked resource value?
-        object = ((IFResource *)object).data;
-        // Try setting property again.
-        if ([[object class] isSubclassOfClass:propClass]) {
-            return object;
+            [self configureObject:object withConfiguration:propConfig identifier:name];
         }
     }
     // If a configuration was found but no type or class info specified then try instantiating an object using the
     // configuration and inferred type information.
-    if (propConfig) {
+    if (object == nil && propConfig) {
+        __unsafe_unretained Class propClass = [propInfo getPropertyClass];
         NSString *className = NSStringFromClass(propClass);
         @try {
             object = [self newInstanceForClassName:className withConfiguration:propConfig];
             [self configureObject:object withConfiguration:propConfig identifier:name];
-            return object;
         }
         @catch (NSException *exception) {
             DDLogCInfo(@"Failed to instantiate instance of inferred type %@: %@", className, exception);
         }
     }
-    // If class is nil then then property is defined with (id) type, so should accept the current object, if any.
-    if (propClass == nil) {
+    // If we have an object which is compatible with the required type then return it.
+    if (object != nil && [propInfo isAssignableFrom:[object class]]) {
         return object;
     }
     // Unable to instantiate an object of a compatible type, so return nil.
