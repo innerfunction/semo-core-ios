@@ -434,12 +434,35 @@
 - (id)buildNamedObject:(NSString *)name {
     // Track that we're about to build this name.
     [_pendingNames setObject:@[] forKey:name];
-    // Resolve the object's configuration.
-    id object = [_containerConfig getValue:name];
+    // See if there is property info for the name (i.e. the container has a property of the same name).
     IFPropertyInfo *propertyInfo = [_propertyTypeInfo infoForProperty:name];
+    // Try resolving a configuration for the named object.
+    id object = [_containerConfig getValue:name];
     if ([object isKindOfClass:[NSDictionary class]]) {
         object = [_containerConfig getValueAsConfiguration:name];
     }
+    if ([object isKindOfClass:[IFConfiguration class]]) {
+        // Configuration found, if the container has a matching property then use it to configure that...
+        if (propertyInfo) {
+            object = [self configureProperty:name info:propertyInfo object:self configuration:_containerConfig];
+        }
+        else {
+            // Else try building a new non-property object using the configuration.
+            IFConfiguration *objConfig = [(IFConfiguration *)object normalize];
+            if ([self hasInstantiationHint:objConfig]) {
+                object = [self buildObjectWithConfiguration:objConfig identifier:name];
+            }
+        }
+    }
+    else if (propertyInfo && [propertyInfo isAssignableFrom:[object class]]) {
+        // The value in the configuration is compatible with a property on the container.
+        [self setValue:object forKey:name];
+    }
+    if (object != nil) {
+        // Map the named object.
+        [_named setObject:object forKey:name];
+    }
+    /*
     if ([object isKindOfClass:[IFConfiguration class]]) {
         // Try instantiating a new object from an object configuration.
         IFConfiguration *objConfig = [(IFConfiguration *)object normalize];
@@ -480,6 +503,7 @@
         }
         [_named setObject:object forKey:name];
     }
+    */
     // Object is configured, notify any pending named references
     NSArray *pendings = [_pendingNames objectForKey:name];
     for (IFPendingNamed *pending in pendings) {
