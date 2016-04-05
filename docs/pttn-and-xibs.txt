@@ -1,0 +1,39 @@
+Pttn and XIB files
+
+Two modes of operation:
+1. In-place configuration
+2. Placeholder replacement
+
+Both modes have the same start-up sequence:
+* The view controller is instantiated
+* The view controller implements IFIOCConfigurable, and its beforeIOCConfiguration: method is called
+* The view controller reads the configuration 'layout' property and loads the appropriate XIB file
+
+The process then continues differently for each mode.
+
+1. In-place configuration
+* The view controller should declare named properties for each view component that is to be configured in place
+* And each of these properties should be declared an IBOutlet
+* The XIB file should map views to properties as referencing outlets
+* When the layout is loaded, the views will be instantiated and passed to the corresponding properties
+* This will happen in beforeIOCConfiguration, i.e. before DI takes place
+* During the DI phase, any view component configuration properties will be passed to the instance created by the XIB
+
+2. Placeholder replacement
+This is essentially an improvement on the current tag based mechanism.
+* As for in-place configuration, the view controller declares IBOutlets and the XIB file maps referencing outlets to them
+* The IBOutlet properties should be declared as e.g. UIView, and an instance of UIView is used in the XIB as the placeholder
+* The view controller's configuration contains a 'components' collection, mapping component names to component instances
+* Component names should correspond to the property name used for the IBOutlet
+    > Or may be possible to use key coding to bypass need for explicit property declarations
+    > See https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/CocoaNibs/CocoaNibs.html#//apple_ref/doc/uid/10000051i-CH4-SW19
+      (Point 3, Outlet connections)
+* The XIB is loaded and the placeholder instances are passed to the view controller
+* The view controller's afterIOCConfiguration: method is then called
+* The view controller iterates over each named component and reads the associated placeholder view
+* If the placeholder view is not nil then it does the following:
+    - Gets the placeholder's superview
+    - Replaces the placeholder in the superview's subviews collection with the actual view component instance
+
+Note that both modes are compatible and complimentary to each other.
+

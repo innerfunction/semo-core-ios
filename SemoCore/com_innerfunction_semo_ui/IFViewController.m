@@ -22,14 +22,6 @@
 #import "UIViewController+Toast.h"
 #import "UIViewController+ImageView.h"
 
-@interface IFViewController()
-
-- (void)doViewInitialization;
-- (void)insertNamedViews;
-- (void)replaceSubview:(UIView *)view withView:(UIView *)view;
-
-@end
-
 @implementation IFViewController
 
 @synthesize iocContainer = _iocContainer, behaviours = _behaviours;
@@ -38,25 +30,30 @@
     self = [super init];
     if (self) {
         _hideTitleBar = NO;
-        _namedViews = [NSDictionary dictionary];
+        _namedViews = @{};
         _actionProxyLookup = [NSMutableDictionary new];
-        _behaviours = [NSArray array];
-        [self doViewInitialization];
+        _behaviours = @[];
     }
     return self;
 }
 
 - (id)initWithView:(UIView *)view {
-    self = [super init];
+    self = [self init];
     if (self) {
         self.view = view;
-        _hideTitleBar = NO;
-        _namedViews = [NSDictionary dictionary];
-        _actionProxyLookup = [NSMutableDictionary new];
-        _behaviours = [NSArray array];
-        [self doViewInitialization];
     }
     return self;
+}
+
+#pragma mark - IFIOCContainerAware protocol
+
+- (void)beforeIOCConfiguration:(IFConfiguration *)configuration {
+    _layoutName = [configuration getValueAsString:@"layoutName"];
+    [self loadLayout];
+}
+
+- (void)afterIOCConfiguration:(IFConfiguration *)configuration {
+    [self insertNamedViews];
 }
 
 #pragma mark - IFViewBehaviourController protocol
@@ -140,37 +137,63 @@
     return NO;
 }
 
+#pragma mark - IFActionProxy
+
+- (void)registerAction:(NSString *)action forObject:(id)object {
+    NSValue *key = [NSValue valueWithNonretainedObject:object];
+    _actionProxyLookup[key] = action;
+}
+
+- (void)postActionForObject:(id)object {
+    NSValue *key = [NSValue valueWithNonretainedObject:object];
+    NSString *action = _actionProxyLookup[key];
+    if (action) {
+        [self postMessage:action];
+    }
+}
+
+#pragma mark - Key-Value coding
+
+- (void)setValue:(id)value forKey:(NSString *)key {
+    // The layout will use this method when passing view instances to their referencing
+    // outlets.
+    // (See https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/CocoaNibs/CocoaNibs.html#//apple_ref/doc/uid/10000051i-CH4-SW19)
+    // Use this to keep track of view placeholders. If loading the layout and there is
+    // a named view whose name matches the key, then record the value as a placeholder.
+    if (_loadingLayout && [_namedViews valueForKey:key] != nil) {
+        [_namedViewPlaceholders setObject:value forKey:key];
+    }
+    else {
+        [super setValue:value forKey:key];
+    }
+}
+
 #pragma mark - private
 
-- (void)doViewInitialization {
-    // Ensure this code is run on the UI thread.
-    // (When the view is being instantiated by an IOC container, view initialization might be invoked
-    // from a background thread).
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // If no view already specified and a layout name has been specified then load the nib file of
-        // that name.
-        if (!self.view && _layoutName) {
+- (void)loadLayout {
+    // If no view already specified and a layout name has been specified then load the nib file of
+    // that name.
+    if (!self.view && _layoutName) {
+        // Ensure this code is run on the UI thread. (When the view is being instantiated by an IOC
+        // container, view initialization might be invoked from a background thread).
+        // Dispatch the code synchronously so that container configuration can continue afterwards
+        // in the expected order.
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            _namedViewPlaceholders = [NSMutableDictionary new];
+            _loadingLayout = YES;
             NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:nil];
-            if ([result count] > 0) {
-                [self insertNamedViews];
+            if (![result count]) {
+                DDLogWarn(@"%@: Failed to load layout from %@.xib", LogTag, _layoutName);
             }
-            else {
-                DDLogWarn(@"%@: Unable to load nib file %@.xib", LogTag, _layoutName);
-            }
-        }
-    });
+            _loadingLayout = NO;
+        });
+    }
 }
 
 - (void)insertNamedViews {
     for (NSString *name in [_namedViews keyEnumerator]) {
         id view = [_namedViews objectForKey:name];
-        id tag = [_namedViewTags objectForKey:name];
-        // Find the placeholder view in the layout.
-        UIView *placeholder = nil;
-        if (tag) {
-            NSInteger _tag = ((NSNumber *)tag).integerValue;
-            placeholder = [self.view viewWithTag:_tag];
-        }
+        UIView *placeholder = [_namedViewPlaceholders objectForKey:name];
         // Replace the placeholder with the named view.
         if (placeholder) {
             if ([view isKindOfClass:[UIView class]]) {
@@ -182,13 +205,15 @@
                 [self replaceSubview:placeholder withView:controller.view];
             }
             else {
-                DDLogWarn(@"%@: Can't insert named view '%@' of class '%@'", LogTag, name, [[view class] description]);
+                DDLogWarn(@"%@: Named view '%@' has non-view class '%@'", LogTag, name, [view class]);
             }
         }
         else {
-            DDLogWarn(@"%@: Can't find placeholder view for tag %@", LogTag, tag);
+            DDLogWarn(@"%@: No placeholder for named view '%@'", LogTag, name);
         }
     }
+    // Discard the placeholder views.
+    _namedViewPlaceholders = nil;
 }
 
 - (void)replaceSubview:(UIView *)subview withView:(UIView *)view {
@@ -204,21 +229,6 @@
     NSUInteger idx = [superview.subviews indexOfObject:subview];
     [subview removeFromSuperview];
     [superview insertSubview:view atIndex:idx];
-}
-
-#pragma mark - IFActionProxy
-
-- (void)registerAction:(NSString *)action forObject:(id)object {
-    NSValue *key = [NSValue valueWithNonretainedObject:object];
-    _actionProxyLookup[key] = action;
-}
-
-- (void)postActionForObject:(id)object {
-    NSValue *key = [NSValue valueWithNonretainedObject:object];
-    NSString *action = _actionProxyLookup[key];
-    if (action) {
-        [self postMessage:action];
-    }
 }
 
 @end
