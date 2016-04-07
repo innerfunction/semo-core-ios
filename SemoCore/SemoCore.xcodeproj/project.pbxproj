@@ -47,6 +47,8 @@
 		07A9E5351C836B6500AB32A0 /* IFMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 07A9E5331C836B6500AB32A0 /* IFMessage.m */; };
 		07A9E5371C836B8400AB32A0 /* IFMessageRouter.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5361C836B8400AB32A0 /* IFMessageRouter.h */; };
 		07A9E5391C836CC800AB32A0 /* IFMessageReceiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 07A9E5381C836CC800AB32A0 /* IFMessageReceiver.h */; };
+		07AFCA781CB52DCE0049CA84 /* IFObjectConfigurer.h in Headers */ = {isa = PBXBuildFile; fileRef = 07AFCA761CB52DCE0049CA84 /* IFObjectConfigurer.h */; };
+		07AFCA791CB52DCE0049CA84 /* IFObjectConfigurer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07AFCA771CB52DCE0049CA84 /* IFObjectConfigurer.m */; };
 		07BD8A2C1C76531C0058D7A8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2B1C76531C0058D7A8 /* UIKit.framework */; };
 		07BD8A2E1C7653260058D7A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BD8A2D1C7653260058D7A8 /* Foundation.framework */; };
 		07BD8A491C7653400058D7A8 /* IFConfigurable.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8A2F1C7653400058D7A8 /* IFConfigurable.h */; };
@@ -213,6 +215,8 @@
 		07A9E5331C836B6500AB32A0 /* IFMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFMessage.m; path = com_innerfunction_semo/IFMessage.m; sourceTree = SOURCE_ROOT; };
 		07A9E5361C836B8400AB32A0 /* IFMessageRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageRouter.h; path = com_innerfunction_semo/IFMessageRouter.h; sourceTree = SOURCE_ROOT; };
 		07A9E5381C836CC800AB32A0 /* IFMessageReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFMessageReceiver.h; path = com_innerfunction_semo/IFMessageReceiver.h; sourceTree = SOURCE_ROOT; };
+		07AFCA761CB52DCE0049CA84 /* IFObjectConfigurer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFObjectConfigurer.h; path = com_innerfunction_semo/IFObjectConfigurer.h; sourceTree = SOURCE_ROOT; };
+		07AFCA771CB52DCE0049CA84 /* IFObjectConfigurer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFObjectConfigurer.m; path = com_innerfunction_semo/IFObjectConfigurer.m; sourceTree = SOURCE_ROOT; };
 		07BD8A201C7651930058D7A8 /* SemoCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SemoCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07BD8A2B1C76531C0058D7A8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		07BD8A2D1C7653260058D7A8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -424,6 +428,8 @@
 				07BD8A331C7653400058D7A8 /* IFConfiguredLocals.m */,
 				07BD8A341C7653400058D7A8 /* IFContainer.h */,
 				07BD8A351C7653400058D7A8 /* IFContainer.m */,
+				07AFCA761CB52DCE0049CA84 /* IFObjectConfigurer.h */,
+				07AFCA771CB52DCE0049CA84 /* IFObjectConfigurer.m */,
 				07CD9B931C96F39B00427681 /* IFPendingNamed.h */,
 				07CD9B941C96F39B00427681 /* IFPendingNamed.m */,
 				07BD8A361C7653400058D7A8 /* IFCoreTypes.h */,
@@ -758,6 +764,7 @@
 				07BD8A7E1C7653670058D7A8 /* IFMakeScheme.h in Headers */,
 				07BD8A581C7653400058D7A8 /* IFIOCTypeInspectable.h in Headers */,
 				072DA4A21C848D680023FAEC /* JTSImageInfo.h in Headers */,
+				07AFCA781CB52DCE0049CA84 /* IFObjectConfigurer.h in Headers */,
 				07BD8A5C1C7653400058D7A8 /* IFValues.h in Headers */,
 				07BD8A491C7653400058D7A8 /* IFConfigurable.h in Headers */,
 				07BD8A9F1C76537E0058D7A8 /* IFTableViewCellFactory.h in Headers */,
@@ -895,6 +902,7 @@
 				07BD8AC01C7653930058D7A8 /* IFLocalSchemeHandler.m in Sources */,
 				07BD8B251C7653F00058D7A8 /* DispatchQueueLogFormatter.m in Sources */,
 				07BD8B1D1C7653F00058D7A8 /* DDFileLogger.m in Sources */,
+				07AFCA791CB52DCE0049CA84 /* IFObjectConfigurer.m in Sources */,
 				072DA4B71C8491070023FAEC /* UIViewController+Toast.m in Sources */,
 				074C3DC71C944FC3009BBEEF /* IFViewBehaviourObject.m in Sources */,
 				07BD8B451C7653FC0058D7A8 /* SWRevealViewController.m in Sources */,

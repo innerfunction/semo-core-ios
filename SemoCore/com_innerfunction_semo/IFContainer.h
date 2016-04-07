@@ -22,6 +22,9 @@
 #import "IFMessageReceiver.h"
 #import "IFService.h"
 #import "IFTypeInfo.h"
+#import "IFPendingNamed.h"
+
+@class IFObjectConfigurer;
 
 /**
  * A container for named objects and services.
@@ -63,6 +66,8 @@
     NSMutableDictionary *_pendingValueObjectConfigs;
     /// Flag indicating whether the container and all its services are running.
     BOOL _running;
+    /// An object configurer for the container.
+    IFObjectConfigurer *_containerConfigurer;
 }
 
 /** Get a named component. */
@@ -114,8 +119,21 @@
 - (void)configureWith:(IFConfiguration *)configuration;
 /** Configure the container with the specified data. */
 - (void)configureWithData:(id)configData;
-/** Perform standard container-recognized protocol checks on a new object instance. */
-- (void)doStandardProtocolChecks:(id)object;
+
+/** Perform standard post-instantiation operations on a new object instance. */
+- (void)doPostInstantiation:(id)object;
+/** Perform standard post-configuration operations on a new object instance. */
+- (void)doPostConfiguration:(id)object;
+
+/** Increment the number of pending value refs for an object. */
+- (void)incPendingValueRefCountForPendingObject:(IFPendingNamed *)pending;
+/** Test whether an object has pending value references. */
+- (BOOL)hasPendingValueRefsForObjectKey:(id)objectKey;
+/**
+ * Record the configuration for an object with pending value references.
+ * Needed to ensure the the [IFIOCContainerAware afterConfiguration:] method is called correctly.
+ */
+- (void)recordPendingValueObjectConfiguration:(IFConfiguration *)configuration forObjectKey:(id)objectKey;
 
 /**
  * Register an IOC configuration proxy class for properties of a specific class.
@@ -124,4 +142,11 @@
  */
 + (void)registerConfigurationProxyClassName:(__unsafe_unretained Class)proxyClass forClassName:(NSString *)className;
 
+/**
+ * Check whether a configuration proxy is registered for an object's class, and if so then return an instance of
+ * the proxy initialized with the object, otherwise return the object unchanged.
+ */
++ (id)applyConfigurationProxyWrapper:(id)object;
+
 @end
+

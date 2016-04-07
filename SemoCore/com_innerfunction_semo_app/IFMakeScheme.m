@@ -20,10 +20,10 @@
 
 @implementation IFMakeScheme
 
-- (id)initWithContainer:(IFContainer *)_container {
+- (id)initWithAppContainer:(IFAppContainer *)container {
     self = [super init];
     if (self) {
-        container = _container;
+        _container = container;
     }
     return self;
 }
@@ -34,13 +34,11 @@
 
 - (id)dereference:(IFCompoundURI *)uri parameters:(NSDictionary *)params {
     id result = nil;
-    id configs = [container getNamed:@"makes"];
-    if (configs && [configs isKindOfClass:[IFConfiguration class]]) {
-        IFConfiguration *config = [configs getValueAsConfiguration:uri.name];
-        if (config) {
-            config = [[config normalize] extendWithParameters:params];
-            result = [container buildObjectWithConfiguration:config identifier:[uri description]];
-        }
+    IFConfiguration *makes = _container.makes;
+    IFConfiguration *config = [makes getValueAsConfiguration:uri.name];
+    if (config) {
+        config = [config extendWithParameters:params];
+        result = [_container buildObjectWithConfiguration:config identifier:[uri description]];
     }
     return result;
 }

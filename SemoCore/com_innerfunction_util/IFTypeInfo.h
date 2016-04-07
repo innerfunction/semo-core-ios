@@ -32,6 +32,8 @@
     BOOL _isWriteable;
 }
 
+/** Initialize a property which is id/NSObject compatible. */
+- (id)init;
 /** Initialize with a property reference. */
 - (id)initWithProperty:(objc_property_t)property;
 /** Initialize with a class reference. */
@@ -48,6 +50,8 @@
 - (BOOL)isId;
 /** Test whether the property type is assignable from another class. */
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj;
+/** Test whether the property type is a member or subclass of another class. */
+- (BOOL)isMemberOrSubclassOf:(__unsafe_unretained Class)classObj;
 /** Get the property's declared class type. */
 - (__unsafe_unretained Class)getPropertyClass;
 /** Test whether the property is writeable. */

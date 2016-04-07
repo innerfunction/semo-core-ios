@@ -20,6 +20,15 @@
 
 @implementation IFPropertyInfo
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        _propertyClass = [NSObject class];
+        _propertyType = [NSString stringWithUTF8String:@encode(id)];
+    }
+    return self;
+}
+
 - (id)initWithProperty:(objc_property_t)property {
     self = [super init];
     if (self) {
@@ -82,7 +91,21 @@
 }
 
 - (BOOL)isAssignableFrom:(__unsafe_unretained Class)classObj {
-    return [_propertyClass isSubclassOfClass:classObj] || [self isId];
+    if ([self isId]) {
+        return YES;
+    }
+    if (_propertyClass) {
+        return [classObj isSubclassOfClass:_propertyClass];
+    }
+    // Numeric types will have no property class info, but NSNumber can be assigned to them.
+    if ([classObj isSubclassOfClass:[NSNumber class]]) {
+        return [self isBoolean] || [self isInteger] || [self isFloat] || [self isDouble];
+    }
+    return NO;
+}
+
+- (BOOL)isMemberOrSubclassOf:(__unsafe_unretained Class)classObj {
+    return [_propertyClass isSubclassOfClass:classObj];
 }
 
 - (__unsafe_unretained Class)getPropertyClass {
@@ -166,10 +189,6 @@ static NSMutableDictionary *IFTypeInfo_typeInfoCache;
                     objc_property_t prop = props[i];
                     
                     NSString *propName = [NSString stringWithUTF8String:property_getName(prop)];
-                    
-                    if ([propName isEqualToString:@"content"]) {
-                        NSLog(@"!");
-                    }
                     
                     // Skip nil property names.
                     if (propName == nil) continue;

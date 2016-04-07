@@ -26,6 +26,15 @@
 
 #define ValueOrDefault(v,dv)   (v == nil ? dv : v)
 
+@interface IFArrayBackedDictionary : NSDictionary {
+    NSArray *_array;
+    NSNumberFormatter *_numParser;
+}
+
+- (id)initWithArray:(NSArray *)array;
+
+@end
+
 @interface IFConfiguration()
 
 - (id)initWithConfiguration:(IFConfiguration *)config mixin:(IFConfiguration *)mixin parent:(IFConfiguration *)parent;
@@ -39,12 +48,15 @@
     // Initialize with an empty dictionary.
     self = [super init];
     self.data = [NSDictionary dictionary];
+    self.root = self;
     [self initializeContext];
     return self;
 }
 
 - (id)initWithData:(id)data {
-    return [self initWithData:data parent:[IFConfiguration emptyConfiguration]];
+    self = [self initWithData:data parent:[IFConfiguration emptyConfiguration]];
+    self.root = self;
+    return self;
 }
 
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent {
@@ -93,6 +105,15 @@
         [self initializeContext];
     }
     return self;
+}
+
+- (void)setData:(id)data {
+    if ([data isKindOfClass:[NSArray class]]) {
+        _data = [[IFArrayBackedDictionary alloc] initWithArray:(NSArray *)data];
+    }
+    else if([data isKindOfClass:[NSDictionary class]]) {
+        _data = (NSDictionary *)data;
+    }
 }
 
 - (void)initializeContext {
@@ -199,13 +220,20 @@
     // * Otherwise use the type conversions to resolve the representation.
     if (![@"bare" isEqualToString:representation]) {
         if ([@"configuration" isEqualToString:representation]) {
+            // If value isn't already a configuration then try converting to one.
             if (![value isKindOfClass:[IFConfiguration class]]) {
-                // If value isn't already a configuration, but is a dictionary then construct a new config using the values in that dictionary...
+                // If value is an array then convert to an array backed dictionary.
+                if ([value isKindOfClass:[NSArray class]]) {
+                    value = [[IFArrayBackedDictionary alloc] initWithArray:(NSArray *)value];
+                }
+                // If value is a dictionary then construct a new config using the values in that dictionary.
                 if ([value isKindOfClass:[NSDictionary class]]) {
                     value = [[IFConfiguration alloc] initWithData:value parent:self];
                 }
-                // Else if value is a resource, then construct a new config using the resource...
+                // Else if value is a resource, then construct a new config using the resource.
                 else if ([value isKindOfClass:[IFResource class]]) {
+                    // TODO: Might be better to move this conditional to the first in this block, and then
+                    // unpack the resource value.
                     value = [[IFConfiguration alloc] initWithResource:(IFResource *)value parent:self];
                 }
                 // Else the value can't be resolved to a configuration, so return nil.
@@ -316,7 +344,7 @@
 }
 
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath {
-    return [self getValue:keyPath asRepresentation:@"configuration"];
+    return [[self getValue:keyPath asRepresentation:@"configuration"] normalize];
 }
 
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath defaultValue:(IFConfiguration *)defaultValue {
@@ -442,6 +470,40 @@ static IFConfiguration *emptyConfiguaration;
 
 + (IFConfiguration *)emptyConfiguration {
     return emptyConfiguaration;
+}
+
+@end
+
+// NSDictionary interface backed by an NSArray
+@implementation IFArrayBackedDictionary
+
+- (id)initWithArray:(NSArray *)array {
+    self = [super init];
+    if (self) {
+        _array = array;
+        _numParser = [NSNumberFormatter new];
+    }
+    return self;
+}
+
+- (NSUInteger)count {
+    return [_array count];
+}
+
+- (id)objectForKey:(id)aKey {
+    // TODO: Need to test whether [_array valueForKey:aKey] will return the same result.
+    NSNumber *num = [_numParser numberFromString:[aKey description]];
+    NSInteger idx = num != nil ? num.integerValue : -1;
+    return idx > -1 && idx < [_array count] ? [_array objectAtIndex:idx] : nil;
+}
+
+- (NSEnumerator *)keyEnumerator {
+    NSMutableArray *keys = [[NSMutableArray alloc] initWithCapacity:[_array count]];
+    for (NSInteger idx = 0; idx < [_array count]; idx++) {
+        NSString *key = [[NSNumber numberWithInteger:idx] description];
+        [keys addObject:key];
+    }
+    return [keys objectEnumerator];
 }
 
 @end

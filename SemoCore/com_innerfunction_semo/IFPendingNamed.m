@@ -20,12 +20,16 @@
 
 @implementation IFPendingNamed
 
-- (void)setObject:(id)object {
-    _object = object;
-    _objectKey = [NSValue valueWithNonretainedObject:object];
+- (void)setConfigurer:(IFObjectConfigurer *)configurer {
+    _configurer = configurer;
+    _objectKey = [NSValue valueWithNonretainedObject:configurer.object];
 }
 
-- (id)resolveValue:(id)value {
+- (BOOL)hasWaitingConfigurer {
+    return (_configurer != nil);
+}
+
+- (id)completeWithValue:(id)value {
     // If a reference path is set then use it to fully resolve the pending value on the named object.
     if (_referencePath) {
         if ([value respondsToSelector:@selector(valueForKeyPath:)]) {
@@ -35,6 +39,7 @@
             value = nil;
         }
     }
+    [_configurer injectValue:value intoProperty:_key];
     return value;
 }
 

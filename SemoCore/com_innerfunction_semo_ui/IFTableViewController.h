@@ -101,6 +101,8 @@
 @property (nonatomic, strong) NSString *clearFilterMessage;
 /// The table's content.
 @property (nonatomic, strong) id content;
+/// A named filter to apply to the content before displaying.
+@property (nonatomic, strong) NSString *filterName;
 
 /// Format incoming list data. Principally intended as a mechanism for subclasses to interface with specific data sources.
 - (NSArray *)formatData:(NSArray *)data;
@@ -108,6 +110,8 @@
 - (void)clearFilter;
 /// Post a message.
 - (void)postMessage:(NSString *)message;
+/// Return a table data filter block for the named filter.
+- (IFTableDataFilterBlock)filterBlockForName:(NSString *)filterName;
 
 // Image loading methods.
 

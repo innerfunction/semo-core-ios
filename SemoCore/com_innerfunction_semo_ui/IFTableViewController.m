@@ -124,11 +124,26 @@
     }
     if (data) {
         _tableData.data = [self formatData:data];
-        // Refresh the list view.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
+        // Reset the filter name to apply any active filter & reload the table view.
+        self.filterName = _filterName;
     }
+}
+
+- (void)setFilterName:(NSString *)filterName {
+    _filterName = filterName;
+    if (_filterName) {
+        IFTableDataFilterBlock filterBlock = [self filterBlockForName:_filterName];
+        if (filterBlock) {
+            [_tableData filterWithBlock:filterBlock];
+        }
+    }
+    else {
+        [_tableData clearFilter];
+    }
+    // Refresh the list view.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark - view lifecycle methods
@@ -279,6 +294,10 @@
     [IFAppContainer postMessage:message sender:self];
 }
 
+- (IFTableDataFilterBlock)filterBlockForName:(NSString *)filterName {
+    return nil;
+}
+
 #pragma mark - private methods
 
 - (IFTableViewCellFactory *)cellFactoryForIndexPath:(NSIndexPath *)indexPath {
@@ -361,6 +380,13 @@
     if ([message hasName:@"load"]) {
         self.content = message.parameters[@"content"];
         return YES;
+    }
+    else if ([message hasName:@"filter"]) {
+        self.filterName = message.parameters[@"name"];
+    }
+    else if ([message hasName:@"clear-filter"]) {
+        [_tableData clearFilter];
+        [self.tableView reloadData];
     }
     return NO;
 }

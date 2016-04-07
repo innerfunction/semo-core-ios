@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFURIHandling.h"
-#import "IFContainer.h"
+#import "IFAppContainer.h"
 
 /**
  * An internal URI handler for the _make:_ scheme.
@@ -29,10 +29,10 @@
  * via the _make:_ URI's parameters.
  */
 @interface IFMakeScheme : NSObject <IFSchemeHandler> {
-    IFContainer *container;
+    IFAppContainer *_container;
 }
 
-- (id)initWithContainer:(IFContainer *)_container;
+- (id)initWithAppContainer:(IFAppContainer *)container;
 
 
 @end

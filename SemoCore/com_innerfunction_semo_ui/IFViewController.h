@@ -84,11 +84,9 @@
  */
 - (void)loadLayout;
 /**
- * Insert named views into the layout. Inserts any view components declared using the _namedViews_
- * property into the layout by finding a placeholder view bound to a referencing outlet of the same
- * name, and replacing it with the named view.
+ * Replace any view placeholders in the layout with views instantiated by the container.
  */
-- (void)insertNamedViews;
+- (void)replaceViewPlaceholders;
 /// Replace one of the view's subviews with a new view.
 - (void)replaceSubview:(UIView *)view withView:(UIView *)view;
 

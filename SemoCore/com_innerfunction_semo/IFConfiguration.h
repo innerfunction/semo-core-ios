@@ -49,7 +49,7 @@
  * configuration objects, but a reference to the top-level configuration must be
  * retained in order to properly resolve hash # property value references.
  */
-@property (nonatomic, strong) id<IFConfigurationData> root;
+@property (nonatomic, weak) id<IFConfigurationData> root;
 /**
  * The configuration's data context.
  * Used as the data context for templated values. A configuration supports two types of templated

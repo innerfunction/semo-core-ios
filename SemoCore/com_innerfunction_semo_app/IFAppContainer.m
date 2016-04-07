@@ -109,7 +109,7 @@
     
     // Add additional schemes to the resolver/dispatcher.
     [_uriHandler addHandler:[[IFNewScheme alloc] initWithContainer:self] forScheme:@"new"];
-    [_uriHandler addHandler:[[IFMakeScheme alloc] initWithContainer:self] forScheme:@"make"];
+    [_uriHandler addHandler:[[IFMakeScheme alloc] initWithAppContainer:self] forScheme:@"make"];
     [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithContainer:self] forScheme:@"named"];
     [_uriHandler addHandler:[[IFPostScheme alloc] init] forScheme:@"post"];
     // Additional configured schemes.

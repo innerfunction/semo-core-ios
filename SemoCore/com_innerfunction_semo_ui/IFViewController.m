@@ -48,12 +48,12 @@
 #pragma mark - IFIOCContainerAware protocol
 
 - (void)beforeIOCConfiguration:(IFConfiguration *)configuration {
-    _layoutName = [configuration getValueAsString:@"layoutName"];
+    _layoutName = [configuration getValueAsString:@"layoutName" defaultValue:_layoutName];
     [self loadLayout];
 }
 
 - (void)afterIOCConfiguration:(IFConfiguration *)configuration {
-    [self insertNamedViews];
+    [self replaceViewPlaceholders];
 }
 
 #pragma mark - IFViewBehaviourController protocol
@@ -158,14 +158,11 @@
     // The layout will use this method when passing view instances to their referencing
     // outlets.
     // (See https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/LoadingResources/CocoaNibs/CocoaNibs.html#//apple_ref/doc/uid/10000051i-CH4-SW19)
-    // Use this to keep track of view placeholders. If loading the layout and there is
-    // a named view whose name matches the key, then record the value as a placeholder.
-    if (_loadingLayout && [_namedViews valueForKey:key] != nil) {
+    // Use this to keep track of view placeholders.
+    if (_loadingLayout) {
         [_namedViewPlaceholders setObject:value forKey:key];
     }
-    else {
-        [super setValue:value forKey:key];
-    }
+    [super setValue:value forKey:key];
 }
 
 #pragma mark - private
@@ -173,29 +170,29 @@
 - (void)loadLayout {
     // If no view already specified and a layout name has been specified then load the nib file of
     // that name.
-    if (!self.view && _layoutName) {
-        // Ensure this code is run on the UI thread. (When the view is being instantiated by an IOC
-        // container, view initialization might be invoked from a background thread).
-        // Dispatch the code synchronously so that container configuration can continue afterwards
-        // in the expected order.
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            _namedViewPlaceholders = [NSMutableDictionary new];
-            _loadingLayout = YES;
-            NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:nil];
-            if (![result count]) {
-                DDLogWarn(@"%@: Failed to load layout from %@.xib", LogTag, _layoutName);
-            }
-            _loadingLayout = NO;
-        });
+    if (_layoutName) {
+        _namedViewPlaceholders = [NSMutableDictionary new];
+        _loadingLayout = YES;
+        NSArray *result = [[NSBundle mainBundle] loadNibNamed:_layoutName owner:self options:nil];
+        if (![result count]) {
+            DDLogWarn(@"%@: Failed to load layout from %@.xib", LogTag, _layoutName);
+        }
+        else {
+            self.view = result[0];
+        }
+        _loadingLayout = NO;
     }
 }
 
-- (void)insertNamedViews {
-    for (NSString *name in [_namedViews keyEnumerator]) {
+- (void)replaceViewPlaceholders {
+    for (NSString *name in _namedViewPlaceholders) {
         id view = [_namedViews objectForKey:name];
-        UIView *placeholder = [_namedViewPlaceholders objectForKey:name];
-        // Replace the placeholder with the named view.
-        if (placeholder) {
+        if (!view) {
+            view = [self valueForKey:name];
+        }
+        if (view) {
+            UIView *placeholder = [_namedViewPlaceholders objectForKey:name];
+            // Replace the placeholder with the named view.
             if ([view isKindOfClass:[UIView class]]) {
                 [self replaceSubview:placeholder withView:view];
             }

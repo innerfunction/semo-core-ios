@@ -53,6 +53,8 @@
 @property (nonatomic, strong) UIColor *appBackgroundColor;
 /// The app's window.
 @property (nonatomic, weak) UIWindow *window;
+/// Make configurations.
+@property (nonatomic, strong) IFConfiguration *makes;
 
 /** Load the app configuration. */
 - (void)loadConfiguration:(id)configSource;

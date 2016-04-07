@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "IFTypeInfo.h"
+#import "IFObjectConfigurer.h"
 
 /**
  * A placeholder value used to represent a deferred named value.
@@ -28,18 +29,22 @@
  */
 @interface IFPendingNamed : NSObject
 
-/** The parent object of the property whose value is pending. */
-@property (nonatomic, strong) id object;
 /** A key value to use when tracking this pending in different container dictionaries. */
 @property (nonatomic, strong) NSValue *objectKey;
 /** The property key, e.g. property name; or array index or dictionary key. */
 @property (nonatomic, strong) id key;
-/** Information about the property. */
-@property (nonatomic, strong) IFPropertyInfo *propInfo;
 /** The key path of the property value on the named object. */
 @property (nonatomic, strong) NSString *referencePath;
+/** The object configurer waiting for the pending value. */
+@property (nonatomic, strong) IFObjectConfigurer *configurer;
 
-/** Fully resolve the pending value. */
-- (id)resolveValue:(id)value;
+/**
+ * Test whether the pending has a configurer waiting for the result.
+ * Not all pendings are used - some are discarded (e.g. when attempting to resolve a
+ * configuration) and so don't need to be completed when resolved.
+ */
+- (BOOL)hasWaitingConfigurer;
+/** Complete the pending by notifying the waiting configurer of the value result. */
+- (id)completeWithValue:(id)value;
 
 @end

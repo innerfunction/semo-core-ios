@@ -102,6 +102,9 @@
         NSString *title = [view stringByEvaluatingJavaScriptFromString:@"document.title"];
         if ([title length]) {
             self.title = title;
+            if (self.parentViewController) {
+                self.parentViewController.title = title;
+            }
         }
     }
     // Disable long touch events. See http://stackoverflow.com/questions/4314193/how-to-disable-long-touch-in-uiwebview
