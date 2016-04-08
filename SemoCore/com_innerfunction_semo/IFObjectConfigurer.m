@@ -28,9 +28,13 @@
 
 @interface IFObjectConfigurer ()
 
+/// Normalize a property name by removing any *ios- prefix. Returns nil for reserved names (e.g. *type etc.)
 - (NSString *)normalizePropertyName:(NSString *)name;
+/// Get type info for a named property of the object being configured.
 - (IFPropertyInfo *)infoForProperty:(NSString *)name;
+/// Get type hint info for members of the named collection property of the object being configured.
 - (IFPropertyInfo *)getCollectionMemberTypeInfoForProperty:(NSString *)propName;
+/// Test whether the argument is a collection configuration with type hints for its members.
 - (BOOL)isCollectionWithTypeHints:(IFConfiguration *)configuration;
 
 @end
@@ -204,17 +208,16 @@
                 // container could instantiate; however, the heuristic described here is applied as an efficiency
                 // measure and will be correct in most cases. The measure can be overriden by the object being configured
                 // if it returns a member type hint for the collection (i.e. via the IFIOCTypeInspectable protocol).
-                // The type hint can be anything likely to be compatible - e.g. 'id'.
-
-                BOOL isArrayProp      = [propInfo isMemberOrSubclassOf:[NSArray class]];
-                BOOL isDictProp       = !isArrayProp && [propInfo isMemberOrSubclassOf:[NSDictionary class]];
+                // The type hint can be anything likely to be compatible - e.g. 'NSDictionary'.
+                BOOL isArrayProp = [propInfo isMemberOrSubclassOf:[NSArray class]];
+                BOOL isDictProp  = !isArrayProp && [propInfo isMemberOrSubclassOf:[NSDictionary class]];
                 if (value == nil) {
                     BOOL isCollectionProp = (isArrayProp || isDictProp);
                     IFPropertyInfo *memberTypeInfo = [self getCollectionMemberTypeInfoForProperty:propName];
                     BOOL hasMemberInstantiationHints = [self isCollectionWithTypeHints:valueConfig];
                     if (isCollectionProp && [memberTypeInfo isId] && !hasMemberInstantiationHints) {
                         value = maybeConfig.data;
-                        // The value should be treated as naked data (i.e. contains no configurables) so
+                        // The value should be treated as raw data (i.e. contains no configurables) so
                         // skip the configuration step.
                         configureValue = NO;
                     }
@@ -222,10 +225,10 @@
 
                 // Couldn't find an in-place value, so try instantiating a value.
                 if (value == nil) {
-                    if ([propInfo isMemberOrSubclassOf:[NSArray class]]) {
+                    if (isArrayProp) {
                         value = [NSMutableArray new];
                     }
-                    else if ([propInfo isMemberOrSubclassOf:[NSDictionary class]]) {
+                    else if (isDictProp) {
                         value = [NSMutableDictionary new];
                     }
                     else if (![propInfo isId]) {

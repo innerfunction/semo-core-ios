@@ -24,7 +24,15 @@
 #import "UIColor+IF.h"
 #import "IFLogging.h"
 
-#define ValueOrDefault(v,dv)   (v == nil ? dv : v)
+#define ValueOrDefault(v,dv)    (v == nil ? dv : v)
+
+// Normalize the reference to _root for a new configuration object derived from the current.
+// The _root reference is a weak reference and so needs special handling when normalizing or
+// extending a configuration, as the configuration the result is derived from might be an
+// intermediate result itself, and so can be lost at a later point. The solution is to
+// check whether the source configuration's root is a reference to self - if it is, then
+// use a reference to the new configuration in its place.
+#define NormalizedRootRef(cfg)  ((self == _root) ? cfg : _root)
 
 @interface IFArrayBackedDictionary : NSDictionary {
     NSNumberFormatter *_numParser;
@@ -456,7 +464,7 @@
     for (IFConfiguration *config in [hierarchy reverseObjectEnumerator]) {
         result = [[IFConfiguration alloc] initWithConfiguration:result mixin:config parent:result];
     }
-    result.root = _root;
+    result.root = NormalizedRootRef(result);
     result.uriHandler = _uriHandler;
     return result;
 }
@@ -464,7 +472,7 @@
 - (IFConfiguration *)configurationWithKeysExcluded:(NSArray *)excludedKeys {
     NSDictionary *data = [_data dictionaryWithKeysExcluded:excludedKeys];
     IFConfiguration *result = [[IFConfiguration alloc] initWithData:data];
-    result.root = _root;
+    result.root = NormalizedRootRef(result);
     result.context = _context;
     result.uriHandler = _uriHandler;
     return result;
