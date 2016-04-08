@@ -27,9 +27,10 @@
 #define ValueOrDefault(v,dv)   (v == nil ? dv : v)
 
 @interface IFArrayBackedDictionary : NSDictionary {
-    NSArray *_array;
     NSNumberFormatter *_numParser;
 }
+
+@property (nonatomic, strong) NSArray *array;
 
 - (id)initWithArray:(NSArray *)array;
 
@@ -215,11 +216,16 @@
     }
     // Perform type conversions according to the requested representation.
     // * 'bare' representations don't need to be converted.
-    // * 'configuration' reprs can be constructed from dictionary instances or resources.
+    // * 'configuration' reprs can be constructed from collections or resources.
     // * Resource instances can be used to perform the requested representation conversion.
     // * Otherwise use the type conversions to resolve the representation.
     if (![@"bare" isEqualToString:representation]) {
-        if ([@"configuration" isEqualToString:representation]) {
+
+        if ([@"configuration" isEqualToString:representation]
+            || [@"maybe-configuration" isEqualToString:representation]) {
+
+            id bareValue = value;
+    
             // If value isn't already a configuration then try converting to one.
             if (![value isKindOfClass:[IFConfiguration class]]) {
                 // If value is an array then convert to an array backed dictionary.
@@ -232,14 +238,17 @@
                 }
                 // Else if value is a resource, then construct a new config using the resource.
                 else if ([value isKindOfClass:[IFResource class]]) {
-                    // TODO: Might be better to move this conditional to the first in this block, and then
-                    // unpack the resource value.
                     value = [[IFConfiguration alloc] initWithResource:(IFResource *)value parent:self];
                 }
-                // Else the value can't be resolved to a configuration, so return nil.
+                // Else the value can't be resolved to a configuration, return nil.
                 else {
                     value = nil;
                 }
+            }
+            
+            // Wrap in a maybe if we that is what is wanted.
+            if ([@"maybe-configuration" isEqualToString:representation]) {
+                value = [[IFMaybeConfiguration alloc] initWithConfiguration:value bare:bareValue];
             }
         }
         else if ([value isKindOfClass:[IFResource class]]) {
@@ -349,6 +358,10 @@
 
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath defaultValue:(IFConfiguration *)defaultValue {
     return ValueOrDefault([self getValueAsConfiguration:keyPath], defaultValue);
+}
+
+- (IFMaybeConfiguration *)getValueAsMaybeConfiguration:(NSString *)keyPath {
+    return [self getValue:keyPath asRepresentation:@"maybe-configuration"];
 }
 
 - (NSArray *)getValueAsConfigurationList:(NSString *)keyPath {
@@ -504,6 +517,30 @@ static IFConfiguration *emptyConfiguaration;
         [keys addObject:key];
     }
     return [keys objectEnumerator];
+}
+
+@end
+
+@implementation IFMaybeConfiguration
+
+- (id)initWithConfiguration:(id)configuration bare:(id)bare {
+    self = [super init];
+    self.configuration = [configuration normalize];
+    self.bare = bare;
+    if ([bare isKindOfClass:[IFResource class]]) {
+        self.data = [(IFResource *)bare asJSONData];
+    }
+    else {
+        self.data = bare;
+    }
+    return self;
+}
+
+- (id)bare {
+    if ([_bare isMemberOfClass:[IFArrayBackedDictionary class]]) {
+        return ((IFArrayBackedDictionary *)_bare).array;
+    }
+    return _bare;
 }
 
 @end

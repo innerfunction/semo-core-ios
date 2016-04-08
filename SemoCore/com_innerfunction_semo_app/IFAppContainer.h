@@ -53,6 +53,8 @@
 @property (nonatomic, strong) UIColor *appBackgroundColor;
 /// The app's window.
 @property (nonatomic, weak) UIWindow *window;
+/// Map of additional scheme configurations.
+@property (nonatomic, strong) NSDictionary *schemes;
 /// Make configurations.
 @property (nonatomic, strong) IFConfiguration *makes;
 

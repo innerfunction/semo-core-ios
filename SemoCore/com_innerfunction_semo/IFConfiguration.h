@@ -36,6 +36,8 @@
 
 @end
 
+@class IFMaybeConfiguration;
+
 /**
  * A class used to parse and access component configurations.
  */
@@ -88,6 +90,11 @@
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath;
 /// Return the value at _keyPath_ as a configuration. Return _defaultValue_ if _keyPath_ returns nil.
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath defaultValue:(IFConfiguration *)defaultValue;
+/**
+ * Return the value as _keyPath_ as a wrapper for a possible configuration.
+ * Returns nil if no value is at _keyPath_.
+ */
+- (IFMaybeConfiguration *)getValueAsMaybeConfiguration:(NSString *)keyPath;
 
 /**
  * Return the property value at _keyPath_ as a list of configurations.
@@ -158,5 +165,26 @@
 
 /// Returns a singleton-instance empty configuration object.
 + (IFConfiguration *)emptyConfiguration;
+
+@end
+
+/**
+ * An object returned by the [IFConfiguration getValueAsMaybeConfiguration:] method.
+ * The class is used to represent configuration values that might themselves be used as
+ * configurations (the point being that it's not known at the point when the method is
+ * called whether they are or not). Objects of this type are used by the _IFObjectConfigurer_
+ * class as an optimization representing intermediate configuration states whilst an
+ * object graph is being built.
+ */
+@interface IFMaybeConfiguration : NSObject
+
+/// The configuration, if any.
+@property (nonatomic, strong) IFConfiguration *configuration;
+/// The underlying configuration data, i.e. the value read from the configuration JSON.
+@property (nonatomic, strong) id data;
+/// The underlying data's bare representation.
+@property (nonatomic, strong) id bare;
+
+- (id)initWithConfiguration:(id)configuration bare:(id)bare;
 
 @end

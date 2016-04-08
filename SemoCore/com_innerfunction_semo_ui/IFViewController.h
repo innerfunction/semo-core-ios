@@ -19,6 +19,7 @@
 #import <UIKit/UIKit.h>
 #import "IFIOCContainerAware.h"
 #import "IFMessageReceiver.h"
+#import "IFMessageRouter.h"
 #import "IFActionProxy.h"
 #import "IFViewBehaviour.h"
 
@@ -49,7 +50,7 @@
  * this class to be subclassed, so long as the referencing outlets are named appropriately
  * in the layout file.
  */
-@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageReceiver, IFActionProxy, IFViewBehaviourController> {
+@interface IFViewController : UIViewController <IFIOCContainerAware, IFMessageReceiver, IFMessageRouter, IFActionProxy, IFViewBehaviourController> {
     NSMutableDictionary *_actionProxyLookup;
     BOOL _loadingLayout;
     NSMutableDictionary *_namedViewPlaceholders;
@@ -73,7 +74,8 @@
  * built from the configurations described in this map.
  */
 @property (nonatomic, strong) NSDictionary *namedViews;
-
+/// Flag indicating whether the layout uses auto-layout.
+@property (nonatomic, assign) BOOL useAutoLayout;
 
 - (id)initWithView:(UIView *)view;
 /// Post a message.

@@ -33,6 +33,7 @@
         _namedViews = @{};
         _actionProxyLookup = [NSMutableDictionary new];
         _behaviours = @[];
+        _useAutoLayout = YES;
     }
     return self;
 }
@@ -137,6 +138,29 @@
     return NO;
 }
 
+#pragma mark - IFMessageRouter
+
+- (BOOL)routeMessage:(IFMessage *)message sender:(id)sender {
+    BOOL routed = NO;
+    id targetName = [message targetHead];
+    id targetView = _namedViews[targetName];
+    if (!targetView) {
+        targetView = [self valueForKey:targetName];
+    }
+    if (targetView) {
+        message = [message popTargetHead];
+        if ([message hasEmptyTarget]) {
+            if ([targetView conformsToProtocol:@protocol(IFMessageReceiver)]) {
+                routed = [(id<IFMessageReceiver>)targetView receiveMessage:message sender:sender];
+            }
+        }
+        else if ([targetView conformsToProtocol:@protocol(IFMessageRouter)]) {
+            routed = [(id<IFMessageRouter>)targetView routeMessage:message sender:sender];
+        }
+    }
+    return routed;
+}
+
 #pragma mark - IFActionProxy
 
 - (void)registerAction:(NSString *)action forObject:(id)object {
@@ -213,19 +237,72 @@
     _namedViewPlaceholders = nil;
 }
 
-- (void)replaceSubview:(UIView *)subview withView:(UIView *)view {
+- (void)replaceSubview:(UIView *)subView withView:(UIView *)newView {
     // Copy frame and bounds
-    view.frame = subview.frame;
-    view.bounds = subview.bounds;
-    // Copy layout params to the new view
-    view.autoresizingMask = subview.autoresizingMask;
-    view.autoresizesSubviews = subview.autoresizesSubviews;
-    view.contentMode = subview.contentMode;
-    // Swap the views.
-    UIView *superview = subview.superview;
-    NSUInteger idx = [superview.subviews indexOfObject:subview];
-    [subview removeFromSuperview];
-    [superview insertSubview:view atIndex:idx];
+    newView.frame = subView.frame;
+    newView.bounds = subView.bounds;
+    if (!_useAutoLayout) {
+        // Copy layout params to the new view
+        newView.autoresizingMask = subView.autoresizingMask;
+        newView.autoresizesSubviews = subView.autoresizesSubviews;
+    }
+    newView.contentMode = subView.contentMode;
+    UIView *superview = subView.superview;
+    NSArray *newConstraints = nil;
+    if (_useAutoLayout) {
+        newConstraints = removeConstraintsOnView(self.view, subView, newView);
+    }
+    // Swap the views & update the constraints.
+    NSUInteger idx = [superview.subviews indexOfObject:subView];
+    [subView removeFromSuperview];
+    [superview insertSubview:newView atIndex:idx];
+    if (_useAutoLayout) {
+        for (NSArray *item in newConstraints) {
+            UIView *view = item[0];
+            NSArray *constraints = item[1];
+            [view addConstraints:constraints];
+        }
+    }
+}
+
+// Copy constraints
+// See http://stackoverflow.com/a/31785898
+NSArray *removeConstraintsOnView(UIView *view, UIView *oldView, UIView *newView) {
+    NSMutableArray *obsConstraints = [NSMutableArray new];
+    NSMutableArray *newConstraints = [NSMutableArray new];
+    for (NSLayoutConstraint *c0 in view.constraints) {
+        NSLayoutConstraint *c1 = c0;
+        if (c0.firstItem == oldView) {
+            c1 = [NSLayoutConstraint constraintWithItem:newView
+                                              attribute:c0.firstAttribute
+                                              relatedBy:c0.relation
+                                                 toItem:c0.secondItem
+                                              attribute:c0.secondAttribute
+                                             multiplier:c0.multiplier
+                                               constant:c0.constant];
+        }
+        if (c0.secondItem == oldView) {
+            c1 = [NSLayoutConstraint constraintWithItem:c1.firstItem
+                                              attribute:c1.firstAttribute
+                                              relatedBy:c1.relation
+                                                 toItem:newView
+                                              attribute:c1.secondAttribute
+                                             multiplier:c1.multiplier
+                                               constant:c1.constant];
+        }
+        if (c1 != c0) {
+            [obsConstraints addObject:c0];
+            [newConstraints addObject:c1];
+        }
+    }
+    [view removeConstraints:obsConstraints];
+    // Which view will the new constraints be added to? If the old view then switch to the new view.
+    UIView *objView = (view == oldView) ? newView : view;
+    NSArray *result = @[ @[ objView, newConstraints ] ];
+    for (UIView *subView in view.subviews) {
+        result = [result arrayByAddingObjectsFromArray:removeConstraintsOnView(subView, oldView, newView)];
+    }
+    return result;
 }
 
 @end

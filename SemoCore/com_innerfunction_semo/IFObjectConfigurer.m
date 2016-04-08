@@ -31,6 +31,7 @@
 - (NSString *)normalizePropertyName:(NSString *)name;
 - (IFPropertyInfo *)infoForProperty:(NSString *)name;
 - (IFPropertyInfo *)getCollectionMemberTypeInfoForProperty:(NSString *)propName;
+- (BOOL)isCollectionWithTypeHints:(IFConfiguration *)configuration;
 
 @end
 
@@ -131,12 +132,13 @@
         }
     }
     if (value == nil) {
-        // Note that the following call will convert both dictionaries and arrays to configurations.
-        // TODO: Review how efficient the next method call is, and whether some intermediate value
-        // should instead be returned with getAsConfiguration and getBare methods.
-        // e.g. getMaybeConfiguration -> isConfiguration, getConfiguration; getValue
-        IFConfiguration *valueConfig = [configuration getValueAsConfiguration:propName];
+        IFMaybeConfiguration *maybeConfig = [configuration getValueAsMaybeConfiguration:propName];
+        IFConfiguration *valueConfig = maybeConfig.configuration;
         if (valueConfig) {
+            // Flag indicating whether the resolved value should be configured in turn. Default is
+            // yes, but some values will skip the configuration step.
+            BOOL configureValue = YES;
+            
             // If we have an item configuration with an instantiation hint then try using to build an object.
             // Note that instantiation hints take priority over in-place values, i.e. a configuration with
             // an instantiation hint will force build a new value even if there is already an in-place value.
@@ -186,6 +188,38 @@
                         value = [IFContainer applyConfigurationProxyWrapper:value];
                     }
                 }
+
+                // If we get to this point and value is still nil then the following things are true:
+                // a. The value config doesn't contain any instantiation hint.
+                // b. The value config data is a collection (JSON object or list)
+                // At this point we now decide whether to use the raw JSON data as the property value.
+                // We do this if all of the following are true:
+                // 1. The property is a collection type (NSArray or NSDictionary).
+                // 2. The object owning the property provides no member type hint for the collection.
+                //    (Other than for 'id' i.e. any generic object).
+                // 3. The first item in the JSON collection doesn't provide any instantiation hint.
+                // The last two points imply that without a type hint, the container can't instantiate new objects
+                // from the collection's member data, so the data should be used as-is. Note however that this isn't
+                // strictly true - the collection may contain deeply embedded object configurations that the
+                // container could instantiate; however, the heuristic described here is applied as an efficiency
+                // measure and will be correct in most cases. The measure can be overriden by the object being configured
+                // if it returns a member type hint for the collection (i.e. via the IFIOCTypeInspectable protocol).
+                // The type hint can be anything likely to be compatible - e.g. 'id'.
+
+                BOOL isArrayProp      = [propInfo isMemberOrSubclassOf:[NSArray class]];
+                BOOL isDictProp       = !isArrayProp && [propInfo isMemberOrSubclassOf:[NSDictionary class]];
+                if (value == nil) {
+                    BOOL isCollectionProp = (isArrayProp || isDictProp);
+                    IFPropertyInfo *memberTypeInfo = [self getCollectionMemberTypeInfoForProperty:propName];
+                    BOOL hasMemberInstantiationHints = [self isCollectionWithTypeHints:valueConfig];
+                    if (isCollectionProp && [memberTypeInfo isId] && !hasMemberInstantiationHints) {
+                        value = maybeConfig.data;
+                        // The value should be treated as naked data (i.e. contains no configurables) so
+                        // skip the configuration step.
+                        configureValue = NO;
+                    }
+                }
+
                 // Couldn't find an in-place value, so try instantiating a value.
                 if (value == nil) {
                     if ([propInfo isMemberOrSubclassOf:[NSArray class]]) {
@@ -206,8 +240,8 @@
                         }
                     }
                 }
-                // If we have a value now then create a configurer for it.
-                if (value != nil) {
+                // If we have a value now and it should be configured then create a configurer for it.
+                if (value != nil && configureValue) {
                     IFObjectConfigurer *configurer = [[IFObjectConfigurer alloc] initWithObject:value
                                                                                     inContainer:_container
                                                                                         keyPath:KeyPath(propName)];
@@ -220,10 +254,10 @@
                 }
             }
         }
-    }
-    // If still no value by this stage then try using whatever value is in the configuration as the finished value.
-    if (value == nil) {
-        value = [configuration getValue:propName];
+        // If still no value by this stage then try using whatever underlying value is in the maybe config.
+        if (value == nil) {
+            value = maybeConfig.bare;
+        }
     }
     // If there is a value by this stage then inject into the object.
     if (value != nil) {
@@ -314,6 +348,22 @@
     }
     // Can't resolve any class for the collection's members, return an all-type info.
     return [IFPropertyInfo new];
+}
+
+- (BOOL)isCollectionWithTypeHints:(IFConfiguration *)configuration {
+    // Assume the configuration represents a collection of object configurations.
+    // Inspect the first object configuration, and return true if the item contains
+    // an instantiation hint. (The first item here is arbitrary).
+    for (NSString *name in [configuration getValueNames]) {
+        IFConfiguration *memberConfig = [configuration getValueAsConfiguration:name];
+        if (memberConfig) {
+            return [memberConfig hasValue:@"*type"]
+                || [memberConfig hasValue:@"*ios-class"]
+                || [memberConfig hasValue:@"*factory"];
+        }
+        else break;
+    }
+    return NO;
 }
 
 @end

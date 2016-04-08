@@ -112,6 +112,7 @@
     [_uriHandler addHandler:[[IFMakeScheme alloc] initWithAppContainer:self] forScheme:@"make"];
     [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithContainer:self] forScheme:@"named"];
     [_uriHandler addHandler:[[IFPostScheme alloc] init] forScheme:@"post"];
+    /*
     // Additional configured schemes.
     IFConfiguration *schemesConfig = [configuration getValueAsConfiguration:@"schemes"];
     if (schemesConfig) {
@@ -123,6 +124,7 @@
             }
         }
     }
+    */
     
     // Default local settings.
     _locals = [[IFLocals alloc] initWithPrefix:@"semo"];
@@ -138,6 +140,14 @@
     
     // Perform default container configuration.
     [super configureWith:configuration];
+    
+    // Map any additional schemes to the URI handler.
+    for (id schemeName in _schemes) {
+        id scheme = _schemes[schemeName];
+        if ([scheme conformsToProtocol:@protocol(IFSchemeHandler)]) {
+            [_uriHandler addHandler:scheme forScheme:schemeName];
+        }
+    }
 }
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration {
