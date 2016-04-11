@@ -61,7 +61,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    loadingImageView.frame = self.view.bounds;
+    loadingImageView.frame = webView.bounds;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -79,8 +79,7 @@
     webView.scrollView.bounces = _scrollViewBounces;
     if (_loadingImage) {
         loadingImageView = [[UIImageView alloc] initWithImage:_loadingImage];
-        loadingImageView.frame = webView.frame;
-        loadingImageView.contentMode = UIViewContentModeCenter;
+        loadingImageView.contentMode = UIViewContentModeScaleAspectFit;
         loadingImageView.backgroundColor = _backgroundColor;
         [self.view addSubview:loadingImageView];
     }
