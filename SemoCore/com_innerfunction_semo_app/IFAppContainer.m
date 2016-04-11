@@ -112,19 +112,6 @@
     [_uriHandler addHandler:[[IFMakeScheme alloc] initWithAppContainer:self] forScheme:@"make"];
     [_uriHandler addHandler:[[IFNamedSchemeHandler alloc] initWithContainer:self] forScheme:@"named"];
     [_uriHandler addHandler:[[IFPostScheme alloc] init] forScheme:@"post"];
-    /*
-    // Additional configured schemes.
-    IFConfiguration *schemesConfig = [configuration getValueAsConfiguration:@"schemes"];
-    if (schemesConfig) {
-        for (NSString *schemeName in [schemesConfig getValueNames]) {
-            IFConfiguration *schemeConfig = [schemesConfig getValueAsConfiguration:schemeName];
-            id scheme = [self buildObjectWithConfiguration:schemeConfig identifier:schemeName];
-            if ([scheme conformsToProtocol:@protocol(IFSchemeHandler)]) {
-                [_uriHandler addHandler:scheme forScheme:schemeName];
-            }
-        }
-    }
-    */
     
     // Default local settings.
     _locals = [[IFLocals alloc] initWithPrefix:@"semo"];

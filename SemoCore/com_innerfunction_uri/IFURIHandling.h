@@ -35,6 +35,10 @@
  */
 - (id<IFURIHandler>)modifySchemeContext:(IFCompoundURI *)uri;
 /**
+ * Return a copy of this URI handler with a replacement scheme handler.
+ */
+- (id<IFURIHandler>)replaceURIScheme:(NSString *)scheme withHandler:(id<IFSchemeHandler>)handler;
+/**
  * Test if the resolver has a registered handler for the named scheme.
  * @param scheme A scheme name.
  * @return Returns _true_ if scheme name is recognized.

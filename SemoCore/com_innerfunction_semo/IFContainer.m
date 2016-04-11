@@ -277,6 +277,11 @@
             object = [self buildNamedObject:name];
         }
     }
+    // If the required name can't be resolved by this container, and it this container is a nested
+    // container (and so has a parent) then ask the parent container to resolve the name.
+    if (object == nil && _parentContainer) {
+        object = [_parentContainer getNamed:name];
+    }
     return object;
 }
 
@@ -289,6 +294,10 @@
     // If the new instance is container aware then pass reference to this container.
     if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
         ((id<IFIOCContainerAware>)object).iocContainer = self;
+    }
+    // If the new instance is a nested container then set its parent reference.
+    if ([object isKindOfClass:[IFContainer class]]) {
+        ((IFContainer *)object).parentContainer = self;
     }
     // If instance is a service then add to list of services.
     if ([object conformsToProtocol:@protocol(IFService)]) {

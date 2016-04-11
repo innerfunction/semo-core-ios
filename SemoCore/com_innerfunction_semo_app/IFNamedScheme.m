@@ -52,7 +52,7 @@
     // Get the named object.
     id result = [_container getNamed:name];
     // If a path is specified then evaluate that on the named object.
-    if (path) {
+    if (result != nil && path) {
         // Check for pending names. These are only returned during the container's configuration cycle, and are
         // used to resolve circular dependencies. When these are returned then just the path needs to be recorded.
         if ([result isKindOfClass:[IFPendingNamed class]]) {

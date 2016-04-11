@@ -139,7 +139,7 @@
 }
 
 - (id<IFURIHandler>)modifySchemeContext:(IFCompoundURI *)uri {
-    IFStandardURIHandler *handler = [[IFStandardURIHandler alloc] init];
+    IFStandardURIHandler *handler = [IFStandardURIHandler new];
     handler->_schemeHandlers = [_schemeHandlers mutableCopy];
     // Create a copy of this object's scheme handlers dictionary with a new entry for
     // the URI argument keyed by the URI's scheme name.
@@ -147,6 +147,14 @@
     [schemeContexts setObject:uri forKey:uri.scheme];
     handler->_schemeContexts = schemeContexts;
     return handler;
+}
+
+- (id<IFURIHandler>)replaceURIScheme:(NSString *)scheme withHandler:(id<IFSchemeHandler>)handler {
+    IFStandardURIHandler *uriHandler = [IFStandardURIHandler new];
+    uriHandler->_schemeHandlers = [_schemeHandlers mutableCopy];
+    [uriHandler->_schemeHandlers setObject:handler forKey:scheme];
+    uriHandler->_schemeContexts = [_schemeContexts mutableCopy];
+    return uriHandler;
 }
 
 #pragma mark - private

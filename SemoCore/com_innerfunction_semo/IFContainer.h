@@ -70,7 +70,17 @@
     IFObjectConfigurer *_containerConfigurer;
 }
 
-/** Get a named component. */
+/// The parent container of a nested container.
+@property (nonatomic, weak) IFContainer *parentContainer;
+
+/**
+ * Get a named component.
+ * In a nested container, if _name_ isn't mapped to a component in the current container then this method
+ * will call _getNamed:_ on the parent container. This creates a natural scoping rule for names, where global
+ * names can be defined in the top-most container (e.g. the app container) with more local names being
+ * defined in nested containers. Nested contains can in turn override global names by providing their own
+ * mappings for such names.
+ */
 - (id)getNamed:(NSString *)name;
 /** Set the type map. */
 - (void)setTypes:(IFConfiguration *)types;
