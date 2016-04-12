@@ -145,7 +145,12 @@
     id targetName = [message targetHead];
     id targetView = _namedViews[targetName];
     if (!targetView) {
-        targetView = [self valueForKey:targetName];
+        @try {
+            targetView = [self valueForKey:targetName];
+        }
+        @catch(id ex) {
+            // targetName property not found
+        }
     }
     if (targetView) {
         message = [message popTargetHead];
