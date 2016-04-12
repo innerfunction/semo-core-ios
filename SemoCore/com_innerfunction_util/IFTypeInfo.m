@@ -54,9 +54,16 @@
             _propertyClass = NSClassFromString(className);
         }
         
+        // Try extracting protocl info, in format as @"<ProtocolName>"
+        _propertyProtocol = nil;
+        if ([_propertyType hasPrefix:@"@\"<"]) {
+            NSRange range = NSMakeRange(3, [_propertyType length] - (2 + 3));
+            NSString *protocolName = [_propertyType substringWithRange:range];
+            _propertyProtocol = NSProtocolFromString(protocolName);
+        }
+        
         // Check for read-only flag.
         _isWriteable = ![attrs containsObject:@"R"];
-
     }
     return self;
 }
@@ -96,6 +103,9 @@
     }
     if (_propertyClass) {
         return [classObj isSubclassOfClass:_propertyClass];
+    }
+    if (_propertyProtocol) {
+        return [classObj conformsToProtocol:_propertyProtocol];
     }
     // Numeric types will have no property class info, but NSNumber can be assigned to them.
     if ([classObj isSubclassOfClass:[NSNumber class]]) {

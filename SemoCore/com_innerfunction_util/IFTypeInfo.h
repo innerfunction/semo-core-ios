@@ -28,6 +28,8 @@
     NSString *_propertyType;
     // The property's declared class. Nil for primitive property types.
     __unsafe_unretained Class _propertyClass;
+    // A selector for the property's protocol, if any.
+    Protocol *_propertyProtocol;
     // A boolean specifying whether the property is writeable.
     BOOL _isWriteable;
 }
