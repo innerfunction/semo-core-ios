@@ -27,13 +27,16 @@
  *
  *             URI ::= ( BRACKETED_URI | PLAIN_URI )
  *   BRACKETED_URI ::= '[' PLAIN_URI ']'
- *       PLAIN_URI ::= SCHEME ':' NAME? ('#' FRAGMENT)? PARAMETERS?
+ *       PLAIN_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS? ( '|' FORMAT )?
  *      PARAMETERS ::= '+' PARAM_NAME ( '@' | '=' ) PARAM_VALUE PARAMETERS*
  *     PARAM_VALUE ::= ( LITERAL | URI )
  *          SCHEME ::= (name characters)+
  *            NAME ::= (path characters)+
  *        FRAGMENT ::= (name characters)+
  *         LITERAL ::= (name characters)+
+ *          FORMAT ::= (name characters)+
+ *
+ * TODO: Add an alias: scheme, and ~ as shorthand for accessing it (p@~name => p@alias:name)
  */
 @interface IFCompoundURI : NSObject
 
@@ -49,6 +52,8 @@
  * can be represented as URIs; literal values are represented using the _s:_ scheme.
  */
 @property (nonatomic, strong) NSDictionary *parameters;
+/** The URI _format_ part. */
+@property (nonatomic, strong) NSString *format;
 
 /**
  * Create a new URI with a scheme and name.

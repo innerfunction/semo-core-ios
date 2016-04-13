@@ -209,6 +209,7 @@
                 // measure and will be correct in most cases. The measure can be overriden by the object being configured
                 // if it returns a member type hint for the collection (i.e. via the IFIOCTypeInspectable protocol).
                 // The type hint can be anything likely to be compatible - e.g. 'NSDictionary'.
+                // TODO: This doesn't work when the collection members are mapped to URI strings (e.g. "@make:Component")
                 BOOL isArrayProp = [propInfo isMemberOrSubclassOf:[NSArray class]];
                 BOOL isDictProp  = !isArrayProp && [propInfo isMemberOrSubclassOf:[NSDictionary class]];
                 if (value == nil) {

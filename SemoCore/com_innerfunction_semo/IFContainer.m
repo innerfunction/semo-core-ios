@@ -47,9 +47,6 @@
 
 @interface IFContainer ()
 
-/** Instantiate and configure a named object. */
-- (id)buildNamedObject:(NSString *)name;
-
 /** Lookup a configuration proxy for an object instance. */
 + (IFIOCProxyLookupEntry *)lookupConfigurationProxyForObject:(id)object;
 
@@ -206,12 +203,18 @@
 //   cycle won't be fully configured when injected into the dependent.
 - (void)configureWith:(IFConfiguration *)configuration {
     _containerConfig = configuration;
+    
+    // Build the priority names first.
+    for (NSString *name in _priorityNames) {
+        [self buildNamedObject:name];
+    }
+
     // Iterate over named object configs and build each object.
     NSArray *names = [_containerConfig getValueNames];
     for (NSString *name in names) {
         // Build the object only if it has not already been built and added to _named_.
         // (Objects which are dependencies of other objects may be configured via getNamed:
-        // before this loop has iterated around to them).
+        // before this loop has iterated around to them; or core names).
         if ([_named objectForKey:name] == nil) {
             [self buildNamedObject:name];
         }

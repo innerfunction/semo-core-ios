@@ -55,6 +55,7 @@
             parameters[name] = value;
         }
         self.parameters = parameters;
+        self.format = ast[@"format"];
     }
     return self;
 }
@@ -105,6 +106,7 @@
     self.name = uri.name;
     self.fragment = uri.fragment;
     self.parameters = uri.parameters;
+    self.format = uri.format;
     return self;
 }
 
@@ -128,7 +130,8 @@
         [serializedParams appendString:@"]"];
     }
     NSString *frag = self.fragment ? [NSString stringWithFormat:@"#%@", URIEncode(self.fragment)] : @"";
-    return [NSString stringWithFormat:@"%@:%@%@%@", URIEncode(self.scheme), URIEncode(self.name), frag, serializedParams];
+    NSString *format = self.format ? [NSString stringWithFormat:@"|%@", URIEncode(self.format)] : @"";
+    return [NSString stringWithFormat:@"%@:%@%@%@%@", URIEncode(self.scheme), URIEncode(self.name), frag, serializedParams, format];
 }
 
 - (IFCompoundURI*)copyOf {
@@ -137,6 +140,7 @@
     copy.name = self.name;
     copy.fragment = self.fragment;
     copy.parameters = [self.parameters copy];
+    copy.format = self.format;
     return copy;
 }
 
@@ -196,7 +200,7 @@ BOOL parseBracketedURI(NSString *input, NSMutableDictionary *ast) {
     return NO;
 }
 
-// PLAIN_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS?
+// PLAIN_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS? ( '|' FORMAT )?
 BOOL parsePlainURI(NSString *input, NSMutableDictionary *ast) {
     if (parseScheme( input, ast )) {
         input = ast[@"__trailing"];
@@ -219,6 +223,12 @@ BOOL parsePlainURI(NSString *input, NSMutableDictionary *ast) {
                 param_ast = [NSMutableDictionary new];
             }
             ast[@"parameters"] = parameters;
+            if ([input hasPrefix:@"|"]) {
+                input = [input substringFromIndex:1];
+                if (parseFormat( input, ast)) {
+                    input = ast[@"__trailing"];
+                }
+            }
             ast[@"__trailing"] = input;
             return YES;
         }
@@ -302,12 +312,24 @@ BOOL parseParamName(NSString *input, NSMutableDictionary *ast) {
 
 }
 
-// Match any characters which aren't + or ]
+// Match any characters which aren't + ] or |
 BOOL parseParamLiteral(NSString *input, NSMutableDictionary *ast) {
-    IFRegExp *paramNameRegex = [[IFRegExp alloc] initWithPattern:@"^([^+\\]]+)(.*)$"];
+    IFRegExp *paramNameRegex = [[IFRegExp alloc] initWithPattern:@"^([^+|\\]]+)(.*)$"];
     NSArray *groups = [paramNameRegex match:input];
     if (groups) {
         ast[@"param_literal"] = groups[1];
+        ast[@"__trailing"] = groups[2];
+        return YES;
+    }
+    return NO;
+}
+
+// Match any format characters or _ ~ -
+BOOL parseFormat(NSString *input, NSMutableDictionary *ast) {
+    IFRegExp *nameRegex = [[IFRegExp alloc] initWithPattern:@"^([\\w_~-]*)(.*)$"];
+    NSArray *groups = [nameRegex match:input];
+    if (groups) {
+        ast[@"format"] = groups[1];
         ast[@"__trailing"] = groups[2];
         return YES;
     }

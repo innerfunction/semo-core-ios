@@ -30,6 +30,7 @@
 		074C3DC31C944D32009BBEEF /* IFViewBehaviour.h in Headers */ = {isa = PBXBuildFile; fileRef = 074C3DC21C944D32009BBEEF /* IFViewBehaviour.h */; };
 		074C3DC61C944FC3009BBEEF /* IFViewBehaviourObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 074C3DC41C944FC3009BBEEF /* IFViewBehaviourObject.h */; };
 		074C3DC71C944FC3009BBEEF /* IFViewBehaviourObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 074C3DC51C944FC3009BBEEF /* IFViewBehaviourObject.m */; };
+		078BBBD91CBED3EB00E4DE02 /* IFURIValueFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 078BBBD81CBED3EB00E4DE02 /* IFURIValueFormatter.h */; };
 		07933EEF1C8A41EF003D6227 /* IFIOCProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */; };
 		07933EF61C8A588B003D6227 /* IFUILabelProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 07933EF41C8A588B003D6227 /* IFUILabelProxy.h */; };
 		07933EF71C8A588B003D6227 /* IFUILabelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 07933EF51C8A588B003D6227 /* IFUILabelProxy.m */; };
@@ -198,6 +199,7 @@
 		074C3DC21C944D32009BBEEF /* IFViewBehaviour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFViewBehaviour.h; path = com_innerfunction_semo_ui/IFViewBehaviour.h; sourceTree = SOURCE_ROOT; };
 		074C3DC41C944FC3009BBEEF /* IFViewBehaviourObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFViewBehaviourObject.h; path = com_innerfunction_semo_ui/IFViewBehaviourObject.h; sourceTree = SOURCE_ROOT; };
 		074C3DC51C944FC3009BBEEF /* IFViewBehaviourObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFViewBehaviourObject.m; path = com_innerfunction_semo_ui/IFViewBehaviourObject.m; sourceTree = SOURCE_ROOT; };
+		078BBBD81CBED3EB00E4DE02 /* IFURIValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFURIValueFormatter.h; path = com_innerfunction_uri/IFURIValueFormatter.h; sourceTree = SOURCE_ROOT; };
 		07933EEE1C8A41EF003D6227 /* IFIOCProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFIOCProxy.h; path = com_innerfunction_semo/IFIOCProxy.h; sourceTree = SOURCE_ROOT; };
 		07933EF41C8A588B003D6227 /* IFUILabelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFUILabelProxy.h; path = com_innerfunction_semo_ui/IFUILabelProxy.h; sourceTree = SOURCE_ROOT; };
 		07933EF51C8A588B003D6227 /* IFUILabelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFUILabelProxy.m; path = com_innerfunction_semo_ui/IFUILabelProxy.m; sourceTree = SOURCE_ROOT; };
@@ -517,6 +519,7 @@
 				07BD8AA81C7653930058D7A8 /* IFCompoundURI.h */,
 				07BD8AA91C7653930058D7A8 /* IFCompoundURI.m */,
 				07BD8AB81C7653930058D7A8 /* IFURIHandling.h */,
+				078BBBD81CBED3EB00E4DE02 /* IFURIValueFormatter.h */,
 				07BD8AB21C7653930058D7A8 /* IFResource.h */,
 				07BD8AB31C7653930058D7A8 /* IFResource.m */,
 				07BD8AAC1C7653930058D7A8 /* IFFileResource.h */,
@@ -753,6 +756,7 @@
 				07BD8A5D1C7653400058D7A8 /* NSDictionary+IFValues.h in Headers */,
 				07BD8AC71C7653930058D7A8 /* IFStringSchemeHandler.h in Headers */,
 				07BD8AC11C7653930058D7A8 /* IFReprSchemeHandler.h in Headers */,
+				078BBBD91CBED3EB00E4DE02 /* IFURIValueFormatter.h in Headers */,
 				07BD8AC91C7653930058D7A8 /* IFURIHandling.h in Headers */,
 				07BD8B1A1C7653F00058D7A8 /* DDASLLogger.h in Headers */,
 				07CD9B951C96F39B00427681 /* IFPendingNamed.h in Headers */,

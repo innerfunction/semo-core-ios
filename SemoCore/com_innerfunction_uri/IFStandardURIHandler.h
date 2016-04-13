@@ -36,6 +36,9 @@
     NSDictionary *_schemeContexts;
 }
 
+/** A map of named URI formatters. Members must implement the IFURIValueFormatter protocol. */
+@property (nonatomic, strong) NSDictionary *formats;
+
 - (id)initWithSchemeContexts:(NSDictionary *)schemeContexts;
 - (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeContexts:(NSDictionary *)schemeContexts;
 

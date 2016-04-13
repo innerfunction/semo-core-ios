@@ -39,6 +39,8 @@
     self = [super init];
     if (self) {
         self.uriHandler = [[IFStandardURIHandler alloc] init];
+        // Core names which should be built before processing the rest of the container's configuration.
+        self.priorityNames = @[ @"types", @"formats", @"schemes", @"makes" ];
     }
     return self;
 }
@@ -98,6 +100,14 @@
     }
 }
 
+- (void)setFormats:(NSDictionary *)formats {
+    _uriHandler.formats = formats;
+}
+
+- (NSDictionary *)formats {
+    return _uriHandler.formats;
+}
+
 - (void)configureWith:(IFConfiguration *)configuration {
     
     // Setup template context.
@@ -124,7 +134,8 @@
     [_named setObject:_globals forKey:@"globals"];
     [_named setObject:_locals forKey:@"locals"];
     [_named setObject:self forKey:@"container"];
-    
+
+
     // Perform default container configuration.
     [super configureWith:configuration];
     
@@ -135,6 +146,7 @@
             [_uriHandler addHandler:scheme forScheme:schemeName];
         }
     }
+    _schemes = nil; // Remove the property to avoid a retain cycle.
 }
 
 - (NSMutableDictionary *)makeDefaultGlobalModelValues:(IFConfiguration *)configuration {
@@ -262,6 +274,17 @@
 
 - (BOOL)isInternalURISchemeName:(NSString *)schemeName {
     return [_uriHandler hasHandlerForURIScheme:schemeName];
+}
+
+#pragma mark - IFIOCTypeInspectable
+
+- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
+    if ([@"formats" isEqualToString:propertyName]) {
+        // TODO: This is needed to force the object configurer to build the format components
+        // rather than treat them as plain data.
+        return [NSObject class];
+    }
+    return nil;
 }
 
 #pragma mark - IFMessageRouter

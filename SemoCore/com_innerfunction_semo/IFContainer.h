@@ -72,6 +72,11 @@
 
 /// The parent container of a nested container.
 @property (nonatomic, weak) IFContainer *parentContainer;
+/**
+ * A list of names which should be built before the rest of the container's configuration is processed.
+ * Names should be listed in priority order.
+ */
+@property (nonatomic, strong) NSArray *priorityNames;
 
 /**
  * Get a named component.
@@ -129,6 +134,9 @@
 - (void)configureWith:(IFConfiguration *)configuration;
 /** Configure the container with the specified data. */
 - (void)configureWithData:(id)configData;
+
+/** Instantiate and configure a named object. */
+- (id)buildNamedObject:(NSString *)name;
 
 /** Perform standard post-instantiation operations on a new object instance. */
 - (void)doPostInstantiation:(id)object;

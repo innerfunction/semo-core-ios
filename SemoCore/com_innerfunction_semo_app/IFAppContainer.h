@@ -21,6 +21,7 @@
 #import "IFStandardURIHandler.h"
 #import "IFLocals.h"
 #import "IFNamedScheme.h"
+#import "IFIOCTypeInspectable.h"
 
 #define ForceResetDefaultSettings   (NO)
 #define Platform                    (@"ios")
@@ -29,7 +30,7 @@
 /**
  * An IOC container encapsulating an app's UI and functionality.
  */
-@interface IFAppContainer : IFContainer {
+@interface IFAppContainer : IFContainer <IFIOCTypeInspectable> {
     /**
      * Global values available to the container's configuration. Can be referenced from within templated
      * configuration values.
@@ -57,6 +58,8 @@
 @property (nonatomic, strong) NSDictionary *schemes;
 /// Make configurations.
 @property (nonatomic, strong) IFConfiguration *makes;
+/// URI formatters.
+@property (nonatomic) NSDictionary *formats;
 
 /** Load the app configuration. */
 - (void)loadConfiguration:(id)configSource;

@@ -22,6 +22,7 @@
 #import "IFLocalSchemeHandler.h"
 #import "IFReprSchemeHandler.h"
 #import "IFResource.h"
+#import "IFURIValueFormatter.h"
 #import "NSDictionary+IF.h"
 
 #define MainBundlePath  ([[NSBundle mainBundle] resourcePath])
@@ -134,6 +135,17 @@
         IFResource *resource = (IFResource *)value;
         resource.uri = rscURI;
         resource.uriHandler = [self modifySchemeContext:rscURI];
+    }
+    // If the URI specifies a formatter then apply it to the URI result.
+    if (rscURI.format) {
+        id<IFURIValueFormatter> formatter = _formats[rscURI.format];
+        if (formatter) {
+            value = [formatter formatValue:value fromURI:rscURI];
+        }
+        else {
+            NSString *reason = [NSString stringWithFormat:@"Formatter not found for name %@:", rscURI.format];
+            @throw [[NSException alloc] initWithName:@"IFURIResolver" reason:reason userInfo:nil];
+        }
     }
     return value;
 }
