@@ -23,13 +23,15 @@
 
 /**
  * A class representing a parsed compound URI string.
- * The URI syntax conforms to the following (approximate) BNF:
+ * The URI syntax conforms to the following (partial) BNF:
  *
- *             URI ::= ( BRACKETED_URI | PLAIN_URI )
- *   BRACKETED_URI ::= '[' PLAIN_URI ']'
- *       PLAIN_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS? ( '|' FORMAT )?
- *      PARAMETERS ::= '+' PARAM_NAME ( '@' | '=' ) PARAM_VALUE PARAMETERS*
- *     PARAM_VALUE ::= ( LITERAL | URI )
+ *    COMPOUND_URI ::= ( BRACKETED_URI | ALIAS_OR_URI )
+ *   BRACKETED_URI ::= '[' ALIAS_OR_URI ']'
+ *    ALIAS_OR_URI ::= ( '~' ALIAS | URI )
+ *             URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS? ( '|' FORMAT )?
+ *      PARAMETERS ::= '+' PARAM_NAME PARAM_VALUE PARAMETERS*
+ *     PARAM_VALUE ::= ( '=' LITERAL | '@' COMPOUND_URI )
+ *           ALIAS ::= '~' NAME ( '|' FORMAT )?
  *          SCHEME ::= (name characters)+
  *            NAME ::= (path characters)+
  *        FRAGMENT ::= (name characters)+

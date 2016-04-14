@@ -26,6 +26,8 @@
  * mapped as needed.
  * The default supported schemes are:
  * - *s*: The string scheme, @see <IFStringSchemeHandler>;
+ * - *a*: The alias scheme. This is a pseudo scheme without a specific handler, instead it is
+ *        dereferenced by the URI handler.
  * - *app*: A file based scheme, mapped to the app's main bundle path;
  * - *cache*: A file based scheme, mapped to the app's _NSCachesDirectory_ path;
  * - *local*: Providing access to the app's local storage, @see <IFLocalSchemeHander>;
@@ -38,6 +40,8 @@
 
 /** A map of named URI formatters. Members must implement the IFURIValueFormatter protocol. */
 @property (nonatomic, strong) NSDictionary *formats;
+/** A map of URI aliases. */
+@property (nonatomic, strong) NSDictionary *aliases;
 
 - (id)initWithSchemeContexts:(NSDictionary *)schemeContexts;
 - (id)initWithMainBundlePath:(NSString *)mainBundlePath schemeContexts:(NSDictionary *)schemeContexts;

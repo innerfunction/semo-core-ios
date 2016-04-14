@@ -40,7 +40,7 @@
     if (self) {
         self.uriHandler = [[IFStandardURIHandler alloc] init];
         // Core names which should be built before processing the rest of the container's configuration.
-        self.priorityNames = @[ @"types", @"formats", @"schemes", @"makes" ];
+        self.priorityNames = @[ @"types", @"formats", @"schemes", @"aliases", @"makes" ];
     }
     return self;
 }
@@ -106,6 +106,14 @@
 
 - (NSDictionary *)formats {
     return _uriHandler.formats;
+}
+
+- (void)setAliases:(NSDictionary *)aliases {
+    _uriHandler.aliases = aliases;
+}
+
+- (NSDictionary *)aliases {
+    return _uriHandler.aliases;
 }
 
 - (void)configureWith:(IFConfiguration *)configuration {
@@ -280,6 +288,9 @@
 
 - (BOOL)isDataCollection:(NSString *)propertyName {
     if ([@"makes" isEqualToString:propertyName]) {
+        return YES;
+    }
+    if ([@"aliases" isEqualToString:propertyName]) {
         return YES;
     }
     return NO;

@@ -60,6 +60,8 @@
 @property (nonatomic, strong) IFConfiguration *makes;
 /// URI formatters.
 @property (nonatomic) NSDictionary *formats;
+/// URI aliases.
+@property (nonatomic) NSDictionary *aliases;
 
 /** Load the app configuration. */
 - (void)loadConfiguration:(id)configSource;

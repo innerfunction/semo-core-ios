@@ -63,7 +63,7 @@
 - (id)initWithString:(NSString *)input error:(NSError *__autoreleasing *)error {
     self = [super init];
     NSMutableDictionary *ast = [NSMutableDictionary new];
-    if (parseURI( input, ast )) {
+    if (parseCompoundURI( input, ast )) {
         NSString *trailing = ast[@"__trailing"];
         if ([trailing length] > 0) {
             NSString *message = [NSString stringWithFormat:@"Trailing characters after URI: %@", trailing];
@@ -180,16 +180,16 @@
     return [object isKindOfClass:[IFCompoundURI class]] && [[self description] isEqualToString:[object description]];
 }
 
-// URI ::= ( BRACKETED_URI | PLAIN_URI )
-BOOL parseURI(NSString *input, NSMutableDictionary *ast) {
-    return parseBracketedURI( input, ast ) || parsePlainURI( input, ast );
+// COMPOUND_URI ::= ( BRACKETED_URI | ALIAS_OR_URI )
+BOOL parseCompoundURI(NSString *input, NSMutableDictionary *ast) {
+    return parseBracketedURI( input, ast ) || parseAliasOrURI( input, ast );
 }
 
 // BRACKETED_URI ::= '[' PLAIN_URI ']'
 BOOL parseBracketedURI(NSString *input, NSMutableDictionary *ast) {
     if ([input hasPrefix:@"["]) {
         input = [input substringFromIndex:1];
-        if (parsePlainURI( input, ast )) {
+        if (parseURI( input, ast )) {
             input = ast[@"__trailing"];
             if ([input hasPrefix:@"]"]) {
                 ast[@"__trailing"] = [input substringFromIndex:1];
@@ -200,8 +200,30 @@ BOOL parseBracketedURI(NSString *input, NSMutableDictionary *ast) {
     return NO;
 }
 
-// PLAIN_URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS? ( '|' FORMAT )?
-BOOL parsePlainURI(NSString *input, NSMutableDictionary *ast) {
+// ALIAS_OR_URI ::= ( '~' ALIAS | URI )
+BOOL parseAliasOrURI(NSString *input, NSMutableDictionary *ast) {
+    return parseAlias( input, ast ) || parseURI( input, ast );
+}
+
+// ALIAS ::= '~' NAME ( '|' FORMAT )?
+BOOL parseAlias(NSString *input, NSMutableDictionary *ast) {
+    if ([input hasPrefix:@"~"]) {
+        input = [input substringFromIndex:1];
+        if (parseName( input, ast )) {
+            input = ast[@"__trailing"];
+            // e.g. convert ~name => a:name
+            ast[@"scheme"] = @"a";
+            if (parseFormat( input, ast )) {
+                input = ast[@"__trailing"];
+            }
+            return YES;
+        }
+    }
+    return NO;
+}
+
+// URI ::= SCHEME ':' NAME? ( '#' FRAGMENT )? PARAMETERS? ( '|' FORMAT )?
+BOOL parseURI(NSString *input, NSMutableDictionary *ast) {
     if (parseScheme( input, ast )) {
         input = ast[@"__trailing"];
         if ([input hasPrefix:@":"]) {
@@ -223,11 +245,8 @@ BOOL parsePlainURI(NSString *input, NSMutableDictionary *ast) {
                 param_ast = [NSMutableDictionary new];
             }
             ast[@"parameters"] = parameters;
-            if ([input hasPrefix:@"|"]) {
-                input = [input substringFromIndex:1];
-                if (parseFormat( input, ast)) {
-                    input = ast[@"__trailing"];
-                }
+            if (parseFormat( input, ast)) {
+                input = ast[@"__trailing"];
             }
             ast[@"__trailing"] = input;
             return YES;
@@ -280,7 +299,7 @@ BOOL parseParameters(NSString *input, NSMutableDictionary *ast) {
             input = ast[@"__trailing"];
             if ([input hasPrefix:@"@"]) {
                 input = [input substringFromIndex:1];
-                return parseURI( input, ast );
+                return parseCompoundURI( input, ast );
             }
             else if ([input hasPrefix:@"="]) {
                 input = [input substringFromIndex:1];
@@ -314,7 +333,7 @@ BOOL parseParamName(NSString *input, NSMutableDictionary *ast) {
 
 // Match any characters which aren't + ] or |
 BOOL parseParamLiteral(NSString *input, NSMutableDictionary *ast) {
-    IFRegExp *paramNameRegex = [[IFRegExp alloc] initWithPattern:@"^([^+|\\]]+)(.*)$"];
+    IFRegExp *paramNameRegex = [[IFRegExp alloc] initWithPattern:@"^([^+|\\]]*)(.*)$"];
     NSArray *groups = [paramNameRegex match:input];
     if (groups) {
         ast[@"param_literal"] = groups[1];
@@ -324,14 +343,17 @@ BOOL parseParamLiteral(NSString *input, NSMutableDictionary *ast) {
     return NO;
 }
 
-// Match any format characters or _ ~ -
+// Match | followed by any format characters or _ ~ -
 BOOL parseFormat(NSString *input, NSMutableDictionary *ast) {
-    IFRegExp *nameRegex = [[IFRegExp alloc] initWithPattern:@"^([\\w_~-]*)(.*)$"];
-    NSArray *groups = [nameRegex match:input];
-    if (groups) {
-        ast[@"format"] = groups[1];
-        ast[@"__trailing"] = groups[2];
-        return YES;
+    if ([input hasPrefix:@"|"]) {
+        input = [input substringFromIndex:1];
+        IFRegExp *nameRegex = [[IFRegExp alloc] initWithPattern:@"^([\\w_~-]*)(.*)$"];
+        NSArray *groups = [nameRegex match:input];
+        if (groups) {
+            ast[@"format"] = groups[1];
+            ast[@"__trailing"] = groups[2];
+            return YES;
+        }
     }
     return NO;
 }
