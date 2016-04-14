@@ -278,12 +278,14 @@
 
 #pragma mark - IFIOCTypeInspectable
 
-- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
-    if ([@"formats" isEqualToString:propertyName]) {
-        // TODO: This is needed to force the object configurer to build the format components
-        // rather than treat them as plain data.
-        return [NSObject class];
+- (BOOL)isDataCollection:(NSString *)propertyName {
+    if ([@"makes" isEqualToString:propertyName]) {
+        return YES;
     }
+    return NO;
+}
+
+- (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
     return nil;
 }
 

@@ -75,6 +75,13 @@
 
 #pragma mark - IFIOCTypeInspectable
 
+- (BOOL)isDataCollection:(NSString *)propertyName {
+    if ([@"content" isEqualToString:propertyName]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (Class)memberClassForCollection:(NSString *)propertyName {
     if ([@"cellFactoriesByDisplayMode" isEqualToString:propertyName]) {
         return [IFTableViewCellFactory class];

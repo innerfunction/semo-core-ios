@@ -34,8 +34,6 @@
 - (IFPropertyInfo *)infoForProperty:(NSString *)name;
 /// Get type hint info for members of the named collection property of the object being configured.
 - (IFPropertyInfo *)getCollectionMemberTypeInfoForProperty:(NSString *)propName;
-/// Test whether the argument is a collection configuration with type hints for its members.
-- (BOOL)isCollectionWithTypeHints:(IFConfiguration *)configuration;
 
 @end
 
@@ -196,31 +194,23 @@
                 // If we get to this point and value is still nil then the following things are true:
                 // a. The value config doesn't contain any instantiation hint.
                 // b. The value config data is a collection (JSON object or list)
-                // At this point we now decide whether to use the raw JSON data as the property value.
+                // At this point we now decide whether to use the plain JSON data as the property value.
                 // We do this if all of the following are true:
                 // 1. The property is a collection type (NSArray or NSDictionary).
-                // 2. The object owning the property provides no member type hint for the collection.
-                //    (Other than for 'id' i.e. any generic object).
-                // 3. The first item in the JSON collection doesn't provide any instantiation hint.
-                // The last two points imply that without a type hint, the container can't instantiate new objects
-                // from the collection's member data, so the data should be used as-is. Note however that this isn't
-                // strictly true - the collection may contain deeply embedded object configurations that the
-                // container could instantiate; however, the heuristic described here is applied as an efficiency
-                // measure and will be correct in most cases. The measure can be overriden by the object being configured
-                // if it returns a member type hint for the collection (i.e. via the IFIOCTypeInspectable protocol).
-                // The type hint can be anything likely to be compatible - e.g. 'NSDictionary'.
-                // TODO: This doesn't work when the collection members are mapped to URI strings (e.g. "@make:Component")
+                // 2. The object owning the property implements IFIOCTypeInspectable
+                // 3. And indicates that the property is a data collection.
+                // Note that this is done as an efficiency measure.
                 BOOL isArrayProp = [propInfo isMemberOrSubclassOf:[NSArray class]];
                 BOOL isDictProp  = !isArrayProp && [propInfo isMemberOrSubclassOf:[NSDictionary class]];
                 if (value == nil) {
                     BOOL isCollectionProp = (isArrayProp || isDictProp);
-                    IFPropertyInfo *memberTypeInfo = [self getCollectionMemberTypeInfoForProperty:propName];
-                    BOOL hasMemberInstantiationHints = [self isCollectionWithTypeHints:valueConfig];
-                    if (isCollectionProp && [memberTypeInfo isId] && !hasMemberInstantiationHints) {
-                        value = maybeConfig.data;
-                        // The value should be treated as raw data (i.e. contains no configurables) so
-                        // skip the configuration step.
-                        configureValue = NO;
+                    if (isCollectionProp && [_object conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
+                        if ([(id<IFIOCTypeInspectable>)_object isDataCollection:propName]) {
+                            value = maybeConfig.data;
+                            // The value should be treated as plain data (i.e. contains no configurables) so
+                            // skip the configuration step.
+                            configureValue = NO;
+                        }
                     }
                 }
 
@@ -352,22 +342,6 @@
     }
     // Can't resolve any class for the collection's members, return an all-type info.
     return [IFPropertyInfo new];
-}
-
-- (BOOL)isCollectionWithTypeHints:(IFConfiguration *)configuration {
-    // Assume the configuration represents a collection of object configurations.
-    // Inspect the first object configuration, and return true if the item contains
-    // an instantiation hint. (The first item here is arbitrary).
-    for (NSString *name in [configuration getValueNames]) {
-        IFConfiguration *memberConfig = [configuration getValueAsConfiguration:name];
-        if (memberConfig) {
-            return [memberConfig hasValue:@"*type"]
-                || [memberConfig hasValue:@"*ios-class"]
-                || [memberConfig hasValue:@"*factory"];
-        }
-        else break;
-    }
-    return NO;
 }
 
 @end

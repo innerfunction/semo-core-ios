@@ -20,7 +20,7 @@
 
 /**
  * A protocol which allows an IOC container to interrogate an object about the default
- * type of members of a collection property of the object.
+ * type of members of collection properties of the object.
  * This protocol is provided to overcome shortcomings in an IOC container's type inference
  * mechanism when dealing with collection (e.g. NSArray or NSDictionary based) object
  * properties. In such cases, the container has no way to know what type the collection
@@ -30,6 +30,13 @@
  * then the container can ask the object for a default type for the collection's members.
  */
 @protocol IFIOCTypeInspectable <NSObject>
+
+/**
+ * Test whether a named property represents a data collection. Data collections contain
+ * 'plain' data, i.e. the container doesn't need to be scanned by the container for
+ * objects to instantiate.
+ */
+- (BOOL)isDataCollection:(NSString *)propertyName;
 
 /**
  * Return the expected class for members of the named property collection.
