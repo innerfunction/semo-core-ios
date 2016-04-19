@@ -283,12 +283,8 @@
         [_container incPendingValueRefCountForPendingObject:pending];
     }
     else if (value != nil) {
-        IFPropertyInfo *propInfo = [self infoForProperty:name];
-        if ([propInfo isWriteable] && [propInfo isAssignableFrom:[value class]]) {
-            // Standard object property reference.
-            [_object setValue:value forKey:name];
-        }
-        else if ([_object isKindOfClass:[NSDictionary class]]) {
+        // Check for dictionary or map collections...
+        if ([_object isKindOfClass:[NSDictionary class]]) {
             // Dictionary collection entry.
             _object[name] = value;
         }
@@ -301,6 +297,14 @@
                 [array addObject:[NSNull null]];
             }
             array[idx] = value;
+        }
+        else {
+            // ...configuring an object which isn't a collection.
+            IFPropertyInfo *propInfo = [self infoForProperty:name];
+            if ([propInfo isWriteable] && [propInfo isAssignableFrom:[value class]]) {
+                // Standard object property reference.
+                [_object setValue:value forKey:name];
+            }
         }
     }
     return value;

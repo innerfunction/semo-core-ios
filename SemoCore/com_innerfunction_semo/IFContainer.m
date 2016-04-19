@@ -242,11 +242,12 @@
             }
             else {
                 [_pendingValueRefCounts removeObjectForKey:pending.objectKey];
+                id completed = pending.configurer.object;
                 // The property object is now fully configured, invoke its afterConfiguration: method if it
                 // implements IFIOCContainerAware protocol.
-                if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
+                if ([completed conformsToProtocol:@protocol(IFIOCContainerAware)]) {
                     IFConfiguration *objConfig = _pendingValueObjectConfigs[pending.objectKey];
-                    [(id<IFIOCContainerAware>)object afterIOCConfiguration:objConfig];
+                    [(id<IFIOCContainerAware>)completed afterIOCConfiguration:objConfig];
                     [_pendingValueObjectConfigs removeObjectForKey:pending.objectKey];
                 }
             }

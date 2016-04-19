@@ -79,7 +79,7 @@
     webView.scrollView.bounces = _scrollViewBounces;
     if (_loadingImage) {
         loadingImageView = [[UIImageView alloc] initWithImage:_loadingImage];
-        loadingImageView.contentMode = UIViewContentModeScaleAspectFit;
+        loadingImageView.contentMode = UIViewContentModeCenter;
         loadingImageView.backgroundColor = _backgroundColor;
         [self.view addSubview:loadingImageView];
     }

@@ -1,0 +1,52 @@
+Property type tests:
+K   Kind of; property type is the specified class or a subclass
+A   Assignable to; property is assignable from a type
+I   Is ID
+
+Property type       Test        Config type     Operation
+======================================================================
+Boolean             K           *               asBoolean
+Integer             K           *               asNumber -> NSInteger
+Float               K           *               asNumber -> CGFloat
+Double              K           *               asNumber -> double
+
+NSNumber            K           *               asNumber
+NSDate              K           *               asDate
+UIImage             K           *               asImage
+UIColor             K           *               asColor
+
+IFConfiguration     K           *               asConfiguration
+
+NSArray             K           Array           asConfigurationList -> <collection member build rules>
+
+NSDictionary        K           Object          asConfigurationMap -> <collection member build rules>
+
+id (+NSObject)      I           *               -> <object build rules>
+
+* (any other type)              *               -> <object build rules>
+
+
+Collection member build rules (per item):
+asConfiguration -> hasInstantiationHint? -> instantiate & configure
+                -> member type info (non id)? -> instantiate & configure
+asValue
+
+* Build a collection by iterating over the top-level members and building each in turn *
+foreach idx/name:
+    get value in config
+    if value is object (i.e. dictionary)
+        promote to config
+        if config has instantiation hint
+            value = instantiate config
+        else if member type hint
+            value = instantiate hint and configure
+        else
+            use object value
+    else if value compatible with member type hint
+        use value
+
+
+Object build rules:
+asConfiguration -> hasInstantiationHint? -> instantiate & configure
+                -> infer non-id type?    -> instantiate & configure
+asValue
