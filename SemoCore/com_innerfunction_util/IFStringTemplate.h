@@ -21,7 +21,9 @@
  * A simple string template supporting just variable placeholder substitution.
  * Variable placeholders are specified in template strings using curly braces, e.g.
  * _{variable}_. Variable values are taken from a key-value encoding compliant data
- * context. Missing values are replaced with an empty string.
+ * context. Missing values are replaced with an empty string. Placeholders can be
+ * escaped using a back slash before the opening brace, e.g. _\{variable}_ evaluates
+ * to the string _"{variable}"_.
  */
 @interface IFStringTemplate : NSObject {
     // A list of the blocks in the compiled template, representing alternatively

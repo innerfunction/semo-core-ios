@@ -29,7 +29,7 @@ typedef NSString* (^IFStringTemplateBlock) (id context, BOOL uriEncode);
 
 - (void)parse:(NSString*)s;
 - (IFStringTemplateBlock)textBlock:(NSString*)text;
-- (IFStringTemplateBlock)refBlock:(NSString*)ref;
+- (IFStringTemplateBlock)refBlock:(NSString*)ref uriEncodeValue:(BOOL)uriEncodeValue;
 
 @end
 
@@ -45,16 +45,44 @@ typedef NSString* (^IFStringTemplateBlock) (id context, BOOL uriEncode);
 }
 
 - (void)parse:(NSString *)s {
-    IFRegExp *regex = [[IFRegExp alloc] initWithPattern:@"^([^{]*)[{]([-a-zA-Z0-9_$.]+)[}](.*)$"];
+    IFRegExp *regex = [[IFRegExp alloc] initWithPattern:@"^([^{]*)([{]+)(%?[-a-zA-Z0-9_$.]+)([}]+)(.*)$"];
     NSMutableArray *refs = [[NSMutableArray alloc] init];
     while (s) {
         NSArray* r = [regex match:s];
         if (r) {
-            [blocks addObject:[self textBlock:[r objectAtIndex:1]]];
-            NSString *ref = [r objectAtIndex:2];
-            [blocks addObject:[self refBlock:ref]];
-            [refs addObject:ref];
-            s = [r objectAtIndex:3];
+            NSString *leading   = r[1];
+            NSString *lbraces   = r[2];
+            NSString *reference = r[3];
+            NSString *rbraces   = r[4];
+            NSString *trailing  = r[5];
+            // Append leading text to output.
+            [blocks addObject:[self textBlock:leading]];
+            // If just a single opening brace then we have a standard variable placeholder.
+            if ([lbraces length] == 1 && [rbraces length] >= 1) {
+                BOOL uriEncode = NO;
+                // A % at the start of the variable reference means that the value result should
+                // be URI encoded.
+                if ([reference hasPrefix:@"%"]) {
+                    uriEncode = YES;
+                    reference = [reference substringFromIndex:1];
+                }
+                [blocks addObject:[self refBlock:reference uriEncodeValue:uriEncode]];
+                [refs addObject:reference];
+                // Edge case - more trailing braces than leading braces; just append what's left
+                // as a text block.
+                if ([rbraces length] > 1) {
+                    [blocks addObject:[self textBlock:[rbraces substringFromIndex:1]]];
+                }
+            }
+            else {
+                // A nested (i.e. escaped) variable placeholder. Strip one each of the opening and
+                // closing braces and append what's left as a plain text block.
+                lbraces = [lbraces substringFromIndex:1];
+                rbraces = [rbraces substringFromIndex:1];
+                NSString *text = [NSString stringWithFormat:@"%@%@%@", lbraces, reference, rbraces];
+                [blocks addObject:[self textBlock:text]];
+            }
+            s = trailing;
         }
         else {
             NSInteger i = [s rangeOfString:@"}"].location;
@@ -77,7 +105,7 @@ typedef NSString* (^IFStringTemplateBlock) (id context, BOOL uriEncode);
     };
 }
 
-- (IFStringTemplateBlock)refBlock:(NSString *)ref {
+- (IFStringTemplateBlock)refBlock:(NSString *)ref uriEncodeValue:(BOOL)uriEncodeValue {
     return ^(id ctx, BOOL uriEncode) {
         id val = nil;
         if ([ctx respondsToSelector:@selector(valueForKeyPath:)]) {
@@ -87,7 +115,7 @@ typedef NSString* (^IFStringTemplateBlock) (id context, BOOL uriEncode);
             @catch (NSException *e) {
                 val = e;
             }
-            if (val && uriEncode) {
+            if (val && (uriEncode || uriEncodeValue)) {
                 val = [val stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
             }
         }
