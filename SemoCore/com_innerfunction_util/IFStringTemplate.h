@@ -23,7 +23,8 @@
  * _{variable}_. Variable values are taken from a key-value encoding compliant data
  * context. Missing values are replaced with an empty string. Placeholders can be
  * escaped by nesting within additional braces, so e.g. _{{variable}}_ evaluates to
- * the output _{variable}_.
+ * the output _{variable}_. A % symbol at the start of a placeholder (e.g. _{%name}_)
+ * indicates that the variable value should be URI escaped.
  */
 @interface IFStringTemplate : NSObject {
     // A list of the blocks in the compiled template, representing alternatively
