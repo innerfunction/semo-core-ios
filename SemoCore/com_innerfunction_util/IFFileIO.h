@@ -26,10 +26,17 @@
 /**
  * Read a file and parse its contents as JSON.
  * @param path      The path to the JSON file.
- * @param encoding  The text encoding of its contents.
  * @return An object representing the file's parsed contents.
  */
-+ (id)readJSONFromFileAtPath:(NSString *)path encoding:(NSStringEncoding)encoding;
++ (id)readJSONFromFileAtPath:(NSString *)path;
+
+/**
+ * Write JSON to a file.
+ * @param data      The data to write to the file.
+ * @param path      The path to the JSON file.
+ * @return Boolean true if the file was written.
+ */
++ (BOOL)writeJSON:(id)data toFileAtPath:(NSString *)path;
 
 /**
  * Unzip a zip archive file to the specified location.

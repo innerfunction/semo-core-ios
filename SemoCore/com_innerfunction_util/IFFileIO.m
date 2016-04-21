@@ -17,7 +17,7 @@
 //
 
 #import "IFFileIO.h"
-#import "JSONKit.h"
+//#import "JSONKit.h"
 #import "ZipArchive.h"
 #import "IFLogging.h"
 
@@ -32,10 +32,19 @@
 @implementation IFFileIO
 
 // Read a file and parse its contents as JSON.
-+ (id)readJSONFromFileAtPath:(NSString *)path encoding:(NSStringEncoding)encoding {
++ (id)readJSONFromFileAtPath:(NSString *)path {
+    id data = nil;
+    NSData *json = [NSData dataWithContentsOfFile:path];
+    if (json) {
+        data = [NSJSONSerialization JSONObjectWithData:json
+                                               options:0
+                                                 error:nil];
+    }
+    return data;
+    /*
     id result = nil;
     NSError *error = nil;
-    NSString *json = [[NSString alloc] initWithContentsOfFile:path encoding:encoding error:&error];
+    NSString *json = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
     if (error) {
         DDLogError(@"IFFileIO: Error reading contents of file %@: %@", path, error);
     }
@@ -43,6 +52,15 @@
         result = [json objectFromJSONString];
     }
     return result;
+    */
+}
+
+// Write JSON to a file.
++ (BOOL)writeJSON:(id)data toFileAtPath:(NSString *)path {
+    NSData *json = [NSJSONSerialization dataWithJSONObject:data
+                                                   options:0
+                                                     error:nil];
+    return [json writeToFile:path atomically:YES];
 }
 
 // Unzip an archive to the specified location.
