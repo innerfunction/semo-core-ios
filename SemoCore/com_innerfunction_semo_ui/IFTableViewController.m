@@ -388,12 +388,14 @@
         self.content = message.parameters[@"content"];
         return YES;
     }
-    else if ([message hasName:@"filter"]) {
+    if ([message hasName:@"filter"]) {
         self.filterName = message.parameters[@"name"];
+        return YES;
     }
-    else if ([message hasName:@"clear-filter"]) {
+    if ([message hasName:@"clear-filter"]) {
         [_tableData clearFilter];
         [self.tableView reloadData];
+        return YES;
     }
     return NO;
 }

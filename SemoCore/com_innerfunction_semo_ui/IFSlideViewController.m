@@ -109,6 +109,7 @@
     if ([message hasName:@"show-in-slide"] || [message hasName:@"open-in-slide"]) {
         // Replace the slide view.
         self.slideView = [message.parameters valueForKey:@"view"];
+        return YES;
     }
     if ([message hasName:@"open-slide"] || [message hasName:@"show-slide"]) {
         // Open the slide view.
