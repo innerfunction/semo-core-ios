@@ -39,11 +39,21 @@
 + (BOOL)writeJSON:(id)data toFileAtPath:(NSString *)path;
 
 /**
- * Unzip a zip archive file to the specified location.
+ * Unzip a zip archive file to the specified location. Overwrites any content already at
+ * the out path.
  * @param zipPath   The path to the zip archive file.
  * @param outPath   The location to unzip the file's contents to.
  * @return Returns boolean _true_ if the archive was successfully unzipped.
  */
 + (BOOL)unzipFileAtPath:(NSString *)zipPath toPath:(NSString *)outPath;
+
+/**
+ * Unzip a zip archive file to the specified location.
+ * @param zipPath   The path to the zip archive file.
+ * @param outPath   The location to unzip the file's contents to.
+ * @param overwrite Whether to overwrite existing content at _outPath_.
+ * @return Returns boolean _true_ if the archive was successfully unzipped.
+ */
++ (BOOL)unzipFileAtPath:(NSString *)zipPath toPath:(NSString *)outPath overwrite:(BOOL)overwrite;
 
 @end

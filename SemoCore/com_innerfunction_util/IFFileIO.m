@@ -41,35 +41,30 @@
                                                  error:nil];
     }
     return data;
-    /*
-    id result = nil;
-    NSError *error = nil;
-    NSString *json = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    if (error) {
-        DDLogError(@"IFFileIO: Error reading contents of file %@: %@", path, error);
-    }
-    else {
-        result = [json objectFromJSONString];
-    }
-    return result;
-    */
 }
 
 // Write JSON to a file.
 + (BOOL)writeJSON:(id)data toFileAtPath:(NSString *)path {
-    NSData *json = [NSJSONSerialization dataWithJSONObject:data
-                                                   options:0
-                                                     error:nil];
-    return [json writeToFile:path atomically:YES];
+    if ([NSJSONSerialization isValidJSONObject:data]) {
+        NSData *json = [NSJSONSerialization dataWithJSONObject:data
+                                                       options:0
+                                                         error:nil];
+        return [json writeToFile:path atomically:YES];
+    }
+    return NO; // Invalid JSON object.
 }
 
 // Unzip an archive to the specified location.
 + (BOOL)unzipFileAtPath:(NSString *)zipPath toPath:(NSString *)outPath {
+    return [IFFileIO unzipFileAtPath:zipPath toPath:outPath overwrite:YES];
+}
+
++ (BOOL)unzipFileAtPath:(NSString *)zipPath toPath:(NSString *)outPath overwrite:(BOOL)overwrite {
     BOOL ok = NO;
     ZipArchive *archive = [[ZipArchive alloc] init];
     archive.delegate = [[IFZipArchiveDelegate alloc] initWithZipPath:zipPath];
     if ([archive UnzipOpenFile:zipPath]) {
-        if ([archive UnzipFileTo:outPath overWrite:YES]) {
+        if ([archive UnzipFileTo:outPath overWrite:overwrite]) {
             ok = YES;
         }
         else {
