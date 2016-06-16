@@ -141,7 +141,7 @@
     [_named setObject:_uriHandler forKey:@"uriHandler"];
     [_named setObject:_globals forKey:@"globals"];
     [_named setObject:_locals forKey:@"locals"];
-    [_named setObject:self forKey:@"container"];
+    [_named setObject:self forKey:@"app"];
 
 
     // Perform default container configuration.
