@@ -72,10 +72,8 @@
  * _uriHandler_ variables.
  */
 - (id)initWithData:(id)data parent:(IFConfiguration *)parent;
-/// Initialize the configuration by reading JSON from the specified resource.
-- (id)initWithResource:(IFResource *)resource;
-/// Initialize the configuration by reading JSON from the specified resource, and using another configuration as the parent.
-- (id)initWithResource:(IFResource *)resource parent:(IFConfiguration *)parent;
+/// Initialize the configuration with the specified data and URI handler.
+- (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler;
 
 /**
  * Return the named representation of the configuration value and the specified key path.

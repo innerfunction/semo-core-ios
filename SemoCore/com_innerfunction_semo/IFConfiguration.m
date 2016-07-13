@@ -97,20 +97,10 @@
     return self;
 }
 
-- (id)initWithResource:(IFResource *)resource {
-    //return [self initWithData:[resource asJSONData] resource:resource];
-    self = [self initWithData:[resource asJSONData]];
-    self.uriHandler = resource.uriHandler;
-    return self;
-}
-
-- (id)initWithResource:(IFResource *)resource parent:(IFConfiguration *)parent {
-    self = [super init];
+- (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler {
+    self = [self initWithData:data];
     if (self) {
-        self.data = [resource asJSONData];
-        self.root = self;
-        self.context = parent.context;
-        self.uriHandler = parent.uriHandler;
+        self.uriHandler = uriHandler;
         [self initializeContext];
     }
     return self;
@@ -236,17 +226,30 @@
     
             // If value isn't already a configuration then try converting to one.
             if (![value isKindOfClass:[IFConfiguration class]]) {
+
+                IFResource *valueRsc = nil;
+                if ([value isKindOfClass:[IFResource class]]) {
+                    valueRsc = (IFResource *)value;
+                    value = [valueRsc asJSONData];
+                }
+
                 // If value is an array then convert to an array backed dictionary.
                 if ([value isKindOfClass:[NSArray class]]) {
                     value = [[IFArrayBackedDictionary alloc] initWithArray:(NSArray *)value];
                 }
                 // If value is a dictionary then construct a new config using the values in that dictionary.
                 if ([value isKindOfClass:[NSDictionary class]]) {
-                    value = [[IFConfiguration alloc] initWithData:value parent:self];
-                }
-                // Else if value is a resource, then construct a new config using the resource.
-                else if ([value isKindOfClass:[IFResource class]]) {
-                    value = [[IFConfiguration alloc] initWithResource:(IFResource *)value parent:self];
+                    IFConfiguration *configValue = [[IFConfiguration alloc] initWithData:value parent:self];
+                    // NOTE When the configuration data is sourced from a resource, then the following properties
+                    // need to be different from when the data is found directly in the configuration:
+                    // * root: The resource defines a new context for # refs, so root needs to point to the new config.
+                    // * uriHandler: The resource's handler needs to be used, so that any relative URIs within the
+                    //   resource data resolve correctly.
+                    if (valueRsc) {
+                        configValue->_root = configValue;
+                        configValue.uriHandler = valueRsc.uriHandler;
+                    }
+                    value = configValue;
                 }
                 // Else the value can't be resolved to a configuration, return nil.
                 else {

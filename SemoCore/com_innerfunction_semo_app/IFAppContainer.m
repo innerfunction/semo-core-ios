@@ -82,7 +82,9 @@
         }
         // Create configuration from data.
         if ([configData isKindOfClass:[IFResource class]]) {
-            configuration = [[IFConfiguration alloc] initWithResource:(IFResource *)configData];
+            IFResource *configRsc =(IFResource *)configData;
+            id data = [configRsc asJSONData];
+            configuration = [[IFConfiguration alloc] initWithData:data uriHandler:configRsc.uriHandler];
             // Use the configuration's URI handler instead from this point on, to ensure relative URI's
             // resolve properly and also so that additional URI schemes added to this container are
             // available within the configuration.
