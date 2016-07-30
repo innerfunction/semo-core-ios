@@ -24,88 +24,106 @@
 #import "IFIOCObjectAware.h"
 #import "IFIOCProxy.h"
 #import "IFPendingNamed.h"
+#import "IFJSONData.h"
 #import "IFLogging.h"
 
 @interface IFObjectConfigurer ()
 
 /// Normalize a property name by removing any *ios- prefix. Returns nil for reserved names (e.g. *type etc.)
 - (NSString *)normalizePropertyName:(NSString *)name;
-/// Get type info for a named property of the object being configured.
-- (IFPropertyInfo *)infoForProperty:(NSString *)name;
-/// Get type hint info for members of the named collection property of the object being configured.
-- (IFPropertyInfo *)getCollectionMemberTypeInfoForProperty:(NSString *)propName;
 
 @end
 
-#define KeyPath(name)   ([NSString stringWithFormat:@"%@.%@", _keyPath, name])
+/// A version of IFTypeInfo that returns type information for a collection's members.
+@interface IFCollectionTypeInfo : IFTypeInfo {
+    /// The default type of each member of the collection.
+    IFPropertyInfo *_memberTypeInfo;
+}
+
+/**
+ * Init the object.
+ * @param collection    The collection.
+ * @param propName      The name of the property the collection is bound to on its parent object.
+ */
+- (id)initWithCollection:(id)collection propName:(NSString *)propName;
+
+@end
 
 @implementation IFObjectConfigurer
-
-- (id)initWithObject:(id)object inContainer:(IFContainer *)container keyPath:(NSString *)keyPath {
-    self = [super init];
-    if (self) {
-        // NOTE that the object is replaced at this point with its configuration proxy, if any.
-        // TODO: Confirm that this isn't needed (is applied instead by the container's newInstanceForClassName: method)
-        //_object = [IFContainer applyConfigurationProxyWrapper:object];
-        _object = object;
-        _container = container;
-        _typeInfo = [IFTypeInfo typeInfoForObject:_object];
-        _keyPath = keyPath;
-        _isCollection = [_object isKindOfClass:[NSArray class]] || [_object isKindOfClass:[NSDictionary class]];
-    }
-    return self;
-}
 
 - (id)initWithContainer:(IFContainer *)container {
     self = [super init];
     if (self) {
-        _object = container;
         _container = container;
-        _typeInfo = [IFTypeInfo typeInfoForObject:container];
-        _collectionMemberTypeInfo = [IFPropertyInfo new];
-        _keyPath = @"";
-        _isCollection = YES;
     }
     return self;
 }
 
 - (void)configureWith:(IFConfiguration *)configuration {
-    if ([_object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
-        [(id<IFIOCContainerAware>)_object beforeIOCConfiguration:configuration];
+    IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:_container];
+    [self configureObject:_container withConfiguration:configuration typeInfo:typeInfo keyPathPrefix:@""];
+}
+
+- (void)configureObject:(id)object
+      withConfiguration:(IFConfiguration *)configuration
+               typeInfo:(IFTypeInfo *)typeInfo
+          keyPathPrefix:(NSString *)kpPrefix {
+
+    // Pre-configuration.
+    if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
+        [(id<IFIOCContainerAware>)object beforeIOCConfiguration:configuration];
     }
     NSArray *valueNames = [configuration getValueNames];
     for (NSString *name in valueNames) {
         NSString *propName = [self normalizePropertyName:name];
         if (propName) {
+            
+            IFPropertyInfo *propInfo = [typeInfo infoForProperty:propName];
+            if (!propInfo) {
+                // If no type info then can't process this property any further.
+                continue;
+            }
+            
+            NSString *kpRef;
+            if (kpPrefix) {
+                kpRef = [NSString stringWithFormat:@"%@.%@", kpPrefix, propName];
+            }
+            else {
+                kpRef = propName;
+            }
+
             // Build a property value from the configuration.
-            id value = [self buildValueForProperty:propName withConfiguration:configuration];
+            id value = [self buildValueForObject:object
+                                        property:propName
+                               withConfiguration:configuration
+                                        propInfo:propInfo
+                                      keyPathRef:kpRef];
             // If there is a value by this stage then inject into the object.
             if (value != nil) {
-                value = [self injectValue:value intoProperty:propName];
+                value = [self injectIntoObject:object value:value intoProperty:propName propInfo:propInfo];
             }
         }
     }
     // Post configuration.
-    if ([_object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
-        NSValue *objectKey = [NSValue valueWithNonretainedObject:_object];
+    if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
+        NSValue *objectKey = [NSValue valueWithNonretainedObject:object];
         if ([_container hasPendingValueRefsForObjectKey:objectKey]) {
             [_container recordPendingValueObjectConfiguration:configuration forObjectKey:objectKey];
         }
         else {
-            [(id<IFIOCContainerAware>)_object afterIOCConfiguration:configuration];
+            [(id<IFIOCContainerAware>)object afterIOCConfiguration:configuration];
         }
     }
-    [_container doPostConfiguration:_object];
+    [_container doPostConfiguration:object];
 }
 
-- (id)buildValueForProperty:(NSString *)propName withConfiguration:(IFConfiguration *)configuration {
-    id value = nil;
+- (id)buildValueForObject:(id)object
+                 property:(NSString *)propName
+        withConfiguration:(IFConfiguration *)configuration
+                 propInfo:(IFPropertyInfo *)propInfo
+               keyPathRef:(NSString *)kpRef {
     
-    IFPropertyInfo *propInfo = [self infoForProperty:propName];
-    // If no property type info then can't process any further, return empty handed.
-    if (!propInfo) {
-        return value;
-    }
+    id value = nil;
     
     // First, check to see if the property belongs to one of the standard types used to
     // represent primitive configurable values. These values are different to other
@@ -144,6 +162,9 @@
             value = [configuration getValueAsConfiguration:propName];
         }
         else if ([propInfo isMemberOfClass:[IFJSONObject class]] || [propInfo isMemberOfClass:[IFJSONArray class]]) {
+            // The IFJSONObject and IFJSONArray types are equivalent to NSDictionary and NSArray,
+            // but their use allows a property to indicate that it will accept the raw JSON data
+            // value, i.e. without further processing by this class.
             value = [configuration getValueAsJSONData:propName];
         }
     }
@@ -173,19 +194,20 @@
             // Try asking the container to build a new object using the configuration. This
             // will only work if the configuration contains an instantiation hint (e.g. *type,
             // *factory etc.) and will return a non-null, fully-configured object if successful.
-            value = [_container buildObjectWithConfiguration:valueConfig identifier:KeyPath(propName)];
+            value = [_container buildObjectWithConfiguration:valueConfig identifier:kpRef];
             if (value == nil) {
                 // Couldn't build a value, so see if the object already has a value in-place.
                 @try {
-                    value = [_object valueForKey:propName];
+                    value = [object valueForKey:propName];
                 }
                 @catch (NSException *e) {
-                    if (_isCollection && [@"NSUnknownKeyException" isEqualToString:e.name]) {
+                    BOOL isCollection = [object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSArray class]];
+                    if (isCollection && [@"NSUnknownKeyException" isEqualToString:e.name]) {
                         // Ignore: Can happen when e.g. configuring the container with named objects which
                         // aren't properties of the container.
                     }
                     else {
-                        DDLogError(@"%@: Reading %@ %@", LogTag, KeyPath(propName), e);
+                        DDLogError(@"%@: Reading %@ %@", LogTag, kpRef, e);
                     }
                 }
                 if (value != nil) {
@@ -209,30 +231,24 @@
                 // If we now have either an in-place or inferred type value by this point, then
                 // continue by configuring the object with its configuration.
                 if (value != nil) {
-                    // Maps are configured the same as object instances, but properties are
-                    // mapped to map entries instead of properties of the map class.
-                    // Note that by this point, lists are presented as maps (see the
-                    // IFListIOCProxy class below).
                     
-                    /* (Android equivalent code)
-                    Class<?> memberType = null;
-                    if( value instanceof Map ) {
-                        memberType = properties.getMapPropertyValueTypeParameter( propName );
+                    // If value is an NSDictionary or NSArray then get a mutable copy.
+                    // Also, get type information for the object.
+                    IFTypeInfo *typeInfo;
+                    if ([value isKindOfClass:[NSDictionary class]]) {
+                        value = [(NSDictionary *)value mutableCopy];
+                        typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value propName:propName];
                     }
-                    // Recursively configure the value.
-                    configure( value, memberType, valueConfig, getKeyPath( kpPrefix, propName ) );
-                    */
+                    else if ([value isKindOfClass:[NSArray class]]) {
+                        value = [(NSArray *)value mutableCopy];
+                        typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value propName:propName];
+                    }
+                    else {
+                        typeInfo = [IFTypeInfo typeInfoForObject:object];
+                    }
                     
-                    IFObjectConfigurer *configurer = [[IFObjectConfigurer alloc] initWithObject:value
-                                                                                    inContainer:_container
-                                                                                        keyPath:KeyPath(propName)];
-                    // If dealing with a collection value then add type info for its members.
-                    if ([value isKindOfClass:[NSArray class]] || [value isKindOfClass:[NSDictionary class]]) {
-                        configurer->_collectionMemberTypeInfo = [self getCollectionMemberTypeInfoForProperty:propName];
-                    }
                     // Configure the value.
-                    [configurer configureWith:valueConfig];
-
+                    [self configureObject:value withConfiguration:valueConfig typeInfo:typeInfo keyPathPrefix:kpRef];
                 }
                 // If we get this far without a value then try returning the raw configuration
                 // data.
@@ -245,13 +261,13 @@
     return value;
 }
 
-- (id)injectValue:(id)value intoProperty:(NSString *)name {
+- (id)injectIntoObject:(id)object value:(id)value intoProperty:(NSString *)name propInfo:(IFPropertyInfo *)propInfo {
     // Notify object aware values that they are about to be injected into the object under the current property name.
     // NOTE: This happens at this point - instead of after the value injection - so that value proxies can receive the
     // notification. It's more likely that proxies would implement this protocol than the values they act as proxy for
     // (i.e. because proxied values are likely to be standard platform classes).
     if ([value conformsToProtocol:@protocol(IFIOCObjectAware)]) {
-        [(id<IFIOCObjectAware>)value notifyIOCObject:_object propertyName:name];
+        [(id<IFIOCObjectAware>)value notifyIOCObject:object propertyName:name];
     }
     // If value is a config proxy then unwrap the underlying value
     if ([value conformsToProtocol:@protocol(IFIOCProxy)]) {
@@ -269,13 +285,13 @@
     }
     else if (value != nil) {
         // Check for dictionary or map collections...
-        if ([_object isKindOfClass:[NSDictionary class]]) {
+        if ([object isKindOfClass:[NSDictionary class]]) {
             // Dictionary collection entry.
-            _object[name] = value;
+            object[name] = value;
         }
-        else if ([_object isKindOfClass:[NSArray class]]) {
+        else if ([object isKindOfClass:[NSArray class]]) {
             // Array item.
-            NSMutableArray *array = (NSMutableArray *)_object;
+            NSMutableArray *array = (NSMutableArray *)object;
             NSInteger idx = [name integerValue];
             // Add null items to pad array to the required length.
             for (NSInteger j = [array count]; j < idx + 1; j++) {
@@ -285,10 +301,9 @@
         }
         else {
             // ...configuring an object which isn't a collection.
-            IFPropertyInfo *propInfo = [self infoForProperty:name];
             if ([propInfo isWriteable] && [propInfo isAssignableFrom:[value class]]) {
                 // Standard object property reference.
-                [_object setValue:value forKey:name];
+                [object setValue:value forKey:name];
             }
         }
     }
@@ -314,23 +329,29 @@
     return name;
 }
 
-- (IFPropertyInfo *)infoForProperty:(NSString *)propName {
-    IFPropertyInfo *info = [_typeInfo infoForProperty:propName];
-    if (!info && _isCollection) {
-        info = _collectionMemberTypeInfo;
-    }
-    return info;
-}
+@end
 
-- (IFPropertyInfo *)getCollectionMemberTypeInfoForProperty:(NSString *)propName {
-    if ([_object conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
-        __unsafe_unretained Class memberClass = [(id<IFIOCTypeInspectable>)_object memberClassForCollection:propName];
-        if (memberClass) {
-            return [[IFPropertyInfo alloc] initWithClass:memberClass];
+@implementation IFCollectionTypeInfo
+
+- (id)initWithCollection:(id)collection propName:(NSString *)propName {
+    self = [super init];
+    if (self) {
+        if ([collection conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
+            __unsafe_unretained Class memberClass = [(id<IFIOCTypeInspectable>)collection memberClassForCollection:propName];
+            if (memberClass) {
+                _memberTypeInfo = [[IFPropertyInfo alloc] initWithClass:memberClass];
+            }
+        }
+        if (!_memberTypeInfo) {
+            // Can't resolve any class for the collection's members, use an all-type info.
+            _memberTypeInfo = [IFPropertyInfo new];
         }
     }
-    // Can't resolve any class for the collection's members, return an all-type info.
-    return [IFPropertyInfo new];
+    return self;
+}
+
+- (IFPropertyInfo *)infoForProperty:(NSString *)propName {
+    return _memberTypeInfo;
 }
 
 @end

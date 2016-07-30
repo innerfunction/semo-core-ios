@@ -171,6 +171,8 @@
 		07BD8B5B1C7654ED0058D7A8 /* SemoCore-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8B551C7654ED0058D7A8 /* SemoCore-Prefix.pch */; };
 		07BD8B5C1C7654ED0058D7A8 /* SemoCore.h in Headers */ = {isa = PBXBuildFile; fileRef = 07BD8B561C7654ED0058D7A8 /* SemoCore.h */; };
 		07BD8B5D1C7654ED0058D7A8 /* SemoCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BD8B571C7654ED0058D7A8 /* SemoCore.m */; };
+		07C956441D4D1826004F4084 /* IFJSONData.h in Headers */ = {isa = PBXBuildFile; fileRef = 07C956421D4D1825004F4084 /* IFJSONData.h */; };
+		07C956451D4D1826004F4084 /* IFJSONData.m in Sources */ = {isa = PBXBuildFile; fileRef = 07C956431D4D1826004F4084 /* IFJSONData.m */; };
 		07CD9B951C96F39B00427681 /* IFPendingNamed.h in Headers */ = {isa = PBXBuildFile; fileRef = 07CD9B931C96F39B00427681 /* IFPendingNamed.h */; };
 		07CD9B961C96F39B00427681 /* IFPendingNamed.m in Sources */ = {isa = PBXBuildFile; fileRef = 07CD9B941C96F39B00427681 /* IFPendingNamed.m */; };
 /* End PBXBuildFile section */
@@ -346,6 +348,8 @@
 		07BD8B571C7654ED0058D7A8 /* SemoCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SemoCore.m; sourceTree = SOURCE_ROOT; };
 		07BD8B581C7654ED0058D7A8 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = SOURCE_ROOT; };
 		07BD8B641C7658AF0058D7A8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		07C956421D4D1825004F4084 /* IFJSONData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFJSONData.h; path = com_innerfunction_semo/IFJSONData.h; sourceTree = SOURCE_ROOT; };
+		07C956431D4D1826004F4084 /* IFJSONData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFJSONData.m; path = com_innerfunction_semo/IFJSONData.m; sourceTree = SOURCE_ROOT; };
 		07CD9B931C96F39B00427681 /* IFPendingNamed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IFPendingNamed.h; path = com_innerfunction_semo/IFPendingNamed.h; sourceTree = SOURCE_ROOT; };
 		07CD9B941C96F39B00427681 /* IFPendingNamed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IFPendingNamed.m; path = com_innerfunction_semo/IFPendingNamed.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -453,6 +457,8 @@
 				07A9E5331C836B6500AB32A0 /* IFMessage.m */,
 				07A9E5361C836B8400AB32A0 /* IFMessageRouter.h */,
 				07A9E5381C836CC800AB32A0 /* IFMessageReceiver.h */,
+				07C956421D4D1825004F4084 /* IFJSONData.h */,
+				07C956431D4D1826004F4084 /* IFJSONData.m */,
 			);
 			name = com.innerfunction.semo;
 			sourceTree = "<group>";
@@ -704,6 +710,7 @@
 				07BD8AF01C7653AD0058D7A8 /* IFLocals.h in Headers */,
 				07BD8B441C7653FC0058D7A8 /* SWRevealViewController.h in Headers */,
 				07BD8AA11C76537E0058D7A8 /* IFTableViewController.h in Headers */,
+				07C956441D4D1826004F4084 /* IFJSONData.h in Headers */,
 				07BD8B221C7653F00058D7A8 /* ContextFilterLogFormatter.h in Headers */,
 				072DA4A61C848D680023FAEC /* JTSSimpleImageDownloader.h in Headers */,
 				07BD8A821C7653670058D7A8 /* IFNewScheme.h in Headers */,
@@ -924,6 +931,7 @@
 				072DA4A71C848D680023FAEC /* JTSSimpleImageDownloader.m in Sources */,
 				072DA4A51C848D680023FAEC /* JTSImageViewController.m in Sources */,
 				07BD8A7F1C7653670058D7A8 /* IFMakeScheme.m in Sources */,
+				07C956451D4D1826004F4084 /* IFJSONData.m in Sources */,
 				07BD8A831C7653670058D7A8 /* IFNewScheme.m in Sources */,
 				07BD8B471C7653FC0058D7A8 /* UIView+Toast.m in Sources */,
 				07BD8A4F1C7653400058D7A8 /* IFContainer.m in Sources */,

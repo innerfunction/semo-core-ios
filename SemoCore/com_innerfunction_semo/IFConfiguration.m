@@ -22,6 +22,7 @@
 #import "IFTypeConversions.h"
 #import "NSDictionary+IF.h"
 #import "UIColor+IF.h"
+#import "IFJSONData.h"
 #import "IFLogging.h"
 
 #define ValueOrDefault(v,dv)    (v == nil ? dv : v)
@@ -345,6 +346,17 @@
 
 - (id)getNatualValue:(NSString *)keyPath {
     return [self getValue:keyPath asRepresentation:@"natural"];
+}
+
+- (id)getValueAsJSONData:(NSString *)keyPath {
+    id value = [self getValue:keyPath asRepresentation:@"raw"];
+    if ([value isKindOfClass:[NSDictionary class]]) {
+        value = [[IFJSONObject alloc] initWithDictionary:(NSDictionary *)value];
+    }
+    else if ([value isKindOfClass:[NSArray class]]) {
+        value = [[IFJSONArray alloc] initWithArray:(NSArray *)value];
+    }
+    return value;
 }
 
 - (NSArray *)getValueNames {

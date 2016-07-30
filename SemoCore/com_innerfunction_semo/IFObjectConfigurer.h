@@ -29,27 +29,8 @@
 @interface IFObjectConfigurer : NSObject {
     /// The object container.
     IFContainer *_container;
-    /// The object's property type info.
-    IFTypeInfo *_typeInfo;
-    /// If the object being configured is a collection (i.e. a dictionary or array) then
-    /// this var contains the type hint for its members.
-    IFPropertyInfo *_collectionMemberTypeInfo;
-    /// The key-path to the object's configuration.
-    NSString *_keyPath;
-    /// A flag indicating whether the object being configured is a collection.
-    BOOL _isCollection;
 }
 
-/// The object being configured.
-@property (nonatomic, strong) id object;
-
-/**
- * Initialize the configurer with the object to configure.
- * @param object    The object being configured.
- * @param container The object container.
- * @param keyPath   The key-path to the object's configuration.
- */
-- (id)initWithObject:(id)object inContainer:(IFContainer *)container keyPath:(NSString *)keyPath;
 /**
  * Initialize a container configurer.
  * A container is considered a collection (i.e. of named objects) with a default collection
@@ -60,19 +41,42 @@
 /// Perform the object configuration.
 - (void)configureWith:(IFConfiguration *)configuration;
 /**
+ * Configure a single object.
+ * @param object            The object to configure.
+ * @param configuration     The object's configuration.
+ * @param typeInfo          Type information for all the object's properties.
+ * @param kpPrefix          The key path prefix; used for logging.
+ */
+- (void)configureObject:(id)object
+      withConfiguration:(IFConfiguration *)configuration
+               typeInfo:(IFTypeInfo *)typeInfo
+          keyPathPrefix:(NSString *)kpPrefix;
+/**
  * Build a property value from the specified object configuration.
+ * @param object        The object being configured.
  * @param propName      The name of the property to configure.
  * @param configuration The object configuration; should contain the property configuration.
+ * @param propInfo      Property type information for the object.
+ * @param kpRef         A key path reference for the object; used for logging.
  * @return The value the property was configured with.
  */
-- (id)buildValueForProperty:(NSString *)propName withConfiguration:(IFConfiguration *)configuration;
+- (id)buildValueForObject:(id)object
+                 property:(NSString *)propName
+        withConfiguration:(IFConfiguration *)configuration
+                 propInfo:(IFPropertyInfo *)propInfo
+               keyPathRef:(NSString *)kpRef;
 /**
  * Inject a property value into the object.
- * @param value The value resolved from the object configuration.
- * @param name  The name of the property to inject.
+ * @param object    The object being configured.
+ * @param value     The value resolved from the object configuration.
+ * @param name      The name of the property to inject.
+ * @param propInfo  Property type information for the object.
  * @return The actual value injected into the property. May differ from configuration value if
  * e.g. the value was an IOCProxy.
  */
-- (id)injectValue:(id)value intoProperty:(NSString *)name;
+- (id)injectIntoObject:(id)object
+                 value:(id)value
+          intoProperty:(NSString *)name
+              propInfo:(IFPropertyInfo *)propInfo;
 
 @end

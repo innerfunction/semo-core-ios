@@ -95,6 +95,12 @@
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath;
 /// Return the value at _keyPath_ as a configuration. Return _defaultValue_ if _keyPath_ returns nil.
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath defaultValue:(IFConfiguration *)defaultValue;
+/**
+ * Return the value as JSON data.
+ * This will be essentially the raw data read from the configuration file. JSON object or array values
+ * will be returned as instances of JSONObject or JSONArray as appropriate (see JSONData.h).
+ */
+- (id)getValueAsJSONData:(NSString *)keyPath;
 
 /**
  * Return the property value at _keyPath_ as a list of configurations.

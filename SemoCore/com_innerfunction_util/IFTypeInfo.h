@@ -80,6 +80,7 @@
  * Returns _nil_ if the property name isn't found.
  */
 - (IFPropertyInfo *)infoForProperty:(NSString *)propName;
+
 /**
  * Get type information for the specified object. This method will cache new type info instances
  * under the object's class name.
