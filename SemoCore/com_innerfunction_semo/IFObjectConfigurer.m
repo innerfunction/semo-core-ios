@@ -73,17 +73,19 @@
     if ([object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
         [(id<IFIOCContainerAware>)object beforeIOCConfiguration:configuration];
     }
+    // Iterate over each property name defined in the configuration.
     NSArray *valueNames = [configuration getValueNames];
     for (NSString *name in valueNames) {
+        // Normalize the property name.
         NSString *propName = [self normalizePropertyName:name];
         if (propName) {
-            
+            // Get type info for the property.
             IFPropertyInfo *propInfo = [typeInfo infoForProperty:propName];
             if (!propInfo) {
                 // If no type info then can't process this property any further.
                 continue;
             }
-            
+            // Generate a key path reference for the property.
             NSString *kpRef;
             if (kpPrefix) {
                 kpRef = [NSString stringWithFormat:@"%@.%@", kpPrefix, propName];
@@ -91,7 +93,6 @@
             else {
                 kpRef = propName;
             }
-
             // Build a property value from the configuration.
             id value = [self buildValueForObject:object
                                         property:propName
@@ -231,9 +232,8 @@
                 // If we now have either an in-place or inferred type value by this point, then
                 // continue by configuring the object with its configuration.
                 if (value != nil) {
-                    
                     // If value is an NSDictionary or NSArray then get a mutable copy.
-                    // Also, get type information for the object.
+                    // Also, whilst at it - get type information for the object.
                     IFTypeInfo *typeInfo;
                     if ([value isKindOfClass:[NSDictionary class]]) {
                         value = [(NSDictionary *)value mutableCopy];
@@ -246,12 +246,10 @@
                     else {
                         typeInfo = [IFTypeInfo typeInfoForObject:object];
                     }
-                    
                     // Configure the value.
                     [self configureObject:value withConfiguration:valueConfig typeInfo:typeInfo keyPathPrefix:kpRef];
                 }
-                // If we get this far without a value then try returning the raw configuration
-                // data.
+                // If we get this far without a value then try returning the raw configuration data.
                 else {
                     value = valueConfig.sourceData;
                 }
