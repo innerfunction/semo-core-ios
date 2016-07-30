@@ -91,6 +91,7 @@
         self.data = [config.data extendWith:mixin.data];
         self.context = [config.context extendWith:mixin.context];
         self.root = parent.root;
+        self.sourceData = parent.sourceData;
         self.uriHandler = parent.uriHandler;
         [self initializeContext];
     }
@@ -107,6 +108,7 @@
 }
 
 - (void)setData:(id)data {
+    _sourceData = data;
     if ([data isKindOfClass:[NSArray class]]) {
         _data = [[IFArrayBackedDictionary alloc] initWithArray:(NSArray *)data];
     }
@@ -212,68 +214,62 @@
             break;
         }
     }
-    // Perform type conversions according to the requested representation.
-    // * 'bare' representations don't need to be converted.
-    // * 'configuration' reprs can be constructed from collections or resources.
-    // * Resource instances can be used to perform the requested representation conversion.
-    // * Otherwise use the type conversions to resolve the representation.
-    if (![@"bare" isEqualToString:representation]) {
-
-        if ([@"configuration" isEqualToString:representation]
-            || [@"maybe-configuration" isEqualToString:representation]) {
-
-            id bareValue = value;
     
-            // If value isn't already a configuration then try converting to one.
-            if (![value isKindOfClass:[IFConfiguration class]]) {
-
-                IFResource *valueRsc = nil;
-                if ([value isKindOfClass:[IFResource class]]) {
-                    valueRsc = (IFResource *)value;
-                    value = [valueRsc asJSONData];
-                }
-
-                // If value is an array then convert to an array backed dictionary.
-                if ([value isKindOfClass:[NSArray class]]) {
-                    value = [[IFArrayBackedDictionary alloc] initWithArray:(NSArray *)value];
-                }
-                // If value is a dictionary then construct a new config using the values in that dictionary.
-                if ([value isKindOfClass:[NSDictionary class]]) {
-                    IFConfiguration *configValue = [[IFConfiguration alloc] initWithData:value parent:self];
-                    // NOTE When the configuration data is sourced from a resource, then the following properties
-                    // need to be different from when the data is found directly in the configuration:
-                    // * root: The resource defines a new context for # refs, so root needs to point to the new config.
-                    // * uriHandler: The resource's handler needs to be used, so that any relative URIs within the
-                    //   resource data resolve correctly.
-                    if (valueRsc) {
-                        configValue->_root = configValue;
-                        configValue.uriHandler = valueRsc.uriHandler;
-                    }
-                    value = configValue;
-                }
-                // Else the value can't be resolved to a configuration, return nil.
-                else {
-                    value = nil;
-                }
+    // Convert the resolved value to the required representation:
+    // * raw: The resolved value is return unchanged.
+    // * configuration: Map or List values will be converted, otherwise null is returned;
+    // * natural: Map or List values will be promoted to configurations, otherwise the
+    //   value is returned unchanged;
+    // * all other representations are passed to TypeConversions.
+    if ([@"raw" isEqualToString:representation]);
+    else if ([@"configuration" isEqualToString:representation] || [@"natural" isEqualToString:representation]) {
+        // If value isn't already a configuration then try promoting to one.
+        if ( ![value isKindOfClass:[IFConfiguration class]]) {
+            id dataValue = value;
+            IFResource *valueRsc = nil;
+            // If value is a resource then try converting to JSON data.
+            if ([value isKindOfClass:[IFResource class]]) {
+                valueRsc = (IFResource *)value;
+                dataValue = [valueRsc asJSONData];
             }
-            
-            // Wrap in a maybe if we that is what is wanted.
-            if ([@"maybe-configuration" isEqualToString:representation]) {
-                value = [[IFMaybeConfiguration alloc] initWithConfiguration:value bare:bareValue];
+            // If value isn't a configuration by this point then promote to a new config,
+            // providing data is one of the supported types.
+            BOOL isConfigDataType = [dataValue isKindOfClass:[NSDictionary class]]
+                                 || [dataValue isKindOfClass:[NSArray class]];
+            if (isConfigDataType) {
+                IFConfiguration *configValue = [[IFConfiguration alloc] initWithData:dataValue parent:self];
+                // NOTE When the configuration data is sourced from a resource, then the
+                // following properties need to be different from when the data is found
+                // directly in the configuration:
+                // * root: The resource defines a new context for # refs, so root needs to
+                //   point to the new config.
+                // * uriHandler: The resource's handler needs to be used, so that any
+                //   relative URIs within the resource data resolve correctly.
+                if (valueRsc != nil) {
+                    configValue.root = configValue;
+                    configValue.uriHandler = valueRsc.uriHandler;
+                }
+                value = [configValue normalize];
+            }
+            // Else the value can't be resolved to a configuration; return null if a
+            // configuration representation was required; keep the resolved value for
+            // natural representations.
+            else if ([@"configuration" isEqualToString:representation]) {
+                value = nil;
             }
         }
-        else if ([value isKindOfClass:[IFResource class]]) {
-            value = [(IFResource*)value asRepresentation:representation];
-        }
-        else if (![@"json" isEqualToString:representation]) {
-            value = [IFTypeConversions value:value asRepresentation:representation];
-        }
+    }
+    else if ([value isKindOfClass:[IFResource class]]) {
+        value = [(IFResource *)value asRepresentation:representation];
+    }
+    else {
+        value = [IFTypeConversions value:value asRepresentation:representation];
     }
     return value;
 }
 
 - (BOOL)hasValue:(NSString *)keyPath {
-    return [self getValue:keyPath asRepresentation:@"bare"] != nil;
+    return [self getValue:keyPath asRepresentation:@"raw"] != nil;
 }
 
 - (NSString *)getValueAsString:(NSString *)keyPath {
@@ -344,23 +340,15 @@
 }
 
 - (id)getValue:(NSString *)keyPath {
-    return [self getValue:keyPath asRepresentation:@"bare"];
+    return [self getValue:keyPath asRepresentation:@"raw"];
+}
+
+- (id)getNatualValue:(NSString *)keyPath {
+    return [self getValue:keyPath asRepresentation:@"natural"];
 }
 
 - (NSArray *)getValueNames {
     return [_data allKeys];
-}
-
-- (IFValueType)getValueType:(NSString *)keyPath {
-    id value = [self getValue:keyPath asRepresentation:@"json"];
-    if (value == nil)                           return IFValueTypeUndefined;
-    // NOTE: Can't reliably detect boolean here, as boolean values are represented using NSNumber.
-    if ([value isKindOfClass:[NSNumber class]]) return IFValueTypeNumber;
-    if ([value isKindOfClass:[NSString class]]) return IFValueTypeString;
-    if ([value isKindOfClass:[NSArray class]])  return IFValueTypeList;
-    if ([value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[IFConfiguration class]])
-                                                return IFValueTypeObject;
-    return IFValueTypeOther;
 }
 
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath {
@@ -371,14 +359,11 @@
     return ValueOrDefault([self getValueAsConfiguration:keyPath], defaultValue);
 }
 
-- (IFMaybeConfiguration *)getValueAsMaybeConfiguration:(NSString *)keyPath {
-    return [self getValue:keyPath asRepresentation:@"maybe-configuration"];
-}
-
 - (NSArray *)getValueAsConfigurationList:(NSString *)keyPath {
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    if ([self getValueType:keyPath] == IFValueTypeList) {
-        NSArray *valuesArray = (NSArray *)[self getValue:keyPath];
+    id value = [self getValue:keyPath];
+    if ([value isKindOfClass:[NSArray class]]) {
+        NSArray *valuesArray = (NSArray *)value;
         if (![valuesArray isKindOfClass:[NSArray class]]) {
             valuesArray = [self getValue:keyPath asRepresentation:@"json"];
         }
@@ -453,8 +438,8 @@
     NSMutableArray *hierarchy = [NSMutableArray new];
     IFConfiguration *current = [self flatten];
     [hierarchy addObject:current];
-    while ([current getValueType:@"*extends"] == IFValueTypeObject) {
-        current = [[current getValueAsConfiguration:@"*extends"] flatten];
+    while ((current = [current getValueAsConfiguration:@"*extends"]) != nil) {
+        current = [current flatten];
         if ([hierarchy containsObject:current]) {
             // Extension loop detected, stop extending the config.
             break;
@@ -467,6 +452,7 @@
     for (IFConfiguration *config in [hierarchy reverseObjectEnumerator]) {
         result = [[IFConfiguration alloc] initWithConfiguration:result mixin:config parent:result];
     }
+    result.sourceData = _sourceData;
     result.root = NormalizedRootRef(result);
     result.uriHandler = _uriHandler;
     return result;
@@ -475,6 +461,7 @@
 - (IFConfiguration *)configurationWithKeysExcluded:(NSArray *)excludedKeys {
     NSDictionary *data = [_data dictionaryWithKeysExcluded:excludedKeys];
     IFConfiguration *result = [[IFConfiguration alloc] initWithData:data];
+    result.sourceData = _sourceData;
     result.root = NormalizedRootRef(result);
     result.context = _context;
     result.uriHandler = _uriHandler;
@@ -528,30 +515,6 @@ static IFConfiguration *emptyConfiguaration;
         [keys addObject:key];
     }
     return [keys objectEnumerator];
-}
-
-@end
-
-@implementation IFMaybeConfiguration
-
-- (id)initWithConfiguration:(id)configuration bare:(id)bare {
-    self = [super init];
-    self.configuration = [configuration normalize];
-    self.bare = bare;
-    if ([bare isKindOfClass:[IFResource class]]) {
-        self.data = [(IFResource *)bare asJSONData];
-    }
-    else {
-        self.data = bare;
-    }
-    return self;
-}
-
-- (id)bare {
-    if ([_bare isMemberOfClass:[IFArrayBackedDictionary class]]) {
-        return ((IFArrayBackedDictionary *)_bare).array;
-    }
-    return _bare;
 }
 
 @end

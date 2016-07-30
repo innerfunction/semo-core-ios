@@ -18,17 +18,6 @@
 
 #import <UIKit/UIKit.h>
 
-/// An enumeration of standard value types. These loosely correspond to the basic JSON types.
-typedef enum {
-    IFValueTypeUndefined,
-    IFValueTypeBoolean,
-    IFValueTypeNumber,
-    IFValueTypeString,
-    IFValueTypeList,
-    IFValueTypeObject,
-    IFValueTypeOther
-} IFValueType;
-
 /**
  * A protocol for providing access to different representations of an underlaying value.
  * Values are referenced by key path.
@@ -42,8 +31,6 @@ typedef enum {
 - (BOOL)hasValue:(NSString *)keyPath;
 /// Return a list of the top-level names in the values object.
 - (NSArray *)getValueNames;
-/// Return the type of the value at the specified key path.
-- (IFValueType)getValueType:(NSString *)keyPath;
 /// Return a value as a string.
 - (NSString *)getValueAsString:(NSString *)keyPath;
 /// Return a value as a string. Return the default value if no value exists at the specified path.

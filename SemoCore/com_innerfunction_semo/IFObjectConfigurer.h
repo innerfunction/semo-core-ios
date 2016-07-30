@@ -60,12 +60,12 @@
 /// Perform the object configuration.
 - (void)configureWith:(IFConfiguration *)configuration;
 /**
- * Configure a single property from the specified object configuration.
+ * Build a property value from the specified object configuration.
  * @param propName      The name of the property to configure.
  * @param configuration The object configuration; should contain the property configuration.
  * @return The value the property was configured with.
  */
-- (id)configureProperty:(NSString *)propName withConfiguration:(IFConfiguration *)configuration;
+- (id)buildValueForProperty:(NSString *)propName withConfiguration:(IFConfiguration *)configuration;
 /**
  * Inject a property value into the object.
  * @param value The value resolved from the object configuration.

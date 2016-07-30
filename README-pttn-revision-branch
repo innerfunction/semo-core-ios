@@ -1,0 +1,5 @@
+The pttn-revision branch contains updates tracking rewrites to the core DI code in pttn-and.
+
+Note that this branch is a fork from static-lib-version.
+
+The eventual plan is to use this branch (with appropriate name changes, e.g. to file group names) as the initial code for the new pttn-ios repo https://github.com/innerfunction/pttn-ios

@@ -76,10 +76,14 @@
     NSArray *valueNames = [configuration getValueNames];
     for (NSString *name in valueNames) {
         NSString *propName = [self normalizePropertyName:name];
-        if (!propName) {
-            continue;
+        if (propName) {
+            // Build a property value from the configuration.
+            id value = [self buildValueForProperty:propName withConfiguration:configuration];
+            // If there is a value by this stage then inject into the object.
+            if (value != nil) {
+                value = [self injectValue:value intoProperty:propName];
+            }
         }
-        [self configureProperty:propName withConfiguration:configuration];
     }
     // Post configuration.
     if ([_object conformsToProtocol:@protocol(IFIOCContainerAware)]) {
@@ -94,12 +98,19 @@
     [_container doPostConfiguration:_object];
 }
 
-- (id)configureProperty:(NSString *)propName withConfiguration:(IFConfiguration *)configuration {
+- (id)buildValueForProperty:(NSString *)propName withConfiguration:(IFConfiguration *)configuration {
     id value = nil;
+    
     IFPropertyInfo *propInfo = [self infoForProperty:propName];
+    // If no property type info then can't process any further, return empty handed.
     if (!propInfo) {
         return value;
     }
+    
+    // First, check to see if the property belongs to one of the standard types used to
+    // represent primitive configurable values. These values are different to other
+    // non-primitive types, in that (1) it's generally possible to convert values between them,
+    // and (2) the code won't recursively perform any additional configuration on the values.
     if (![propInfo isId]) {
         // Primitives and core types.
         if ([propInfo isBoolean]) {
@@ -132,110 +143,86 @@
         else if ([propInfo isMemberOrSubclassOf:[IFConfiguration class]]) {
             value = [configuration getValueAsConfiguration:propName];
         }
+        else if ([propInfo isMemberOfClass:[IFJSONObject class]] || [propInfo isMemberOfClass:[IFJSONArray class]]) {
+            value = [configuration getValueAsJSONData:propName];
+        }
     }
+    
+    // If value is still nil then the property is not a primitive or JSON data type. Try to
+    // resolve a new value from the supplied configuration.
+    // The configuration may contain a mixture of object definitions and fully instantiated
+    // objects. The configuration's 'natural' representation will distinguish between these,
+    // return a Configuration instance for object definitions and the actual object instance
+    // otherwise.
+    // When an object definition is returned, the property value is resolved according to the
+    // following order of precedence:
+    // 1. A configuration which supplies an instantiation hint - e.g. *type, *ios-class or
+    //    *factory - and which successfully yields an object instance always takes precedence
+    //    over other possible values;
+    // 2. Next, any in-place value found by reading from the object property being configured;
+    // 3. Finally, a value created by attempting to instantiate the declared type of the
+    //    property being configured (i.e. the inferred type).
     if (value == nil) {
-        IFMaybeConfiguration *maybeConfig = [configuration getValueAsMaybeConfiguration:propName];
-        IFConfiguration *valueConfig = maybeConfig.configuration;
-        if (valueConfig) {
-            // Flag indicating whether the resolved value should be configured in turn. Default is
-            // yes, but some values will skip the configuration step.
-            BOOL configureValue = YES;
+        // Fetch the configuration value's natural representation.
+        value = [configuration getNatualValue:propName];
+        if ([value isKindOfClass:[IFConfiguration class]]) {
+            // The natural value contains a (potential) object definition, so attempt to
+            // resolve the value from it.
+            IFConfiguration *valueConfig = (IFConfiguration *)value;
             
-            // If we have an item configuration with an instantiation hint then try using to build an object.
-            // Note that instantiation hints take priority over in-place values, i.e. a configuration with
-            // an instantiation hint will force build a new value even if there is already an in-place value.
-            id factory = [valueConfig getValue:@"*factory"];
-            if (factory) {
-                // The configuration specifies an object factory, so resolve the factory object and attempt
-                // using it to instantiate the object.
-                if ([factory conformsToProtocol:@protocol(IFIOCObjectFactory)]) {
-                    value = [(id<IFIOCObjectFactory>)factory buildObjectWithConfiguration:valueConfig
-                                                                              inContainer:_container
-                                                                               identifier:propName];
-                    [_container doPostInstantiation:value];
-                    [_container doPostConfiguration:value];
+            // Try asking the container to build a new object using the configuration. This
+            // will only work if the configuration contains an instantiation hint (e.g. *type,
+            // *factory etc.) and will return a non-null, fully-configured object if successful.
+            value = [_container buildObjectWithConfiguration:valueConfig identifier:KeyPath(propName)];
+            if (value == nil) {
+                // Couldn't build a value, so see if the object already has a value in-place.
+                @try {
+                    value = [_object valueForKey:propName];
                 }
-                else {
-                    DDLogError(@"%@: Invalid *factory class '%@', referenced at %@", LogTag, [factory class], KeyPath(propName));
+                @catch (NSException *e) {
+                    if (_isCollection && [@"NSUnknownKeyException" isEqualToString:e.name]) {
+                        // Ignore: Can happen when e.g. configuring the container with named objects which
+                        // aren't properties of the container.
+                    }
+                    else {
+                        DDLogError(@"%@: Reading %@ %@", LogTag, KeyPath(propName), e);
+                    }
                 }
-                // NOTE that factory instantiated objects do not go through the standard dependency-injection
-                // configuration process (in the following 'else' block).
-            }
-            else {
-                // Try instantiating object from type or class info.
-                value = [_container instantiateObjectWithConfiguration:valueConfig identifier:propName];
-                // Unable to instantiate a value, check for an in-place value.
-                if (value == nil) {
+                if (value != nil) {
+                    // Apply configuration proxy wrapper, if any defined, to the in-place value.
+                    value = [IFContainer applyConfigurationProxyWrapper:value];
+                }
+                else if (![propInfo isId]) {
+                    // No in-place value, so try inferring a value type from the property
+                    // information, and then try to instantiate that type as the new value.
+                    // (Note that the container method will return a configuration proxy for
+                    // those classes which require one.)
+                    __unsafe_unretained Class propClass = [propInfo getPropertyClass];
+                    NSString *className = NSStringFromClass(propClass);
                     @try {
-                        value = [_object valueForKey:propName];
+                        value = [_container newInstanceForClassName:className withConfiguration:valueConfig];
                     }
                     @catch (NSException *e) {
-                        if (_isCollection && [@"NSUnknownKeyException" isEqualToString:e.name]) {
-                            // Ignore: Can happen when e.g. configuring the container with named objects which
-                            // aren't properties of the container.
-                        }
-                        else {
-                            DDLogError(@"%@: Reading %@ %@", LogTag, KeyPath(propName), e);
-                        }
-                    }
-                    // If value is a collection then we need a mutable copy before progressing.
-                    if ([value isKindOfClass:[NSArray class]]) {
-                        value = [(NSArray *)value mutableCopy];
-                    }
-                    else if ([value isKindOfClass:[NSDictionary class]]) {
-                        value = [(NSDictionary *)value mutableCopy];
-                    }
-                    if (value != nil) {
-                        // Apply configuration proxy wrapper, if any defined.
-                        value = [IFContainer applyConfigurationProxyWrapper:value];
+                        DDLogInfo(@"%@: Error creating new instance of inferred type %@: %@", LogTag, className, e );
                     }
                 }
-
-                // If we get to this point and value is still nil then the following things are true:
-                // a. The value config doesn't contain any instantiation hint.
-                // b. The value config data is a collection (JSON object or list)
-                // At this point we now decide whether to use the plain JSON data as the property value.
-                // We do this if all of the following are true:
-                // 1. The property is a collection type (NSArray or NSDictionary).
-                // 2. The object owning the property implements IFIOCTypeInspectable
-                // 3. And indicates that the property is a data collection.
-                // Note that this is done as an efficiency measure.
-                BOOL isArrayProp = [propInfo isMemberOrSubclassOf:[NSArray class]];
-                BOOL isDictProp  = !isArrayProp && [propInfo isMemberOrSubclassOf:[NSDictionary class]];
-                if (value == nil) {
-                    BOOL isCollectionProp = (isArrayProp || isDictProp);
-                    if (isCollectionProp && [_object conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
-                        if ([(id<IFIOCTypeInspectable>)_object isDataCollection:propName]) {
-                            value = maybeConfig.data;
-                            // The value should be treated as plain data (i.e. contains no configurables) so
-                            // skip the configuration step.
-                            configureValue = NO;
-                        }
+                // If we now have either an in-place or inferred type value by this point, then
+                // continue by configuring the object with its configuration.
+                if (value != nil) {
+                    // Maps are configured the same as object instances, but properties are
+                    // mapped to map entries instead of properties of the map class.
+                    // Note that by this point, lists are presented as maps (see the
+                    // IFListIOCProxy class below).
+                    
+                    /* (Android equivalent code)
+                    Class<?> memberType = null;
+                    if( value instanceof Map ) {
+                        memberType = properties.getMapPropertyValueTypeParameter( propName );
                     }
-                }
-
-                // Couldn't find an in-place value, so try instantiating a value.
-                if (value == nil) {
-                    if (isArrayProp) {
-                        value = [NSMutableArray new];
-                    }
-                    else if (isDictProp) {
-                        value = [NSMutableDictionary new];
-                    }
-                    else if (![propInfo isId]) {
-                        // Try using the property info as a type hint. (But only if a specific type).
-                        __unsafe_unretained Class propClass = [propInfo getPropertyClass];
-                        NSString *className = NSStringFromClass(propClass);
-                        @try {
-                            value = [_container newInstanceForClassName:className withConfiguration:valueConfig];
-                        }
-                        @catch (NSException *e) {
-                            DDLogInfo(@"%@: Error creating new instance of inferred type %@: %@", LogTag, className, e );
-                        }
-                    }
-                }
-                // If we have a value now and it should be configured then create a configurer for it.
-                if (value != nil && configureValue) {
+                    // Recursively configure the value.
+                    configure( value, memberType, valueConfig, getKeyPath( kpPrefix, propName ) );
+                    */
+                    
                     IFObjectConfigurer *configurer = [[IFObjectConfigurer alloc] initWithObject:value
                                                                                     inContainer:_container
                                                                                         keyPath:KeyPath(propName)];
@@ -245,17 +232,15 @@
                     }
                     // Configure the value.
                     [configurer configureWith:valueConfig];
+
+                }
+                // If we get this far without a value then try returning the raw configuration
+                // data.
+                else {
+                    value = valueConfig.sourceData;
                 }
             }
         }
-        // If still no value by this stage then try using whatever underlying value is in the maybe config.
-        if (value == nil) {
-            value = maybeConfig.bare;
-        }
-    }
-    // If there is a value by this stage then inject into the object.
-    if (value != nil) {
-        value = [self injectValue:value intoProperty:propName];
     }
     return value;
 }

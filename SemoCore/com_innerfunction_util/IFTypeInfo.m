@@ -54,7 +54,7 @@
             _propertyClass = NSClassFromString(className);
         }
         
-        // Try extracting protocl info, in format as @"<ProtocolName>"
+        // Try extracting protocol info, assuming format @"<ProtocolName>"
         _propertyProtocol = nil;
         if ([_propertyType hasPrefix:@"@\"<"]) {
             NSRange range = NSMakeRange(3, [_propertyType length] - (2 + 3));
