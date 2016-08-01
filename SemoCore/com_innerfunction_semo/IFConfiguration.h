@@ -76,6 +76,17 @@
 - (id)initWithData:(id)data uriHandler:(id<IFURIHandler>)uriHandler;
 
 /**
+ * Try to convert a value to a configuration object.
+ * This will work for the following argument types:
+ * - IFConfiguration;
+ * - Collection types, i.e. NSDictionary and NSArray members;
+ * - IFResource, if the asJSONData method returns a collection type.
+ * @return If the argument can be converted then returns a new IFConfiguration instance with the
+ * current configuration object as a parent; otherwise returns nil.
+ */
+- (IFConfiguration *)asConfiguration:(id)value;
+
+/**
  * Return the named representation of the configuration value and the specified key path.
  * @param keyPath The key path of the required value.
  * @param representation The name of the required representation.
@@ -83,13 +94,6 @@
  * using the named representation.
  */
 - (id)getValue:(NSString *)keyPath asRepresentation:(NSString*)representation;
-
-/**
- * Get a configuration value in its natural representation.
- * This will promote JSON data values to full configurations, but return other representations
- * unchanged.
- */
-- (id)getNatualValue:(NSString *)keyPath;
 
 /// Return the value at _keyPath_ as a configuration.
 - (IFConfiguration *)getValueAsConfiguration:(NSString *)keyPath;

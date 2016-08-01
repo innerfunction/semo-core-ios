@@ -210,13 +210,12 @@
     // 3. Finally, a value created by attempting to instantiate the declared type of the
     //    property being configured (i.e. the inferred type).
     if (value == nil) {
-        // Fetch the configuration value's natural representation.
-        value = [configuration getNatualValue:propName];
-        if ([value isKindOfClass:[IFConfiguration class]]) {
-            // The natural value contains a (potential) object definition, so attempt to
-            // resolve the value from it.
-            IFConfiguration *valueConfig = (IFConfiguration *)value;
-            
+        // Fetch the raw configuration data.
+        id rawValue = [configuration getValue:propName];
+        // Try converting the raw value to a configuration object.
+        IFConfiguration *valueConfig = [configuration asConfiguration:rawValue];
+        // If this works the try using it to resolve an actual property value.
+        if (valueConfig) {
             // Try asking the container to build a new object using the configuration. This
             // will only work if the configuration contains an instantiation hint (e.g. *type,
             // *factory etc.) and will return a non-null, fully-configured object if successful.
@@ -274,11 +273,14 @@
                     // Configure the value.
                     [self configureObject:value withConfiguration:valueConfig typeInfo:typeInfo keyPathPrefix:kpRef];
                 }
-                // If we get this far without a value then try returning the raw configuration data.
-                else {
-                    value = valueConfig.sourceData;
-                }
             }
+        }
+        if (value == nil) {
+            // If still no value at this point then the config either contains a realised value, or the config data can't
+            // be used to resolve a new value.
+            // TODO: Some way to convert raw values directly to required object types?
+            // e.g. [IFValueConversions convertValue:rawValue toPropertyType:propInfo]
+            value = rawValue;
         }
     }
     return value;

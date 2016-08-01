@@ -145,6 +145,42 @@
     }
 }
 
+- (IFConfiguration *)asConfiguration:(id)value {
+    // If value is already a configuration then return as is.
+    if ([value isKindOfClass:[IFConfiguration class]]) {
+        return (IFConfiguration *)value;
+    }
+    // Try to resolve configuration data from the argument.
+    id dataValue = value;
+    IFResource *valueRsc = nil;
+    // If value is a resource then try converting to JSON data.
+    if ([value isKindOfClass:[IFResource class]]) {
+        valueRsc = (IFResource *)value;
+        dataValue = [valueRsc asJSONData];
+    }
+    // If value isn't a configuration by this point then promote to a new config,
+    // providing data is one of the supported types.
+    BOOL isConfigDataType = [dataValue isKindOfClass:[NSDictionary class]]
+                         || [dataValue isKindOfClass:[NSArray class]];
+    if (isConfigDataType) {
+        IFConfiguration *configValue = [[IFConfiguration alloc] initWithData:dataValue parent:self];
+        // NOTE When the configuration data is sourced from a resource, then the
+        // following properties need to be different from when the data is found
+        // directly in the configuration:
+        // * root: The resource defines a new context for # refs, so root needs to
+        //   point to the new config.
+        // * uriHandler: The resource's handler needs to be used, so that any
+        //   relative URIs within the resource data resolve correctly.
+        if (valueRsc != nil) {
+            configValue.root = configValue;
+            configValue.uriHandler = valueRsc.uriHandler;
+        }
+        return [configValue normalize];
+    }
+    // Can't resolve a configuration so return nil.
+    return nil;
+}
+
 - (id)getValue:(NSString*)keyPath asRepresentation:(NSString *)representation {
     id value = _data;
     NSArray *components = [keyPath componentsSeparatedByString:@"."];
@@ -216,55 +252,19 @@
         }
     }
     
-    // Convert the resolved value to the required representation:
-    // * raw: The resolved value is return unchanged.
-    // * configuration: Map or List values will be converted, otherwise null is returned;
-    // * natural: Map or List values will be promoted to configurations, otherwise the
-    //   value is returned unchanged;
+    // If something other than the raw representation is required then try to convert:
+    // * configuration: See the asConfiguration: method;
     // * all other representations are passed to TypeConversions.
-    if ([@"raw" isEqualToString:representation]);
-    else if ([@"configuration" isEqualToString:representation] || [@"natural" isEqualToString:representation]) {
-        // If value isn't already a configuration then try promoting to one.
-        if ( ![value isKindOfClass:[IFConfiguration class]]) {
-            id dataValue = value;
-            IFResource *valueRsc = nil;
-            // If value is a resource then try converting to JSON data.
-            if ([value isKindOfClass:[IFResource class]]) {
-                valueRsc = (IFResource *)value;
-                dataValue = [valueRsc asJSONData];
-            }
-            // If value isn't a configuration by this point then promote to a new config,
-            // providing data is one of the supported types.
-            BOOL isConfigDataType = [dataValue isKindOfClass:[NSDictionary class]]
-                                 || [dataValue isKindOfClass:[NSArray class]];
-            if (isConfigDataType) {
-                IFConfiguration *configValue = [[IFConfiguration alloc] initWithData:dataValue parent:self];
-                // NOTE When the configuration data is sourced from a resource, then the
-                // following properties need to be different from when the data is found
-                // directly in the configuration:
-                // * root: The resource defines a new context for # refs, so root needs to
-                //   point to the new config.
-                // * uriHandler: The resource's handler needs to be used, so that any
-                //   relative URIs within the resource data resolve correctly.
-                if (valueRsc != nil) {
-                    configValue.root = configValue;
-                    configValue.uriHandler = valueRsc.uriHandler;
-                }
-                value = [configValue normalize];
-            }
-            // Else the value can't be resolved to a configuration; return null if a
-            // configuration representation was required; keep the resolved value for
-            // natural representations.
-            else if ([@"configuration" isEqualToString:representation]) {
-                value = nil;
-            }
+    if (![@"raw" isEqualToString:representation]) {
+        if ([@"configuration" isEqualToString:representation]) {
+            value = [self asConfiguration:value];
         }
-    }
-    else if ([value isKindOfClass:[IFResource class]]) {
-        value = [(IFResource *)value asRepresentation:representation];
-    }
-    else {
-        value = [IFTypeConversions value:value asRepresentation:representation];
+        else if ([value isKindOfClass:[IFResource class]]) {
+            value = [(IFResource *)value asRepresentation:representation];
+        }
+        else {
+            value = [IFTypeConversions value:value asRepresentation:representation];
+        }
     }
     return value;
 }
@@ -342,10 +342,6 @@
 
 - (id)getValue:(NSString *)keyPath {
     return [self getValue:keyPath asRepresentation:@"raw"];
-}
-
-- (id)getNatualValue:(NSString *)keyPath {
-    return [self getValue:keyPath asRepresentation:@"natural"];
 }
 
 - (id)getValueAsJSONData:(NSString *)keyPath {
