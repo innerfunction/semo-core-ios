@@ -34,7 +34,7 @@
 - (NSArray *)getValueNames {
     return [self allKeys];
 }
-
+/*
 // Return the type of the specified value.
 - (IFValueType)getValueType:(NSString *)name {
     id value = [self getValue:name];
@@ -45,7 +45,7 @@
     if ([value isKindOfClass:[NSArray class]])  return IFValueTypeList;
     return IFValueTypeObject;
 }
-
+*/
 // Resolve a string value on the row data.
 - (NSString *)getValueAsString:(NSString *)name {
     return [self getValueAsString:name defaultValue:nil];

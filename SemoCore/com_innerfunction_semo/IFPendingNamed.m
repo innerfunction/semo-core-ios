@@ -20,9 +20,9 @@
 
 @implementation IFPendingNamed
 
-- (void)setConfigurer:(IFObjectConfigurer *)configurer {
-    _configurer = configurer;
-    _objectKey = [NSValue valueWithNonretainedObject:configurer.object];
+- (void)setObject:(id)object {
+    _object = object;
+    _objectKey = [NSValue valueWithNonretainedObject:_object];
 }
 
 - (BOOL)hasWaitingConfigurer {
@@ -39,7 +39,10 @@
             value = nil;
         }
     }
-    [_configurer injectValue:value intoProperty:_key];
+    [_configurer injectIntoObject:_object value:value intoProperty:_key propInfo:_propInfo];
+    // IMPORTANT release unneeded refs.
+    _object = nil;
+    _propInfo = nil;
     return value;
 }
 

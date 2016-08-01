@@ -74,14 +74,14 @@
 }
 
 #pragma mark - IFIOCTypeInspectable
-
+/*
 - (BOOL)isDataCollection:(NSString *)propertyName {
     if ([@"content" isEqualToString:propertyName]) {
         return YES;
     }
     return NO;
 }
-
+*/
 - (Class)memberClassForCollection:(NSString *)propertyName {
     if ([@"cellFactoriesByDisplayMode" isEqualToString:propertyName]) {
         return [IFTableViewCellFactory class];
@@ -119,11 +119,13 @@
         data = (NSArray *)content;
     }
     else if ([content isKindOfClass:[IFResource class]]) {
+        // TODO Does this ever happen? Won't a resource be converted to JSON data by the object configurer?
         IFResource *resource = (IFResource *)content;
         id jsonData = [resource asJSONData];
         if ([jsonData isKindOfClass:[NSArray class]]) {
             data = (NSArray *)jsonData;
         }
+        // TODO Related to question above - this is necessary to e.g. resolve relative image refs in the data.
         _tableData.uriHandler = resource.uriHandler;
     }
     else {

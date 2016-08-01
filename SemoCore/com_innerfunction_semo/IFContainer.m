@@ -178,10 +178,9 @@
 
 // Configure an object instance.
 - (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration identifier:(NSString *)identifier {
-    IFObjectConfigurer *configurer = [[IFObjectConfigurer alloc] initWithObject:object
-                                                                   inContainer:self
-                                                                       keyPath:identifier];
-    [configurer configureWith:configuration];
+    [_containerConfigurer configureObject:object
+                        withConfiguration:configuration
+                            keyPathPrefix:identifier];
 }
 
 // Configure the container with the specified configuration.
@@ -225,7 +224,7 @@
 - (id)buildNamedObject:(NSString *)name {
     // Track that we're about to build this name.
     _pendingNames[name] = @[];
-    id object = [_containerConfigurer configureProperty:name withConfiguration:_containerConfig];
+    id object = [_containerConfigurer configureNamed:name withConfiguration:_containerConfig];
     if (object != nil) {
         // Map the named object.
         [_named setObject:object forKey:name];
@@ -242,7 +241,7 @@
             }
             else {
                 [_pendingValueRefCounts removeObjectForKey:pending.objectKey];
-                id completed = pending.configurer.object;
+                id completed = pending.object;
                 // The property object is now fully configured, invoke its afterConfiguration: method if it
                 // implements IFIOCContainerAware protocol.
                 if ([completed conformsToProtocol:@protocol(IFIOCContainerAware)]) {

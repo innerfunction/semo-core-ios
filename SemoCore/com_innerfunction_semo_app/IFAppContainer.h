@@ -21,6 +21,7 @@
 #import "IFStandardURIHandler.h"
 #import "IFLocals.h"
 #import "IFNamedScheme.h"
+#import "IFJSONData.h"
 #import "IFIOCTypeInspectable.h"
 
 #define ForceResetDefaultSettings   (NO)
@@ -61,7 +62,7 @@
 /// URI formatters.
 @property (nonatomic) NSDictionary *formats;
 /// URI aliases.
-@property (nonatomic) NSDictionary *aliases;
+@property (nonatomic) IFJSONObject *aliases;
 
 /** Load the app configuration. */
 - (void)loadConfiguration:(id)configSource;

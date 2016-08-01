@@ -29,6 +29,8 @@
 @interface IFObjectConfigurer : NSObject {
     /// The object container.
     IFContainer *_container;
+    /// The container's property type information.
+    IFTypeInfo *_containerTypeInfo;
 }
 
 /**
@@ -40,6 +42,23 @@
 -(id)initWithContainer:(IFContainer *)container;
 /// Perform the object configuration.
 - (void)configureWith:(IFConfiguration *)configuration;
+/**
+ * Configure a named object of the container.
+ * @param name              A property name.
+ * @param configuration     The container configuration.
+ * @return The fully configured object.
+ */
+- (id)configureNamed:(NSString *)name withConfiguration:(IFConfiguration *)configuration;
+/**
+ * Configure a single object using standard type info for the object class.
+ * @param object            The object to configure.
+ * @param configuration     The object's configuration.
+ * @param kpPrefix          The key path prefix; used for logging.
+ */
+
+- (void)configureObject:(id)object
+      withConfiguration:(IFConfiguration *)configuration
+          keyPathPrefix:(NSString *)kpPrefix;
 /**
  * Configure a single object.
  * @param object            The object to configure.

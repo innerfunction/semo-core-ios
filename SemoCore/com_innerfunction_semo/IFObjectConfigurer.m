@@ -43,9 +43,17 @@
 /**
  * Init the object.
  * @param collection    The collection.
+ * @param parent        The collection's parent object.
  * @param propName      The name of the property the collection is bound to on its parent object.
  */
-- (id)initWithCollection:(id)collection propName:(NSString *)propName;
+- (id)initWithCollection:(id)collection parent:(id)parent propName:(NSString *)propName;
+
+@end
+
+/// A version of IFTypeInfo that handles undeclared named properties of a collection.
+@interface IFContainerTypeInfo : IFTypeInfo
+
+- (id)initWithContainer:(IFContainer *)container;
 
 @end
 
@@ -55,13 +63,30 @@
     self = [super init];
     if (self) {
         _container = container;
+        _containerTypeInfo = [[IFContainerTypeInfo alloc] initWithContainer:_container];
     }
     return self;
 }
 
 - (void)configureWith:(IFConfiguration *)configuration {
-    IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:_container];
-    [self configureObject:_container withConfiguration:configuration typeInfo:typeInfo keyPathPrefix:@""];
+    [self configureObject:_container withConfiguration:configuration typeInfo:_containerTypeInfo keyPathPrefix:nil];
+}
+
+- (id)configureNamed:(NSString *)name withConfiguration:(IFConfiguration *)configuration {
+    IFPropertyInfo *propInfo = [_containerTypeInfo infoForProperty:name];
+    id named = [self buildValueForObject:_container
+                                property:name
+                       withConfiguration:configuration
+                                propInfo:propInfo
+                              keyPathRef:name];
+    return named;
+}
+
+- (void)configureObject:(id)object withConfiguration:(IFConfiguration *)configuration keyPathPrefix:(NSString *)kpPrefix {
+    // If value is an NSDictionary or NSArray then get a mutable copy.
+    // Also, whilst at it - get type information for the object.
+    IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:object];
+    [self configureObject:object withConfiguration:configuration typeInfo:typeInfo keyPathPrefix:kpPrefix];
 }
 
 - (void)configureObject:(id)object
@@ -237,11 +262,11 @@
                     IFTypeInfo *typeInfo;
                     if ([value isKindOfClass:[NSDictionary class]]) {
                         value = [(NSDictionary *)value mutableCopy];
-                        typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value propName:propName];
+                        typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value parent:object propName:propName];
                     }
                     else if ([value isKindOfClass:[NSArray class]]) {
                         value = [(NSArray *)value mutableCopy];
-                        typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value propName:propName];
+                        typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value parent:object propName:propName];
                     }
                     else {
                         typeInfo = [IFTypeInfo typeInfoForObject:object];
@@ -278,6 +303,8 @@
         IFPendingNamed *pending = (IFPendingNamed *)value;
         pending.key = name;
         pending.configurer = self;
+        pending.object = object;
+        pending.propInfo = propInfo;
         // Keep count of the number of pending value refs for the current object.
         [_container incPendingValueRefCountForPendingObject:pending];
     }
@@ -331,11 +358,11 @@
 
 @implementation IFCollectionTypeInfo
 
-- (id)initWithCollection:(id)collection propName:(NSString *)propName {
+- (id)initWithCollection:(id)collection parent:parent propName:(NSString *)propName {
     self = [super init];
     if (self) {
-        if ([collection conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
-            __unsafe_unretained Class memberClass = [(id<IFIOCTypeInspectable>)collection memberClassForCollection:propName];
+        if ([parent conformsToProtocol:@protocol(IFIOCTypeInspectable)]) {
+            __unsafe_unretained Class memberClass = [(id<IFIOCTypeInspectable>)parent memberClassForCollection:propName];
             if (memberClass) {
                 _memberTypeInfo = [[IFPropertyInfo alloc] initWithClass:memberClass];
             }
@@ -350,6 +377,33 @@
 
 - (IFPropertyInfo *)infoForProperty:(NSString *)propName {
     return _memberTypeInfo;
+}
+
+@end
+
+@implementation IFContainerTypeInfo
+
+- (id)initWithContainer:(IFContainer *)container {
+    self = [super init];
+    if (self) {
+        // Look up the container object's type information using the standard lookup, before
+        // copying the property info to this instance. This is to ensure that type info lookup
+        // goes through the standard cache mechanism.
+        IFTypeInfo *typeInfo = [IFTypeInfo typeInfoForObject:container];
+        self->_properties = typeInfo->_properties;
+    }
+    return self;
+}
+
+- (IFPropertyInfo *)infoForProperty:(NSString *)propName {
+    IFPropertyInfo *propInfo = [super infoForProperty:propName];
+    // If the property name doesn't correspond to a declared property of the container class then
+    // return a generic property info. This is necessary to allow arbitrary named objects to be
+    // created and configured on the container.
+    if (!propInfo) {
+        propInfo = [IFPropertyInfo new];
+    }
+    return propInfo;
 }
 
 @end

@@ -29,6 +29,8 @@
  */
 @interface IFPendingNamed : NSObject
 
+/** The object which owns the property waiting for the pending value. */
+@property (nonatomic, strong) id object;
 /** A key value to use when tracking this pending in different container dictionaries. */
 @property (nonatomic, strong) NSValue *objectKey;
 /** The property key, e.g. property name; or array index or dictionary key. */
@@ -36,7 +38,9 @@
 /** The key path of the property value on the named object. */
 @property (nonatomic, strong) NSString *referencePath;
 /** The object configurer waiting for the pending value. */
-@property (nonatomic, strong) IFObjectConfigurer *configurer;
+@property (nonatomic, weak) IFObjectConfigurer *configurer;
+/** Information about the waiting property. Needed when injecting the resolved value into the property. */
+@property (nonatomic, strong) IFPropertyInfo *propInfo;
 
 /**
  * Test whether the pending has a configurer waiting for the result.

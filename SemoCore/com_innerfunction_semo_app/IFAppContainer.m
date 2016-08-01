@@ -287,7 +287,7 @@
 }
 
 #pragma mark - IFIOCTypeInspectable
-
+/*
 - (BOOL)isDataCollection:(NSString *)propertyName {
     if ([@"makes" isEqualToString:propertyName]) {
         return YES;
@@ -297,7 +297,7 @@
     }
     return NO;
 }
-
+*/
 - (__unsafe_unretained Class)memberClassForCollection:(NSString *)propertyName {
     return nil;
 }

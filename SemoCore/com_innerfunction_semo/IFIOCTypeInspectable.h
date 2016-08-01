@@ -36,7 +36,7 @@
  * 'plain' data, i.e. the container doesn't need to be scanned by the container for
  * objects to instantiate.
  */
-- (BOOL)isDataCollection:(NSString *)propertyName;
+//- (BOOL)isDataCollection:(NSString *)propertyName;
 
 /**
  * Return the expected class for members of the named property collection.
