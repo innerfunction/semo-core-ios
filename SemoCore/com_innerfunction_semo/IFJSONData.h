@@ -32,7 +32,9 @@
  * is a direct subclass of NSDictionary and provides no additional
  * functionality.
  */
-@interface IFJSONObject : NSDictionary
+@interface IFJSONObject : NSDictionary {
+    NSDictionary *_properties;
+}
 
 - (id)initWithDictionary:(NSDictionary *)otherDictionary;
 
@@ -44,7 +46,9 @@
  * will accept raw, unprocessed JSON data from a configuration. The class
  * is a direct subclass of NSArray and provides no additional functionality.
  */
-@interface IFJSONArray : NSArray
+@interface IFJSONArray : NSArray {
+    NSArray *_items;
+}
 
 - (id)initWithArray:(NSArray *)array;
 

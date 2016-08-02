@@ -119,13 +119,15 @@
         data = (NSArray *)content;
     }
     else if ([content isKindOfClass:[IFResource class]]) {
-        // TODO Does this ever happen? Won't a resource be converted to JSON data by the object configurer?
+        // TODO Data which potentially contains relative URI refs (e.g. row image refs in table data)
+        // should probably be processed within an IFConfiguration wrapper, which has the necessary
+        // functionality to resolve such refs properly; downside is the potential efficiency overhead
+        // for large data sets.
         IFResource *resource = (IFResource *)content;
         id jsonData = [resource asJSONData];
         if ([jsonData isKindOfClass:[NSArray class]]) {
             data = (NSArray *)jsonData;
         }
-        // TODO Related to question above - this is necessary to e.g. resolve relative image refs in the data.
         _tableData.uriHandler = resource.uriHandler;
     }
     else {

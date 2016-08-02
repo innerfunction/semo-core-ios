@@ -28,7 +28,35 @@
 @implementation IFJSONObject
 
 - (id)initWithDictionary:(NSDictionary *)otherDictionary {
-    return [super initWithDictionary:otherDictionary];
+    self = [super init];
+    if (self) {
+        _properties = [[NSDictionary alloc] initWithDictionary:otherDictionary];
+    }
+    return self;
+}
+
+- (id)objectForKey:(id)aKey {
+    return _properties[aKey];
+}
+
+- (NSUInteger)count {
+    return [_properties count];
+}
+
+- (NSEnumerator *)keyEnumerator {
+    return [_properties keyEnumerator];
+}
+
+- (NSEnumerator *)objectEnumerator {
+    return [_properties objectEnumerator];
+}
+
+- (NSArray *)allValues {
+    return [_properties allValues];
+}
+
+- (NSArray *)allKeys {
+    return [_properties allKeys];
 }
 
 @end
@@ -36,7 +64,19 @@
 @implementation IFJSONArray
 
 - (id)initWithArray:(NSArray *)array {
-    return [super initWithArray:array];
+    self = [super init];
+    if (self) {
+        _items = [[NSArray alloc] initWithArray:array];
+    }
+    return self;
+}
+
+- (id)objectAtIndex:(NSUInteger)index {
+    return _items[index];
+}
+
+- (NSUInteger)count {
+    return [_items count];
 }
 
 @end

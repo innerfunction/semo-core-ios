@@ -79,6 +79,9 @@
                        withConfiguration:configuration
                                 propInfo:propInfo
                               keyPathRef:name];
+    if (named != nil) {
+        [self injectIntoObject:_container value:named intoProperty:name propInfo:propInfo];
+    }
     return named;
 }
 
@@ -126,7 +129,12 @@
                                       keyPathRef:kpRef];
             // If there is a value by this stage then inject into the object.
             if (value != nil) {
-                value = [self injectIntoObject:object value:value intoProperty:propName propInfo:propInfo];
+                @try {
+                    value = [self injectIntoObject:object value:value intoProperty:propName propInfo:propInfo];
+                }
+                @catch (id exception) {
+                    DDLogError(@"%@: Error injecting value into %@: %@", LogTag, kpRef, exception);
+                }
             }
         }
     }
@@ -187,7 +195,8 @@
         else if ([propInfo isMemberOrSubclassOf:[IFConfiguration class]]) {
             value = [configuration getValueAsConfiguration:propName];
         }
-        else if ([propInfo isMemberOfClass:[IFJSONObject class]] || [propInfo isMemberOfClass:[IFJSONArray class]]) {
+        else if ([propInfo isMemberOrSubclassOf:[IFJSONObject class]]
+              || [propInfo isMemberOrSubclassOf:[IFJSONArray class]]) {
             // The IFJSONObject and IFJSONArray types are equivalent to NSDictionary and NSArray,
             // but their use allows a property to indicate that it will accept the raw JSON data
             // value, i.e. without further processing by this class.
@@ -260,11 +269,21 @@
                     // Also, whilst at it - get type information for the object.
                     IFTypeInfo *typeInfo;
                     if ([value isKindOfClass:[NSDictionary class]]) {
-                        value = [(NSDictionary *)value mutableCopy];
+                        @try {
+                            value = [(NSDictionary *)value mutableCopy];
+                        }
+                        @catch (id exception) {
+                            DDLogError(@"%@: Unable to make mutable NSDictionary copy of %@", LogTag, kpRef);
+                        }
                         typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value parent:object propName:propName];
                     }
                     else if ([value isKindOfClass:[NSArray class]]) {
-                        value = [(NSArray *)value mutableCopy];
+                        @try {
+                            value = [(NSArray *)value mutableCopy];
+                        }
+                        @catch (id exception) {
+                            DDLogError(@"%@: Unable to make mutable NSArray copy of %@", LogTag, kpRef);
+                        }
                         typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value parent:object propName:propName];
                     }
                     else {
