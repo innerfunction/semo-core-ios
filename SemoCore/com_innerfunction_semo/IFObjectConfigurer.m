@@ -287,7 +287,7 @@
                         typeInfo = [[IFCollectionTypeInfo alloc] initWithCollection:value parent:object propName:propName];
                     }
                     else {
-                        typeInfo = [IFTypeInfo typeInfoForObject:object];
+                        typeInfo = [IFTypeInfo typeInfoForObject:value];
                     }
                     // Configure the value.
                     [self configureObject:value withConfiguration:valueConfig typeInfo:typeInfo keyPathPrefix:kpRef];
