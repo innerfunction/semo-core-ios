@@ -34,6 +34,7 @@
         _actionProxyLookup = [NSMutableDictionary new];
         _behaviours = @[];
         _useAutoLayout = YES;
+        _orientation = @"all";
     }
     return self;
 }
@@ -106,6 +107,16 @@
     for (id<IFViewBehaviour> behaviour in _behaviours) {
         [behaviour viewDidAppear];
     }
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    if ([@"portrait" isEqualToString:_orientation]) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    if ([@"landscape" isEqualToString:_orientation]) {
+        return UIInterfaceOrientationMaskLandscape;
+    }
+    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - Instance methods

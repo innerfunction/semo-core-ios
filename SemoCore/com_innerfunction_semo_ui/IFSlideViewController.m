@@ -30,6 +30,10 @@
     return self;
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.frontViewController supportedInterfaceOrientations];
+}
+
 - (void)setSlideView:(id)slideView {
     if ([slideView isKindOfClass:[UIView class]]) {
         slideView = [[IFViewController alloc] initWithView:(UIView *)slideView];

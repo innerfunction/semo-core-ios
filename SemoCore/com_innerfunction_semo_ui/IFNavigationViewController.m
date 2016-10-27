@@ -24,6 +24,10 @@
 
 #pragma mark - Overrides
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return [self.topViewController supportedInterfaceOrientations];
+}
+
 - (void)setViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers animated:(BOOL)animated {
     [super setViewControllers:viewControllers animated:animated];
     if (_panGestureRecognizer) {

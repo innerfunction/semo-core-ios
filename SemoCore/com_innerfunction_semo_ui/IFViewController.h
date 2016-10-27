@@ -76,6 +76,8 @@
 @property (nonatomic, strong) NSDictionary *namedViews;
 /// Flag indicating whether the layout uses auto-layout.
 @property (nonatomic, assign) BOOL useAutoLayout;
+/// String indicating the support view orientations. Values are 'landscape' 'portrait' or 'all'. Defaults to 'all'.
+@property (nonatomic, strong) NSString *orientation;
 
 - (id)initWithView:(UIView *)view;
 /// Post a message.
